@@ -247,7 +247,7 @@ const EMICalculator = () => {
                     cy="50%"
                     r="40"
                     fill="none"
-                    stroke="#2F6FED"
+                    stroke="#e61a61"
                     strokeWidth="12"
                     strokeDasharray={`${results.principalPercent} 100`}
                     pathLength="100"

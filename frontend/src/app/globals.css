@@ -2,10 +2,10 @@
 
 @theme {
   /* Colors */
-  --color-primary: #2F6FED;
-  --color-secondary: #FF7A1A;
-  --color-tertiary: #EAF2FF;
-  --color-neutral: #FFFFFF;
+  --color-primary: #e61a61;
+  --color-secondary: #B80049;
+  --color-tertiary: #008c47;
+  --color-neutral: #F6F3F2;
 
   /* Typography */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
