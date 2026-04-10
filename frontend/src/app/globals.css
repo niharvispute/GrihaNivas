@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-primary: #2F6FED;
+  --color-secondary: #FF7A1A;
+  --color-tertiary: #EAF2FF;
+  --color-neutral: #FFFFFF;
+
+  /* Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  
+  --text-display: 3rem;
+  --text-display--line-height: 1.1;
+  --text-display--font-weight: 700;
+
+  --text-h1: 2.25rem;
+  --text-h1--line-height: 1.2;
+  --text-h1--font-weight: 700;
+
+  --text-h2: 1.875rem;
+  --text-h2--line-height: 1.3;
+  --text-h2--font-weight: 600;
+
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.4;
+  --text-h3--font-weight: 600;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+
+  /* Radius */
+  --radius-moderate: 0.75rem;
+
+  /* Spacing */
+  --spacing-normal: 1rem;
+}
+
+:root {
+  --background: var(--color-neutral);
+  --foreground: #1A1A1A;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Base Typography Reset */
+h1, .h1 { @apply text-h1 font-heading; }
+h2, .h2 { @apply text-h2 font-heading; }
+h3, .h3 { @apply text-h3 font-heading; }
+p { @apply text-body font-sans; }

@@ -1,0 +1,104 @@
+import Link from 'next/link';
+import { properties } from '@/data/properties';
+import PropertyGallery from '@/components/property/details/PropertyGallery';
+import PropertyStickyInfo from '@/components/property/details/PropertyStickyInfo';
+import PropertyHighlights from '@/components/property/details/PropertyHighlights';
+import PropertyAbout from '@/components/property/details/PropertyAbout';
+import PropertyAmenities from '@/components/property/details/PropertyAmenities';
+import PropertyFloorPlans from '@/components/property/details/PropertyFloorPlans';
+import PropertyLeadForm from '@/components/property/details/PropertyLeadForm';
+import PropertyBuilderProfile from '@/components/property/details/PropertyBuilderProfile';
+import PropertyCard from '@/components/property/PropertyCard';
+
+export default async function PropertyDetailPage({ params }) {
+  const { id } = await params;
+  const property = properties.find(p => p.id === parseInt(id)) || properties[0];
+
+  return (
+    <main className="pt-8 pb-24 max-w-7xl mx-auto px-6 lg:px-8">
+      {/* Breadcrumbs */}
+      <nav aria-label="Breadcrumb" className="flex text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-8 px-1">
+        <ol className="inline-flex items-center space-x-2">
+          <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
+          <li className="flex items-center">
+            <svg className="w-3 h-3 mx-1 text-slate-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+            <Link href="/buy" className="hover:text-primary transition-colors">Listings</Link>
+          </li>
+          <li className="flex items-center">
+            <svg className="w-3 h-3 mx-1 text-slate-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+            <span className="text-primary truncate max-w-[200px]">{property.title}</span>
+          </li>
+        </ol>
+      </nav>
+
+      {/* Hero Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
+        <div className="lg:col-span-8">
+          <PropertyGallery images={property.gallery} />
+        </div>
+        <div className="lg:col-span-4">
+          <PropertyStickyInfo property={property} />
+        </div>
+      </div>
+
+      {/* Main Content Flow */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="lg:col-span-8 space-y-20">
+          <PropertyHighlights highlights={property.highlights} />
+          <PropertyAbout description={property.longDescription || property.description} />
+          <PropertyAmenities amenities={property.amenities} />
+          <PropertyFloorPlans />
+          
+          {/* Neighborhood Placeholder */}
+          <section>
+            <h2 className="text-2xl font-heading font-extrabold mb-8 text-slate-900">Neighborhood & Location</h2>
+            <div className="rounded-2xl overflow-hidden shadow-lg h-96 relative mb-8 border border-slate-100">
+              <img 
+                className="w-full h-full object-cover" 
+                src="https://images.unsplash.com/photo-1524813686514-a57563d77965?auto=format&fit=crop&q=80&w=1200" 
+                alt="Neighborhood Map Placeholder" 
+              />
+              <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md p-6 rounded-xl flex flex-wrap gap-8 border border-white shadow-xl">
+                 {property.neighborhood?.highlights.map((nh, idx) => (
+                    <div key={idx} className="flex items-center gap-3">
+                      <span className="material-symbols-outlined text-primary">{nh.icon}</span>
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{nh.label}</p>
+                        <p className="font-bold text-slate-700 text-sm">{nh.value}</p>
+                      </div>
+                    </div>
+                 ))}
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {/* Right Column Sidebar */}
+        <div className="lg:col-span-4 space-y-8">
+          <PropertyLeadForm />
+          <PropertyBuilderProfile builder={property.builder} />
+        </div>
+      </div>
+
+      {/* Similar Properties Carousel (Simplified for now) */}
+      <section className="mt-32">
+        <div className="flex justify-between items-center mb-10">
+          <h2 className="text-3xl font-heading font-extrabold text-slate-900">You May Also Like</h2>
+          <div className="flex gap-4">
+            <button className="w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all group">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button className="w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {properties.slice(0, 3).map((p) => (
+            <PropertyCard key={p.id} property={p} />
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}
