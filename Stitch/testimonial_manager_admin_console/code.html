@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Testimonial Manager - Admin Console</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#400014",
+                    "on-surface-variant": "#5b3f43",
+                    "outline": "#8f6f73",
+                    "on-tertiary-fixed": "#00210c",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "on-secondary-container": "#75082d",
+                    "on-tertiary-fixed-variant": "#005227",
+                    "on-background": "#1b1c1c",
+                    "background": "#fcf9f8",
+                    "outline-variant": "#e4bdc2",
+                    "on-tertiary-container": "#f6fff3",
+                    "error": "#ba1a1a",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#ffd9de",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#ffd9de",
+                    "surface-container-highest": "#e5e2e1",
+                    "surface-container": "#f0eded",
+                    "on-primary-fixed": "#400014",
+                    "surface-tint": "#bc004b",
+                    "primary": "#b80049",
+                    "tertiary-fixed-dim": "#6ddd8e",
+                    "primary-container": "#e2165f",
+                    "on-primary-fixed-variant": "#900038",
+                    "inverse-primary": "#ffb2be",
+                    "tertiary-fixed": "#89faa8",
+                    "inverse-on-surface": "#f3f0ef",
+                    "surface-container-low": "#f6f3f2",
+                    "tertiary": "#006a34",
+                    "secondary-container": "#ff7794",
+                    "surface-container-high": "#eae7e7",
+                    "secondary": "#a73451",
+                    "surface": "#fcf9f8",
+                    "on-surface": "#1b1c1c",
+                    "surface-dim": "#dcd9d9",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#fcf9f8",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#303030",
+                    "tertiary-container": "#008644",
+                    "on-primary-container": "#fffbff",
+                    "on-secondary-fixed-variant": "#871a3a",
+                    "primary-fixed-dim": "#ffb2be",
+                    "secondary-fixed-dim": "#ffb2be",
+                    "surface-variant": "#e5e2e1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .stars-fill { font-variation-settings: 'FILL' 1; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- SideNavBar Integration -->
+<aside class="fixed left-0 top-0 h-full flex flex-col bg-neutral-900 dark:bg-black h-screen w-64 border-r border-neutral-800 shadow-xl z-20 font-manrope">
+<div class="p-6">
+<h1 class="text-xl font-bold text-white">Admin Console</h1>
+<p class="text-xs text-neutral-500 uppercase tracking-widest mt-1">Management Portal</p>
+</div>
+<nav class="flex-1 mt-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-white mx-2 hover:bg-neutral-800 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-white mx-2 hover:bg-neutral-800 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">domain</span>
+<span class="text-sm font-medium">Properties</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-white mx-2 hover:bg-neutral-800 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">contact_page</span>
+<span class="text-sm font-medium">Leads</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-white mx-2 hover:bg-neutral-800 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Users</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-white mx-2 hover:bg-neutral-800 transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">article</span>
+<span class="text-sm font-medium">Blog CMS</span>
+</a>
+<!-- Active Navigation State for Testimonials -->
+<a class="flex items-center gap-3 px-4 py-3 bg-pink-600 text-white rounded-lg mx-2 active:scale-95 duration-150 shadow-lg shadow-pink-900/20" href="#">
+<span class="material-symbols-outlined">reviews</span>
+<span class="text-sm font-medium">Testimonials</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-neutral-800 flex items-center gap-3">
+<img alt="Admin User Avatar" class="w-10 h-10 rounded-full border border-neutral-700" data-alt="professional headshot of a middle-aged male administrator with a confident expression in a clean studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUh622eSWsA1Dha0N8Ubc1F7_YUvhHXzo8WYJ9vq3XsRLssHURqhelb0lKWnd3hNYE_A7vTmE5IlfGAgtXBj2l_EvsK2GQYlVNN1VuRtlzfwzGJihQUZer7tytLoZLAhDWl7t_9ibX-_saSVJ4a2Zwukr1_fqV3DSybxwjmQrjZVOrKfOIWhhnkQYYA22PPSYSDNmdPPFpFBI6kuPrRu8otW5wxNwVppPKYKKJ6qb2CPIoZB9ORNp21uZ3ajwRZcJdWLiN7TWU5s8"/>
+<div class="overflow-hidden">
+<p class="text-sm font-semibold text-white truncate">Alex Admin</p>
+<p class="text-xs text-neutral-500 truncate">System Director</p>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Integration -->
+<header class="fixed top-0 right-0 left-64 z-10 flex justify-between items-center px-6 h-16 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 flat no shadows font-manrope">
+<div class="flex items-center gap-8 flex-1">
+<span class="text-lg font-bold text-neutral-900 dark:text-white">Testimonial Manager</span>
+<div class="relative w-full max-w-md group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-pink-600 transition-colors">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-neutral-100 dark:bg-neutral-800 border-none rounded-full text-sm focus:ring-2 focus:ring-pink-500 transition-all outline-none" placeholder="Search testimonials..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-neutral-600 dark:text-neutral-400 hover:text-pink-500 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-neutral-600 dark:text-neutral-400 hover:text-pink-500 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-6 w-[1px] bg-neutral-200 dark:border-neutral-700 mx-2"></div>
+<button class="px-4 py-2 text-sm font-semibold text-pink-600 hover:text-pink-700 transition-colors">Logout</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 pb-12 px-8 min-h-screen bg-surface">
+<!-- Header Section -->
+<div class="flex items-end justify-between mb-8">
+<div>
+<h2 class="text-3xl font-extrabold text-on-surface font-headline tracking-tight">Testimonials</h2>
+<p class="text-on-surface-variant mt-1 font-body">Manage user reviews and social proof across your platforms.</p>
+</div>
+<button class="flex items-center gap-2 bg-primary px-6 py-3 text-on-primary rounded-xl font-semibold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">add</span>
+                + Add Testimonial
+            </button>
+</div>
+<!-- Dashboard Stats Grid (Asymmetric Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+<div class="md:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-outline-variant flex flex-col justify-between">
+<p class="text-on-surface-variant text-sm font-medium">Total Reviews</p>
+<div class="flex items-end justify-between mt-4">
+<span class="text-4xl font-bold font-headline">1,284</span>
+<span class="text-green-600 text-sm font-bold flex items-center bg-green-50 px-2 py-1 rounded-lg">+12%</span>
+</div>
+</div>
+<div class="md:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-outline-variant flex flex-col justify-between">
+<p class="text-on-surface-variant text-sm font-medium">Average Rating</p>
+<div class="flex items-end justify-between mt-4">
+<span class="text-4xl font-bold font-headline">4.8</span>
+<div class="flex text-amber-400">
+<span class="material-symbols-outlined stars-fill text-xl">star</span>
+<span class="material-symbols-outlined stars-fill text-xl">star</span>
+<span class="material-symbols-outlined stars-fill text-xl">star</span>
+<span class="material-symbols-outlined stars-fill text-xl">star</span>
+<span class="material-symbols-outlined stars-fill text-xl">star</span>
+</div>
+</div>
+</div>
+<div class="md:col-span-2 bg-primary text-on-primary p-6 rounded-2xl shadow-xl border-none flex flex-col justify-between relative overflow-hidden">
+<div class="relative z-10">
+<p class="text-on-primary/80 text-sm font-medium">Platform Growth</p>
+<h3 class="text-2xl font-bold mt-2">Verified status increases conversion by 24%</h3>
+</div>
+<div class="mt-4 z-10">
+<button class="bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-lg text-sm font-semibold transition-colors">View Insights</button>
+</div>
+<!-- Abstract BG element -->
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+</div>
+</div>
+<!-- Testimonial List: Bento Grid Pattern -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+<!-- Testimonial Card 1 -->
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-outline-variant hover:border-primary/30 transition-colors group">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="w-12 h-12 rounded-full object-cover" data-alt="vibrant portrait of a smiling young woman with professional attire and soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7Z4Rs9F_NiBV2VXQ67dW1UIKJaJH8JfaZW4r_Dx9rUW-7Cqlnq_j56dgRlU6BBawyRy82ELHStfk1cIaf6HBF6fLkmwtVtsRgCpadhbB6CW1HMvG4X04HVEy03DYCgkcY7e-6ccFo8FAcLKDpaYxvcgcyR0PD-qbDh8NtYBW02QU-eN3Ik6pB87ncQ9HOh_lICiPgU44bX6bfBqKJffQtm5NrrqWjZH6CEfcTuw_eV7WqOIzmpu1s5Jrjk_mNi5Hq-Bvmil296VQ"/>
+<div>
+<h4 class="font-bold text-on-surface">Sarah Jenkins</h4>
+<div class="flex text-amber-400 scale-75 origin-left">
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+</div>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-primary-fixed text-on-surface-variant group-hover:text-primary transition-all">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<p class="text-on-surface-variant italic leading-relaxed line-clamp-3">"The attention to detail and customer service was absolutely phenomenal. I've never had such a smooth experience with a property management firm before."</p>
+<div class="mt-4 pt-4 border-t border-outline-variant flex items-center justify-between">
+<span class="text-xs font-semibold text-primary px-2 py-1 bg-primary-fixed rounded">Verified User</span>
+<span class="text-xs text-on-surface-variant">2 days ago</span>
+</div>
+</div>
+<!-- Testimonial Card 2 -->
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-outline-variant hover:border-primary/30 transition-colors group">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="w-12 h-12 rounded-full object-cover" data-alt="studio portrait of a smiling man with a beard and glasses in high-key lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9qSu4_WIt02isZBQprY2jn-QUDeEeD_k9odJvx3zmOeKjXQcUVNu6IKEm9g02Q13D03jNDE-O86zwfHCCgaPPAATGx9nAnRZuBHvWSqwdnwz0nPVAC4utgDTS2A22zruUOAIoYKKT3YQleALPG6cLTkI2_9MKY86LvN3quG9XC4I3UAqVxArrk84yhRx9GpFDNrpnBiHUEY4YQdTV_dsi8d79IOfWfe0mH_jRRumtmKnLcRDHMTNFUup4yM0aHfYL1kFkuX7UPqA"/>
+<div>
+<h4 class="font-bold text-on-surface">Michael Chen</h4>
+<div class="flex text-amber-400 scale-75 origin-left">
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined">star</span>
+</div>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-primary-fixed text-on-surface-variant group-hover:text-primary transition-all">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<p class="text-on-surface-variant italic leading-relaxed line-clamp-3">"The dashboard tools are intuitive and powerful. Managing my listings has become a breeze compared to the previous legacy systems we were using."</p>
+<div class="mt-4 pt-4 border-t border-outline-variant flex items-center justify-between">
+<span class="text-xs font-semibold text-primary px-2 py-1 bg-primary-fixed rounded">Corporate Plan</span>
+<span class="text-xs text-on-surface-variant">1 week ago</span>
+</div>
+</div>
+<!-- Testimonial Card 3 -->
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-outline-variant hover:border-primary/30 transition-colors group">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<img alt="User Avatar" class="w-12 h-12 rounded-full object-cover" data-alt="professional portrait of a business woman with a bright confident smile against a blurred office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTFsrJm3SmS29l8huQ1zcgYQ_n4P4P9_t4yFJwMkZY3n38o1zT0MR_yOB7p5RIBE2XQCoUiIJcfe0upYbHVSLhZ6ASgWffkxoHIrLBmmTuwXOv4QwTfEMGa7112HUKjQHAMbv72arRjzt4WMEG2WCtJOwIMOl0jsjNyC_uyb-DtW78ihdPlOx4SaSFOhjsL2R_Oo4t56DvBcLbRa-R8veYGhoFhX8eIuVKQ7-6GVIrUxidQk4gTyZuRspgVjVxOHD6jSL8h576d5A"/>
+<div>
+<h4 class="font-bold text-on-surface">Elena Rodriguez</h4>
+<div class="flex text-amber-400 scale-75 origin-left">
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+<span class="material-symbols-outlined stars-fill">star</span>
+</div>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-primary-fixed text-on-surface-variant group-hover:text-primary transition-all">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<p class="text-on-surface-variant italic leading-relaxed line-clamp-3">"I am incredibly impressed with the responsiveness of the support team. Any question I had was answered within minutes. Highly recommended for any serious pro!"</p>
+<div class="mt-4 pt-4 border-t border-outline-variant flex items-center justify-between">
+<span class="text-xs font-semibold text-primary px-2 py-1 bg-primary-fixed rounded">Verified User</span>
+<span class="text-xs text-on-surface-variant">3 days ago</span>
+</div>
+</div>
+</div>
+<!-- Add/Edit Testimonial Form Section -->
+<section class="bg-white rounded-3xl shadow-xl shadow-neutral-200/50 border border-outline-variant overflow-hidden">
+<div class="p-8 border-b border-outline-variant bg-neutral-50/50">
+<h3 class="text-2xl font-extrabold text-on-surface font-headline tracking-tight">Add / Edit Testimonial</h3>
+<p class="text-on-surface-variant text-sm mt-1">Fill out the details below to create a new testimonial entry.</p>
+</div>
+<div class="p-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Form Fields -->
+<div class="lg:col-span-8 space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface ml-1">Full Name</label>
+<input class="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none bg-surface-container-lowest" placeholder="e.g. Jonathan Doe" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface ml-1">Rating</label>
+<div class="relative">
+<select class="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-primary appearance-none transition-all outline-none bg-surface-container-lowest">
+<option value="5">5 Stars (Excellent)</option>
+<option value="4">4 Stars (Good)</option>
+<option value="3">3 Stars (Average)</option>
+<option value="2">2 Stars (Poor)</option>
+<option value="1">1 Star (Terrible)</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface ml-1">Review Text</label>
+<textarea class="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none bg-surface-container-lowest resize-none" placeholder="Share the user's experience..." rows="5"></textarea>
+</div>
+</div>
+<!-- Image Upload Area -->
+<div class="lg:col-span-4 flex flex-col">
+<label class="text-sm font-bold text-on-surface ml-1 mb-2">User Image</label>
+<div class="flex-1 border-2 border-dashed border-outline-variant rounded-2xl flex flex-col items-center justify-center p-8 bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">upload_file</span>
+</div>
+<p class="text-sm font-bold text-on-surface">Click to upload avatar</p>
+<p class="text-xs text-on-surface-variant mt-1">SVG, PNG, JPG (max. 800x800px)</p>
+</div>
+</div>
+</div>
+<!-- Form Actions -->
+<div class="mt-10 pt-8 border-t border-outline-variant flex items-center justify-end gap-4">
+<button class="px-8 py-3 rounded-xl font-bold text-on-surface-variant hover:bg-surface-container transition-colors">Discard</button>
+<button class="px-10 py-3 rounded-xl font-bold bg-primary text-on-primary shadow-lg shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">Save Testimonial</button>
+</div>
+</div>
+</section>
+<!-- Recent Activity Log (Asymmetric Element) -->
+<div class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-outline-variant">
+<h4 class="font-bold text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-pink-600">history</span>
+                    Recent Activity
+                </h4>
+<div class="space-y-4">
+<div class="flex gap-3">
+<div class="w-1 h-8 bg-pink-100 rounded-full mt-1"></div>
+<div>
+<p class="text-sm font-medium">New 5-star review added</p>
+<p class="text-xs text-on-surface-variant">by Sarah Jenkins • 2h ago</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-1 h-8 bg-neutral-100 rounded-full mt-1"></div>
+<div>
+<p class="text-sm font-medium">Testimonial updated</p>
+<p class="text-xs text-on-surface-variant">by Michael Chen • 5h ago</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-1 h-8 bg-pink-100 rounded-full mt-1"></div>
+<div>
+<p class="text-sm font-medium">Auto-moderation flag cleared</p>
+<p class="text-xs text-on-surface-variant">System • 1d ago</p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-2 bg-neutral-900 text-white p-8 rounded-2xl shadow-xl flex items-center justify-between relative overflow-hidden">
+<div class="relative z-10 max-w-md">
+<h4 class="text-xl font-bold mb-2">Power Tip: Visual Proof</h4>
+<p class="text-neutral-400 text-sm leading-relaxed">Testimonials with user images receive 84% more engagement than text-only reviews. Try to collect verified headshots for every feature story.</p>
+<button class="mt-6 text-pink-500 font-bold text-sm flex items-center gap-2 hover:gap-3 transition-all">
+                        Learn about Social Proof 
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<div class="hidden md:block relative z-10">
+<span class="material-symbols-outlined text-[120px] text-white/10 select-none">verified_user</span>
+</div>
+<!-- Ambient Glow -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-pink-600/10 blur-[80px] rounded-full -mr-20 -mt-20"></div>
+</div>
+</div>
+</main>
+</body></html>

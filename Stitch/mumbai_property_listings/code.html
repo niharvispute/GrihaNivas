@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mumbai Editorial | Luxury Real Estate</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e5e2e1",
+                        "outline": "#8f6f73",
+                        "primary": "#b80049",
+                        "on-secondary-container": "#75082d",
+                        "inverse-on-surface": "#f3f0ef",
+                        "secondary-container": "#ff7794",
+                        "surface-bright": "#fcf9f8",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#f6fff3",
+                        "primary-fixed": "#ffd9de",
+                        "outline-variant": "#e4bdc2",
+                        "surface-container": "#f0eded",
+                        "surface": "#fcf9f8",
+                        "on-primary-fixed": "#400014",
+                        "surface-dim": "#dcd9d9",
+                        "secondary-fixed": "#ffd9de",
+                        "primary-container": "#e2165f",
+                        "on-primary-container": "#fffbff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#005227",
+                        "on-primary-fixed-variant": "#900038",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-variant": "#e5e2e1",
+                        "error": "#ba1a1a",
+                        "tertiary": "#006a34",
+                        "on-background": "#1b1c1c",
+                        "tertiary-fixed": "#89faa8",
+                        "inverse-primary": "#ffb2be",
+                        "tertiary-container": "#008644",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#5b3f43",
+                        "inverse-surface": "#303030",
+                        "tertiary-fixed-dim": "#6ddd8e",
+                        "primary-fixed-dim": "#ffb2be",
+                        "on-surface": "#1b1c1c",
+                        "on-secondary-fixed-variant": "#871a3a",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#a73451",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#eae7e7",
+                        "background": "#fcf9f8",
+                        "surface-tint": "#bc004b",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#ffb2be",
+                        "on-tertiary-fixed": "#00210c",
+                        "on-secondary-fixed": "#400014"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .tonal-shift { background-color: var(--tw-bg-opacity); }
+        .no-line-rule { border: none !important; }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopNavBar -->
+<nav class="sticky top-0 w-full z-50 bg-white/70 backdrop-blur-md shadow-sm dark:bg-slate-900/70 no-line-rule tonal-shift flex justify-between items-center px-8 py-4 max-w-full mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-tighter text-pink-700 dark:text-pink-500 font-headline">Mumbai Editorial</span>
+<!-- Navigation Links -->
+<div class="hidden md:flex gap-6 font-headline font-semibold tracking-tight text-sm">
+<a class="text-pink-700 dark:text-pink-400 border-b-2 border-pink-700 pb-1" href="#">Buy</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-pink-600 transition-colors duration-300" href="#">Rent</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-pink-600 transition-colors duration-300" href="#">Commercial</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-pink-600 transition-colors duration-300" href="#">New Launch</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-pink-600 transition-colors duration-300" href="#">Blogs</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-pink-600 transition-colors duration-300" href="#">Contact</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low rounded-full border-none focus:ring-2 focus:ring-primary/20 text-sm w-64" placeholder="Search Location, Budget..." type="text"/>
+</div>
+<button class="text-slate-600 font-headline font-semibold text-sm hover:bg-slate-100 px-4 py-2 rounded-full transition-all">Login</button>
+<button class="bg-primary text-on-primary font-headline font-semibold text-sm px-6 py-2 rounded-full scale-95 active:opacity-80 transition-all">List Property</button>
+</div>
+</nav>
+<main class="max-w-7xl mx-auto px-8 py-8">
+<!-- Page Header & Breadcrumbs -->
+<header class="mb-10">
+<nav aria-label="Breadcrumb" class="flex text-xs font-label uppercase tracking-widest text-on-surface-variant mb-4">
+<ol class="inline-flex items-center space-x-1 md:space-x-3">
+<li class="inline-flex items-center">Home</li>
+<li class="flex items-center">
+<span class="material-symbols-outlined text-sm mx-1">chevron_right</span>
+<span class="text-primary font-bold">Mumbai Properties</span>
+</li>
+</ol>
+</nav>
+<h1 class="text-5xl font-headline font-extrabold tracking-tighter text-on-surface">Properties in Mumbai</h1>
+<p class="text-on-surface-variant mt-2 max-w-2xl">Discover curated luxury residences across South Mumbai, Bandra, and beyond. Refined living in India's most vibrant skyline.</p>
+</header>
+<div class="flex flex-col md:flex-row gap-10">
+<!-- Sidebar / SideNavBar -->
+<aside class="w-full md:w-80 flex-shrink-0">
+<div class="h-auto sticky top-24 bg-surface-container-low dark:bg-slate-900/50 rounded-2xl p-6 flex flex-col gap-6 shadow-sm no-line-rule">
+<div>
+<h2 class="font-headline text-xl font-bold text-pink-700 mb-1">Filters</h2>
+<p class="font-body text-xs text-on-surface-variant">Refine your luxury search</p>
+</div>
+<div class="space-y-6 font-body text-sm">
+<!-- Location Filter -->
+<div class="space-y-2">
+<label class="font-bold flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg">location_on</span>
+                                Location
+                            </label>
+<select class="w-full bg-surface-container-lowest border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20">
+<option>Select Neighborhood</option>
+<option>South Mumbai</option>
+<option>Bandra West</option>
+<option>Juhu</option>
+<option>Worli</option>
+</select>
+</div>
+<!-- Budget Filter -->
+<div class="space-y-2">
+<label class="font-bold flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg">payments</span>
+                                Budget Range
+                            </label>
+<input class="w-full accent-primary" max="100" min="1" type="range" value="50"/>
+<div class="flex justify-between text-[10px] font-bold text-on-surface-variant">
+<span>₹1 Cr</span>
+<span>₹100 Cr+</span>
+</div>
+</div>
+<!-- BHK Type -->
+<div class="space-y-2">
+<label class="font-bold flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg">home_work</span>
+                                BHK Type
+                            </label>
+<div class="grid grid-cols-2 gap-2">
+<label class="flex items-center gap-2 p-2 rounded-lg bg-surface-container-lowest cursor-pointer hover:bg-pink-50 transition-colors">
+<input class="rounded text-primary focus:ring-primary/20" type="checkbox"/>
+<span>2 BHK</span>
+</label>
+<label class="flex items-center gap-2 p-2 rounded-lg bg-pink-50 text-pink-700 font-bold border border-pink-100 cursor-pointer">
+<input checked="" class="rounded text-primary focus:ring-primary/20" type="checkbox"/>
+<span>3 BHK</span>
+</label>
+<label class="flex items-center gap-2 p-2 rounded-lg bg-surface-container-lowest cursor-pointer hover:bg-pink-50 transition-colors">
+<input class="rounded text-primary focus:ring-primary/20" type="checkbox"/>
+<span>4 BHK</span>
+</label>
+<label class="flex items-center gap-2 p-2 rounded-lg bg-surface-container-lowest cursor-pointer hover:bg-pink-50 transition-colors">
+<input class="rounded text-primary focus:ring-primary/20" type="checkbox"/>
+<span>5+ BHK</span>
+</label>
+</div>
+</div>
+<!-- Amenities -->
+<div class="space-y-2">
+<label class="font-bold flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg">pool</span>
+                                Amenities
+                            </label>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-container-highest rounded-full text-xs">Gym</span>
+<span class="px-3 py-1 bg-surface-container-highest rounded-full text-xs">Sea View</span>
+<span class="px-3 py-1 bg-surface-container-highest rounded-full text-xs">Infinity Pool</span>
+</div>
+</div>
+<!-- Possession Status -->
+<div class="space-y-2">
+<label class="font-bold flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg">foundation</span>
+                                Possession
+                            </label>
+<select class="w-full bg-surface-container-lowest border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20">
+<option>Ready to Move</option>
+<option>Within 1 Year</option>
+<option>Under Construction</option>
+</select>
+</div>
+</div>
+<div class="pt-4 space-y-3">
+<button class="w-full bg-primary text-on-primary font-bold py-3 rounded-xl active:scale-[0.98] transition-all">Apply Filters</button>
+<button class="w-full text-on-surface-variant text-xs font-bold hover:underline">Reset All Filters</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-grow">
+<!-- Sorting & View Bar -->
+<div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 bg-surface-container-low p-4 rounded-2xl">
+<div class="flex items-center gap-4 text-sm font-medium">
+<span class="text-on-surface-variant">Sort by:</span>
+<div class="flex gap-2">
+<button class="px-4 py-1.5 rounded-full bg-primary text-on-primary text-xs font-bold">Newest</button>
+<button class="px-4 py-1.5 rounded-full bg-white text-on-surface-variant text-xs font-bold hover:bg-slate-100">Price</button>
+<button class="px-4 py-1.5 rounded-full bg-white text-on-surface-variant text-xs font-bold hover:bg-slate-100">Popular</button>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-white p-1 rounded-lg">
+<button class="p-1.5 bg-slate-100 rounded text-primary"><span class="material-symbols-outlined">grid_view</span></button>
+<button class="p-1.5 text-slate-400 hover:bg-slate-50 rounded"><span class="material-symbols-outlined">list</span></button>
+</div>
+</div>
+<!-- Property Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Property Card 1 -->
+<article class="group relative bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
+<div class="relative h-72 overflow-hidden">
+<img alt="Luxury Penthouse" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="ultra-modern luxury penthouse interior with floor-to-ceiling windows overlooking the Mumbai sea link at dusk, warm interior lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_0dcgOYFq83CWXNErRUMc6qnTTgchHUWE_TuanOXr1P73yMDemm7b2PbZPnVJK2T_9Q6EdbBIRyhnoumhZDRvIrHBM3VoTJ1r1WEemwELg46jTrEawgFESNc1ZgDyiwmVwJLiJYfXdZbg-QJuzSv9y0x50j9ov-cxPqCRzQ-ZwrhVB1_k_XFP7tGOjKqZQp4R1JYXcgInGINkX5RNaPsRT5-IMhjgfGZHuq4l7bLGuLG6J5pKH5YU5NdhSNTs2y9N04tSjE43NMU"/>
+<div class="absolute top-4 left-4 flex gap-2">
+<span class="bg-white/80 backdrop-blur-md text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">New Launch</span>
+<span class="bg-primary/90 text-on-primary px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Verified</span>
+</div>
+<button class="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline font-bold text-xl text-on-surface leading-tight">The Sky Residence, Worli</h3>
+<div class="text-right">
+<p class="text-primary font-extrabold text-2xl tracking-tighter">₹18.5 Cr</p>
+<p class="text-[10px] text-on-surface-variant font-bold">₹75,000/sq.ft</p>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span>
+                                Dr Annie Besant Rd, Worli, Mumbai
+                            </p>
+<div class="flex items-center gap-4 mb-6 text-xs text-on-surface-variant border-t border-surface-container pt-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">bed</span>
+<span class="font-bold">4 BHK</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">square_foot</span>
+<span class="font-bold">3,200 sq.ft</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">pool</span>
+<span class="font-bold">Infinity Pool</span>
+</div>
+</div>
+<div class="mt-auto flex gap-3">
+<button class="flex-grow bg-primary text-on-primary py-3 rounded-full font-headline font-bold text-sm tracking-tight hover:opacity-90 transition-opacity">View Details</button>
+<button class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center text-primary hover:bg-pink-50 transition-colors">
+<span class="material-symbols-outlined">call</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Property Card 2 -->
+<article class="group relative bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
+<div class="relative h-72 overflow-hidden">
+<img alt="Bandra Sea View Apartment" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="modern minimalist living room in Bandra with views of the Arabian sea, golden hour sunlight streaming in, high-end furniture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlcTB1afkylPLsoXRQK4mosFbSZ0WV_d_9buTDi52zD3X-ZnE6_GPAYTqr4x4SXrThfRI27qEFWkv2j0_roHV8P0IZrq6wosw3DRTECHWB3XdqVFm4ckjtaiJIAKfh2kYZ41VvIJMi2uFCQBIZs6q-li39gn-7R5QQswmXRXLRTRs4fRmQ4c_hT8hiR2hbHVzSk0eUMkir4WGGyRqwMs3L-7pMd3dhnzQ4t-k9iYIMdUlQTzcWfy2Az8TL857VZgki9b3VC-TVvb0"/>
+<div class="absolute top-4 left-4 flex gap-2">
+<span class="bg-white/80 backdrop-blur-md text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Ready to Move</span>
+</div>
+<button class="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline font-bold text-xl text-on-surface leading-tight">Azure Bay, Bandra West</h3>
+<div class="text-right">
+<p class="text-primary font-extrabold text-2xl tracking-tighter">₹8.2 Cr</p>
+<p class="text-[10px] text-on-surface-variant font-bold">₹58,000/sq.ft</p>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span>
+                                Carter Road, Bandra West, Mumbai
+                            </p>
+<div class="flex items-center gap-4 mb-6 text-xs text-on-surface-variant border-t border-surface-container pt-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">bed</span>
+<span class="font-bold">3 BHK</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">square_foot</span>
+<span class="font-bold">1,850 sq.ft</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">fitness_center</span>
+<span class="font-bold">Premium Gym</span>
+</div>
+</div>
+<div class="mt-auto flex gap-3">
+<button class="flex-grow bg-primary text-on-primary py-3 rounded-full font-headline font-bold text-sm tracking-tight hover:opacity-90 transition-opacity">View Details</button>
+<button class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center text-primary hover:bg-pink-50 transition-colors">
+<span class="material-symbols-outlined">call</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Property Card 3 (Featured) -->
+<article class="group relative bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col lg:col-span-2 md:flex-row">
+<div class="relative w-full md:w-1/2 h-80 md:h-auto overflow-hidden">
+<img alt="Juhu Beach Estate" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="spacious open-plan luxury villa with a private garden and view of Juhu beach, morning soft light, contemporary architectural design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzhdCC0MgRobbAq_nUsZxHvrzSz5PJYgO-_y4OApy_BhryIvVJ-ufGQmQKGX2DQmQ_UVLbWGxw1Y3icel0XhRiyJroWaACZ0yRt3F81a1yTylSSWfpe2vCXpgDd0t8bra2krU_qAumYxM9e4iT473Md2EUyslxQuR34P7ve3HJzim4wLHbuCAJEDZhjtKm2kNOS0Pn8TWenZMkN_NV3ds_mL58k7GcvXHg5w1vtEUw8Z4mdRy3jCBsYmAngqIIKcWZJ_Tvk7CAI5M"/>
+<span class="absolute top-4 left-4 bg-tertiary text-on-tertiary px-4 py-1.5 rounded-full text-[10px] font-bold tracking-widest uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">star</span> Featured Property
+                            </span>
+</div>
+<div class="p-8 flex flex-col justify-center flex-grow">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline font-extrabold text-3xl text-on-surface tracking-tight mb-1">Villa Marigold, Juhu</h3>
+<p class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">location_on</span>
+                                        JVPD Scheme, Juhu, Mumbai
+                                    </p>
+</div>
+<div class="text-right">
+<p class="text-primary font-black text-3xl tracking-tighter">₹45.0 Cr</p>
+<span class="text-[10px] bg-pink-100 text-primary px-2 py-0.5 rounded font-bold uppercase">Price on Request</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-base mb-8 leading-relaxed">Experience unparallelled luxury at the heart of Mumbai's most prestigious enclave. A sprawling 5-bedroom estate with private beach access and landscaped gardens.</p>
+<div class="grid grid-cols-3 gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Configuration</span>
+<span class="font-headline font-bold text-lg">5.5 BHK Villa</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Build Area</span>
+<span class="font-headline font-bold text-lg">6,500 sq.ft</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Status</span>
+<span class="font-headline font-bold text-lg text-tertiary">Move-In Ready</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="px-10 bg-primary text-on-primary py-4 rounded-full font-headline font-extrabold text-base tracking-tight hover:shadow-lg transition-all active:scale-95">Inquire Now</button>
+<button class="px-8 border-2 border-primary text-primary py-4 rounded-full font-headline font-bold text-sm tracking-tight hover:bg-pink-50 transition-all">Schedule a Private Tour</button>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="mt-16 flex justify-center items-center gap-2">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:bg-surface-container"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center bg-primary text-on-primary font-bold">1</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container font-medium">2</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container font-medium">3</button>
+<span class="px-2">...</span>
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container font-medium">12</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-surface-container"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Contact CTA -->
+<button class="fixed bottom-8 right-8 z-[60] bg-primary text-on-primary flex items-center gap-3 px-6 py-4 rounded-full shadow-2xl hover:scale-105 transition-transform font-headline font-bold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+        Contact Expert
+    </button>
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-950 w-full py-12 px-8 mt-24 tonal-shift-no-borders bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="col-span-1 md:col-span-1">
+<span class="text-xl font-black text-pink-700 font-headline mb-4 block">Mumbai Editorial</span>
+<p class="text-slate-500 font-body text-sm leading-relaxed mb-6">Redefining luxury real estate in Mumbai through curation, integrity, and architectural storytelling.</p>
+<div class="flex gap-4">
+<a class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white transition-colors" href="#"><span class="material-symbols-outlined text-lg">share</span></a>
+<a class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white transition-colors" href="#"><span class="material-symbols-outlined text-lg">public</span></a>
+</div>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface mb-6 uppercase tracking-widest text-xs">Quick Links</h4>
+<ul class="flex flex-col gap-3">
+<li><a class="text-slate-500 hover:text-pink-500 font-body text-sm transition-all hover:underline" href="#">About Us</a></li>
+<li><a class="text-slate-500 hover:text-pink-500 font-body text-sm transition-all hover:underline" href="#">Terms of Service</a></li>
+<li><a class="text-slate-500 hover:text-pink-500 font-body text-sm transition-all hover:underline" href="#">Privacy Policy</a></li>
+<li><a class="text-slate-500 hover:text-pink-500 font-body text-sm transition-all hover:underline" href="#">Careers</a></li>
+<li><a class="text-slate-500 hover:text-pink-500 font-body text-sm transition-all hover:underline" href="#">Sitemap</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface mb-6 uppercase tracking-widest text-xs">Top Locations</h4>
+<ul class="flex flex-col gap-3">
+<li><a class="text-slate-500 hover:text-pink-500 font-body text-sm transition-all" href="#">South Mumbai Apartments</a></li>
+<li><a class="text-slate-500 hover:text-pink-500 font-body text-sm transition-all" href="#">Bandra West Penthouses</a></li>
+<li><a class="text-slate-500 hover:text-pink-500 font-body text-sm transition-all" href="#">Worli Luxury Homes</a></li>
+<li><a class="text-slate-500 hover:text-pink-500 font-body text-sm transition-all" href="#">Juhu Beachfront Villas</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface mb-6 uppercase tracking-widest text-xs">Subscribe</h4>
+<p class="text-slate-500 text-xs mb-4">Get curated listing reports directly to your inbox.</p>
+<div class="flex flex-col gap-2">
+<input class="bg-white border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-primary/20" placeholder="Email Address" type="email"/>
+<button class="bg-pink-700 text-white font-bold py-2 rounded-lg text-sm hover:bg-pink-800 transition-colors">Join Newsletter</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-200">
+<p class="text-slate-500 font-body text-sm text-center">© 2024 Mumbai Editorial Real Estate. All rights reserved.</p>
+</div>
+</footer>
+</body></html>
