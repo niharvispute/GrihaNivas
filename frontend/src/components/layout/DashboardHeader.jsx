@@ -1,28 +1,39 @@
+'use client';
+
 export default function DashboardHeader() {
   return (
-    <header className="flex justify-between items-center h-16 px-8 sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-200 shadow-sm">
+    <header className="flex justify-between items-center h-20 px-8 sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-100 shadow-sm">
       <div className="flex items-center gap-6">
-        <div className="flex items-center gap-2 text-neutral-400 focus-within:text-primary transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <div className="flex items-center gap-3 text-slate-400 focus-within:text-primary transition-all group bg-slate-50 px-4 py-2 rounded-full border border-slate-100 focus-within:bg-white focus-within:shadow-inner">
+          <span className="material-symbols-outlined text-xl group-focus-within:scale-110 transition-transform">search</span>
           <input 
-            className="bg-transparent border-none focus:ring-0 text-sm w-64 placeholder:text-neutral-400 text-slate-900" 
-            placeholder="Search properties..." 
+            className="bg-transparent border-none focus:ring-0 text-sm w-80 placeholder:text-slate-400 text-slate-900 font-medium" 
+            placeholder="Search properties, enquiries..." 
             type="text"
           />
         </div>
       </div>
       <div className="flex items-center gap-6">
-        <div className="flex gap-4 text-neutral-500">
-          <button className="hover:text-primary transition-colors focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <div className="flex gap-4">
+          <button className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-full transition-all relative">
+            <span className="material-symbols-outlined text-2xl">notifications</span>
+            <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
           </button>
-          <button className="hover:text-primary transition-colors focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <button className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-full transition-all">
+            <span className="material-symbols-outlined text-2xl">settings</span>
           </button>
         </div>
-        <div className="h-8 w-px bg-neutral-200"></div>
-        <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary text-xs font-bold">
-          AJ
+        <div className="h-8 w-px bg-slate-100 mx-2"></div>
+        <div className="flex items-center gap-3 pl-2">
+          <div className="text-right hidden sm:block">
+            <p className="text-sm font-bold text-slate-900 leading-none">Alex Johnson</p>
+            <p className="text-[10px] font-bold text-primary uppercase tracking-tighter mt-1">Active Now</p>
+          </div>
+          <img 
+            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200" 
+            alt="Profile" 
+            className="w-10 h-10 rounded-full border-2 border-primary/10 hover:border-primary transition-colors cursor-pointer"
+          />
         </div>
       </div>
     </header>

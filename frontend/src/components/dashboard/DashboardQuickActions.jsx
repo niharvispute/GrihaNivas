@@ -1,0 +1,57 @@
+export default function DashboardQuickActions() {
+  const actions = [
+    {
+      title: "Browse Properties",
+      desc: "Find your dream home",
+      icon: "travel_explore",
+      primary: true
+    },
+    {
+      title: "EMI Calculator",
+      desc: "Plan your finances",
+      icon: "calculate",
+      primary: false
+    },
+    {
+      title: "List Property",
+      desc: "Sell or rent your space",
+      icon: "add_business",
+      primary: false
+    }
+  ];
+
+  return (
+    <div className="space-y-4">
+      <h2 className="text-xl font-heading font-black text-slate-900 mb-6">Quick Actions</h2>
+      {actions.map((action, idx) => (
+        <button 
+          key={idx} 
+          className={`w-full flex items-center justify-between p-5 rounded-[1.25rem] transition-all active:scale-[0.98] group relative overflow-hidden ${
+            action.primary 
+              ? 'bg-primary text-white shadow-xl shadow-primary/20 hover:shadow-primary/30' 
+              : 'bg-white text-slate-900 border border-slate-100 hover:border-primary/30 hover:shadow-lg'
+          }`}
+        >
+          <div className="flex items-center gap-4 relative z-10">
+            <div className={`p-3 rounded-xl group-hover:scale-110 transition-transform ${
+              action.primary ? 'bg-white/20' : 'bg-slate-50 text-primary'
+            }`}>
+              <span className="material-symbols-outlined text-2xl">{action.icon}</span>
+            </div>
+            <div className="text-left">
+              <p className="font-heading font-bold text-sm">{action.title}</p>
+              <p className={`text-[11px] font-medium ${action.primary ? 'text-white/70' : 'text-slate-400'}`}>{action.desc}</p>
+            </div>
+          </div>
+          <span className={`material-symbols-outlined transition-transform group-hover:translate-x-1 ${
+            action.primary ? 'text-white/50' : 'text-slate-300'
+          }`}>chevron_right</span>
+          
+          {action.primary && (
+            <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-2xl"></div>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+}

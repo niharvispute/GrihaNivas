@@ -22,3 +22,26 @@ export const addBlogComment = async (blogId, payload) => {
   });
   return res.data;
 };
+
+export const createBlog = async (payload) => {
+  const res = await apiFetch('/api/blogs', {
+    method: 'POST',
+    body: payload,
+  });
+  return res.data;
+};
+
+export const updateBlog = async (id, payload) => {
+  const res = await apiFetch(`/api/blogs/${id}`, {
+    method: 'PUT',
+    body: payload,
+  });
+  return res.data;
+};
+
+export const deleteBlog = async (id) => {
+  const res = await apiFetch(`/api/blogs/${id}`, {
+    method: 'DELETE',
+  });
+  return res.data;
+};

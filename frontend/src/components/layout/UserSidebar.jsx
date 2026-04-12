@@ -1,44 +1,68 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function UserSidebar() {
+  const pathname = usePathname();
+
+  const navLinks = [
+    { name: 'My Dashboard', href: '/account', icon: 'dashboard' },
+    { name: 'Saved Properties', href: '/account/saved', icon: 'bookmark' },
+    { name: 'My Enquiries', href: '/account/enquiries', icon: 'chat_bubble' },
+    { name: 'My Profile', href: '/account/profile', icon: 'person' },
+  ];
+
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 flex flex-col p-4 bg-white border-r border-neutral-200 z-50">
       {/* Brand Logo */}
-      <div className="px-4 py-6">
-        <span className="text-2xl font-bold text-primary font-headline">Bricks Portal</span>
+      <div className="px-4 py-8">
+        <Link href="/" className="text-2xl font-black text-primary tracking-tighter font-heading">
+          Bricks<span className="text-slate-900">.</span>
+        </Link>
       </div>
 
       {/* Header Profile */}
       <div className="flex flex-col items-center gap-2 mb-8 px-4">
-        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl ring-2 ring-primary/20">
-          AJ
+        <div className="relative group">
+          <img 
+            alt="Alex Johnson" 
+            className="w-16 h-16 rounded-full object-cover ring-4 ring-primary/10 group-hover:ring-primary/20 transition-all duration-300" 
+            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200" 
+          />
+          <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
         </div>
         <div className="text-center">
-          <p className="font-headline text-base font-bold text-on-surface text-slate-900">Alex Johnson</p>
-          <p className="text-xs text-neutral-500 font-medium">Standard User</p>
+          <p className="font-heading text-base font-bold text-slate-900">Alex Johnson</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Premium Member</p>
         </div>
       </div>
 
       {/* Navigation Links */}
       <nav className="flex-1 space-y-1">
-        <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 bg-primary/5 text-primary rounded-lg border-r-4 border-primary font-semibold text-sm transition-all">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
-          <span>My Dashboard</span>
-        </Link>
-        <Link href="/dashboard/saved" className="flex items-center gap-3 px-4 py-3 text-neutral-600 hover:bg-neutral-100 rounded-lg text-sm transition-all">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-          <span>Saved Properties</span>
-        </Link>
-        <Link href="/dashboard/enquiries" className="flex items-center gap-3 px-4 py-3 text-neutral-600 hover:bg-neutral-100 rounded-lg text-sm transition-all">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span>My Enquiries</span>
-        </Link>
+        {navLinks.map((link) => {
+          const isActive = pathname === link.href;
+          return (
+            <Link 
+              key={link.href}
+              href={link.href} 
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl font-heading text-sm font-bold transition-all duration-200 ${
+                isActive 
+                  ? 'bg-primary/5 text-primary border-r-4 border-primary' 
+                  : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+            >
+              <span className="material-symbols-outlined text-xl">{link.icon}</span>
+              <span>{link.name}</span>
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Logout */}
       <div className="mt-auto">
-        <button className="flex items-center gap-3 w-full px-4 py-3 text-neutral-600 hover:bg-red-50 hover:text-red-600 rounded-lg text-sm transition-all">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <button className="flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:bg-red-50 hover:text-red-600 rounded-xl text-sm font-bold transition-all duration-200">
+          <span className="material-symbols-outlined text-xl">logout</span>
           <span>Logout</span>
         </button>
       </div>
