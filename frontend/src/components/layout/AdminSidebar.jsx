@@ -1,6 +1,22 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function AdminSidebar() {
+  const pathname = usePathname();
+
+  const menuItems = [
+    { name: 'Dashboard', icon: 'dashboard', href: '/admin' },
+    { name: 'Properties', icon: 'real_estate_agent', href: '/admin/properties' },
+    { name: 'Leads', icon: 'leaderboard', href: '/admin/leads' },
+    { name: 'Blogs', icon: 'edit_note', href: '/admin/blogs' },
+    { name: 'Banners', icon: 'view_carousel', href: '/admin/banners' },
+    { name: 'Testimonials', icon: 'reviews', href: '/admin/testimonials' },
+    { name: 'Users', icon: 'group', href: '/admin/users' },
+    { name: 'Settings', icon: 'settings', href: '/admin/settings' },
+  ];
+
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 flex flex-col py-8 bg-neutral-900 text-white z-50 border-r border-neutral-800 shadow-2xl">
       <div className="px-8 mb-12">
@@ -11,29 +27,23 @@ export default function AdminSidebar() {
       </div>
 
       <nav className="flex-1 px-4 space-y-2">
-        {[
-          { name: 'Dashboard', icon: 'dashboard', href: '/admin', active: true },
-          { name: 'Properties', icon: 'real_estate_agent', href: '/admin/properties' },
-          { name: 'Leads', icon: 'leaderboard', href: '/admin/leads' },
-          { name: 'Blogs', icon: 'edit_note', href: '/admin/blogs' },
-          { name: 'Banners', icon: 'view_carousel', href: '/admin/banners' },
-          { name: 'Testimonials', icon: 'reviews', href: '/admin/testimonials' },
-          { name: 'Users', icon: 'group', href: '/admin/users' },
-          { name: 'Settings', icon: 'settings', href: '/admin/settings' },
-        ].map((item) => (
-          <Link 
-            key={item.name}
-            href={item.href} 
-            className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all group ${
-              item.active 
-                ? 'bg-primary text-white shadow-lg shadow-primary/20 scale-[1.02]' 
-                : 'text-neutral-500 hover:text-white hover:bg-neutral-800'
-            }`}
-          >
-            <span className="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">{item.icon}</span>
-            <span className="font-bold text-sm tracking-tight">{item.name}</span>
-          </Link>
-        ))}
+        {menuItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link 
+              key={item.name}
+              href={item.href} 
+              className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all group ${
+                isActive 
+                  ? 'bg-primary text-white shadow-lg shadow-primary/20 scale-[1.02]' 
+                  : 'text-neutral-500 hover:text-white hover:bg-neutral-800'
+              }`}
+            >
+              <span className="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">{item.icon}</span>
+              <span className="font-bold text-sm tracking-tight">{item.name}</span>
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="mt-auto px-4">

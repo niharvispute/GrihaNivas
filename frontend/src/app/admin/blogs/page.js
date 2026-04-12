@@ -80,7 +80,7 @@ export default function AdminBlogCMS() {
             onSave={handleSave}
             onCancel={() => { setEditingPost(null); setIsAddingNew(false); }}
           />
-        </section> section
+        </section>
       ) : (
         <section className="animate-in fade-in duration-700">
            <div className="flex justify-between items-end mb-12">
