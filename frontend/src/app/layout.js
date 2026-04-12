@@ -1,5 +1,7 @@
 import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
+import Providers from "@/providers/Providers";
+import AuthModal from "@/components/auth/AuthModal";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,7 +30,12 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD@400,0..1,0&display=swap"
         />
       </head>
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <Providers>
+          {children}
+          <AuthModal />
+        </Providers>
+      </body>
     </html>
   );
 }

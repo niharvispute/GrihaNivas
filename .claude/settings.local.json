@@ -55,7 +55,11 @@
       "Bash(PORT=5002 node server.js)",
       "Bash(curl -s http://localhost:5002/health)",
       "Bash(powershell:*)",
-      "Bash(curl -s -X POST http://localhost:5000/api/auth/verify-otp -H 'Content-Type: application/json' -d '{\"phone\":\"+919876543210\",\"otp\":\"000000\",\"name\":\"Vishal\"}')"
+      "Bash(curl -s -X POST http://localhost:5000/api/auth/verify-otp -H 'Content-Type: application/json' -d '{\"phone\":\"+919876543210\",\"otp\":\"000000\",\"name\":\"Vishal\"}')",
+      "Bash(ls E:/PROJECTS/Bricks/backend/*.env)",
+      "Bash(ls E:/PROJECTS/Bricks/frontend/*.env)",
+      "Bash(ls E:/PROJECTS/Bricks/*.env)",
+      "Bash(node -e \"const p = require\\('./package.json'\\); console.log\\('@react-oauth/google:', p.dependencies['@react-oauth/google']\\)\")"
     ]
   }
 }

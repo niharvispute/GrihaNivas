@@ -15,10 +15,11 @@ const userSchema = new mongoose.Schema(
     // ── Identity ──────────────────────────────────────────────────────────
     phone: {
       type: String,
-      required: [true, 'Phone number is required'],
       unique: true,
+      sparse: true,  // Allows multiple docs with null phone (Google-only accounts)
       trim: true,
       match: [/^\+91[6-9]\d{9}$/, 'Phone must be a valid Indian number in E.164 format (+91XXXXXXXXXX)'],
+      default: null,
     },
     email: {
       type: String,
@@ -62,6 +63,12 @@ const userSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+      default: null,
     },
     firebaseUid: {
       type: String,

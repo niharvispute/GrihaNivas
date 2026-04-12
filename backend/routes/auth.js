@@ -10,6 +10,7 @@ router.post('/signup/verify-email',   authLimiter, validate(schemas.auth.signupV
 router.post('/signup/resend-otp',     otpLimiter,  validate(schemas.auth.signupResendOtp),      authController.signupResendOtp);
 
 router.post('/login',                 authLimiter, validate(schemas.auth.login),                authController.login);
+router.post('/google',                authLimiter, validate(schemas.auth.googleAuth),            authController.googleAuth);
 
 router.post('/forgot-password/request', otpLimiter,  validate(schemas.auth.forgotPasswordRequest), authController.forgotPasswordRequest);
 router.post('/forgot-password/verify',  authLimiter, validate(schemas.auth.forgotPasswordVerify),  authController.forgotPasswordVerify);

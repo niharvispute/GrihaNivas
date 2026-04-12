@@ -60,6 +60,23 @@ export const completeSignupVerification = async ({ otp }) => {
   return data;
 };
 
+export const googleAuth = async ({ token }) => {
+  const res = await apiFetch('/api/auth/google', {
+    method: 'POST',
+    body: { token },
+  });
+  const data = res.data;
+
+  if (data?.accessToken && data?.refreshToken) {
+    setTokens({
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+    });
+  }
+
+  return data;
+};
+
 export const forgotPasswordRequest = async ({ identifier }) => {
   const res = await apiFetch('/api/auth/forgot-password/request', {
     method: 'POST',
