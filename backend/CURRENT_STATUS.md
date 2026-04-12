@@ -1,7 +1,7 @@
 # Backend — Current Status
 
-> Last updated: 2026-04-11
-> Stack: Node.js + Express.js | Auth: JWT + OTP | Validation: Zod | DB: MongoDB Atlas (Mongoose) | Token Blacklist: Redis-ready
+> Last updated: 2026-04-12
+> Stack: Node.js + Express.js | Auth: credential + email OTP verify/reset + JWT | Validation: Zod | DB: MongoDB Atlas (Mongoose) | Token Blacklist: Redis-ready
 > Phases Complete: 1 · 2 · 3 · 4 · 5 · 6 (MongoDB Integration) · 7 (Audit & Bug Fixes)
 
 ---
@@ -16,7 +16,7 @@
 | Blog `extractPublicId` fix | ✅ | Was passing object instead of URL string — old images now cleaned from Cloudinary |
 | Unapproved comments filtered in `getBySlug` | ✅ | Public blog response no longer returns `isApproved: false` comments |
 | `monthlyIncome` added to Lead model | ✅ | Was in Zod schema but missing from Mongoose — silently stripped before fix |
-| All 96/96 API tests passing post-fix | ✅ | `node scripts/test-apis.js` |
+| All 97/97 API tests passing post-fix | ✅ | `node scripts/test-apis.js` |
 
 ### Patch Update — 2026-04-11 (Post Phase 6)
 
@@ -28,7 +28,7 @@
 | Banner update upload route wiring | ✅ | `PUT /api/banners/:id` now mounts image upload middleware |
 | Auth middleware active-user enforcement | ✅ | `protect` now verifies user exists + `isActive` in DB |
 | Blog controller/schema alignment | ✅ | Fixed author mapping, featuredImage shape, category normalization, comments mapping |
-| Integration API suite | ✅ | `scripts/test-apis.js` covers auth, admin flows, and health readiness checks; latest run: **96/96 passed** |
+| Integration API suite | ✅ | `scripts/test-apis.js` covers auth, admin flows, and health readiness checks; latest run: **97/97 passed** |
 | HTTPS/proxy runtime hardening | ✅ | Added `TRUST_PROXY` + optional `FORCE_HTTPS` redirect middleware |
 | PM2 production profile hardening | ✅ | Added `env_production`, restart controls, and Redis/HTTPS runtime flags |
 | Deployment runbook | ✅ | Added `DEPLOYMENT.md` with PM2 + Nginx + SSL + Redis steps |
@@ -46,7 +46,7 @@
 | `GET /health/ready` | ✅ Pass | Returns `200 ready` with Mongo connected and Redis mode details |
 | `npm run preflight:prod` | ✅ Pass | Production env + Mongo/Redis readiness checks added |
 | `npm run lint` | ✅ Pass | ESLint v9 flat config active |
-| `node scripts/test-apis.js` | ✅ Pass | End-to-end API suite: **96/96 passed** |
+| `node scripts/test-apis.js` | ✅ Pass | End-to-end API suite: **97/97 passed** |
 
 ### Production Runtime Flags
 
@@ -81,24 +81,31 @@ Create a new environment in Postman with these variables:
 
 ### Step 3 — Login as Admin (get tokens)
 
-#### 3a. Send OTP
+#### 3a. Login with credentials
 ```
-POST {{BASE_URL}}/api/auth/send-otp
+POST {{BASE_URL}}/api/auth/login
 Body (JSON):
 {
-  "phone": "+919876543210"
+  "identifier": "bricks.dev@gmail.com",
+  "password": "Admin@123"
 }
 ```
-> OTP will print in the terminal where `npm run dev` is running (dev mode).
 
-#### 3b. Verify OTP
+#### 3b. If password is unknown, reset via email OTP
 ```
-POST {{BASE_URL}}/api/auth/verify-otp
+POST {{BASE_URL}}/api/auth/forgot-password/request
 Body (JSON):
 {
-  "phone": "+919876543210",
-  "otp": "<OTP from terminal>"
+  "identifier": "bricks.dev@gmail.com"
 }
+```
+Then verify OTP and reset:
+```
+POST {{BASE_URL}}/api/auth/forgot-password/verify
+Body: { "otp": "<OTP from email>" }
+
+POST {{BASE_URL}}/api/auth/forgot-password/reset
+Body: { "newPassword": "Admin@123" }
 ```
 
 In the **Tests** tab of this request, paste this to auto-save tokens:
@@ -306,8 +313,13 @@ Body: { "refreshToken": "{{refreshToken}}" }
 ### Auth
 | Method | Endpoint | Auth | Notes |
 |---|---|---|---|
-| `POST` | `/api/auth/send-otp` | Public | OTP to console (dev) / MSG91 (prod) |
-| `POST` | `/api/auth/verify-otp` | Public | Creates/finds user in MongoDB |
+| `POST` | `/api/auth/signup/request` | Public | Creates/updates pending account and emails OTP |
+| `POST` | `/api/auth/signup/verify-email` | Public | OTP-only payload, flow context via secure cookie |
+| `POST` | `/api/auth/signup/resend-otp` | Public | Resend OTP with cooldown |
+| `POST` | `/api/auth/login` | Public | Email or phone + password |
+| `POST` | `/api/auth/forgot-password/request` | Public | Accepts email/phone, sends OTP to registered email |
+| `POST` | `/api/auth/forgot-password/verify` | Public | OTP-only payload, issues reset cookie |
+| `POST` | `/api/auth/forgot-password/reset` | Public | Resets password and bumps token version |
 | `POST` | `/api/auth/refresh` | Public | Validates user still active in DB |
 | `POST` | `/api/auth/logout` | Public | Blacklists token |
 | `GET` | `/api/auth/me` | JWT | Returns full user from DB |
@@ -391,8 +403,8 @@ Body: { "refreshToken": "{{refreshToken}}" }
 | Role | `admin` |
 | MongoDB ID | `69d9cd0fcef209e1a584ceba` |
 
-> Login: `POST /api/auth/send-otp` → `POST /api/auth/verify-otp` with phone above.
-> In dev, OTP appears in terminal. The returned `accessToken` gives admin access.
+> Login: `POST /api/auth/login` using admin email or phone and password.
+> If needed, run `npm run seed:admin` to provision password hash and verified state.
 
 ---
 
@@ -401,6 +413,7 @@ Body: { "refreshToken": "{{refreshToken}}" }
 ```bash
 cd backend
 npm run dev        # Development (nodemon auto-restart)
+npm run test:auth:v2 # Credential auth + OTP flow smoke test
 npm run start      # Production (plain node)
 npm run pm2:start  # Production (PM2 cluster mode)
 ```
@@ -464,7 +477,7 @@ backend/
 │       └── Contact.js
 ├── scripts/
 │   ├── seedAdmin.js          ← Admin seeded
-│   ├── test-apis.js          ← 96/96 end-to-end tests
+│   ├── test-apis.js          ← 97/97 end-to-end tests
 │   └── preflight-prod.js     ← Production readiness checker
 ├── services/
 │   ├── cloudinaryService.js  ← upload/delete, 7 presets, extractPublicId

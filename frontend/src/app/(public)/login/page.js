@@ -4,9 +4,20 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { getErrorMessage } from '@/lib/api/errors';
-import { loginWithOtp, sendOtp } from '@/services/authService';
+import {
+  completeSignupVerification,
+  forgotPasswordRequest,
+  forgotPasswordReset,
+  forgotPasswordVerify,
+  loginWithPassword,
+  signupRequest,
+  signupResendOtp,
+} from '@/services/authService';
 
-const PHONE_REGEX = /^[6-9]\d{9}$/;
+const PHONE_DIGITS_REGEX = /^[6-9]\d{9}$/;
+const E164_IN_PHONE_REGEX = /^\+91[6-9]\d{9}$/;
+const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
 const normalizePhone = (value) => {
   const digits = String(value || '').replace(/\D/g, '');
@@ -14,23 +25,123 @@ const normalizePhone = (value) => {
   return digits;
 };
 
+const normalizeIdentifier = (value) => {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+
+  if (EMAIL_REGEX.test(raw)) {
+    return raw.toLowerCase();
+  }
+
+  if (E164_IN_PHONE_REGEX.test(raw)) {
+    return raw;
+  }
+
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length === 10) {
+    return `+91${digits}`;
+  }
+  if (digits.length === 12 && digits.startsWith('91')) {
+    return `+${digits}`;
+  }
+
+  return raw;
+};
+
+const isValidIdentifier = (value) => {
+  const normalized = normalizeIdentifier(value);
+  return EMAIL_REGEX.test(normalized) || E164_IN_PHONE_REGEX.test(normalized);
+};
+
+const routeAfterAuth = (router, data) => {
+  const destination = data?.user?.role === 'admin' ? '/admin' : '/dashboard';
+  router.push(destination);
+  router.refresh();
+};
+
 export default function LoginPage() {
   const router = useRouter();
-  const [step, setStep] = useState('phone');
-  const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [mode, setMode] = useState('login');
+
+  const [loginIdentifier, setLoginIdentifier] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+
+  const [signupStep, setSignupStep] = useState('form');
+  const [signupName, setSignupName] = useState('');
+  const [signupEmail, setSignupEmail] = useState('');
+  const [signupPhone, setSignupPhone] = useState('');
+  const [signupPassword, setSignupPassword] = useState('');
+  const [signupOtp, setSignupOtp] = useState('');
+
+  const [forgotStep, setForgotStep] = useState('request');
+  const [forgotIdentifier, setForgotIdentifier] = useState('');
+  const [forgotOtp, setForgotOtp] = useState('');
+  const [forgotPassword, setForgotPassword] = useState('');
+  const [forgotConfirmPassword, setForgotConfirmPassword] = useState('');
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
-  const normalizedPhone = useMemo(() => normalizePhone(phone), [phone]);
-  const isValidPhone = PHONE_REGEX.test(normalizedPhone);
-  const isValidOtp = /^\d{6}$/.test(String(otp).trim());
+  const normalizedSignupPhone = useMemo(() => normalizePhone(signupPhone), [signupPhone]);
 
-  const handleSendOtp = async (event) => {
+  const resetFeedback = () => setFeedback({ type: '', message: '' });
+
+  const switchMode = (nextMode) => {
+    setMode(nextMode);
+    resetFeedback();
+  };
+
+  const handleLogin = async (event) => {
     event.preventDefault();
-    if (!isValidPhone) {
+    const identifier = normalizeIdentifier(loginIdentifier);
+
+    if (!isValidIdentifier(identifier)) {
+      setFeedback({
+        type: 'error',
+        message: 'Enter a valid email or +91 mobile number.',
+      });
+      return;
+    }
+
+    if (!loginPassword) {
+      setFeedback({ type: 'error', message: 'Password is required.' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    resetFeedback();
+
+    try {
+      const data = await loginWithPassword({
+        identifier,
+        password: loginPassword,
+      });
+
+      routeAfterAuth(router, data);
+    } catch (error) {
+      setFeedback({
+        type: 'error',
+        message: getErrorMessage(error, 'Unable to log in right now.'),
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSignupRequest = async (event) => {
+    event.preventDefault();
+
+    if (signupName.trim().length < 2) {
+      setFeedback({ type: 'error', message: 'Please enter your full name.' });
+      return;
+    }
+
+    if (!EMAIL_REGEX.test(signupEmail.trim().toLowerCase())) {
+      setFeedback({ type: 'error', message: 'Please enter a valid email address.' });
+      return;
+    }
+
+    if (!PHONE_DIGITS_REGEX.test(normalizedSignupPhone)) {
       setFeedback({
         type: 'error',
         message: 'Please enter a valid 10-digit Indian mobile number.',
@@ -38,54 +149,174 @@ export default function LoginPage() {
       return;
     }
 
+    if (!PASSWORD_REGEX.test(signupPassword)) {
+      setFeedback({
+        type: 'error',
+        message: 'Password must be at least 8 characters with upper, lower, and number.',
+      });
+      return;
+    }
+
     setIsSubmitting(true);
-    setFeedback({ type: '', message: '' });
+    resetFeedback();
 
     try {
-      await sendOtp(normalizedPhone);
-      setStep('otp');
+      await signupRequest({
+        name: signupName.trim(),
+        email: signupEmail.trim().toLowerCase(),
+        phone: `+91${normalizedSignupPhone}`,
+        password: signupPassword,
+      });
+
+      setSignupStep('otp');
       setFeedback({
         type: 'success',
-        message: `OTP sent to +91 ${normalizedPhone}.`,
+        message: `OTP sent to ${signupEmail.trim().toLowerCase()}.`,
       });
     } catch (error) {
       setFeedback({
         type: 'error',
-        message: getErrorMessage(error, 'Unable to send OTP right now.'),
+        message: getErrorMessage(error, 'Unable to start signup right now.'),
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleVerifyOtp = async (event) => {
+  const handleSignupVerify = async (event) => {
     event.preventDefault();
-    if (!isValidOtp) {
-      setFeedback({
-        type: 'error',
-        message: 'OTP must be exactly 6 digits.',
-      });
+
+    if (!/^\d{6}$/.test(String(signupOtp).trim())) {
+      setFeedback({ type: 'error', message: 'OTP must be exactly 6 digits.' });
       return;
     }
 
     setIsSubmitting(true);
-    setFeedback({ type: '', message: '' });
+    resetFeedback();
 
     try {
-      const data = await loginWithOtp({
-        phone: normalizedPhone,
-        otp: String(otp).trim(),
-        name: name.trim() || undefined,
-        email: email.trim() || undefined,
+      const data = await completeSignupVerification({
+        otp: String(signupOtp).trim(),
       });
 
-      const destination = data?.user?.role === 'admin' ? '/admin' : '/dashboard';
-      router.push(destination);
-      router.refresh();
+      routeAfterAuth(router, data);
     } catch (error) {
       setFeedback({
         type: 'error',
         message: getErrorMessage(error, 'OTP verification failed. Please try again.'),
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSignupResend = async () => {
+    setIsSubmitting(true);
+    resetFeedback();
+
+    try {
+      await signupResendOtp();
+      setFeedback({ type: 'success', message: 'A fresh OTP has been sent to your email.' });
+    } catch (error) {
+      setFeedback({ type: 'error', message: getErrorMessage(error, 'Unable to resend OTP.') });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleForgotRequest = async (event) => {
+    event.preventDefault();
+    const identifier = normalizeIdentifier(forgotIdentifier);
+
+    if (!isValidIdentifier(identifier)) {
+      setFeedback({ type: 'error', message: 'Enter a valid email or +91 mobile number.' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    resetFeedback();
+
+    try {
+      await forgotPasswordRequest({ identifier });
+      setForgotStep('otp');
+      setForgotIdentifier(identifier);
+      setFeedback({
+        type: 'success',
+        message: 'If your account exists, OTP has been sent to your registered email.',
+      });
+    } catch (error) {
+      setFeedback({
+        type: 'error',
+        message: getErrorMessage(error, 'Unable to start password reset.'),
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleForgotVerify = async (event) => {
+    event.preventDefault();
+
+    if (!/^\d{6}$/.test(String(forgotOtp).trim())) {
+      setFeedback({ type: 'error', message: 'OTP must be exactly 6 digits.' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    resetFeedback();
+
+    try {
+      await forgotPasswordVerify({ otp: String(forgotOtp).trim() });
+      setForgotStep('reset');
+      setFeedback({ type: 'success', message: 'OTP verified. Set your new password.' });
+    } catch (error) {
+      setFeedback({
+        type: 'error',
+        message: getErrorMessage(error, 'OTP verification failed.'),
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleForgotReset = async (event) => {
+    event.preventDefault();
+
+    if (!PASSWORD_REGEX.test(forgotPassword)) {
+      setFeedback({
+        type: 'error',
+        message: 'Password must be at least 8 characters with upper, lower, and number.',
+      });
+      return;
+    }
+
+    if (forgotPassword !== forgotConfirmPassword) {
+      setFeedback({ type: 'error', message: 'Passwords do not match.' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    resetFeedback();
+
+    try {
+      await forgotPasswordReset({ newPassword: forgotPassword });
+
+      setMode('login');
+      setForgotStep('request');
+      setForgotOtp('');
+      setForgotPassword('');
+      setForgotConfirmPassword('');
+      setLoginIdentifier(forgotIdentifier);
+      setLoginPassword('');
+
+      setFeedback({
+        type: 'success',
+        message: 'Password updated. Please login with your new password.',
+      });
+    } catch (error) {
+      setFeedback({
+        type: 'error',
+        message: getErrorMessage(error, 'Unable to reset password.'),
       });
     } finally {
       setIsSubmitting(false);
@@ -97,9 +328,9 @@ export default function LoginPage() {
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
         <div className="bg-linear-to-br from-slate-50 via-white to-slate-100 border border-slate-100 rounded-4xl p-8 md:p-10">
           <p className="text-[11px] font-black tracking-[0.22em] uppercase text-primary mb-4">Secure Access</p>
-          <h1 className="text-5xl font-black tracking-tighter text-slate-900 mb-5 leading-none">Login With OTP</h1>
+          <h1 className="text-5xl font-black tracking-tighter text-slate-900 mb-5 leading-none">Account Access</h1>
           <p className="text-slate-600 leading-relaxed mb-8">
-            Sign in using your phone number. We will send a one-time password for quick and secure access.
+            Login with password, create an account with email OTP verification, or reset password with secure OTP flow.
           </p>
 
           <div className="space-y-4 text-sm text-slate-600">
@@ -110,8 +341,98 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white rounded-4xl border border-slate-100 shadow-sm p-8 md:p-10">
-          {step === 'phone' ? (
-            <form className="space-y-6" onSubmit={handleSendOtp}>
+          <div className="grid grid-cols-3 gap-2 bg-slate-100 p-1 rounded-xl mb-6">
+            <button
+              type="button"
+              onClick={() => switchMode('login')}
+              className={`rounded-lg py-2 text-xs font-black tracking-wide transition-colors ${
+                mode === 'login' ? 'bg-white text-slate-900' : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              Login
+            </button>
+            <button
+              type="button"
+              onClick={() => switchMode('signup')}
+              className={`rounded-lg py-2 text-xs font-black tracking-wide transition-colors ${
+                mode === 'signup' ? 'bg-white text-slate-900' : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              Sign Up
+            </button>
+            <button
+              type="button"
+              onClick={() => switchMode('forgot')}
+              className={`rounded-lg py-2 text-[11px] font-black tracking-wide transition-colors ${
+                mode === 'forgot' ? 'bg-white text-slate-900' : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              Forgot Password
+            </button>
+          </div>
+
+          {mode === 'login' && (
+            <form className="space-y-6" onSubmit={handleLogin}>
+              <div>
+                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Email or Mobile</label>
+                <input
+                  type="text"
+                  value={loginIdentifier}
+                  onChange={(event) => setLoginIdentifier(event.target.value)}
+                  placeholder="you@example.com or +91XXXXXXXXXX"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Password</label>
+                <input
+                  type="password"
+                  value={loginPassword}
+                  onChange={(event) => setLoginPassword(event.target.value)}
+                  placeholder="Enter password"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-4 rounded-xl bg-primary text-white font-black tracking-wide text-sm hover:bg-primary/90 transition-colors disabled:opacity-70"
+              >
+                {isSubmitting ? 'Logging in...' : 'Login'}
+              </button>
+            </form>
+          )}
+
+          {mode === 'signup' && signupStep === 'form' && (
+            <form className="space-y-5" onSubmit={handleSignupRequest}>
+              <div>
+                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Full Name</label>
+                <input
+                  type="text"
+                  value={signupName}
+                  onChange={(event) => setSignupName(event.target.value)}
+                  placeholder="Your full name"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Email</label>
+                <input
+                  type="email"
+                  value={signupEmail}
+                  onChange={(event) => setSignupEmail(event.target.value)}
+                  placeholder="you@example.com"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  required
+                />
+              </div>
+
               <div>
                 <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Mobile Number</label>
                 <div className="flex items-center bg-slate-50 rounded-xl px-4 border border-transparent focus-within:border-primary/30">
@@ -120,8 +441,8 @@ export default function LoginPage() {
                     type="tel"
                     inputMode="numeric"
                     maxLength={10}
-                    value={phone}
-                    onChange={(event) => setPhone(normalizePhone(event.target.value))}
+                    value={signupPhone}
+                    onChange={(event) => setSignupPhone(normalizePhone(event.target.value))}
                     placeholder="9876543210"
                     className="w-full bg-transparent py-4 outline-none text-sm font-semibold text-slate-700"
                     required
@@ -129,29 +450,32 @@ export default function LoginPage() {
                 </div>
               </div>
 
+              <div>
+                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Password</label>
+                <input
+                  type="password"
+                  value={signupPassword}
+                  onChange={(event) => setSignupPassword(event.target.value)}
+                  placeholder="Min 8 chars with upper, lower, number"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  required
+                />
+              </div>
+
               <button
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full py-4 rounded-xl bg-primary text-white font-black tracking-wide text-sm hover:bg-primary/90 transition-colors disabled:opacity-70"
               >
-                {isSubmitting ? 'Sending OTP...' : 'Send OTP'}
+                {isSubmitting ? 'Sending OTP...' : 'Create Account'}
               </button>
             </form>
-          ) : (
-            <form className="space-y-5" onSubmit={handleVerifyOtp}>
+          )}
+
+          {mode === 'signup' && signupStep === 'otp' && (
+            <form className="space-y-5" onSubmit={handleSignupVerify}>
               <div className="text-xs font-semibold text-slate-500 bg-slate-50 rounded-xl p-3">
-                OTP sent to +91 {normalizedPhone}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setStep('phone');
-                    setOtp('');
-                    setFeedback({ type: '', message: '' });
-                  }}
-                  className="ml-2 text-primary hover:underline"
-                >
-                  Change
-                </button>
+                OTP sent to {signupEmail.trim().toLowerCase()}
               </div>
 
               <div>
@@ -160,33 +484,11 @@ export default function LoginPage() {
                   type="text"
                   inputMode="numeric"
                   maxLength={6}
-                  value={otp}
-                  onChange={(event) => setOtp(event.target.value.replace(/\D/g, ''))}
+                  value={signupOtp}
+                  onChange={(event) => setSignupOtp(event.target.value.replace(/\D/g, ''))}
                   placeholder="Enter OTP"
                   className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
                   required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Name (optional)</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  placeholder="Your full name"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Email (optional)</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
                 />
               </div>
 
@@ -195,28 +497,119 @@ export default function LoginPage() {
                 disabled={isSubmitting}
                 className="w-full py-4 rounded-xl bg-primary text-white font-black tracking-wide text-sm hover:bg-primary/90 transition-colors disabled:opacity-70"
               >
-                {isSubmitting ? 'Verifying...' : 'Verify OTP'}
+                {isSubmitting ? 'Verifying...' : 'Verify Email OTP'}
               </button>
 
               <button
                 type="button"
                 disabled={isSubmitting}
-                onClick={async () => {
-                  if (!isValidPhone) return;
-                  setIsSubmitting(true);
-                  setFeedback({ type: '', message: '' });
-                  try {
-                    await sendOtp(normalizedPhone);
-                    setFeedback({ type: 'success', message: 'A fresh OTP has been sent.' });
-                  } catch (error) {
-                    setFeedback({ type: 'error', message: getErrorMessage(error, 'Unable to resend OTP.') });
-                  } finally {
-                    setIsSubmitting(false);
-                  }
-                }}
+                onClick={handleSignupResend}
                 className="w-full py-3 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm hover:bg-slate-200 transition-colors disabled:opacity-70"
               >
                 Resend OTP
+              </button>
+
+              <button
+                type="button"
+                disabled={isSubmitting}
+                onClick={() => {
+                  setSignupStep('form');
+                  setSignupOtp('');
+                  resetFeedback();
+                }}
+                className="w-full py-3 rounded-xl bg-white border border-slate-200 text-slate-600 font-bold text-sm hover:bg-slate-50 transition-colors disabled:opacity-70"
+              >
+                Edit Signup Details
+              </button>
+            </form>
+          )}
+
+          {mode === 'forgot' && forgotStep === 'request' && (
+            <form className="space-y-5" onSubmit={handleForgotRequest}>
+              <div>
+                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Email or Mobile</label>
+                <input
+                  type="text"
+                  value={forgotIdentifier}
+                  onChange={(event) => setForgotIdentifier(event.target.value)}
+                  placeholder="you@example.com or +91XXXXXXXXXX"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-4 rounded-xl bg-primary text-white font-black tracking-wide text-sm hover:bg-primary/90 transition-colors disabled:opacity-70"
+              >
+                {isSubmitting ? 'Requesting OTP...' : 'Send Reset OTP'}
+              </button>
+            </form>
+          )}
+
+          {mode === 'forgot' && forgotStep === 'otp' && (
+            <form className="space-y-5" onSubmit={handleForgotVerify}>
+              <div className="text-xs font-semibold text-slate-500 bg-slate-50 rounded-xl p-3">
+                Enter the OTP sent to your registered email.
+              </div>
+
+              <div>
+                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">6-digit OTP</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={forgotOtp}
+                  onChange={(event) => setForgotOtp(event.target.value.replace(/\D/g, ''))}
+                  placeholder="Enter OTP"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-4 rounded-xl bg-primary text-white font-black tracking-wide text-sm hover:bg-primary/90 transition-colors disabled:opacity-70"
+              >
+                {isSubmitting ? 'Verifying OTP...' : 'Verify OTP'}
+              </button>
+            </form>
+          )}
+
+          {mode === 'forgot' && forgotStep === 'reset' && (
+            <form className="space-y-5" onSubmit={handleForgotReset}>
+              <div>
+                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">New Password</label>
+                <input
+                  type="password"
+                  value={forgotPassword}
+                  onChange={(event) => setForgotPassword(event.target.value)}
+                  placeholder="Min 8 chars with upper, lower, number"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Confirm Password</label>
+                <input
+                  type="password"
+                  value={forgotConfirmPassword}
+                  onChange={(event) => setForgotConfirmPassword(event.target.value)}
+                  placeholder="Re-enter new password"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-4 rounded-xl bg-primary text-white font-black tracking-wide text-sm hover:bg-primary/90 transition-colors disabled:opacity-70"
+              >
+                {isSubmitting ? 'Updating Password...' : 'Update Password'}
               </button>
             </form>
           )}

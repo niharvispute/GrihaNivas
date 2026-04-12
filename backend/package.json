@@ -17,7 +17,8 @@
     "pm2:stop": "pm2 stop bricks-backend",
     "pm2:restart": "pm2 restart bricks-backend",
     "pm2:logs": "pm2 logs bricks-backend",
-    "seed:admin": "node scripts/seedAdmin.js"
+    "seed:admin": "node scripts/seedAdmin.js",
+    "test:auth:v2": "node scripts/test-auth-v2.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.3",

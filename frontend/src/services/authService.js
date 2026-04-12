@@ -6,24 +6,36 @@ import {
   setTokens,
 } from '@/lib/auth/tokenStore';
 
-export const sendOtp = async (phone) => {
-  const res = await apiFetch('/api/auth/send-otp', {
+export const signupRequest = async ({ name, email, phone, password }) => {
+  const res = await apiFetch('/api/auth/signup/request', {
     method: 'POST',
-    body: { phone },
+    body: { name, email, phone, password },
   });
   return res.data;
 };
 
-export const verifyOtp = async ({ phone, otp, idToken, name, email }) => {
-  const res = await apiFetch('/api/auth/verify-otp', {
+export const signupVerifyEmail = async ({ otp }) => {
+  const res = await apiFetch('/api/auth/signup/verify-email', {
     method: 'POST',
-    body: { phone, otp, idToken, name, email },
+    body: { otp },
   });
   return res.data;
 };
 
-export const loginWithOtp = async (payload) => {
-  const data = await verifyOtp(payload);
+export const signupResendOtp = async () => {
+  const res = await apiFetch('/api/auth/signup/resend-otp', {
+    method: 'POST',
+    body: {},
+  });
+  return res.data;
+};
+
+export const loginWithPassword = async ({ identifier, password }) => {
+  const res = await apiFetch('/api/auth/login', {
+    method: 'POST',
+    body: { identifier, password },
+  });
+  const data = res.data;
 
   if (data?.accessToken && data?.refreshToken) {
     setTokens({
@@ -33,6 +45,43 @@ export const loginWithOtp = async (payload) => {
   }
 
   return data;
+};
+
+export const completeSignupVerification = async ({ otp }) => {
+  const data = await signupVerifyEmail({ otp });
+
+  if (data?.accessToken && data?.refreshToken) {
+    setTokens({
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+    });
+  }
+
+  return data;
+};
+
+export const forgotPasswordRequest = async ({ identifier }) => {
+  const res = await apiFetch('/api/auth/forgot-password/request', {
+    method: 'POST',
+    body: { identifier },
+  });
+  return res.data;
+};
+
+export const forgotPasswordVerify = async ({ otp }) => {
+  const res = await apiFetch('/api/auth/forgot-password/verify', {
+    method: 'POST',
+    body: { otp },
+  });
+  return res.data;
+};
+
+export const forgotPasswordReset = async ({ newPassword }) => {
+  const res = await apiFetch('/api/auth/forgot-password/reset', {
+    method: 'POST',
+    body: { newPassword },
+  });
+  return res.data;
 };
 
 export const refreshTokenPair = async (refreshToken) => {

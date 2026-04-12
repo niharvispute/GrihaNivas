@@ -16,6 +16,7 @@ const Testimonial    = require('./Testimonial');
 const Banner         = require('./Banner');
 const StampDutyConfig = require('./StampDutyConfig');
 const Contact        = require('./Contact');
+const AuthOtpFlow    = require('./AuthOtpFlow');
 
 module.exports = {
   User,
@@ -26,4 +27,5 @@ module.exports = {
   Banner,
   StampDutyConfig,
   Contact,
+  AuthOtpFlow,
 };

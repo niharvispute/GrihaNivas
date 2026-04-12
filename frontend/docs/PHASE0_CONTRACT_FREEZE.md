@@ -105,13 +105,17 @@ Backend endpoints mapped:
 
 ## 4) Auth Contract
 
-Login flow:
-1. POST /api/auth/send-otp
-2. POST /api/auth/verify-otp
-3. Save accessToken + refreshToken in frontend token store
-4. Protected requests send Authorization: Bearer <accessToken>
-5. On 401, try one refresh using POST /api/auth/refresh
-6. If refresh fails, clear session and route user to login
+Auth flow:
+1. Signup request: POST /api/auth/signup/request
+2. Signup verify (OTP-only payload): POST /api/auth/signup/verify-email
+3. Login: POST /api/auth/login with identifier + password
+4. Forgot-password request: POST /api/auth/forgot-password/request
+5. Forgot-password verify (OTP-only payload): POST /api/auth/forgot-password/verify
+6. Forgot-password reset: POST /api/auth/forgot-password/reset
+7. Save accessToken + refreshToken in frontend token store
+8. Protected requests send Authorization: Bearer <accessToken>
+9. On 401, try one refresh using POST /api/auth/refresh
+10. If refresh fails, clear session and route user to login
 
 ## 5) Public Form to Endpoint Contract
 

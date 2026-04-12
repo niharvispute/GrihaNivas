@@ -449,34 +449,45 @@ Pagination object:
 
 | Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| POST | `/api/auth/send-otp` | Public | Send OTP to phone/email |
-| POST | `/api/auth/verify-otp` | Public | Verify OTP, return JWT |
+| POST | `/api/auth/signup/request` | Public | Start signup and email OTP |
+| POST | `/api/auth/signup/verify-email` | Public | Verify signup OTP (OTP-only payload) |
+| POST | `/api/auth/signup/resend-otp` | Public | Resend signup OTP |
+| POST | `/api/auth/login` | Public | Login with email/phone + password |
+| POST | `/api/auth/forgot-password/request` | Public | Request reset OTP using email/phone |
+| POST | `/api/auth/forgot-password/verify` | Public | Verify reset OTP (OTP-only payload) |
+| POST | `/api/auth/forgot-password/reset` | Public | Reset password after OTP verify |
 | POST | `/api/auth/refresh` | Public | Refresh JWT token |
 | POST | `/api/auth/logout` | User | Invalidate token |
 
-**POST /api/auth/send-otp**
+**POST /api/auth/signup/request**
 
 Request:
 ```json
-{ "phone": "+919876543210" }
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "phone": "+919876543210",
+  "password": "TestPass123"
+}
 ```
 Response `200`:
 ```json
-{ "success": true, "message": "OTP sent successfully" }
+{ "success": true, "message": "Signup initiated. OTP sent to your email address." }
 ```
 
-**POST /api/auth/verify-otp**
+**POST /api/auth/signup/verify-email**
 
 Request:
 ```json
-{ "phone": "+919876543210", "otp": "123456" }
+{ "otp": "123456" }
 ```
-Response `200`:
+Response `201`:
 ```json
 {
   "success": true,
   "data": {
-    "token": "<JWT>",
+    "accessToken": "<JWT>",
+    "refreshToken": "<JWT>",
     "user": { "_id": "...", "name": "...", "email": "...", "role": "user" }
   }
 }
@@ -951,25 +962,25 @@ total = stampDuty + config.registrationCharge
 
 ## 6. Authentication Flow
 
-### OTP Login (Firebase)
+### Credential Auth + Email OTP
 
 ```
-1. Client POSTs phone to /api/auth/send-otp
-2. Server calls Firebase Admin SDK → createPhoneAuthVerification()
-3. Firebase sends SMS OTP to user
-4. Client POSTs { phone, otp } to /api/auth/verify-otp
-5. Server verifies OTP via Firebase
-6. Server finds or creates User in MongoDB (upsert by phone)
-7. Server signs JWT: { userId, role, exp: 7d }
-8. Returns JWT + user object to client
+1. Client sends signup payload to /api/auth/signup/request
+2. Server stores OTP flow context and emails OTP to the user
+3. Client submits OTP-only payload to /api/auth/signup/verify-email
+4. Server verifies OTP via flow cookie context, marks email as verified, and issues JWT pair
+5. Client logs in later through /api/auth/login with identifier + password
+6. Forgot-password flow uses /request -> /verify -> /reset with OTP-only verify payload
+7. Password reset increments tokenVersion, invalidating older sessions
 ```
 
 ### JWT Structure
 
 ```json
 {
-  "userId": "64abc...",
+  "id": "64abc...",
   "role": "user",
+  "tokenVersion": 1,
   "iat": 1700000000,
   "exp": 1700604800
 }

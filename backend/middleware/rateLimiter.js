@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
  * Different limits for different route sensitivity:
  *   - globalLimiter    : All /api routes — general protection
  *   - authLimiter      : /api/auth — stricter, prevents brute force
- *   - otpLimiter       : /api/auth/send-otp — very strict, prevents OTP spam
+ *   - otpLimiter       : OTP issue/resend routes — very strict, prevents OTP spam
  *   - uploadLimiter    : Upload endpoints — prevents abuse
  */
 
@@ -51,7 +51,7 @@ const authLimiter = rateLimit({
 });
 
 /**
- * OTP limiter — applied specifically to /api/auth/send-otp.
+ * OTP limiter — applied to OTP issue/resend endpoints.
  * 5 requests per 15 minutes per IP — prevents OTP spam.
  */
 const otpLimiter = rateLimit({

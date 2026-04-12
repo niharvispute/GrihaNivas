@@ -34,7 +34,7 @@ const protect = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // 3. Ensure user still exists and is active
-    const user = await User.findById(decoded.id).select('role phone email isActive');
+    const user = await User.findById(decoded.id).select('role phone email isActive tokenVersion');
 
     if (!user) {
       return sendUnauthorized(res, 'User no longer exists.');
@@ -42,6 +42,12 @@ const protect = async (req, res, next) => {
 
     if (!user.isActive) {
       return sendForbidden(res, 'Account has been deactivated.');
+    }
+
+    const decodedVersion = Number(decoded.tokenVersion || 0);
+    const currentVersion = Number(user.tokenVersion || 0);
+    if (decodedVersion !== currentVersion) {
+      return sendUnauthorized(res, 'Session expired. Please log in again.');
     }
 
     // 4. Attach canonical user payload to request
@@ -82,8 +88,14 @@ const optionalAuth = async (req, res, next) => {
       const token = authHeader.split(' ')[1];
       if (token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.id).select('role phone email isActive');
+        const user = await User.findById(decoded.id).select('role phone email isActive tokenVersion');
         if (user?.isActive) {
+          const decodedVersion = Number(decoded.tokenVersion || 0);
+          const currentVersion = Number(user.tokenVersion || 0);
+          if (decodedVersion !== currentVersion) {
+            return next();
+          }
+
           req.user = {
             id: user._id.toString(),
             role: user.role,

@@ -43,6 +43,28 @@ const phoneSchema = z
 
 const emailSchema = z.string().email('Invalid email address').toLowerCase().trim();
 
+const passwordSchema = z
+  .string()
+  .min(8, 'Password must be at least 8 characters')
+  .max(128, 'Password cannot exceed 128 characters')
+  .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+  .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+  .regex(/\d/, 'Password must contain at least one number');
+
+const otpCodeSchema = z
+  .string()
+  .length(6, 'OTP must be exactly 6 digits')
+  .regex(/^\d{6}$/, 'OTP must contain only digits');
+
+const identifierSchema = z
+  .string()
+  .trim()
+  .min(1, 'Identifier is required')
+  .refine(
+    (value) => /^\+91[6-9]\d{9}$/.test(value) || /^\S+@\S+\.\S+$/.test(value),
+    'Identifier must be a valid email or phone (+91XXXXXXXXXX)'
+  );
+
 const objectIdSchema = z
   .string()
   .length(24, 'Invalid ID format')
@@ -69,42 +91,35 @@ const blogCategorySchema = z
 const schemas = {
   // ── AUTH ──────────────────────────────────
   auth: {
-    sendOtp: z.object({
+    signupRequest: z.object({
+      name: z.string().trim().min(2).max(100),
+      email: emailSchema,
       phone: phoneSchema,
+      password: passwordSchema,
     }),
 
-    // Handles two verification paths:
-    //  Path A (custom OTP)  : { phone, otp }
-    //  Path B (Firebase)    : { phone, idToken }
-    // At least one of otp/idToken must be present.
-    verifyOtp: z
-      .object({
-        phone: phoneSchema,
-        otp: z
-          .string()
-          .length(6, 'OTP must be exactly 6 digits')
-          .regex(/^\d{6}$/, 'OTP must contain only digits')
-          .optional(),
-        idToken: z.string().min(1, 'Firebase ID token cannot be empty').optional(),
-        name: z.string().trim().min(2).max(100).optional(),
-        email: emailSchema.optional(),
-      })
-      .superRefine((data, ctx) => {
-        if (!data.otp && !data.idToken) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Either otp or idToken is required',
-            path: ['otp'],
-          });
-        }
-        if (data.otp && data.idToken) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Provide either otp or idToken, not both',
-            path: ['otp'],
-          });
-        }
-      }),
+    signupVerifyEmail: z.object({
+      otp: otpCodeSchema,
+    }),
+
+    signupResendOtp: z.object({}),
+
+    login: z.object({
+      identifier: identifierSchema,
+      password: z.string().min(1, 'Password is required'),
+    }),
+
+    forgotPasswordRequest: z.object({
+      identifier: identifierSchema,
+    }),
+
+    forgotPasswordVerify: z.object({
+      otp: otpCodeSchema,
+    }),
+
+    forgotPasswordReset: z.object({
+      newPassword: passwordSchema,
+    }),
 
     refresh: z.object({
       refreshToken: z.string().min(1, 'Refresh token is required'),

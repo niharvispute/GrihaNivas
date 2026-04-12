@@ -30,7 +30,8 @@ Phase 2 kickoff executed on public flows:
 - EMI calculator now calls backend /api/calculators/emi with live server-side computation
 - Stamp duty calculator now calls backend /api/calculators/stamp-duty with live server-side computation
 - Added agreement page and wired rent-agreement assistance form to backend leads API (leadType=agreement)
-- Added OTP login route wired to backend send-otp and verify-otp endpoints with role-based redirect
+- Migrated backend auth to credential login/signup with email OTP verification and forgot-password OTP reset
+- Migrated frontend auth page to credential login + signup email OTP verify + forgot-password OTP reset flow
 - Added missing public route aliases to remove nav/footer 404s: /commercial, /new-launch, /launches, /loan, /faq
 - Backend dependency blocker resolved locally: removed unused multer-storage-cloudinary conflict so backend npm install now succeeds
 
@@ -52,7 +53,7 @@ Current readiness split:
 
 ### Backend completed (confirmed)
 - Core API domain coverage is implemented and live against MongoDB:
-  - Auth (OTP/JWT/refresh/logout/me)
+  - Auth (credential signup/login + OTP email verify/reset + JWT refresh/logout/me)
   - Properties
   - Leads
   - Users (profile + saved + compare + admin user management)
@@ -74,7 +75,7 @@ Current readiness split:
   - Graceful shutdown
   - Redis-backed JWT blacklist with fallback
 - Quality signal is strong:
-  - API integration suite reported as 96/96 passing in CURRENT_STATUS.md
+  - API integration suite reported as 97/97 passing in CURRENT_STATUS.md
   - ESLint migration and lint pass completed
 - Recent backend bug-fix patch set already merged:
   - Property savedCount support fixed
@@ -166,9 +167,10 @@ Current readiness split:
   - Home loan and list-property forms -> POST /api/leads with leadType=loan/list_property
 
 ### P2 (auth and user area)
-- Implement OTP auth flow:
-  - send OTP
-  - verify OTP
+- Implement credential auth flow:
+  - signup request + email verify (OTP-only verify payload)
+  - login via email or phone + password
+  - forgot-password request/verify/reset (OTP-only verify payload)
   - secure token persistence strategy
   - silent refresh and logout
 - Integrate user features:
@@ -217,7 +219,7 @@ Phase 2 - Public flows (3-5 days)
 - Keep UI unchanged while swapping data source
 
 Phase 3 - Auth + user dashboard (3-4 days)
-- OTP login, token lifecycle, profile, saved, compare
+- Credential login/signup, token lifecycle, profile, saved, compare
 - Build missing dashboard screens
 
 Phase 4 - Admin MVP (4-6 days)

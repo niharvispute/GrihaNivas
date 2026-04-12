@@ -256,8 +256,15 @@ GET /api/properties?type=buy\&bhk=2\&minPrice=5000000\&maxPrice=10000000\&area=A
 
 ## **🔐 Auth**
 
-POST /api/auth/send-otp  
-POST /api/auth/verify-otp
+POST /api/auth/signup/request  
+POST /api/auth/signup/verify-email  
+POST /api/auth/signup/resend-otp  
+POST /api/auth/login  
+POST /api/auth/forgot-password/request  
+POST /api/auth/forgot-password/verify  
+POST /api/auth/forgot-password/reset  
+POST /api/auth/refresh  
+POST /api/auth/logout
 
 ---
 

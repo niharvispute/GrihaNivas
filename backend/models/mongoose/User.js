@@ -37,10 +37,23 @@ const userSchema = new mongoose.Schema(
     },
 
     // ── Auth ──────────────────────────────────────────────────────────────
+    passwordHash: {
+      type: String,
+      default: null,
+      select: false,
+    },
     role: {
       type: String,
       enum: { values: ['user', 'admin'], message: 'Role must be user or admin' },
       default: 'user',
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerifiedAt: {
+      type: Date,
+      default: null,
     },
     isVerified: {
       type: Boolean,
@@ -58,6 +71,15 @@ const userSchema = new mongoose.Schema(
     lastLogin: {
       type: Date,
       default: null,
+    },
+    passwordChangedAt: {
+      type: Date,
+      default: null,
+    },
+    tokenVersion: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
 
     // ── Profile ───────────────────────────────────────────────────────────
@@ -113,6 +135,7 @@ userSchema.methods.toSafeObject = function () {
     phone: this.phone,
     email: this.email,
     role: this.role,
+    isEmailVerified: this.isEmailVerified,
     isVerified: this.isVerified,
     profilePicture: this.profilePicture?.url || null,
     savedProperties: this.savedProperties,

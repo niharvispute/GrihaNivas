@@ -5,8 +5,16 @@ const { protect } = require('../middleware/auth');
 const { authLimiter, otpLimiter } = require('../middleware/rateLimiter');
 
 // Public
-router.post('/send-otp',   otpLimiter,  validate(schemas.auth.sendOtp),   authController.sendOtp);
-router.post('/verify-otp', authLimiter, validate(schemas.auth.verifyOtp), authController.verifyOtp);
+router.post('/signup/request',        otpLimiter,  validate(schemas.auth.signupRequest),        authController.signupRequest);
+router.post('/signup/verify-email',   authLimiter, validate(schemas.auth.signupVerifyEmail),    authController.signupVerifyEmail);
+router.post('/signup/resend-otp',     otpLimiter,  validate(schemas.auth.signupResendOtp),      authController.signupResendOtp);
+
+router.post('/login',                 authLimiter, validate(schemas.auth.login),                authController.login);
+
+router.post('/forgot-password/request', otpLimiter,  validate(schemas.auth.forgotPasswordRequest), authController.forgotPasswordRequest);
+router.post('/forgot-password/verify',  authLimiter, validate(schemas.auth.forgotPasswordVerify),  authController.forgotPasswordVerify);
+router.post('/forgot-password/reset',   authLimiter, validate(schemas.auth.forgotPasswordReset),   authController.forgotPasswordReset);
+
 router.post('/refresh',    authLimiter, validate(schemas.auth.refresh),   authController.refresh);
 router.post('/logout',                  validate(schemas.auth.logout),    authController.logout);
 

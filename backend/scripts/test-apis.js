@@ -13,11 +13,14 @@
 require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 
 const http    = require('http');
+const crypto  = require('crypto');
+const bcrypt  = require('bcryptjs');
 const app     = require('../app');
 const connectDB   = require('../config/db');
 const { initCloudinary } = require('../config/cloudinary');
 const { initFirebase }   = require('../config/firebase');
-const { generateOtp }    = require('../services/otpService');
+const AuthOtpFlow = require('../models/mongoose/AuthOtpFlow');
+const User = require('../models/mongoose/User');
 
 const PORT  = 5099;
 const BASE  = `http://localhost:${PORT}/api`;
@@ -41,11 +44,62 @@ let createdContactId  = '';
 let createdTestimonialId = '';
 let createdBannerId   = '';
 
+const cookieJar = {};
+
+const TEST_SUFFIX = Date.now();
+const TEST_PHONE = `+9197${String(TEST_SUFFIX).slice(-8)}`;
+const TEST_EMAIL = `testuser.${TEST_SUFFIX}@mailinator.com`;
+const TEST_PASSWORD = 'TestPass123';
+
+const ADMIN_PHONE = process.env.ADMIN_PHONE || '+919876543210';
+const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'bricks.dev@gmail.com').toLowerCase();
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123';
+
 // ── HTTP helper ───────────────────────────────────────────────────────────────
+
+const hashValue = (value) =>
+  crypto.createHash('sha256').update(String(value)).digest('hex');
+
+const updateCookies = (setCookieHeaders) => {
+  if (!Array.isArray(setCookieHeaders)) return;
+
+  for (const header of setCookieHeaders) {
+    const pair = String(header || '').split(';')[0] || '';
+    const idx = pair.indexOf('=');
+    if (idx < 0) continue;
+
+    const key = pair.slice(0, idx).trim();
+    const value = pair.slice(idx + 1).trim();
+    if (!key) continue;
+
+    cookieJar[key] = value;
+  }
+};
+
+const buildCookieHeader = () => {
+  const entries = Object.entries(cookieJar)
+    .filter(([, value]) => value && value.length > 0)
+    .map(([key, value]) => `${key}=${value}`);
+
+  if (entries.length === 0) return null;
+  return entries.join('; ');
+};
+
+const getFlowByCookie = async (cookieName, flowType) => {
+  const token = cookieJar[cookieName];
+  if (!token) return null;
+
+  return AuthOtpFlow.findOne({
+    flowType,
+    tokenHash: hashValue(token),
+    status: { $in: ['active', 'verified'] },
+  });
+};
 
 const request = (method, path, body = null, token = null) =>
   new Promise((resolve) => {
     const payload = body ? JSON.stringify(body) : null;
+    const cookieHeader = buildCookieHeader();
     const options = {
       hostname: 'localhost',
       port: PORT,
@@ -55,6 +109,7 @@ const request = (method, path, body = null, token = null) =>
         'Content-Type': 'application/json',
         ...(payload && { 'Content-Length': Buffer.byteLength(payload) }),
         ...(token   && { Authorization: `Bearer ${token}` }),
+        ...(cookieHeader && { Cookie: cookieHeader }),
       },
     };
 
@@ -62,6 +117,7 @@ const request = (method, path, body = null, token = null) =>
       let data = '';
       res.on('data', (chunk) => (data += chunk));
       res.on('end', () => {
+        updateCookies(res.headers['set-cookie']);
         try {
           resolve({ status: res.statusCode, body: JSON.parse(data) });
         } catch {
@@ -107,41 +163,52 @@ const testHealth = async () => {
 };
 
 // ── 2. Auth — User ────────────────────────────────────────────────────────────
-const TEST_PHONE = '+917777777701';
-
 const testAuthUser = async () => {
   console.log('\n[2] Auth — User Flow');
 
-  // 2a. Validation: bad phone
-  const r1 = await request('POST', `${BASE}/auth/send-otp`, { phone: '9876543210' });
-  assert('send-otp bad phone → 400', r1.status === 400, r1.body);
-
-  // 2b. Send OTP (generates in-memory, logs to console in dev)
-  const otp = generateOtp(TEST_PHONE);  // grab it directly since we're in-process
-  const r2 = await request('POST', `${BASE}/auth/send-otp`, { phone: TEST_PHONE });
-  assert('send-otp → 200', r2.status === 200, r2.body);
-
-  // 2c. Wrong OTP
-  const r3 = await request('POST', `${BASE}/auth/verify-otp`, {
-    phone: TEST_PHONE, otp: '000000',
+  // 2a. Validation: bad identifier format
+  const r1 = await request('POST', `${BASE}/auth/login`, {
+    identifier: 'invalid-phone-format',
+    password: TEST_PASSWORD,
   });
-  assert('verify-otp wrong OTP → 400', r3.status === 400, r3.body);
+  assert('login bad identifier → 400', r1.status === 400, r1.body);
 
-  // 2d. Correct OTP (re-generate since wrong OTP consumed an attempt)
-  const otp2 = generateOtp(TEST_PHONE);
-  const r4 = await request('POST', `${BASE}/auth/verify-otp`, {
-    phone: TEST_PHONE,
-    otp: otp2,
+  // 2b. Signup request
+  const r2 = await request('POST', `${BASE}/auth/signup/request`, {
     name: 'Test User',
-    email: 'testuser.bricks@mailinator.com',
+    email: TEST_EMAIL,
+    phone: TEST_PHONE,
+    password: TEST_PASSWORD,
   });
-  assert('verify-otp correct → 201', r4.status === 201, r4.body);
-  assert('verify-otp returns accessToken', !!r4.body?.data?.accessToken, r4.body);
-  assert('verify-otp returns user.phone', r4.body?.data?.user?.phone === TEST_PHONE, r4.body);
+  assert('signup/request → 200', r2.status === 200, r2.body);
 
-  userAccessToken  = r4.body?.data?.accessToken  || '';
-  userRefreshToken = r4.body?.data?.refreshToken || '';
-  userId = r4.body?.data?.user?.id || '';
+  const signupFlow = await getFlowByCookie('auth_signup_flow', 'signup_verify');
+  assert('signup flow exists in DB', Boolean(signupFlow), signupFlow);
+
+  if (!signupFlow) return;
+
+  const signupOtp = '111111';
+  signupFlow.otpHash = hashValue(signupOtp);
+  await signupFlow.save();
+
+  // 2c. Verify signup with OTP-only payload
+  const r3 = await request('POST', `${BASE}/auth/signup/verify-email`, {
+    otp: signupOtp,
+  });
+  assert('signup/verify-email → 201', r3.status === 201, r3.body);
+  assert('signup verify returns accessToken', !!r3.body?.data?.accessToken, r3.body);
+  assert('signup verify returns user.phone', r3.body?.data?.user?.phone === TEST_PHONE, r3.body);
+
+  userAccessToken  = r3.body?.data?.accessToken  || '';
+  userRefreshToken = r3.body?.data?.refreshToken || '';
+  userId = r3.body?.data?.user?.id || '';
+
+  // 2d. Login by email
+  const r4 = await request('POST', `${BASE}/auth/login`, {
+    identifier: TEST_EMAIL,
+    password: TEST_PASSWORD,
+  });
+  assert('login with email → 200', r4.status === 200, r4.body);
 
   // 2e. GET /me
   const r5 = await request('GET', `${BASE}/auth/me`, null, userAccessToken);
@@ -159,16 +226,50 @@ const testAuthUser = async () => {
 };
 
 // ── 3. Auth — Admin ───────────────────────────────────────────────────────────
-const ADMIN_PHONE = process.env.ADMIN_PHONE || '+919876543210';
+
+const ensureAdminCredentials = async () => {
+  let admin = await User.findOne({
+    $or: [{ email: ADMIN_EMAIL }, { phone: ADMIN_PHONE }],
+  }).select('+passwordHash');
+
+  if (!admin) {
+    admin = await User.create({
+      name: 'Super Admin',
+      phone: ADMIN_PHONE,
+      email: ADMIN_EMAIL,
+      role: 'admin',
+      isVerified: true,
+      isEmailVerified: true,
+      emailVerifiedAt: new Date(),
+      isActive: true,
+      passwordHash: await bcrypt.hash(ADMIN_PASSWORD, 12),
+    });
+    return admin;
+  }
+
+  admin.email = ADMIN_EMAIL;
+  admin.phone = ADMIN_PHONE;
+  admin.role = 'admin';
+  admin.isActive = true;
+  admin.isVerified = true;
+  admin.isEmailVerified = true;
+  admin.emailVerifiedAt = admin.emailVerifiedAt || new Date();
+  admin.passwordHash = await bcrypt.hash(ADMIN_PASSWORD, 12);
+  await admin.save();
+
+  return admin;
+};
 
 const testAuthAdmin = async () => {
   console.log('\n[3] Auth — Admin Login');
 
-  const otp = generateOtp(ADMIN_PHONE);
-  const r = await request('POST', `${BASE}/auth/verify-otp`, {
-    phone: ADMIN_PHONE, otp,
+  await ensureAdminCredentials();
+
+  const r = await request('POST', `${BASE}/auth/login`, {
+    identifier: ADMIN_EMAIL,
+    password: ADMIN_PASSWORD,
   });
-  assert('admin login → 201/200', r.status === 201 || r.status === 200, r.body);
+  assert('admin login → 200', r.status === 200, r.body);
   assert('admin role = admin', r.body?.data?.user?.role === 'admin', r.body);
 
   adminAccessToken = r.body?.data?.accessToken || '';
@@ -562,7 +663,12 @@ const testHardening = async () => {
   assert('Invalid ObjectId → 400', r2.status === 400, r2.body);
 
   // NoSQL injection attempt (mongoSanitize strips it)
-  const r3 = await request('POST', `${BASE}/auth/send-otp`, { phone: { $gt: '' } });
+  const r3 = await request('POST', `${BASE}/auth/signup/request`, {
+    name: 'Injection Test',
+    email: `inject.${Date.now()}@mailinator.com`,
+    phone: { $gt: '' },
+    password: 'InjectPass123',
+  });
   assert('NoSQL injection → 400', r3.status === 400, r3.body);
 
   // Missing auth on protected route

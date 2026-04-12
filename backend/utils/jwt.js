@@ -13,7 +13,7 @@ const { getRedisClient } = require('../config/redis');
  * They use DIFFERENT secrets so a compromised access token cannot be used
  * to generate refresh tokens and vice versa.
  *
- * Payload shape: { id, role, phone, email? }
+ * Payload shape: { id, role, phone, email?, tokenVersion? }
  */
 
 // ── Token Generation ─────────────────────────────────────────────────────────
@@ -21,7 +21,7 @@ const { getRedisClient } = require('../config/redis');
 /**
  * Generate a JWT access token.
  *
- * @param {{ id: string, role: string, phone: string, email?: string }} payload
+ * @param {{ id: string, role: string, phone: string, email?: string, tokenVersion?: number }} payload
  * @returns {string} signed JWT
  */
 const generateAccessToken = (payload) => {
@@ -35,6 +35,7 @@ const generateAccessToken = (payload) => {
       role: payload.role,
       phone: payload.phone,
       ...(payload.email && { email: payload.email }),
+      tokenVersion: Number(payload.tokenVersion || 0),
     },
     process.env.JWT_SECRET,
     {
@@ -49,7 +50,7 @@ const generateAccessToken = (payload) => {
  * Generate a JWT refresh token.
  * Carries only the user id — minimal payload for security.
  *
- * @param {{ id: string }} payload
+ * @param {{ id: string, tokenVersion?: number }} payload
  * @returns {string} signed JWT
  */
 const generateRefreshToken = (payload) => {
@@ -58,7 +59,10 @@ const generateRefreshToken = (payload) => {
   }
 
   return jwt.sign(
-    { id: payload.id },
+    {
+      id: payload.id,
+      tokenVersion: Number(payload.tokenVersion || 0),
+    },
     process.env.JWT_REFRESH_SECRET,
     {
       expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '30d',
@@ -72,12 +76,15 @@ const generateRefreshToken = (payload) => {
  * Generate both tokens at once.
  * Used after successful OTP verification / login.
  *
- * @param {{ id, role, phone, email? }} payload
+ * @param {{ id, role, phone, email?, tokenVersion? }} payload
  * @returns {{ accessToken, refreshToken }}
  */
 const generateTokenPair = (payload) => ({
   accessToken: generateAccessToken(payload),
-  refreshToken: generateRefreshToken({ id: payload.id }),
+  refreshToken: generateRefreshToken({
+    id: payload.id,
+    tokenVersion: payload.tokenVersion,
+  }),
 });
 
 // ── Token Verification ───────────────────────────────────────────────────────
