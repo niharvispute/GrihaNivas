@@ -1,6 +1,52 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
+import { getErrorMessage } from '@/lib/api/errors';
+import { submitContactForm } from '@/services/contactService';
 
 export default function ContactPage() {
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState({ type: '', message: '' });
+
+  const handleChange = (field) => (event) => {
+    setForm((prev) => ({ ...prev, [field]: event.target.value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setFeedback({ type: '', message: '' });
+
+    try {
+      await submitContactForm({
+        name: form.name.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim() || undefined,
+        message: form.message.trim(),
+      });
+
+      setFeedback({
+        type: 'success',
+        message: 'Message sent successfully. We will get back to you shortly.',
+      });
+      setForm({ name: '', phone: '', email: '', message: '' });
+    } catch (error) {
+      setFeedback({
+        type: 'error',
+        message: getErrorMessage(error, 'Unable to send your message right now.'),
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const contactInfo = [
     {
       title: "Office Address",
@@ -93,7 +139,7 @@ export default function ContactPage() {
         <div className="lg:col-span-7 bg-white p-12 md:p-16 rounded-[3.5rem] shadow-2xl border border-slate-50 relative overflow-hidden">
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
           <h2 className="text-4xl font-black text-slate-900 mb-10 tracking-tighter">Send us a message</h2>
-          <form className="space-y-8">
+          <form className="space-y-8" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Full Name</label>
@@ -101,6 +147,9 @@ export default function ContactPage() {
                   className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" 
                   placeholder="John Doe" 
                   type="text"
+                  value={form.name}
+                  onChange={handleChange('name')}
+                  required
                 />
               </div>
               <div className="space-y-3">
@@ -109,6 +158,9 @@ export default function ContactPage() {
                   className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" 
                   placeholder="+91 00000 00000" 
                   type="tel"
+                  value={form.phone}
+                  onChange={handleChange('phone')}
+                  required
                 />
               </div>
             </div>
@@ -118,6 +170,8 @@ export default function ContactPage() {
                 className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" 
                 placeholder="john@example.com" 
                 type="email"
+                value={form.email}
+                onChange={handleChange('email')}
               />
             </div>
             <div className="space-y-3">
@@ -126,15 +180,24 @@ export default function ContactPage() {
                 className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all resize-none" 
                 placeholder="How can we assist you today?" 
                 rows="5"
+                value={form.message}
+                onChange={handleChange('message')}
+                required
               ></textarea>
             </div>
             <button 
+              disabled={isSubmitting}
               className="w-full md:w-auto bg-primary text-white px-12 py-5 rounded-full font-black text-lg tracking-tight hover:bg-primary/90 transition-all transform active:scale-95 flex items-center justify-center gap-3 shadow-2xl shadow-primary/30" 
               type="submit"
             >
-              Send Message
+              {isSubmitting ? 'Sending...' : 'Send Message'}
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
             </button>
+            {feedback.message && (
+              <p className={`text-sm font-medium ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
+                {feedback.message}
+              </p>
+            )}
           </form>
         </div>
       </section>

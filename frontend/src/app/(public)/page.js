@@ -1,9 +1,10 @@
 import PropertyCard from '@/components/property/PropertyCard';
 import PropertyGrid from '@/components/property/PropertyGrid';
-import BlogCard from '@/components/blog/BlogCard';
 import LeadForm from '@/components/forms/LeadForm';
 import SectionHeader from '@/components/common/SectionHeader';
 import Link from 'next/link';
+import { listBlogs } from '@/services/blogService';
+import { listProperties } from '@/services/propertyService';
 
 const MOCK_PROPERTIES = [
   {
@@ -77,7 +78,33 @@ const MOCK_BLOGS = [
   }
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  let featuredProperties = MOCK_PROPERTIES;
+  let latestBlogs = MOCK_BLOGS;
+
+  try {
+    const featuredResponse = await listProperties({ isFeatured: true, limit: 3 });
+    if (featuredResponse.items?.length) {
+      featuredProperties = featuredResponse.items;
+    } else {
+      const fallbackResponse = await listProperties({ limit: 3 });
+      if (fallbackResponse.items?.length) {
+        featuredProperties = fallbackResponse.items;
+      }
+    }
+  } catch {
+    featuredProperties = MOCK_PROPERTIES;
+  }
+
+  try {
+    const blogsResponse = await listBlogs({ limit: 3 });
+    if (blogsResponse.items?.length) {
+      latestBlogs = blogsResponse.items;
+    }
+  } catch {
+    latestBlogs = MOCK_BLOGS;
+  }
+
   return (
     <div className="w-full">
       {/* 1. Hero Section */}
@@ -140,7 +167,7 @@ export default function HomePage() {
           </Link>
         </div>
         <PropertyGrid>
-          {MOCK_PROPERTIES.map(prop => (
+          {featuredProperties.map((prop) => (
             <PropertyCard key={prop.id} property={prop} />
           ))}
         </PropertyGrid>
@@ -232,8 +259,8 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {MOCK_BLOGS.map((blog, i) => (
-              <div key={i} className="group cursor-pointer">
+            {latestBlogs.map((blog, i) => (
+              <Link key={i} href={`/blogs/${blog.slug}`} className="group cursor-pointer">
                 <div className="aspect-[16/10] overflow-hidden rounded-2xl mb-6 relative">
                   <img src={blog.image} alt={blog.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
                   <div className="absolute top-4 left-4">
@@ -242,7 +269,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors leading-snug">{blog.title}</h3>
                 <p className="text-slate-400 text-sm line-clamp-2 font-medium leading-relaxed">{blog.excerpt}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

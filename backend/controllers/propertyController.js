@@ -1,103 +1,70 @@
-const { uploadPropertyMedia, deleteFiles, extractPublicId } = require('../services/cloudinaryService');
-const { generateSlug, generateUniqueSlug } = require('../utils/slugify');
+const { uploadPropertyMedia, deleteFiles } = require('../services/cloudinaryService');
+const { generateUniqueSlug } = require('../utils/slugify');
 const { parsePagination } = require('../utils/pagination');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
 const AppError = require('../utils/AppError');
+const Property = require('../models/mongoose/Property');
 
 /**
  * Property Controller
  *
- * Business logic is fully implemented.
- * DB calls are marked TODO with exact code for both MongoDB and PostgreSQL.
- *
- * Filter builder produces a DB-neutral object — see buildPropertyFilter() below.
+ * Field mapping (Mongoose model names used throughout):
+ *   gallery     — array of { url, publicId } (was `images` in old stub)
+ *   brochure    — { url, publicId } object   (was `brochureUrl`)
+ *   views       — Number                     (was `viewsCount`)
+ *   floor       — Number                     (was `floorNumber`)
+ *   highlights  — [String]                   (was `keyHighlights`)
+ *   furnishing  — 'unfurnished' | 'semi_furnished' | 'furnished'
+ *   bhk         — Number (1-10)
+ *   areaSqft    — Number
+ *   postedBy    — set from req.user.id on create
  */
 
-// ── Filter & Sort Builder ─────────────────────────────────────────────────────
+// ── Filter Builder ────────────────────────────────────────────────────────────
 
-/**
- * Builds a DB-neutral filter + sort description from validated query params.
- * The controller passes this to the DB layer (TODO).
- *
- * @param {object} query - validated req.query (already coerced by Zod)
- * @returns {{ filter, sort }}
- */
-const buildPropertyFilter = (query) => {
-  const {
-    category, bhk, area, minPrice, maxPrice,
-    furnishingType, possessionStatus, isFeatured, sortBy,
-  } = query;
+const buildMongoFilter = (query) => {
+  const { category, bhk, area, minPrice, maxPrice, furnishing, isFeatured } = query;
 
-  // ── MongoDB filter ───────────────────────────────────────────────────────
-  // const mongoFilter = { isActive: true };
-  // if (category)         mongoFilter.category = category;
-  // if (bhk)              mongoFilter.bhk = bhk;
-  // if (area)             mongoFilter['location.area'] = new RegExp(area, 'i');
-  // if (minPrice || maxPrice) {
-  //   mongoFilter.price = {};
-  //   if (minPrice) mongoFilter.price.$gte = minPrice;
-  //   if (maxPrice) mongoFilter.price.$lte = maxPrice;
-  // }
-  // if (furnishingType)   mongoFilter.furnishingType = furnishingType;
-  // if (possessionStatus) mongoFilter.possessionStatus = possessionStatus;
-  // if (isFeatured !== undefined) mongoFilter.isFeatured = isFeatured;
+  const filter = { isActive: true };
 
-  // ── PostgreSQL / Prisma where clause ─────────────────────────────────────
-  // const prismaWhere = { isActive: true };
-  // if (category)         prismaWhere.category = category;
-  // if (bhk)              prismaWhere.bhk = bhk;
-  // if (area)             prismaWhere.area = { contains: area, mode: 'insensitive' };
-  // if (minPrice || maxPrice) {
-  //   prismaWhere.price = {};
-  //   if (minPrice) prismaWhere.price.gte = minPrice;
-  //   if (maxPrice) prismaWhere.price.lte = maxPrice;
-  // }
-  // if (furnishingType)   prismaWhere.furnishingType = furnishingType;
-  // if (possessionStatus) prismaWhere.possessionStatus = possessionStatus;
-  // if (isFeatured !== undefined) prismaWhere.isFeatured = isFeatured;
+  if (category)    filter.category = category;
+  if (bhk)         filter.bhk = Number(bhk);
+  if (area)        filter['location.area'] = new RegExp(area, 'i');
+  if (furnishing)  filter.furnishing = furnishing;
+  if (isFeatured !== undefined) filter.isFeatured = isFeatured === 'true' || isFeatured === true;
 
-  // ── Sort mapping ─────────────────────────────────────────────────────────
-  const sortMap = {
-    price_asc:  { field: 'price',     direction: 'asc'  },
-    price_desc: { field: 'price',     direction: 'desc' },
-    newest:     { field: 'createdAt', direction: 'desc' },
+  if (minPrice || maxPrice) {
+    filter.price = {};
+    if (minPrice) filter.price.$gte = Number(minPrice);
+    if (maxPrice) filter.price.$lte = Number(maxPrice);
+  }
+
+  return filter;
+};
+
+const buildMongoSort = (sortBy) => {
+  const map = {
+    price_asc:  { price: 1 },
+    price_desc: { price: -1 },
+    newest:     { createdAt: -1 },
   };
-
-  return {
-    filter: { isActive: true, category, bhk, area, minPrice, maxPrice, furnishingType, possessionStatus, isFeatured },
-    sort: sortMap[sortBy] || sortMap.newest,
-  };
+  return map[sortBy] || map.newest;
 };
 
 // ── GET /api/properties ───────────────────────────────────────────────────────
 
 const list = async (req, res, next) => {
   try {
-    const { page, limit, skip, buildMeta } = parsePagination(req.query);
-    const { filter, sort } = buildPropertyFilter(req.query);
+    const { limit, skip, buildMeta } = parsePagination(req.query);
+    const filter = buildMongoFilter(req.query);
+    const sort   = buildMongoSort(req.query.sortBy);
 
-    // TODO — MongoDB (Mongoose):
-    //   const [properties, total] = await Promise.all([
-    //     Property.find(mongoFilter)
-    //       .sort({ [sort.field]: sort.direction === 'asc' ? 1 : -1 })
-    //       .skip(skip)
-    //       .limit(limit)
-    //       .select('-__v'),
-    //     Property.countDocuments(mongoFilter),
-    //   ]);
+    const [properties, total] = await Promise.all([
+      Property.find(filter).sort(sort).skip(skip).limit(limit).select('-__v'),
+      Property.countDocuments(filter),
+    ]);
 
-    // TODO — PostgreSQL (Prisma):
-    //   const [properties, total] = await Promise.all([
-    //     prisma.property.findMany({
-    //       where: prismaWhere,
-    //       orderBy: { [sort.field]: sort.direction },
-    //       skip,
-    //       take: limit,
-    //     }),
-    //     prisma.property.count({ where: prismaWhere }),
-    //   ]);
-
-    return sendSuccess(res, 200, 'Properties fetched', [], buildMeta(0));
+    return sendSuccess(res, 200, 'Properties fetched', properties, buildMeta(total));
   } catch (err) {
     next(err);
   }
@@ -107,19 +74,28 @@ const list = async (req, res, next) => {
 
 const getOne = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const property = await Property.findOne({ _id: req.params.id, isActive: true });
+    if (!property) throw new AppError('Property not found', 404);
 
-    // TODO — MongoDB:
-    //   const property = await Property.findOne({ _id: id, isActive: true });
-    //   if (!property) throw new AppError('Property not found', 404);
-    //   await Property.findByIdAndUpdate(id, { $inc: { viewsCount: 1 } });
+    // fire-and-forget view increment
+    Property.findByIdAndUpdate(req.params.id, { $inc: { views: 1 } }).catch(() => {});
 
-    // TODO — PostgreSQL:
-    //   const property = await prisma.property.findFirst({ where: { id, isActive: true } });
-    //   if (!property) throw new AppError('Property not found', 404);
-    //   await prisma.property.update({ where: { id }, data: { viewsCount: { increment: 1 } } });
+    return sendSuccess(res, 200, 'Property fetched', property);
+  } catch (err) {
+    next(err);
+  }
+};
 
-    throw new AppError('Property not found', 404);
+// ── GET /api/properties/slug/:slug ────────────────────────────────────────────
+
+const getBySlug = async (req, res, next) => {
+  try {
+    const property = await Property.findOne({ slug: req.params.slug, isActive: true });
+    if (!property) throw new AppError('Property not found', 404);
+
+    Property.findByIdAndUpdate(property._id, { $inc: { views: 1 } }).catch(() => {});
+
+    return sendSuccess(res, 200, 'Property fetched', property);
   } catch (err) {
     next(err);
   }
@@ -130,39 +106,25 @@ const getOne = async (req, res, next) => {
 const create = async (req, res, next) => {
   try {
     const data = req.body;
-
-    // 1. Generate slug from title
     const slug = generateUniqueSlug(data.title);
 
-    // 2. Upload all media files to Cloudinary
-    let media = { heroImage: null, images: [], floorPlans: [], brochureUrl: null };
+    let media = { heroImage: null, gallery: [], floorPlans: [], brochure: null };
     if (req.files && Object.keys(req.files).length > 0) {
       media = await uploadPropertyMedia(req.files);
     }
 
-    // 3. Build the complete property document
-    const propertyData = {
+    const property = await Property.create({
       ...data,
       slug,
-      heroImage:   media.heroImage,
-      images:      media.images,
-      floorPlans:  media.floorPlans,
-      brochureUrl: media.brochureUrl,
-      isActive: true,
-      viewsCount: 0,
-      savedCount: 0,
-      inquiriesCount: 0,
-    };
+      heroImage:  media.heroImage,
+      gallery:    media.gallery,
+      floorPlans: media.floorPlans,
+      brochure:   media.brochure,
+      postedBy:   req.user.id,
+      isActive:   true,
+    });
 
-    // TODO — MongoDB:
-    //   const property = await Property.create(propertyData);
-    //   return sendCreated(res, 'Property created', property);
-
-    // TODO — PostgreSQL:
-    //   const property = await prisma.property.create({ data: propertyData });
-    //   return sendCreated(res, 'Property created', property);
-
-    return sendCreated(res, 'Property created', { slug, ...media });
+    return sendCreated(res, 'Property created', property);
   } catch (err) {
     next(err);
   }
@@ -173,34 +135,27 @@ const create = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updates = req.body;
+    const updates = { ...req.body };
 
-    // If title is changing, regenerate slug
     if (updates.title) {
       updates.slug = generateUniqueSlug(updates.title);
     }
 
-    // Upload new media if provided
     if (req.files && Object.keys(req.files).length > 0) {
       const media = await uploadPropertyMedia(req.files);
-      if (media.heroImage)   updates.heroImage   = media.heroImage;
-      if (media.images.length)      updates.images      = media.images;
-      if (media.floorPlans.length)  updates.floorPlans  = media.floorPlans;
-      if (media.brochureUrl) updates.brochureUrl = media.brochureUrl;
+      if (media.heroImage)       updates.heroImage  = media.heroImage;
+      if (media.gallery.length)  updates.gallery    = media.gallery;
+      if (media.floorPlans.length) updates.floorPlans = media.floorPlans;
+      if (media.brochure)        updates.brochure   = media.brochure;
     }
 
-    updates.updatedAt = new Date();
+    const property = await Property.findByIdAndUpdate(id, updates, {
+      returnDocument: 'after',
+      runValidators: true,
+    });
+    if (!property) throw new AppError('Property not found', 404);
 
-    // TODO — MongoDB:
-    //   const property = await Property.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
-    //   if (!property) throw new AppError('Property not found', 404);
-    //   return sendSuccess(res, 200, 'Property updated', property);
-
-    // TODO — PostgreSQL:
-    //   const property = await prisma.property.update({ where: { id }, data: updates });
-    //   return sendSuccess(res, 200, 'Property updated', property);
-
-    return sendSuccess(res, 200, 'Property updated', { id, ...updates });
+    return sendSuccess(res, 200, 'Property updated', property);
   } catch (err) {
     next(err);
   }
@@ -210,33 +165,29 @@ const update = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const property = await Property.findById(req.params.id);
+    if (!property) throw new AppError('Property not found', 404);
 
-    // TODO — Fetch property first to get Cloudinary public IDs for cleanup
-    //
-    // MongoDB:
-    //   const property = await Property.findById(id);
-    //   if (!property) throw new AppError('Property not found', 404);
-    //
-    // PostgreSQL:
-    //   const property = await prisma.property.findUnique({ where: { id } });
-    //   if (!property) throw new AppError('Property not found', 404);
+    // Gather all Cloudinary publicIds for cleanup
+    const mediaItems = [
+      property.heroImage,
+      ...(property.gallery    || []),
+      ...(property.floorPlans || []),
+      property.brochure,
+    ].filter(Boolean);
 
-    // Delete all associated Cloudinary files
-    // const allUrls = [property.heroImage, ...property.images, ...property.floorPlans].filter(Boolean);
-    // const publicIds = allUrls.map(extractPublicId).filter(Boolean);
-    // await deleteFiles(publicIds, 'image');
-    // if (property.brochureUrl) {
-    //   await deleteFiles([extractPublicId(property.brochureUrl)], 'raw');
-    // }
+    const publicIds = mediaItems.map((m) => m.publicId).filter(Boolean);
+    if (publicIds.length) {
+      await deleteFiles(publicIds, 'image').catch((err) =>
+        console.error('Cloudinary cleanup failed (non-fatal):', err.message)
+      );
+    }
 
-    // TODO — MongoDB:   await Property.findByIdAndDelete(id);
-    // TODO — PostgreSQL: await prisma.property.delete({ where: { id } });
-
+    await property.deleteOne();
     return sendNoContent(res);
   } catch (err) {
     next(err);
   }
 };
 
-module.exports = { list, getOne, create, update, remove };
+module.exports = { list, getOne, getBySlug, create, update, remove };

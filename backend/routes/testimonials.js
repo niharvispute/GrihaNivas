@@ -7,7 +7,8 @@ const { uploadImage } = require('../middleware/upload');
 const { uploadLimiter } = require('../middleware/rateLimiter');
 
 router.get('/', testimonialController.list);
-router.post('/', protect, adminOnly, uploadLimiter, uploadImage.single('image'), validate(schemas.testimonial.create), testimonialController.create);
+router.post('/',    protect, adminOnly, uploadLimiter, uploadImage.single('image'), validate(schemas.testimonial.create), testimonialController.create);
+router.put('/:id',  protect, adminOnly, uploadLimiter, uploadImage.single('image'), testimonialController.update);
 router.delete('/:id', protect, adminOnly, testimonialController.remove);
 
 module.exports = router;

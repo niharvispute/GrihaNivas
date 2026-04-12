@@ -11,6 +11,7 @@ router.post('/', validate(schemas.lead.create), leadController.create);
 router.get('/',       protect, adminOnly, validate(schemas.lead.list, 'query'), leadController.list);
 router.get('/:id',    protect, adminOnly, leadController.getOne);
 router.put('/:id/status', protect, adminOnly, validate(schemas.lead.updateStatus), leadController.updateStatus);
+router.put('/:id/assign', protect, adminOnly, leadController.assign);
 router.post('/:id/notes', protect, adminOnly, validate(schemas.lead.addNote), leadController.addNote);
 
 module.exports = router;

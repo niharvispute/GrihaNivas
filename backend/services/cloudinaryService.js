@@ -170,18 +170,12 @@ const uploadPropertyMedia = async (files = {}) => {
 
   const [heroImage, images, floorPlans, brochure] = results;
 
+  // Return { url, publicId } pairs — matches the Mongoose mediaSchema shape
   return {
-    heroImage: heroImage?.url || null,
-    images: images.map((r) => r.url),
-    floorPlans: floorPlans.map((r) => r.url),
-    brochureUrl: brochure?.url || null,
-    // Also return publicIds for future deletion
-    _publicIds: {
-      heroImage: heroImage?.publicId || null,
-      images: images.map((r) => r.publicId),
-      floorPlans: floorPlans.map((r) => r.publicId),
-      brochure: brochure?.publicId || null,
-    },
+    heroImage:  heroImage  ? { url: heroImage.url,  publicId: heroImage.publicId }  : null,
+    gallery:    images.map((r) => ({ url: r.url, publicId: r.publicId })),
+    floorPlans: floorPlans.map((r) => ({ url: r.url, publicId: r.publicId })),
+    brochure:   brochure   ? { url: brochure.url,   publicId: brochure.publicId }   : null,
   };
 };
 

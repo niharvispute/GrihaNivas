@@ -2,15 +2,27 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const hpp = require('hpp');
 const compression = require('compression');
 
 const { globalLimiter } = require('./middleware/rateLimiter');
 const { notFoundHandler, globalErrorHandler } = require('./middleware/errorHandler');
+const { getRedisRuntimeStatus } = require('./config/redis');
 const routes = require('./routes/index');
 
 const app = express();
+
+const isProduction = process.env.NODE_ENV === 'production';
+const trustProxyEnabled = process.env.TRUST_PROXY === 'true' || isProduction;
+const forceHttps = process.env.FORCE_HTTPS === 'true';
+
+if (trustProxyEnabled) {
+  // Required when running behind Nginx/ALB so req.secure uses x-forwarded-proto
+  app.set('trust proxy', 1);
+}
 
 // ── 1. Security Headers ────────────────────────────────────────────────────
 app.use(helmet());
@@ -48,6 +60,9 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(mongoSanitize());
 // Strips HTML tags from user input — prevents XSS
 app.use(xss());
+// Prevents HTTP Parameter Pollution (e.g. ?status=new&status=closed)
+// Whitelist allows multiple values for these specific params
+app.use(hpp({ whitelist: ['category', 'bhk', 'amenities', 'highlights'] }));
 
 // ── 5. Compression ─────────────────────────────────────────────────────────
 app.use(compression());
@@ -72,13 +87,63 @@ app.get('/health', (req, res) => {
   });
 });
 
-// ── 9. API Routes ─────────────────────────────────────────────────────────
+app.get('/health/ready', (req, res) => {
+  const mongoConnected = mongoose.connection.readyState === 1;
+  const redisStatus = getRedisRuntimeStatus();
+
+  let redisReady = true;
+  if (redisStatus.mode === 'redis') {
+    redisReady = redisStatus.connected;
+  } else if (redisStatus.mode === 'auto') {
+    redisReady = redisStatus.hasUrl ? redisStatus.connected : true;
+  }
+
+  const ready = mongoConnected && redisReady;
+
+  return res.status(ready ? 200 : 503).json({
+    success: ready,
+    status: ready ? 'ready' : 'not_ready',
+    environment: process.env.NODE_ENV,
+    checks: {
+      mongo: {
+        connected: mongoConnected,
+      },
+      redisBlacklist: {
+        mode: redisStatus.mode,
+        hasUrl: redisStatus.hasUrl,
+        connected: redisStatus.connected,
+      },
+    },
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// ── 9. HTTPS Enforcement (optional) ───────────────────────────────────────
+if (forceHttps) {
+  app.use((req, res, next) => {
+    const forwardedProto = req.headers['x-forwarded-proto'];
+    const isSecure = req.secure || forwardedProto === 'https';
+
+    if (isSecure) {
+      return next();
+    }
+
+    const host = req.headers.host;
+    if (!host) {
+      return next();
+    }
+
+    return res.redirect(301, `https://${host}${req.originalUrl}`);
+  });
+}
+
+// ── 10. API Routes ────────────────────────────────────────────────────────
 app.use('/api', routes);
 
-// ── 10. 404 Handler ───────────────────────────────────────────────────────
+// ── 11. 404 Handler ───────────────────────────────────────────────────────
 app.use(notFoundHandler);
 
-// ── 11. Global Error Handler (must be last) ───────────────────────────────
+// ── 12. Global Error Handler (must be last) ──────────────────────────────
 app.use(globalErrorHandler);
 
 module.exports = app;

@@ -2,8 +2,10 @@ require('dotenv').config();
 
 const app = require('./app');
 const connectDB = require('./config/db');
+const { disconnectDB } = require('./config/db');
 const { initCloudinary } = require('./config/cloudinary');
 const { initFirebase } = require('./config/firebase');
+const { initRedis, closeRedis } = require('./config/redis');
 
 const PORT = process.env.PORT || 5000;
 
@@ -23,7 +25,10 @@ const bootstrap = async () => {
     // 3. Firebase Admin
     initFirebase();
 
-    // 4. Start HTTP server — only after all services are ready
+    // 4. Redis (JWT blacklist store)
+    await initRedis();
+
+    // 5. Start HTTP server — only after all services are ready
     const server = app.listen(PORT, () => {
       console.info(`\n🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
       console.info(`📡 Health: http://localhost:${PORT}/health`);
@@ -34,12 +39,19 @@ const bootstrap = async () => {
     // Allows in-flight requests to complete before the process exits.
     // Critical for PM2 cluster restarts and container deployments.
 
+    let isShuttingDown = false;
+
     const shutdown = (signal) => {
+      if (isShuttingDown) return;
+      isShuttingDown = true;
+
       console.info(`\n⚠️  ${signal} received. Shutting down gracefully...`);
-      server.close(() => {
+      server.close(async () => {
         console.info('✅ HTTP server closed.');
-        // TODO: close DB connection here once DB is confirmed
-        //   mongoose.connection.close() or prisma.$disconnect()
+
+        await closeRedis();
+        await disconnectDB();
+
         process.exit(0);
       });
 

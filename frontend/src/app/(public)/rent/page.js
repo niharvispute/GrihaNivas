@@ -2,16 +2,115 @@ import PropertyCard from '@/components/property/PropertyCard';
 import PropertyFilters from '@/components/property/PropertyFilters';
 import PropertyGrid from '@/components/property/PropertyGrid';
 import PropertySortBar from '@/components/property/PropertySortBar';
-import { properties } from '@/data/properties';
+import Link from 'next/link';
+import { listProperties } from '@/services/propertyService';
 
-export default function PropertiesPage() {
+const PAGE_SIZE = 12;
+const BASE_PATH = '/rent';
+const ALLOWED_SORT = new Set(['newest', 'price_asc', 'price_desc']);
+const ALLOWED_FURNISHING = new Set(['unfurnished', 'semi_furnished', 'furnished']);
+
+const getCurrentPage = (rawPage) => {
+  const page = Number(rawPage);
+  if (!Number.isFinite(page) || page < 1) return 1;
+  return Math.floor(page);
+};
+
+const normalizeText = (value) => {
+  if (typeof value !== 'string') return '';
+  return value.trim();
+};
+
+const normalizeNumberString = (value) => {
+  if (value === undefined || value === null || value === '') return '';
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0) return '';
+  return String(Math.floor(number));
+};
+
+const normalizeBhk = (value) => {
+  const numeric = normalizeNumberString(value);
+  if (!numeric) return '';
+  const bhk = Number(numeric);
+  if (bhk < 1 || bhk > 10) return '';
+  return String(bhk);
+};
+
+const normalizeSort = (value) => {
+  if (!ALLOWED_SORT.has(value)) return 'newest';
+  return value;
+};
+
+const normalizeFurnishing = (value) => {
+  if (!ALLOWED_FURNISHING.has(value)) return '';
+  return value;
+};
+
+const buildListingHref = (basePath, query, page) => {
+  const params = new URLSearchParams();
+  if (query.area) params.set('area', query.area);
+  if (query.minPrice) params.set('minPrice', query.minPrice);
+  if (query.maxPrice) params.set('maxPrice', query.maxPrice);
+  if (query.bhk) params.set('bhk', query.bhk);
+  if (query.furnishing) params.set('furnishing', query.furnishing);
+  if (query.sortBy && query.sortBy !== 'newest') params.set('sortBy', query.sortBy);
+  if (page > 1) params.set('page', String(page));
+
+  const queryString = params.toString();
+  return queryString ? `${basePath}?${queryString}` : basePath;
+};
+
+export default async function PropertiesPage({ searchParams }) {
+  const params = await searchParams;
+  const currentPage = getCurrentPage(params?.page);
+  const currentQuery = {
+    area: normalizeText(params?.area),
+    minPrice: normalizeNumberString(params?.minPrice),
+    maxPrice: normalizeNumberString(params?.maxPrice),
+    bhk: normalizeBhk(params?.bhk),
+    furnishing: normalizeFurnishing(params?.furnishing),
+    sortBy: normalizeSort(params?.sortBy),
+  };
+
+  let properties = [];
+  let meta = null;
+  try {
+    const response = await listProperties({
+      category: 'rent',
+      limit: PAGE_SIZE,
+      page: currentPage,
+      sortBy: currentQuery.sortBy,
+      ...(currentQuery.area ? { area: currentQuery.area } : {}),
+      ...(currentQuery.minPrice ? { minPrice: currentQuery.minPrice } : {}),
+      ...(currentQuery.maxPrice ? { maxPrice: currentQuery.maxPrice } : {}),
+      ...(currentQuery.bhk ? { bhk: currentQuery.bhk } : {}),
+      ...(currentQuery.furnishing ? { furnishing: currentQuery.furnishing } : {}),
+    });
+    properties = response.items || [];
+    meta = response.meta || null;
+  } catch {
+    properties = [];
+    meta = null;
+  }
+
+  const totalPages = Math.max(1, Number(meta?.totalPages || 1));
+  const prevPage = currentPage > 1 ? currentPage - 1 : null;
+  const nextPage = currentPage < totalPages ? currentPage + 1 : null;
+
+  const visiblePages = [];
+  const startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(totalPages, currentPage + 1);
+  for (let page = startPage; page <= endPage; page += 1) {
+    visiblePages.push(page);
+  }
+
   return (
     <main className="max-w-7xl mx-auto px-6 py-12 lg:px-8">
       {/* Breadcrumbs & Header */}
       <header className="mb-12">
         <nav aria-label="Breadcrumb" className="flex text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-4">
           <ol className="inline-flex items-center space-x-2">
-            <li><a href="/" className="hover:text-primary transition-colors text-[10px]">Home</a></li>
+            <li><Link href="/" className="hover:text-primary transition-colors text-[10px]">Home</Link></li>
             <li className="flex items-center">
               <svg className="w-3 h-3 mx-1 text-slate-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
               <span className="text-primary">Properties for Rent</span>
@@ -29,11 +128,11 @@ export default function PropertiesPage() {
 
       <div className="flex flex-col lg:flex-row gap-12">
         {/* Sidebar Filters */}
-        <PropertyFilters />
+        <PropertyFilters basePath={BASE_PATH} currentQuery={currentQuery} />
 
         {/* Main Content */}
-        <div className="flex-grow">
-          <PropertySortBar />
+        <div className="grow">
+          <PropertySortBar basePath={BASE_PATH} currentQuery={currentQuery} />
           
           <PropertyGrid columns={2}>
             {properties.map((property) => (
@@ -41,25 +140,63 @@ export default function PropertiesPage() {
             ))}
           </PropertyGrid>
 
+          {properties.length === 0 && (
+            <p className="mt-8 text-sm font-medium text-slate-500">
+              No rental listings are available right now. Please check back shortly.
+            </p>
+          )}
+
           {/* Pagination */}
           <div className="mt-20 flex justify-center items-center gap-2">
-            <button className="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-100 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-            </button>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center bg-primary text-white font-bold shadow-lg shadow-primary/20">1</button>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-slate-600 transition-colors">2</button>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-slate-600 transition-colors">3</button>
-            <span className="px-2 text-slate-300">...</span>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-slate-600 transition-colors">12</button>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-slate-100 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
+            {prevPage ? (
+              <Link href={buildListingHref(BASE_PATH, currentQuery, prevPage)} className="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-100 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </Link>
+            ) : (
+              <span className="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 cursor-not-allowed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </span>
+            )}
+
+            {startPage > 1 && (
+              <>
+                <Link href={buildListingHref(BASE_PATH, currentQuery, 1)} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-slate-600 transition-colors">1</Link>
+                {startPage > 2 && <span className="px-2 text-slate-300">...</span>}
+              </>
+            )}
+
+            {visiblePages.map((page) => (
+              <Link
+                key={page}
+                href={buildListingHref(BASE_PATH, currentQuery, page)}
+                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-colors ${page === currentPage ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'hover:bg-slate-100 text-slate-600'}`}
+              >
+                {page}
+              </Link>
+            ))}
+
+            {endPage < totalPages && (
+              <>
+                {endPage < totalPages - 1 && <span className="px-2 text-slate-300">...</span>}
+                <Link href={buildListingHref(BASE_PATH, currentQuery, totalPages)} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-slate-600 transition-colors">{totalPages}</Link>
+              </>
+            )}
+
+            {nextPage ? (
+              <Link href={buildListingHref(BASE_PATH, currentQuery, nextPage)} className="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-slate-100 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </Link>
+            ) : (
+              <span className="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 cursor-not-allowed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </span>
+            )}
           </div>
         </div>
       </div>
 
       {/* Floating Contact CTA */}
-      <button className="fixed bottom-8 right-8 z-[60] bg-primary text-white flex items-center gap-3 px-8 py-4 rounded-full shadow-2xl hover:scale-105 transition-all font-bold active:scale-95 group">
+      <button className="fixed bottom-8 right-8 z-60 bg-primary text-white flex items-center gap-3 px-8 py-4 rounded-full shadow-2xl hover:scale-105 transition-all font-bold active:scale-95 group">
         <svg className="group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         Contact Expert
       </button>

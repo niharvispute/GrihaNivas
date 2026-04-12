@@ -1,11 +1,80 @@
 'use client';
 
 import { useState } from 'react';
+import { getErrorMessage } from '@/lib/api/errors';
+import { createLead } from '@/services/leadService';
 
 export default function ListingForm() {
   const [propertyType, setPropertyType] = useState('Apartment');
+  const [form, setForm] = useState({
+    ownerName: '',
+    phone: '',
+    email: '',
+    location: '',
+    bhk: '2',
+    expectedPrice: '',
+    description: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState({ type: '', message: '' });
 
   const propertyTypes = ['Apartment', 'Penthouse', 'Villa', 'Commercial'];
+
+  const handleChange = (field) => (event) => {
+    setForm((prev) => ({ ...prev, [field]: event.target.value }));
+  };
+
+  const parseAmount = (value) => {
+    const numeric = Number(String(value || '').replace(/[^\d]/g, ''));
+    return Number.isFinite(numeric) ? numeric : 0;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setFeedback({ type: '', message: '' });
+
+    try {
+      const expectedPrice = parseAmount(form.expectedPrice);
+      const summaryParts = [
+        `Property type: ${propertyType}`,
+        `BHK: ${form.bhk}`,
+        form.description ? `Description: ${form.description.trim()}` : '',
+      ].filter(Boolean);
+
+      await createLead({
+        name: form.ownerName.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim() || undefined,
+        leadType: 'list_property',
+        preferredLocations: form.location.trim() ? [form.location.trim()] : undefined,
+        budgetMax: expectedPrice || undefined,
+        message: summaryParts.join(' | '),
+      });
+
+      setFeedback({
+        type: 'success',
+        message: 'Property submission received. Our team will contact you soon.',
+      });
+      setForm({
+        ownerName: '',
+        phone: '',
+        email: '',
+        location: '',
+        bhk: '2',
+        expectedPrice: '',
+        description: '',
+      });
+      setPropertyType('Apartment');
+    } catch (error) {
+      setFeedback({
+        type: 'error',
+        message: getErrorMessage(error, 'Unable to submit property right now.'),
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section className="py-24 bg-slate-50" id="submit-form">
@@ -16,7 +85,7 @@ export default function ListingForm() {
             <p className="text-slate-500 font-medium">Confidential and secure property assessment.</p>
           </div>
           
-          <form className="space-y-10" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-10" onSubmit={handleSubmit}>
             {/* Owner Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
@@ -25,6 +94,9 @@ export default function ListingForm() {
                   className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-300 font-medium text-slate-700" 
                   placeholder="Full legal name" 
                   type="text"
+                  value={form.ownerName}
+                  onChange={handleChange('ownerName')}
+                  required
                 />
               </div>
               <div className="space-y-2">
@@ -33,6 +105,9 @@ export default function ListingForm() {
                   className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-300 font-medium text-slate-700" 
                   placeholder="+91 00000 00000" 
                   type="tel"
+                  value={form.phone}
+                  onChange={handleChange('phone')}
+                  required
                 />
               </div>
             </div>
@@ -43,6 +118,8 @@ export default function ListingForm() {
                 className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-300 font-medium text-slate-700" 
                 placeholder="email@example.com" 
                 type="email"
+                value={form.email}
+                onChange={handleChange('email')}
               />
             </div>
 
@@ -77,16 +154,22 @@ export default function ListingForm() {
                     className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 pl-12 focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-300 font-medium text-slate-700" 
                     placeholder="e.g. Worli, South Mumbai" 
                     type="text"
+                    value={form.location}
+                    onChange={handleChange('location')}
                   />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">BHK</label>
-                <select className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all font-medium text-slate-700">
-                  <option>2 BHK</option>
-                  <option>3 BHK</option>
-                  <option>4 BHK</option>
-                  <option>5+ BHK</option>
+                <select
+                  className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all font-medium text-slate-700"
+                  value={form.bhk}
+                  onChange={handleChange('bhk')}
+                >
+                  <option value="2">2 BHK</option>
+                  <option value="3">3 BHK</option>
+                  <option value="4">4 BHK</option>
+                  <option value="5">5+ BHK</option>
                 </select>
               </div>
             </div>
@@ -97,6 +180,8 @@ export default function ListingForm() {
                 className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-300 font-medium text-slate-700" 
                 placeholder="e.g. 5,00,00,000" 
                 type="text"
+                value={form.expectedPrice}
+                onChange={handleChange('expectedPrice')}
               />
             </div>
 
@@ -106,6 +191,8 @@ export default function ListingForm() {
                 className="w-full bg-slate-50 border border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-300 font-medium text-slate-700" 
                 placeholder="Tell us more about the view, amenities, and floor level..." 
                 rows="4"
+                value={form.description}
+                onChange={handleChange('description')}
               ></textarea>
             </div>
 
@@ -120,9 +207,15 @@ export default function ListingForm() {
               </div>
             </div>
 
-            <button className="w-full bg-primary text-white p-6 rounded-full font-heading font-bold text-xl shadow-xl shadow-primary/20 hover:scale-[0.98] transition-all">
-              Submit for Review
+            <button disabled={isSubmitting} className="w-full bg-primary text-white p-6 rounded-full font-heading font-bold text-xl shadow-xl shadow-primary/20 hover:scale-[0.98] transition-all">
+              {isSubmitting ? 'Submitting...' : 'Submit for Review'}
             </button>
+
+            {feedback.message && (
+              <p className={`text-sm font-medium ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
+                {feedback.message}
+              </p>
+            )}
           </form>
         </div>
       </div>

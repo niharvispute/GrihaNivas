@@ -207,6 +207,11 @@ const propertySchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    savedCount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     seoTitle: {
       type: String,
       trim: true,
@@ -227,8 +232,8 @@ const propertySchema = new mongoose.Schema(
 );
 
 // ── Indexes ───────────────────────────────────────────────────────────────────
+// slug already has unique: true in field definition — no duplicate needed
 
-propertySchema.index({ slug: 1 });
 propertySchema.index({ category: 1 });
 propertySchema.index({ 'location.area': 1 });
 propertySchema.index({ price: 1 });

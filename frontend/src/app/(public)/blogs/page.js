@@ -1,59 +1,91 @@
 import BlogCard from '@/components/blog/BlogCard';
-import SectionHeader from '@/components/common/SectionHeader';
 import Link from 'next/link';
+import { listBlogs } from '@/services/blogService';
 
-const BLOG_POSTS = [
-  {
-    slug: "sobo-penthouses-2024",
-    title: "The Rise of Luxury Penthouses in South Mumbai: 2024 Outlook",
-    category: "Market Trends",
-    date: "Jan 24, 2024",
-    readTime: "8 min read",
-    excerpt: "As the Mumbai skyline evolves, we explore why ultra-high-net-worth individuals are shifting their gaze towards vertical villas in the heart of SoBo.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAoC8WjizGKI4ePTId9IbJ7gB4maklHRxYRz_ClTmEPf-l3We_0DEbwKBCsW-U8lCaf1C8wHUrZ5shDw55LzERXB65IKPuwNF5zO_W0k0k0IaVuyjqf14alNCyQx83ChlOhQlKNVJlAT6MIsDCuHhZJof_NmQi0qre-vjMu43bMxKGLJd2GAmFILab7-G3QRkhGnFbaGCmINfJSI6EkgRHCl8qj_xJIq36zNHuZU9zERUROWFno4khR8Fi9vroyaFN_Qbq1aGmsVTE",
-    isFeatured: true
-  },
-  {
-    slug: "rera-buyer-guide",
-    title: "Understanding RERA: A Comprehensive Buyer's Guide",
-    category: "Legal Guides",
-    date: "Feb 12, 2024",
-    readTime: "12 min read",
-    excerpt: "Navigating the complexities of real estate regulations in Maharashtra doesn't have to be daunting. We break down what every homebuyer needs to know.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZxlUWqjcmXVU3-0V7R9j0bP65ux8kF3Am29Sz4ty685sW5TQoqVYhP21fYbUgkxH3cP8aefwN8weToPc70jKbWFM9WkVWx4RocB7Miam0mNmPO78wFhHmuCbX2qws7e4X8ytzoD_2oEMDUdIRQeqpXu7UOaXjt7z4Qz7suRtch67Dn-MUPlpFI6sB868V05xNLEktyIwFnrodArdZU4jpnKjLwgjeYQss5YBlR6d-JBweMmZaZG3eYOih942yIIDKUry-FW-pS5Q"
-  },
-  {
-    slug: "bandra-localities",
-    title: "Top 5 Up-and-coming Localities in Bandra West",
-    category: "Neighborhoods",
-    date: "Mar 05, 2024",
-    readTime: "6 min read",
-    excerpt: "Bandra remains the queen of suburbs, but new pockets are emerging as prime investment hubs. Discover where to put your money next.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDb9yNB-tM91W37RfbInB714zG9-QUmDq-oE8mDuIxSVx5tuYtb4LbC8gKRi8GcY2V4dbUNnLsYMh1LEg0E2SPCBWAu2uvuo1A3kKQBATI2nXlWusLE45-7GAvluilryWaLrXdjbX4zhp7rdsl_dzVAQzKxjHZsFI3HlViKhW5ay48Qt-mYZQ9R_fB2xStkSDAtKXnt-qMX-aJtDWuZWDPYi5zEW4VvH3zhs7M0DCxykZWfGdX0N452cB4mdE8uoD1dNiv_NE-qq_o"
-  },
-  {
-    slug: "commercial-gold-mine",
-    title: "Why Commercial Real Estate is the New Gold Mine",
-    category: "Investment Tips",
-    date: "Mar 20, 2024",
-    readTime: "10 min read",
-    excerpt: "With fractional ownership becoming a reality, commercial spaces are no longer just for big corporations.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCEjstFR2wZUFwmx5wCSZy9cSfVG2U6n3czDdKQzkwv7R3T4as4jBDqcuIDhjRpDqjg2o7k_9G6FhaPHSVTBr2w6XLyTrB3YOVFlgxVCI6xKGlYmyKEVnu9ilRdj-ZVYIIynIsobCUxqjR9dnQERUuvQxoEpVASwWKgb0hVZHHkInNS3JWLoXN8IvX6P5M07DcLJr-unFsPoLFW-7ck22HeMWWPdi2FDeXHrt9OWu-vobdzSDgJrkA4Do8eJg2e3wv4WwN5f8hqxtc"
-  },
-  {
-    slug: "sustainable-luxury",
-    title: "Sustainable Luxury: The New Home Standard",
-    category: "Market Trends",
-    date: "Apr 02, 2024",
-    readTime: "7 min read",
-    excerpt: "Mumbai developers are integrating green tech into premium projects. Is sustainability the ultimate luxury in 2024?",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDKdNTyGZiEcgxwR_d7WO9Lsty_B171kQ9HdLZxMqiLFaXd71oIFK5lVlxh2DYZRP6k6UjRjBwvpa06XL08I29dSH0aXrGTnjBIPzr7b7x30PnS7Vh-nOBpeYZ3N-XMhzrr8VVOpGrWn_IBWNPF9Ohi-mPQoIa2CpimI0wb4LjhoO1d3Wie4tzr5UQ-yP859jQNDHnSAquJlKKRNXrslN6PBmDhynfXmkhWorBnSS9jJ2NuQMhqPJz1o2ib1n6F0nnPCSBQBzK26JQ"
-  }
+const PAGE_SIZE = 9;
+
+const BLOG_CATEGORIES = [
+  { label: 'All', value: '' },
+  { label: 'Market Trends', value: 'market_trends' },
+  { label: 'Buying Guide', value: 'buying_guide' },
+  { label: 'Legal', value: 'legal' },
+  { label: 'Investment', value: 'investment' },
+  { label: 'Lifestyle', value: 'lifestyle' },
 ];
 
-export default function BlogsPage() {
-  const featured = BLOG_POSTS.find(p => p.isFeatured);
-  const regularPosts = BLOG_POSTS.filter(p => !p.isFeatured);
+const getCurrentPage = (rawPage) => {
+  const page = Number(rawPage);
+  if (!Number.isFinite(page) || page < 1) return 1;
+  return Math.floor(page);
+};
+
+const getSearchText = (value) => {
+  if (typeof value !== 'string') return '';
+  return value.trim().slice(0, 100);
+};
+
+const isValidCategory = (value) =>
+  BLOG_CATEGORIES.some((item) => item.value === value);
+
+export default async function BlogsPage({ searchParams }) {
+  const params = await searchParams;
+  const currentPage = getCurrentPage(params?.page);
+  const currentCategory = isValidCategory(params?.category || '')
+    ? (params?.category || '')
+    : '';
+  const currentSearch = getSearchText(params?.search);
+
+  let posts = [];
+  let meta = null;
+  try {
+    const response = await listBlogs({
+      page: currentPage,
+      limit: PAGE_SIZE,
+      category: currentCategory || undefined,
+      search: currentSearch || undefined,
+    });
+    posts = response.items || [];
+    meta = response.meta || null;
+  } catch {
+    posts = [];
+    meta = null;
+  }
+
+  const featured = currentPage === 1 ? posts[0] || null : null;
+  const regularPosts = featured ? posts.slice(1) : posts;
+
+  const totalPages = Math.max(1, Number(meta?.totalPages || 1));
+  const prevPage = currentPage > 1 ? currentPage - 1 : null;
+  const nextPage = currentPage < totalPages ? currentPage + 1 : null;
+
+  const visiblePages = [];
+  const startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(totalPages, currentPage + 1);
+  for (let page = startPage; page <= endPage; page += 1) {
+    visiblePages.push(page);
+  }
+
+  const buildBlogsHref = (
+    page,
+    {
+      category = currentCategory,
+      search = currentSearch,
+    } = {}
+  ) => {
+    const qs = new URLSearchParams();
+    if (page > 1) qs.set('page', String(page));
+    if (category) qs.set('category', category);
+    if (search) qs.set('search', search);
+    const query = qs.toString();
+    return query ? `/blogs?${query}` : '/blogs';
+  };
+
+  const popularSeries = [
+    { label: 'Market Trends', value: 'market_trends', count: 24 },
+    { label: 'Investment', value: 'investment', count: 18 },
+    { label: 'Legal', value: 'legal', count: 12 },
+    { label: 'Buying Guide', value: 'buying_guide', count: 45 },
+  ];
 
   return (
     <div className="w-full h-full pt-12 pb-24">
@@ -73,30 +105,56 @@ export default function BlogsPage() {
         {/* 🔍 Category & Search Console */}
         <section className="mb-16 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
           <div className="flex flex-wrap gap-3">
-            {['All', 'Market Trends', 'Legal Guides', 'Investment Tips', 'Neighborhood Reviews'].map((cat, i) => (
-              <button 
-                key={i} 
-                className={`px-8 py-3.5 rounded-full text-sm font-black tracking-tight transition-all ${i === 0 ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
+            {BLOG_CATEGORIES.map((cat) => (
+              <Link
+                key={cat.label}
+                href={buildBlogsHref(1, { category: cat.value })}
+                className={`px-8 py-3.5 rounded-full text-sm font-black tracking-tight transition-all ${currentCategory === cat.value ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
               >
-                {cat}
-              </button>
+                {cat.label}
+              </Link>
             ))}
           </div>
-          <div className="relative w-full lg:max-w-md group">
+          <form action="/blogs" method="GET" className="relative w-full lg:max-w-md group flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            <input 
-              className="w-full pl-16 pr-8 py-5 bg-white border-none rounded-full shadow-2xl shadow-slate-200/50 focus:ring-2 focus:ring-primary/20 placeholder:text-slate-400 font-bold transition-all" 
-              placeholder="Search blogs by keyword" 
+            {currentCategory ? <input type="hidden" name="category" value={currentCategory} /> : null}
+            <input
+              className="w-full pl-16 pr-28 py-5 bg-white border-none rounded-full shadow-2xl shadow-slate-200/50 focus:ring-2 focus:ring-primary/20 placeholder:text-slate-400 font-bold transition-all"
+              placeholder="Search blogs by keyword"
               type="text"
+              name="search"
+              defaultValue={currentSearch}
             />
-          </div>
+            <button
+              type="submit"
+              className="absolute right-3 px-5 py-2.5 rounded-full bg-primary text-white text-xs font-black tracking-wide hover:opacity-90 transition-opacity"
+            >
+              Search
+            </button>
+          </form>
         </section>
+
+        {(currentSearch || currentCategory) && (
+          <section className="mb-12 flex items-center justify-between gap-4">
+            <p className="text-sm font-semibold text-slate-500">
+              Showing results
+              {currentCategory ? ` in ${BLOG_CATEGORIES.find((item) => item.value === currentCategory)?.label || currentCategory}` : ''}
+              {currentSearch ? ` for "${currentSearch}"` : ''}.
+            </p>
+            <Link
+              href="/blogs"
+              className="text-xs font-black tracking-widest uppercase text-slate-500 hover:text-primary transition-colors"
+            >
+              Clear all
+            </Link>
+          </section>
+        )}
 
         {/* ⭐ Featured Insight */}
         {featured && (
           <section className="mb-24">
             <div className="group relative overflow-hidden rounded-[3.5rem] bg-white border border-slate-50 shadow-sm flex flex-col lg:flex-row transition-all hover:shadow-2xl duration-700">
-              <div className="lg:w-3/5 h-[450px] lg:h-auto relative overflow-hidden">
+              <div className="lg:w-3/5 h-112.5 lg:h-auto relative overflow-hidden">
                 <img 
                   src={featured.image} 
                   alt={featured.title} 
@@ -138,20 +196,62 @@ export default function BlogsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {regularPosts.map((post, i) => (
                 <div key={i} className="group">
-                  <BlogCard blog={post} />
+                  <BlogCard post={post} />
                 </div>
               ))}
             </div>
+
+            {posts.length === 0 && (
+              <p className="text-sm font-medium text-slate-500">
+                No blog posts are published yet. Please check back soon.
+              </p>
+            )}
             
             {/* Pagination */}
             <div className="mt-20 flex items-center justify-center gap-5">
-              <button className="w-14 h-14 rounded-full flex items-center justify-center bg-primary text-white font-black shadow-xl shadow-primary/20 animate-pulse-subtle">1</button>
-              <button className="w-14 h-14 rounded-full flex items-center justify-center text-slate-400 bg-slate-50 hover:bg-slate-100 transition-all font-black">2</button>
-              <button className="w-14 h-14 rounded-full flex items-center justify-center text-slate-400 bg-slate-50 hover:bg-slate-100 transition-all font-black">3</button>
-              <span className="text-slate-300 font-black tracking-widest px-2">...</span>
-              <button className="px-10 h-14 rounded-full flex items-center justify-center gap-3 text-slate-900 bg-white border border-slate-100 font-black tracking-tight hover:shadow-lg transition-all group">
-                Next <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
-              </button>
+              {prevPage ? (
+                <Link href={buildBlogsHref(prevPage)} className="w-14 h-14 rounded-full flex items-center justify-center text-slate-400 bg-slate-50 hover:bg-slate-100 transition-all font-black">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </Link>
+              ) : (
+                <span className="w-14 h-14 rounded-full flex items-center justify-center text-slate-300 bg-slate-50 cursor-not-allowed">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </span>
+              )}
+
+              {startPage > 1 && (
+                <>
+                  <Link href={buildBlogsHref(1)} className="w-14 h-14 rounded-full flex items-center justify-center text-slate-400 bg-slate-50 hover:bg-slate-100 transition-all font-black">1</Link>
+                  {startPage > 2 && <span className="text-slate-300 font-black tracking-widest px-2">...</span>}
+                </>
+              )}
+
+              {visiblePages.map((page) => (
+                <Link
+                  key={page}
+                  href={buildBlogsHref(page)}
+                  className={`w-14 h-14 rounded-full flex items-center justify-center font-black transition-all ${page === currentPage ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'text-slate-400 bg-slate-50 hover:bg-slate-100'}`}
+                >
+                  {page}
+                </Link>
+              ))}
+
+              {endPage < totalPages && (
+                <>
+                  {endPage < totalPages - 1 && <span className="text-slate-300 font-black tracking-widest px-2">...</span>}
+                  <Link href={buildBlogsHref(totalPages)} className="w-14 h-14 rounded-full flex items-center justify-center text-slate-400 bg-slate-50 hover:bg-slate-100 transition-all font-black">{totalPages}</Link>
+                </>
+              )}
+
+              {nextPage ? (
+                <Link href={buildBlogsHref(nextPage)} className="px-10 h-14 rounded-full flex items-center justify-center gap-3 text-slate-900 bg-white border border-slate-100 font-black tracking-tight hover:shadow-lg transition-all group">
+                  Next <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
+                </Link>
+              ) : (
+                <span className="px-10 h-14 rounded-full flex items-center justify-center gap-3 text-slate-300 bg-slate-50 border border-slate-100 font-black tracking-tight cursor-not-allowed">
+                  Next <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </span>
+              )}
             </div>
           </div>
 
@@ -162,14 +262,9 @@ export default function BlogsPage() {
               <div className="bg-slate-50 p-10 rounded-[3rem] border border-slate-100">
                 <h4 className="text-2xl font-black text-slate-900 mb-8 tracking-tighter">Popular Series</h4>
                 <div className="space-y-6">
-                  {[
-                    { name: 'Market Trends', count: 24 },
-                    { name: 'Investment Tips', count: 18 },
-                    { name: 'Legal Guides', count: 12 },
-                    { name: 'Neighbourhoods', count: 45 }
-                  ].map((cat, i) => (
-                    <Link key={i} href={`/blogs?category=${cat.name}`} className="flex items-center justify-between group">
-                      <span className="text-slate-500 font-black text-sm tracking-tight group-hover:text-primary transition-colors">{cat.name}</span>
+                  {popularSeries.map((cat) => (
+                    <Link key={cat.value} href={buildBlogsHref(1, { category: cat.value })} className="flex items-center justify-between group">
+                      <span className="text-slate-500 font-black text-sm tracking-tight group-hover:text-primary transition-colors">{cat.label}</span>
                       <span className="bg-white w-10 h-10 flex items-center justify-center rounded-full text-xs font-black text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">{cat.count}</span>
                     </Link>
                   ))}

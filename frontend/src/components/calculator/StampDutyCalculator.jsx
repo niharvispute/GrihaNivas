@@ -1,30 +1,59 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getErrorMessage } from '@/lib/api/errors';
+import { calculateStampDuty } from '@/services/calculatorService';
+
+const getLocalStampResult = (propertyValue, buyerType) => {
+  const stampDutyRate = buyerType === 'female' ? 0.05 : 0.06;
+  const stampDuty = propertyValue * stampDutyRate;
+  const registrationCharges = Math.min(propertyValue * 0.01, 30000);
+  const totalPayable = stampDuty + registrationCharges;
+
+  return {
+    stampDutyRateLabel: `${Math.round(stampDutyRate * 100)}%`,
+    stampDuty: Math.round(stampDuty),
+    registrationCharges: Math.round(registrationCharges),
+    totalPayable: Math.round(totalPayable),
+  };
+};
 
 const StampDutyCalculator = () => {
   const [propertyValue, setPropertyValue] = useState(50000000);
   const [buyerType, setBuyerType] = useState('male'); // male, female, joint
   const [propertyType, setPropertyType] = useState('residential');
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [calcError, setCalcError] = useState('');
+  const [results, setResults] = useState(() =>
+    getLocalStampResult(50000000, 'male')
+  );
 
-  const results = useMemo(() => {
-    // Stamp Duty Rates for Mumbai (Maharashtra)
-    // Male/Joint: 6% (inclusive of 1% Metro Cess)
-    // Female: 5% (1% concession)
-    const stampDutyRate = buyerType === 'female' ? 0.05 : 0.06;
-    const stampDuty = propertyValue * stampDutyRate;
+  useEffect(() => {
+    const timeoutId = setTimeout(async () => {
+      setIsCalculating(true);
+      setCalcError('');
 
-    // Registration Charges: 1% of property value or ₹30,000 (whichever is lower)
-    const registrationCharges = Math.min(propertyValue * 0.01, 30000);
+      try {
+        const response = await calculateStampDuty({
+          propertyValue,
+          ownershipType: buyerType,
+        });
 
-    const totalPayable = stampDuty + registrationCharges;
+        setResults({
+          stampDutyRateLabel: response?.stampDutyRate || '0%',
+          stampDuty: Number(response?.stampDuty || 0),
+          registrationCharges: Number(response?.registrationCharge || 0),
+          totalPayable: Number(response?.totalCharges || 0),
+        });
+      } catch (error) {
+        setCalcError(getErrorMessage(error, 'Unable to fetch stamp duty from backend.'));
+        setResults(getLocalStampResult(propertyValue, buyerType));
+      } finally {
+        setIsCalculating(false);
+      }
+    }, 250);
 
-    return {
-      stampDutyRate: stampDutyRate * 100,
-      stampDuty: Math.round(stampDuty),
-      registrationCharges: Math.round(registrationCharges),
-      totalPayable: Math.round(totalPayable),
-    };
+    return () => clearTimeout(timeoutId);
   }, [propertyValue, buyerType]);
 
   const formatCurrency = (val) => {
@@ -142,11 +171,16 @@ const StampDutyCalculator = () => {
           
           <div>
             <h3 className="text-xl font-black text-slate-900 mb-10 tracking-tight">Summary of Charges</h3>
+            {(isCalculating || calcError) && (
+              <p className={`mb-6 text-xs font-semibold ${calcError ? 'text-red-600' : 'text-slate-500'}`}>
+                {calcError || 'Fetching latest stamp duty from backend...'}
+              </p>
+            )}
             <div className="space-y-8">
               <div className="flex justify-between items-end">
                 <div className="space-y-1">
                   <span className="text-slate-400 text-xs font-bold uppercase tracking-widest block">Stamp Duty</span>
-                  <span className="text-slate-600 font-medium">at {results.stampDutyRate}% Rate</span>
+                  <span className="text-slate-600 font-medium">at {results.stampDutyRateLabel} Rate</span>
                 </div>
                 <span className="text-3xl font-black text-primary">{formatCurrency(results.stampDuty)}</span>
               </div>
@@ -243,13 +277,13 @@ const StampDutyCalculator = () => {
       </section>
 
       {/* 6. Asymmetric CTA Section */}
-      <section className="mt-32 relative h-[500px] rounded-[3rem] overflow-hidden group shadow-2xl">
+      <section className="mt-32 relative h-125 rounded-[3rem] overflow-hidden group shadow-2xl">
         <img 
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtD4TRJ9ji6_8mlYVQ-HUIQTCtxeqIj8WZc69nGXstCaQ2QAG_0UPAdGy6w1JXE2Mf_DLkH_-ZRgR9MDsaDLqnJyNB-n428EosoVI3ALRF50RyUJLnIeF1EybYQJVl9zdga6j7S2GAbUtcCeUEuSeu8_o7HsgAZgj20oqOPjHsGqwf9R3YUwXFo6spqOucL0_GwoYQr9Gb6XOpTAvnTTQ13i_o87qa5rjyBQ-pkkN3zz209svQI3mmOA5iEqmZugu4U_4n4-mTzU4" 
           alt="Mumbai Luxury Real Estate" 
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-slate-900 via-slate-900/40 to-transparent"></div>
         <div className="absolute inset-0 flex flex-col justify-center px-12 md:px-24 max-w-3xl">
           <span className="text-primary font-black uppercase tracking-[0.4em] text-xs mb-6">Concierge Advisory</span>
           <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight tracking-tighter">

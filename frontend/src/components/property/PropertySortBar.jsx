@@ -1,18 +1,43 @@
-export default function PropertySortBar() {
+import Link from 'next/link';
+
+const SORT_OPTIONS = [
+  { label: 'Newest', value: 'newest' },
+  { label: 'Price Low-High', value: 'price_asc' },
+  { label: 'Price High-Low', value: 'price_desc' },
+];
+
+const buildSortHref = (basePath, currentQuery, sortBy) => {
+  const params = new URLSearchParams();
+
+  if (currentQuery?.category && currentQuery.category !== 'buy') params.set('category', currentQuery.category);
+  if (currentQuery?.area) params.set('area', currentQuery.area);
+  if (currentQuery?.minPrice) params.set('minPrice', String(currentQuery.minPrice));
+  if (currentQuery?.maxPrice) params.set('maxPrice', String(currentQuery.maxPrice));
+  if (currentQuery?.bhk) params.set('bhk', String(currentQuery.bhk));
+  if (currentQuery?.furnishing) params.set('furnishing', currentQuery.furnishing);
+  if (sortBy && sortBy !== 'newest') params.set('sortBy', sortBy);
+
+  const queryString = params.toString();
+  return queryString ? `${basePath}?${queryString}` : basePath;
+};
+
+export default function PropertySortBar({ basePath, currentQuery }) {
+  const activeSort = currentQuery?.sortBy || 'newest';
+
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
       <div className="flex items-center gap-4 text-sm font-medium">
         <span className="text-slate-500">Sort by:</span>
         <div className="flex gap-2">
-          <button className="px-5 py-1.5 rounded-full bg-primary text-white text-xs font-bold shadow-md shadow-primary/20 transition-all">
-            Newest
-          </button>
-          <button className="px-5 py-1.5 rounded-full bg-white text-slate-500 text-xs font-bold hover:bg-slate-100 transition-all border border-slate-200">
-            Price
-          </button>
-          <button className="px-5 py-1.5 rounded-full bg-white text-slate-500 text-xs font-bold hover:bg-slate-100 transition-all border border-slate-200">
-            Popular
-          </button>
+          {SORT_OPTIONS.map((option) => (
+            <Link
+              key={option.value}
+              href={buildSortHref(basePath, currentQuery, option.value)}
+              className={`px-5 py-1.5 rounded-full text-xs font-bold transition-all border ${activeSort === option.value ? 'bg-primary text-white shadow-md shadow-primary/20 border-primary' : 'bg-white text-slate-500 hover:bg-slate-100 border-slate-200'}`}
+            >
+              {option.label}
+            </Link>
+          ))}
         </div>
       </div>
       

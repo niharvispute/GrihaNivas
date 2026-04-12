@@ -1,16 +1,67 @@
-export default function PropertyLeadForm() {
+'use client';
+
+import { useState } from 'react';
+import { getErrorMessage } from '@/lib/api/errors';
+import { createLead } from '@/services/leadService';
+
+export default function PropertyLeadForm({ property }) {
+  const [form, setForm] = useState({ name: '', phone: '', email: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState({ type: '', message: '' });
+
+  const propertyType = property?.raw?.category === 'rent' ? 'rent' : 'buy';
+
+  const handleChange = (field) => (event) => {
+    setForm((prev) => ({ ...prev, [field]: event.target.value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setFeedback({ type: '', message: '' });
+
+    try {
+      await createLead({
+        name: form.name.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim() || undefined,
+        leadType: propertyType,
+        propertyId: property?.id || undefined,
+        message: property?.title
+          ? `Interested in property: ${property.title}`
+          : 'Interested in property details',
+      });
+
+      setFeedback({
+        type: 'success',
+        message: 'Interest submitted. Our consultant will contact you soon.',
+      });
+      setForm({ name: '', phone: '', email: '' });
+    } catch (error) {
+      setFeedback({
+        type: 'error',
+        message: getErrorMessage(error, 'Unable to submit your request right now.'),
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="bg-slate-50 p-8 rounded-2xl border border-slate-100 shadow-sm">
       <h3 className="text-xl font-heading font-extrabold mb-1 text-slate-900">Inquire for Details</h3>
       <p className="text-sm text-slate-500 mb-6 font-medium">Our consultants will contact you within 2 hours.</p>
       
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5 px-1">Full Name</label>
           <input 
             className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm text-slate-700 font-medium transition-all" 
             placeholder="e.g. Rohit Huge" 
             type="text"
+            value={form.name}
+            onChange={handleChange('name')}
+            required
           />
         </div>
         <div>
@@ -19,6 +70,9 @@ export default function PropertyLeadForm() {
             className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm text-slate-700 font-medium transition-all" 
             placeholder="+91 98765 43210" 
             type="tel"
+            value={form.phone}
+            onChange={handleChange('phone')}
+            required
           />
         </div>
         <div>
@@ -27,11 +81,18 @@ export default function PropertyLeadForm() {
             className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm text-slate-700 font-medium transition-all" 
             placeholder="rohit@example.com" 
             type="email"
+            value={form.email}
+            onChange={handleChange('email')}
           />
         </div>
-        <button className="w-full bg-primary text-white py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-primary/20 transition-all active:scale-95 mt-4">
-          I’m Interested
+        <button disabled={isSubmitting} className="w-full bg-primary text-white py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-primary/20 transition-all active:scale-95 mt-4">
+          {isSubmitting ? 'Submitting...' : 'I’m Interested'}
         </button>
+        {feedback.message && (
+          <p className={`text-xs font-medium ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
+            {feedback.message}
+          </p>
+        )}
       </form>
       
       <div className="mt-6 pt-6 border-t border-slate-200 text-center">

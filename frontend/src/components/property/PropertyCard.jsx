@@ -2,6 +2,8 @@ import Link from 'next/link';
 
 export default function PropertyCard({ property, variant = 'vertical' }) {
   const isHorizontal = variant === 'horizontal' || property.isFeatured;
+  const detailKey = property?.slug || property?.id;
+  const detailHref = detailKey ? `/property/${detailKey}` : '/buy';
 
   return (
     <article className={`group relative bg-white rounded-moderate overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col'}`}>
@@ -19,7 +21,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
             </span>
           )}
           {property.isNew && !property.isFeatured && (
-            <span className="bg-white/80 backdrop-blur-md text-slate-900 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase text-primary">New Launch</span>
+            <span className="bg-white/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase text-primary">New Launch</span>
           )}
           {property.isVerified && (
             <span className="bg-primary/90 text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Verified</span>
@@ -30,7 +32,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
         </button>
       </div>
 
-      <div className={`p-6 flex flex-col flex-grow ${isHorizontal ? 'lg:p-8 lg:justify-center' : ''}`}>
+      <div className={`p-6 flex flex-col grow ${isHorizontal ? 'lg:p-8 lg:justify-center' : ''}`}>
         <div className="flex justify-between items-start mb-4">
           <div>
             <h3 className={`${isHorizontal ? 'text-3xl font-extrabold' : 'text-xl font-bold'} text-slate-900 leading-tight mb-1 tracking-tight`}>
@@ -82,7 +84,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
         </div>
 
         <div className="flex gap-4">
-          <Link href={`/property/${property.id}`} className={`flex-grow bg-primary text-white py-4 rounded-full font-bold tracking-tight hover:bg-primary/90 transition-all text-center ${isHorizontal ? 'text-base px-10' : 'text-sm'}`}>
+          <Link href={detailHref} className={`grow bg-primary text-white py-4 rounded-full font-bold tracking-tight hover:bg-primary/90 transition-all text-center ${isHorizontal ? 'text-base px-10' : 'text-sm'}`}>
             {isHorizontal ? 'Inquire Now' : 'View Details'}
           </Link>
           {isHorizontal ? (

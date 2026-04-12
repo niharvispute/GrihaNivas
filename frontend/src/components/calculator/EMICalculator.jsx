@@ -1,43 +1,95 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { getErrorMessage } from '@/lib/api/errors';
+import { calculateEmi } from '@/services/calculatorService';
+
+const getLocalEmiResult = (principal, annualInterestRate, tenureYears) => {
+  const P = principal;
+  const r = annualInterestRate / 12 / 100;
+  const n = tenureYears * 12;
+
+  if (!Number.isFinite(P) || !Number.isFinite(r) || !Number.isFinite(n) || n <= 0) {
+    return {
+      emi: 0,
+      totalInterest: 0,
+      totalPayable: 0,
+      principalPercent: 0,
+      interestPercent: 0,
+    };
+  }
+
+  if (r === 0) {
+    const emi = P / n;
+    return {
+      emi: Math.round(emi),
+      totalInterest: 0,
+      totalPayable: Math.round(P),
+      principalPercent: 100,
+      interestPercent: 0,
+    };
+  }
+
+  const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const totalPayable = emi * n;
+  const totalInterest = totalPayable - P;
+
+  return {
+    emi: Math.round(emi),
+    totalInterest: Math.round(totalInterest),
+    totalPayable: Math.round(totalPayable),
+    principalPercent: Math.round((P / totalPayable) * 100),
+    interestPercent: Math.round((totalInterest / totalPayable) * 100),
+  };
+};
 
 const EMICalculator = () => {
   const [loanAmount, setLoanAmount] = useState(7500000);
   const [interestRate, setInterestRate] = useState(8.5);
   const [tenure, setTenure] = useState(20);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [calcError, setCalcError] = useState('');
+  const [results, setResults] = useState(() =>
+    getLocalEmiResult(7500000, 8.5, 20)
+  );
 
-  // EMI Calculation
-  const results = useMemo(() => {
-    const P = loanAmount;
-    const r = interestRate / 12 / 100;
-    const n = tenure * 12;
+  useEffect(() => {
+    const timeoutId = setTimeout(async () => {
+      setIsCalculating(true);
+      setCalcError('');
 
-    if (r === 0) {
-      const emi = P / n;
-      return {
-        emi: Math.round(emi),
-        totalInterest: 0,
-        totalPayable: P,
-        principalPercent: 100,
-        interestPercent: 0,
-      };
-    }
+      try {
+        const response = await calculateEmi({
+          principal: loanAmount,
+          annualInterestRate: interestRate,
+          tenureMonths: tenure * 12,
+        });
 
-    const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    const totalPayable = emi * n;
-    const totalInterest = totalPayable - P;
+        const totalPayable = Number(response?.totalPayable || 0);
+        const principalValue = Number(response?.principal || loanAmount);
+        const totalInterest = Number(response?.totalInterest || 0);
 
-    const principalPercent = (P / totalPayable) * 100;
-    const interestPercent = (totalInterest / totalPayable) * 100;
+        const principalPercent =
+          totalPayable > 0 ? Math.round((principalValue / totalPayable) * 100) : 0;
+        const interestPercent =
+          totalPayable > 0 ? Math.round((totalInterest / totalPayable) * 100) : 0;
 
-    return {
-      emi: Math.round(emi),
-      totalInterest: Math.round(totalInterest),
-      totalPayable: Math.round(totalPayable),
-      principalPercent: Math.round(principalPercent),
-      interestPercent: Math.round(interestPercent),
-    };
+        setResults({
+          emi: Number(response?.emi || 0),
+          totalInterest,
+          totalPayable,
+          principalPercent,
+          interestPercent,
+        });
+      } catch (error) {
+        setCalcError(getErrorMessage(error, 'Unable to fetch EMI calculation right now.'));
+        setResults(getLocalEmiResult(loanAmount, interestRate, tenure));
+      } finally {
+        setIsCalculating(false);
+      }
+    }, 250);
+
+    return () => clearTimeout(timeoutId);
   }, [loanAmount, interestRate, tenure]);
 
   // Amortization Schedule (Yearly)
@@ -89,7 +141,7 @@ const EMICalculator = () => {
   };
 
   return (
-    <div className="w-full max-w-screen-xl mx-auto px-6 py-12 font-sans">
+    <div className="w-full max-w-7xl mx-auto px-6 py-12 font-sans">
       {/* 1. Header */}
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 mb-4">
@@ -213,6 +265,11 @@ const EMICalculator = () => {
               <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-primary mb-8">
                 {formatCurrency(results.emi)}
               </h2>
+              {(isCalculating || calcError) && (
+                <p className={`mb-6 text-xs font-semibold ${calcError ? 'text-red-600' : 'text-slate-500'}`}>
+                  {calcError || 'Fetching latest EMI from backend...'}
+                </p>
+              )}
               
               <div className="space-y-6">
                 <div className="flex justify-between items-center pb-4 border-b border-slate-100">
@@ -240,8 +297,8 @@ const EMICalculator = () => {
 
             {/* Visual Chart */}
             <div className="mt-12 flex justify-center scale-110">
-              <div className="relative w-40 h-40 rounded-full border-[12px] border-secondary flex items-center justify-center">
-                <svg className="absolute -inset-[12px] w-[calc(100%+24px)] h-[calc(100%+24px)] -rotate-90">
+              <div className="relative w-40 h-40 rounded-full border-12 border-secondary flex items-center justify-center">
+                <svg className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] -rotate-90">
                   <circle
                     cx="50%"
                     cy="50%"

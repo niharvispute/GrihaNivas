@@ -13,7 +13,7 @@ router.post('/:id/comments', validate(schemas.blog.addComment), blogController.a
 
 // Admin only
 router.post('/',      protect, adminOnly, uploadLimiter, uploadImage.single('featuredImage'), validate(schemas.blog.create), blogController.create);
-router.put('/:id',    protect, adminOnly, blogController.update);
+router.put('/:id',    protect, adminOnly, uploadLimiter, uploadImage.single('featuredImage'), blogController.update);
 router.delete('/:id', protect, adminOnly, blogController.remove);
 
 module.exports = router;

@@ -137,8 +137,8 @@ const blogSchema = new mongoose.Schema(
 );
 
 // ── Indexes ───────────────────────────────────────────────────────────────────
+// slug already has unique: true in field definition — no duplicate needed
 
-blogSchema.index({ slug: 1 });
 blogSchema.index({ category: 1 });
 blogSchema.index({ isPublished: 1 });
 blogSchema.index({ publishedAt: -1 });
@@ -149,11 +149,10 @@ blogSchema.index({ title: 'text', content: 'text', tags: 'text' });
 
 // ── Pre-save hook: set publishedAt when first published ──────────────────────
 
-blogSchema.pre('save', function (next) {
+blogSchema.pre('save', function () {
   if (this.isModified('isPublished') && this.isPublished && !this.publishedAt) {
     this.publishedAt = new Date();
   }
-  next();
 });
 
 module.exports = mongoose.model('Blog', blogSchema);

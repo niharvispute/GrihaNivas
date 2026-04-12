@@ -4,12 +4,10 @@ const { sendOtp: sendSmsotp } = require('../services/smsService');
 const { generateTokenPair, verifyRefreshToken, blacklistToken, isBlacklisted } = require('../utils/jwt');
 const { sendSuccess, sendCreated } = require('../utils/apiResponse');
 const AppError = require('../utils/AppError');
+const User = require('../models/mongoose/User');
 
 /**
  * Auth Controller
- *
- * All DB interactions are clearly marked TODO — JWT and OTP logic
- * is fully implemented and functional without a database.
  *
  * Routes:
  *  POST /api/auth/send-otp    → generate OTP and deliver it
@@ -27,19 +25,19 @@ const sendOtp = async (req, res, next) => {
 
     const otp = generateOtp(phone);
 
-    // ── SMS Delivery ─────────────────────────────────────────────────────
-    // Dev: logs to console. Prod: MSG91 or Twilio (see services/smsService.js)
-    // Fire-and-forget — a transient SMS failure shouldn't block the response.
+    // Fire-and-forget SMS — a transient failure shouldn't block the response
     sendSmsotp(phone, otp).catch((err) =>
       console.error('[Auth/sendOtp] SMS delivery failed (non-fatal):', err.message)
     );
 
-    // ── Email fallback if user has email on file ──────────────────────────
-    // TODO: Once DB is ready:
-    //   const user = await UserModel.findOne({ phone });
-    //   if (user?.email) await sendOtpEmail(user.email, otp);
+    // Email fallback if user has email on file
+    const user = await User.findOne({ phone }).select('email name');
+    if (user?.email) {
+      sendOtpEmail(user.email, otp).catch((err) =>
+        console.error('[Auth/sendOtp] Email OTP delivery failed (non-fatal):', err.message)
+      );
+    }
 
-    // NEVER return the OTP in the response — visible only in server logs during dev.
     return sendSuccess(res, 200, 'OTP sent successfully. Valid for 10 minutes.', { phone });
   } catch (err) {
     next(err);
@@ -57,7 +55,6 @@ const verifyOtpHandler = async (req, res, next) => {
 
     // ── Path A: Custom OTP ───────────────────────────────────────────────
     if (otp) {
-      // Throws AppError on wrong OTP, expired, or too many attempts
       verifyOtp(phone, otp);
       verifiedPhone = phone;
     }
@@ -69,52 +66,33 @@ const verifyOtpHandler = async (req, res, next) => {
       verifiedEmail = decoded.email || email || null;
     }
 
-    // ── DB: Find or create user ──────────────────────────────────────────
-    // TODO: Replace stub with real DB upsert once DB is confirmed.
-    //
-    // MongoDB (Mongoose):
-    //   let user = await User.findOne({ phone: verifiedPhone });
-    //   const isNewUser = !user;
-    //   if (!user) {
-    //     user = await User.create({
-    //       phone: verifiedPhone,
-    //       email: verifiedEmail,
-    //       name: name || null,
-    //       isVerified: true,
-    //     });
-    //   } else {
-    //     user.lastLogin = new Date();
-    //     await user.save();
-    //   }
-    //
-    // PostgreSQL (Prisma):
-    //   const { user, created: isNewUser } = await prisma.user.upsert({
-    //     where: { phone: verifiedPhone },
-    //     update: { lastLogin: new Date() },
-    //     create: { phone: verifiedPhone, email: verifiedEmail, name, isVerified: true },
-    //   });
+    // ── Find or create user ──────────────────────────────────────────────
+    let user = await User.findOne({ phone: verifiedPhone });
+    const isNewUser = !user;
 
-    // Stub until DB available
-    const isNewUser = true; // TODO: derive from DB upsert result
-    const user = {
-      id: 'stub-user-id', // TODO: real DB id (_id for Mongo, id for Postgres)
-      role: 'user',
-      phone: verifiedPhone,
-      email: verifiedEmail,
-      name: name || null,
-      isVerified: true,
-    };
+    if (!user) {
+      user = await User.create({
+        phone: verifiedPhone,
+        email: verifiedEmail,
+        name: name || null,
+        isVerified: true,
+      });
+    } else {
+      user.lastLogin = new Date();
+      if (verifiedEmail && !user.email) user.email = verifiedEmail;
+      if (name && !user.name) user.name = name;
+      await user.save();
+    }
 
     // ── Generate JWT pair ────────────────────────────────────────────────
     const { accessToken, refreshToken } = generateTokenPair({
-      id: user.id,
+      id: user._id.toString(),
       role: user.role,
       phone: user.phone,
       email: user.email,
     });
 
-    // ── Welcome email for new users ──────────────────────────────────────
-    // Fire-and-forget — don't await, don't block the login response
+    // Welcome email for new users — fire-and-forget
     if (isNewUser && user.email) {
       sendWelcome({ name: user.name, email: user.email }).catch((err) =>
         console.error('Welcome email failed (non-fatal):', err.message)
@@ -124,14 +102,7 @@ const verifyOtpHandler = async (req, res, next) => {
     return sendCreated(res, isNewUser ? 'Account created successfully.' : 'Login successful.', {
       accessToken,
       refreshToken,
-      user: {
-        id: user.id,
-        name: user.name,
-        phone: user.phone,
-        email: user.email,
-        role: user.role,
-        isNewUser,
-      },
+      user: user.toSafeObject(),
     });
   } catch (err) {
     next(err);
@@ -144,37 +115,22 @@ const refresh = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
 
-    // Reject blacklisted tokens (logged-out sessions)
-    if (isBlacklisted(refreshToken)) {
+    if (await isBlacklisted(refreshToken)) {
       throw new AppError('Refresh token has been revoked. Please log in again.', 401);
     }
 
-    // Verify signature and expiry
     const decoded = verifyRefreshToken(refreshToken);
 
-    // ── DB: Fetch latest user state ───────────────────────────────────────
-    // TODO: Ensure user still exists and is active before issuing new tokens.
-    //
-    //   const user = await User.findById(decoded.id).select('role phone email isActive');
-    //   if (!user || !user.isActive) {
-    //     throw new AppError('Account not found or deactivated.', 401);
-    //   }
+    const user = await User.findById(decoded.id).select('role phone email isActive');
+    if (!user || !user.isActive) {
+      throw new AppError('Account not found or deactivated.', 401);
+    }
 
-    // Stub until DB available
-    const user = {
-      id: decoded.id,
-      role: 'user',  // TODO: from DB
-      phone: null,   // TODO: from DB
-      email: null,   // TODO: from DB
-    };
+    // Invalidate used token — prevents replay attacks
+    await blacklistToken(refreshToken);
 
-    // ── Refresh Token Rotation ────────────────────────────────────────────
-    // Invalidate the used token — prevents replay attacks
-    blacklistToken(refreshToken);
-
-    // Issue a fresh pair
     const tokens = generateTokenPair({
-      id: user.id,
+      id: user._id.toString(),
       role: user.role,
       phone: user.phone,
       email: user.email,
@@ -191,13 +147,7 @@ const refresh = async (req, res, next) => {
 const logout = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
-
-    // Blacklist so it cannot be reused
-    blacklistToken(refreshToken);
-
-    // TODO: If storing refresh tokens in DB, delete here.
-    //   await RefreshToken.deleteOne({ tokenHash: hashToken(refreshToken) });
-
+    await blacklistToken(refreshToken);
     return sendSuccess(res, 200, 'Logged out successfully.');
   } catch (err) {
     next(err);
@@ -208,12 +158,9 @@ const logout = async (req, res, next) => {
 
 const getMe = async (req, res, next) => {
   try {
-    // req.user is set by the protect middleware (decoded JWT payload)
-    // TODO: Fetch full user profile from DB for fresh data.
-    //   const user = await User.findById(req.user.id).select('-passwordHash');
-    //   if (!user) throw new AppError('User not found.', 404);
-
-    return sendSuccess(res, 200, 'Current user fetched.', req.user);
+    const user = await User.findById(req.user.id).select('-__v');
+    if (!user) throw new AppError('User not found.', 404);
+    return sendSuccess(res, 200, 'Current user fetched.', user.toSafeObject());
   } catch (err) {
     next(err);
   }

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { sendUnauthorized, sendForbidden } = require('../utils/apiResponse');
+const User = require('../models/mongoose/User');
 
 /**
  * JWT Authentication Middleware.
@@ -13,8 +14,6 @@ const { sendUnauthorized, sendForbidden } = require('../utils/apiResponse');
  *   3. Attach decoded payload → req.user
  *   4. Call next() or return 401
  *
- * NOTE: DB user lookup (to check if user still exists / is still active)
- * is marked as TODO — will be added once DB is confirmed.
  */
 const protect = async (req, res, next) => {
   try {
@@ -34,13 +33,24 @@ const protect = async (req, res, next) => {
     // 2. Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // TODO: Once DB is confirmed, add:
-    // const user = await UserModel.findById(decoded.id).select('-passwordHash');
-    // if (!user) return sendUnauthorized(res, 'User no longer exists.');
-    // if (!user.isActive) return sendForbidden(res, 'Account has been deactivated.');
+    // 3. Ensure user still exists and is active
+    const user = await User.findById(decoded.id).select('role phone email isActive');
 
-    // 3. Attach decoded payload to request
-    req.user = decoded; // { id, role, email, iat, exp }
+    if (!user) {
+      return sendUnauthorized(res, 'User no longer exists.');
+    }
+
+    if (!user.isActive) {
+      return sendForbidden(res, 'Account has been deactivated.');
+    }
+
+    // 4. Attach canonical user payload to request
+    req.user = {
+      id: user._id.toString(),
+      role: user.role,
+      phone: user.phone,
+      email: user.email,
+    };
 
     next();
   } catch (err) {
@@ -72,7 +82,15 @@ const optionalAuth = async (req, res, next) => {
       const token = authHeader.split(' ')[1];
       if (token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+        const user = await User.findById(decoded.id).select('role phone email isActive');
+        if (user?.isActive) {
+          req.user = {
+            id: user._id.toString(),
+            role: user.role,
+            phone: user.phone,
+            email: user.email,
+          };
+        }
       }
     }
 

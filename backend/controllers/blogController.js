@@ -1,67 +1,84 @@
 const { uploadImage, extractPublicId, deleteFile } = require('../services/cloudinaryService');
-const { generateSlug, generateUniqueSlug } = require('../utils/slugify');
+const { generateUniqueSlug } = require('../utils/slugify');
 const { parsePagination } = require('../utils/pagination');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
 const AppError = require('../utils/AppError');
+const Blog = require('../models/mongoose/Blog');
+
+const BLOG_CATEGORY_ALIASES = {
+  market_trends: 'market_trends',
+  'market-insights': 'market_trends',
+  buying_guide: 'buying_guide',
+  'buying-guide': 'buying_guide',
+  legal: 'legal',
+  investment: 'investment',
+  lifestyle: 'lifestyle',
+};
+
+const normalizeBlogCategory = (category) => {
+  if (!category) return category;
+  return BLOG_CATEGORY_ALIASES[category] || category;
+};
+
+const normalizeBlogPayload = (payload = {}) => {
+  const normalized = { ...payload };
+
+  if (normalized.category) {
+    normalized.category = normalizeBlogCategory(normalized.category);
+  }
+
+  // Backward compatibility: accept meta* and map to seo*
+  if (normalized.metaTitle && !normalized.seoTitle) {
+    normalized.seoTitle = normalized.metaTitle;
+  }
+  if (normalized.metaDescription && !normalized.seoDescription) {
+    normalized.seoDescription = normalized.metaDescription;
+  }
+
+  delete normalized.metaTitle;
+  delete normalized.metaDescription;
+  delete normalized.keywords;
+
+  return normalized;
+};
 
 /**
  * Blog Controller
  *
- * Business logic:
- *  - Slug auto-generated from title on create
- *  - Slug regenerated if title changes on update
- *  - Featured image uploaded to Cloudinary before DB write
- *  - Old Cloudinary image deleted when replaced on update
- *  - Comments are public (no auth required) — basic anti-spam via rate limiter
- *  - Blog listing excludes the `content` field (bandwidth optimization)
+ * - Slug auto-generated from title on create; regenerated on title change
+ * - Featured image uploaded to Cloudinary; old image deleted on replace
+ * - Comments are public (no auth required)
+ * - Blog listing excludes content field (bandwidth optimisation)
  */
 
 // ── GET /api/blogs ────────────────────────────────────────────────────────────
 
 const list = async (req, res, next) => {
   try {
-    const { page, limit, skip, buildMeta } = parsePagination(req.query);
+    const { limit, skip, buildMeta } = parsePagination(req.query);
     const { category, tag, search } = req.query;
+    const normalizedCategory = normalizeBlogCategory(category);
 
-    // ── MongoDB filter ─────────────────────────────────────────────────────
-    // const mongoFilter = {};
-    // if (category) mongoFilter.category = category;
-    // if (tag)      mongoFilter.tags = tag;           // array field match
-    // if (search) {
-    //   mongoFilter.$or = [
-    //     { title:   new RegExp(search, 'i') },
-    //     { tags:    new RegExp(search, 'i') },
-    //   ];
-    // }
-    //
-    // const [blogs, total] = await Promise.all([
-    //   Blog.find(mongoFilter)
-    //     .sort({ createdAt: -1 })
-    //     .skip(skip).limit(limit)
-    //     .select('-content -__v'),    // exclude heavy content field in listing
-    //   Blog.countDocuments(mongoFilter),
-    // ]);
+    const filter = { isPublished: true };
+    if (normalizedCategory) filter.category = normalizedCategory;
+    if (tag)      filter.tags = tag;
+    if (search) {
+      filter.$or = [
+        { title: new RegExp(search, 'i') },
+        { tags:  new RegExp(search, 'i') },
+      ];
+    }
 
-    // ── PostgreSQL / Prisma ────────────────────────────────────────────────
-    // const prismaWhere = {};
-    // if (category) prismaWhere.category = category;
-    // if (tag)      prismaWhere.tags = { has: tag };
-    // if (search) {
-    //   prismaWhere.OR = [
-    //     { title: { contains: search, mode: 'insensitive' } },
-    //   ];
-    // }
-    //
-    // const [blogs, total] = await Promise.all([
-    //   prisma.blog.findMany({
-    //     where: prismaWhere, orderBy: { createdAt: 'desc' }, skip, take: limit,
-    //     select: { id: true, title: true, slug: true, featuredImage: true, category: true,
-    //               tags: true, metaDescription: true, createdAt: true },
-    //   }),
-    //   prisma.blog.count({ where: prismaWhere }),
-    // ]);
+    const [blogs, total] = await Promise.all([
+      Blog.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .select('-content -comments -__v'),
+      Blog.countDocuments(filter),
+    ]);
 
-    return sendSuccess(res, 200, 'Blogs fetched', [], buildMeta(0));
+    return sendSuccess(res, 200, 'Blogs fetched', blogs, buildMeta(total));
   } catch (err) {
     next(err);
   }
@@ -73,15 +90,13 @@ const getBySlug = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    // TODO — MongoDB:
-    //   const blog = await Blog.findOne({ slug });
-    //   if (!blog) throw new AppError('Blog post not found', 404);
+    const blog = await Blog.findOne({ slug, isPublished: true }).lean();
+    if (!blog) throw new AppError('Blog post not found', 404);
 
-    // TODO — PostgreSQL:
-    //   const blog = await prisma.blog.findUnique({ where: { slug } });
-    //   if (!blog) throw new AppError('Blog post not found', 404);
+    // Strip unapproved comments from public response
+    blog.comments = (blog.comments || []).filter((c) => c.isApproved);
 
-    throw new AppError('Blog post not found', 404);
+    return sendSuccess(res, 200, 'Blog fetched', blog);
   } catch (err) {
     next(err);
   }
@@ -91,26 +106,23 @@ const getBySlug = async (req, res, next) => {
 
 const create = async (req, res, next) => {
   try {
-    const data = req.body;
+    const data = normalizeBlogPayload(req.body);
     const slug = generateUniqueSlug(data.title);
 
     let featuredImage = null;
     if (req.file) {
       const uploaded = await uploadImage(req.file.buffer, 'bricks/blogs', 'blogFeatured');
-      featuredImage = uploaded.url;
+      featuredImage = { url: uploaded.url, publicId: uploaded.publicId };
     }
 
-    const blogData = { ...data, slug, featuredImage };
+    const blog = await Blog.create({
+      ...data,
+      slug,
+      featuredImage,
+      author: req.user.id,
+    });
 
-    // TODO — MongoDB:
-    //   const blog = await Blog.create(blogData);
-    //   return sendCreated(res, 'Blog created', blog);
-
-    // TODO — PostgreSQL:
-    //   const blog = await prisma.blog.create({ data: blogData });
-    //   return sendCreated(res, 'Blog created', blog);
-
-    return sendCreated(res, 'Blog created', { slug, featuredImage });
+    return sendCreated(res, 'Blog created', blog);
   } catch (err) {
     next(err);
   }
@@ -121,32 +133,40 @@ const create = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updates = req.body;
+    const updates = normalizeBlogPayload(req.body);
+
+    const existing = await Blog.findById(id).select('featuredImage isPublished publishedAt');
+    if (!existing) throw new AppError('Blog not found', 404);
 
     if (updates.title) {
       updates.slug = generateUniqueSlug(updates.title);
     }
 
     if (req.file) {
-      // TODO: Delete old image from Cloudinary before replacing
-      // const existing = await Blog.findById(id);
-      // if (existing?.featuredImage) {
-      //   await deleteFile(extractPublicId(existing.featuredImage), 'image');
-      // }
+      // Delete old image from Cloudinary before replacing
+      if (existing?.featuredImage?.publicId) {
+        deleteFile(existing.featuredImage.publicId, 'image').catch(() => {});
+      } else {
+        const oldId = extractPublicId(existing?.featuredImage?.url);
+        if (oldId) {
+          deleteFile(oldId, 'image').catch(() => {});
+        }
+      }
+
       const uploaded = await uploadImage(req.file.buffer, 'bricks/blogs', 'blogFeatured');
-      updates.featuredImage = uploaded.url;
+      updates.featuredImage = { url: uploaded.url, publicId: uploaded.publicId };
     }
 
-    // TODO — MongoDB:
-    //   const blog = await Blog.findByIdAndUpdate(id, updates, { new: true });
-    //   if (!blog) throw new AppError('Blog not found', 404);
-    //   return sendSuccess(res, 200, 'Blog updated', blog);
+    if (updates.isPublished === true && !existing.isPublished && !existing.publishedAt) {
+      updates.publishedAt = new Date();
+    }
 
-    // TODO — PostgreSQL:
-    //   const blog = await prisma.blog.update({ where: { id }, data: updates });
-    //   return sendSuccess(res, 200, 'Blog updated', blog);
+    const blog = await Blog.findByIdAndUpdate(id, updates, {
+      returnDocument: 'after',
+      runValidators: true,
+    });
 
-    return sendSuccess(res, 200, 'Blog updated', { id, ...updates });
+    return sendSuccess(res, 200, 'Blog updated', blog);
   } catch (err) {
     next(err);
   }
@@ -158,15 +178,19 @@ const remove = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    // TODO — Delete from Cloudinary first
-    // const blog = await Blog.findById(id);
-    // if (!blog) throw new AppError('Blog not found', 404);
-    // if (blog.featuredImage) {
-    //   await deleteFile(extractPublicId(blog.featuredImage), 'image');
-    // }
+    const blog = await Blog.findById(id);
+    if (!blog) throw new AppError('Blog not found', 404);
 
-    // TODO — MongoDB:   await Blog.findByIdAndDelete(id);
-    // TODO — PostgreSQL: await prisma.blog.delete({ where: { id } });
+    if (blog.featuredImage?.publicId) {
+      deleteFile(blog.featuredImage.publicId, 'image').catch(() => {});
+    } else if (blog.featuredImage) {
+      const pubId = extractPublicId(blog.featuredImage.url);
+      if (pubId) {
+        deleteFile(pubId, 'image').catch(() => {});
+      }
+    }
+
+    await blog.deleteOne();
 
     return sendNoContent(res);
   } catch (err) {
@@ -181,31 +205,29 @@ const addComment = async (req, res, next) => {
     const { id } = req.params;
     const { name, comment } = req.body;
 
-    const newComment = {
-      name: name.trim(),
-      comment: comment.trim(),
-      createdAt: new Date(),
-    };
+    const blog = await Blog.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          comments: {
+            name: name.trim(),
+            content: comment.trim(),
+          },
+        },
+      },
+      { returnDocument: 'after', runValidators: true }
+    );
 
-    // TODO — MongoDB:
-    //   const blog = await Blog.findByIdAndUpdate(
-    //     id,
-    //     { $push: { comments: newComment } },
-    //     { new: true }
-    //   );
-    //   if (!blog) throw new AppError('Blog post not found', 404);
-    //   return sendCreated(res, 'Comment added', newComment);
+    if (!blog) throw new AppError('Blog post not found', 404);
 
-    // TODO — PostgreSQL:
-    //   const blog = await prisma.blog.findUnique({ where: { id } });
-    //   if (!blog) throw new AppError('Blog post not found', 404);
-    //   const updated = await prisma.blog.update({
-    //     where: { id },
-    //     data: { comments: { push: newComment } },
-    //   });
-    //   return sendCreated(res, 'Comment added', newComment);
-
-    return sendCreated(res, 'Comment added', newComment);
+    const addedComment = blog.comments[blog.comments.length - 1];
+    return sendCreated(res, 'Comment added', {
+      id: addedComment._id,
+      name: addedComment.name,
+      comment: addedComment.content,
+      isApproved: addedComment.isApproved,
+      createdAt: addedComment.createdAt,
+    });
   } catch (err) {
     next(err);
   }

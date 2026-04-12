@@ -111,6 +111,13 @@ const leadSchema = new mongoose.Schema(
       default: [],
     },
 
+    // Monthly income (relevant for loan leads)
+    monthlyIncome: {
+      type: Number,
+      min: [0, 'Monthly income cannot be negative'],
+      default: null,
+    },
+
     // BHK preferences (relevant for buy/rent leads)
     bhkPreferences: {
       type: [Number],

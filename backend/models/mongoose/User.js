@@ -94,9 +94,9 @@ const userSchema = new mongoose.Schema(
 );
 
 // ── Indexes ───────────────────────────────────────────────────────────────────
+// Note: phone and email already have unique indexes from the schema field definitions.
+// Only add extra indexes not already implied by field-level constraints.
 
-userSchema.index({ phone: 1 });
-userSchema.index({ email: 1 });
 userSchema.index({ role: 1 });
 userSchema.index({ createdAt: -1 });
 

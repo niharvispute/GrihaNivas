@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { properties } from '@/data/properties';
+import { notFound } from 'next/navigation';
 import PropertyGallery from '@/components/property/details/PropertyGallery';
 import PropertyStickyInfo from '@/components/property/details/PropertyStickyInfo';
 import PropertyHighlights from '@/components/property/details/PropertyHighlights';
@@ -9,10 +9,51 @@ import PropertyFloorPlans from '@/components/property/details/PropertyFloorPlans
 import PropertyLeadForm from '@/components/property/details/PropertyLeadForm';
 import PropertyBuilderProfile from '@/components/property/details/PropertyBuilderProfile';
 import PropertyCard from '@/components/property/PropertyCard';
+import {
+  getPropertyById,
+  getPropertyBySlug,
+  listProperties,
+} from '@/services/propertyService';
 
 export default async function PropertyDetailPage({ params }) {
   const { id } = await params;
-  const property = properties.find(p => p.id === parseInt(id)) || properties[0];
+
+  let property = null;
+  try {
+    property = await getPropertyBySlug(id);
+  } catch {
+    property = null;
+  }
+
+  if (!property) {
+    try {
+      property = await getPropertyById(id);
+    } catch {
+      property = null;
+    }
+  }
+
+  if (!property) {
+    notFound();
+  }
+
+  let similarProperties = [];
+  try {
+    const response = await listProperties({
+      category: property?.raw?.category,
+      limit: 6,
+    });
+    similarProperties = (response.items || [])
+      .filter((item) => item.id !== property.id)
+      .slice(0, 3);
+  } catch {
+    similarProperties = [];
+  }
+
+  const neighborhoodHighlights = property?.neighborhood?.highlights || [];
+  const gallery = property?.gallery || [];
+  const highlights = property?.highlights || [];
+  const amenities = property?.amenities || [];
 
   return (
     <main className="pt-8 pb-24 max-w-7xl mx-auto px-6 lg:px-8">
@@ -26,7 +67,7 @@ export default async function PropertyDetailPage({ params }) {
           </li>
           <li className="flex items-center">
             <svg className="w-3 h-3 mx-1 text-slate-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
-            <span className="text-primary truncate max-w-[200px]">{property.title}</span>
+            <span className="text-primary truncate max-w-50">{property.title}</span>
           </li>
         </ol>
       </nav>
@@ -34,7 +75,7 @@ export default async function PropertyDetailPage({ params }) {
       {/* Hero Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
         <div className="lg:col-span-8">
-          <PropertyGallery images={property.gallery} />
+          <PropertyGallery images={gallery} />
         </div>
         <div className="lg:col-span-4">
           <PropertyStickyInfo property={property} />
@@ -44,9 +85,9 @@ export default async function PropertyDetailPage({ params }) {
       {/* Main Content Flow */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         <div className="lg:col-span-8 space-y-20">
-          <PropertyHighlights highlights={property.highlights} />
+          <PropertyHighlights highlights={highlights} />
           <PropertyAbout description={property.longDescription || property.description} />
-          <PropertyAmenities amenities={property.amenities} />
+          <PropertyAmenities amenities={amenities} />
           <PropertyFloorPlans />
           
           {/* Neighborhood Placeholder */}
@@ -59,7 +100,7 @@ export default async function PropertyDetailPage({ params }) {
                 alt="Neighborhood Map Placeholder" 
               />
               <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md p-6 rounded-xl flex flex-wrap gap-8 border border-white shadow-xl">
-                 {property.neighborhood?.highlights.map((nh, idx) => (
+                  {neighborhoodHighlights.map((nh, idx) => (
                     <div key={idx} className="flex items-center gap-3">
                       <span className="material-symbols-outlined text-primary">{nh.icon}</span>
                       <div>
@@ -75,7 +116,7 @@ export default async function PropertyDetailPage({ params }) {
 
         {/* Right Column Sidebar */}
         <div className="lg:col-span-4 space-y-8">
-          <PropertyLeadForm />
+          <PropertyLeadForm property={property} />
           <PropertyBuilderProfile builder={property.builder} />
         </div>
       </div>
@@ -94,10 +135,16 @@ export default async function PropertyDetailPage({ params }) {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {properties.slice(0, 3).map((p) => (
+          {similarProperties.map((p) => (
             <PropertyCard key={p.id} property={p} />
           ))}
         </div>
+
+        {similarProperties.length === 0 && (
+          <p className="mt-6 text-sm font-medium text-slate-500">
+            More similar listings will appear here soon.
+          </p>
+        )}
       </section>
     </main>
   );

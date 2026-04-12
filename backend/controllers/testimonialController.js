@@ -1,20 +1,17 @@
-const { uploadImage, deleteFile, extractPublicId } = require('../services/cloudinaryService');
+const { uploadImage, deleteFile } = require('../services/cloudinaryService');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
 const AppError = require('../utils/AppError');
+const Testimonial = require('../models/mongoose/Testimonial');
 
 // ── GET /api/testimonials ─────────────────────────────────────────────────────
 
 const list = async (req, res, next) => {
   try {
-    // TODO — MongoDB:
-    //   const testimonials = await Testimonial.find().sort({ createdAt: -1 });
-    //   return sendSuccess(res, 200, 'Testimonials fetched', testimonials);
+    const testimonials = await Testimonial.find({ isActive: true })
+      .sort({ order: 1, createdAt: -1 })
+      .select('-__v');
 
-    // TODO — PostgreSQL:
-    //   const testimonials = await prisma.testimonial.findMany({ orderBy: { createdAt: 'desc' } });
-    //   return sendSuccess(res, 200, 'Testimonials fetched', testimonials);
-
-    return sendSuccess(res, 200, 'Testimonials fetched', []);
+    return sendSuccess(res, 200, 'Testimonials fetched', testimonials);
   } catch (err) {
     next(err);
   }
@@ -26,23 +23,40 @@ const create = async (req, res, next) => {
   try {
     const data = req.body;
 
-    let image = null;
+    let photo = null;
     if (req.file) {
       const uploaded = await uploadImage(req.file.buffer, 'bricks/testimonials', 'testimonialPhoto');
-      image = uploaded.url;
+      photo = { url: uploaded.url, publicId: uploaded.publicId };
     }
 
-    const testimonialData = { ...data, image };
+    const testimonial = await Testimonial.create({ ...data, photo });
 
-    // TODO — MongoDB:
-    //   const testimonial = await Testimonial.create(testimonialData);
-    //   return sendCreated(res, 'Testimonial created', testimonial);
+    return sendCreated(res, 'Testimonial created', testimonial);
+  } catch (err) {
+    next(err);
+  }
+};
 
-    // TODO — PostgreSQL:
-    //   const testimonial = await prisma.testimonial.create({ data: testimonialData });
-    //   return sendCreated(res, 'Testimonial created', testimonial);
+// ── PUT /api/testimonials/:id  [admin] ────────────────────────────────────────
 
-    return sendCreated(res, 'Testimonial created', testimonialData);
+const update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+
+    if (req.file) {
+      const existing = await Testimonial.findById(id).select('photo');
+      if (existing?.photo?.publicId) {
+        deleteFile(existing.photo.publicId, 'image').catch(() => {});
+      }
+      const uploaded = await uploadImage(req.file.buffer, 'bricks/testimonials', 'testimonialPhoto');
+      updates.photo = { url: uploaded.url, publicId: uploaded.publicId };
+    }
+
+    const testimonial = await Testimonial.findByIdAndUpdate(id, updates, { returnDocument: 'after' });
+    if (!testimonial) throw new AppError('Testimonial not found', 404);
+
+    return sendSuccess(res, 200, 'Testimonial updated', testimonial);
   } catch (err) {
     next(err);
   }
@@ -54,18 +68,14 @@ const remove = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    // TODO — Delete Cloudinary image first
-    // MongoDB:
-    //   const testimonial = await Testimonial.findById(id);
-    //   if (!testimonial) throw new AppError('Testimonial not found', 404);
-    //   if (testimonial.image) await deleteFile(extractPublicId(testimonial.image));
-    //   await testimonial.deleteOne();
+    const testimonial = await Testimonial.findById(id);
+    if (!testimonial) throw new AppError('Testimonial not found', 404);
 
-    // PostgreSQL:
-    //   const testimonial = await prisma.testimonial.findUnique({ where: { id } });
-    //   if (!testimonial) throw new AppError('Testimonial not found', 404);
-    //   if (testimonial.image) await deleteFile(extractPublicId(testimonial.image));
-    //   await prisma.testimonial.delete({ where: { id } });
+    if (testimonial.photo?.publicId) {
+      deleteFile(testimonial.photo.publicId, 'image').catch(() => {});
+    }
+
+    await testimonial.deleteOne();
 
     return sendNoContent(res);
   } catch (err) {
@@ -73,4 +83,4 @@ const remove = async (req, res, next) => {
   }
 };
 
-module.exports = { list, create, remove };
+module.exports = { list, create, update, remove };

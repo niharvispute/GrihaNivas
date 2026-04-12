@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const AppError = require('./AppError');
+const { createHash } = require('crypto');
+const { getRedisClient } = require('../config/redis');
 
 /**
  * JWT Utility
@@ -122,29 +124,62 @@ const verifyRefreshToken = (token) => {
   }
 };
 
-// ── Refresh Token Blacklist (Redis-ready stub) ────────────────────────────────
+// ── Refresh Token Blacklist ──────────────────────────────────────────────────
 //
-// In production, use Redis with TTL matching the token's expiry.
-// SET blacklist:<token_hash> 1 EX <remaining_ttl_seconds>
-// CHECK: EXISTS blacklist:<token_hash>
-//
-// Current implementation: in-memory Set (resets on server restart).
-// Acceptable for dev — not for production clusters (tokens survive restart).
+// Storage strategy:
+//  - Redis (if initialized) for production-safe persistence across restarts
+//  - In-memory map fallback for local/dev usage
 
-const blacklist = new Set();
+const inMemoryBlacklist = new Map(); // tokenHash -> expiresAtEpochSec
+const REDIS_KEY_PREFIX = 'jwt:blacklist:refresh:';
+const FALLBACK_TTL_SECONDS = 30 * 24 * 60 * 60; // 30 days
 
 /**
  * Hash a token before storing in blacklist (don't store raw tokens).
  */
-const { createHash } = require('crypto');
 const hashToken = (token) => createHash('sha256').update(token).digest('hex');
+
+const buildRedisKey = (tokenHash) => `${REDIS_KEY_PREFIX}${tokenHash}`;
+
+const getBlacklistTtlSeconds = (refreshToken) => {
+  const decoded = jwt.decode(refreshToken);
+
+  if (decoded && typeof decoded.exp === 'number') {
+    const remaining = decoded.exp - Math.floor(Date.now() / 1000);
+    return Math.max(1, remaining);
+  }
+
+  return FALLBACK_TTL_SECONDS;
+};
+
+const cleanupExpiredInMemoryBlacklist = () => {
+  const now = Math.floor(Date.now() / 1000);
+
+  for (const [tokenHash, expiresAt] of inMemoryBlacklist.entries()) {
+    if (expiresAt <= now) {
+      inMemoryBlacklist.delete(tokenHash);
+    }
+  }
+};
 
 /**
  * Invalidate a refresh token (logout).
  * @param {string} refreshToken
  */
-const blacklistToken = (refreshToken) => {
-  blacklist.add(hashToken(refreshToken));
+const blacklistToken = async (refreshToken) => {
+  if (!refreshToken) return;
+
+  const tokenHash = hashToken(refreshToken);
+  const ttlSeconds = getBlacklistTtlSeconds(refreshToken);
+  const redis = getRedisClient();
+
+  if (redis) {
+    await redis.set(buildRedisKey(tokenHash), '1', { EX: ttlSeconds });
+    return;
+  }
+
+  const expiresAt = Math.floor(Date.now() / 1000) + ttlSeconds;
+  inMemoryBlacklist.set(tokenHash, expiresAt);
 };
 
 /**
@@ -152,7 +187,20 @@ const blacklistToken = (refreshToken) => {
  * @param {string} refreshToken
  * @returns {boolean}
  */
-const isBlacklisted = (refreshToken) => blacklist.has(hashToken(refreshToken));
+const isBlacklisted = async (refreshToken) => {
+  if (!refreshToken) return false;
+
+  const tokenHash = hashToken(refreshToken);
+  const redis = getRedisClient();
+
+  if (redis) {
+    const exists = await redis.exists(buildRedisKey(tokenHash));
+    return exists === 1;
+  }
+
+  cleanupExpiredInMemoryBlacklist();
+  return inMemoryBlacklist.has(tokenHash);
+};
 
 module.exports = {
   generateAccessToken,

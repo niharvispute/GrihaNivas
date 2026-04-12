@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const AppError = require('../utils/AppError');
 
 /**
@@ -27,6 +28,27 @@ const globalErrorHandler = (err, req, res, next) => {
   let statusCode = err.statusCode || 500;
   let message = err.message || 'Internal server error';
   let error = null;
+
+  // ── Mongoose CastError — invalid ObjectId in params ────────────────
+  // e.g. GET /api/properties/not-an-id → "Cast to ObjectId failed"
+  if (err instanceof mongoose.Error.CastError) {
+    statusCode = 400;
+    message = `Invalid value for field "${err.path}": "${err.value}"`;
+  }
+
+  // ── Mongoose ValidationError — schema constraint violated ───────────
+  if (err instanceof mongoose.Error.ValidationError) {
+    statusCode = 400;
+    message = Object.values(err.errors).map((e) => e.message).join('. ');
+  }
+
+  // ── MongoDB duplicate key (E11000) — unique constraint violated ─────
+  if (err.code === 11000) {
+    const field = Object.keys(err.keyValue || {})[0] || 'field';
+    const value = err.keyValue?.[field];
+    statusCode = 409;
+    message = `${field} "${value}" is already in use.`;
+  }
 
   // ── JWT errors ──────────────────────────────────────────
   if (err.name === 'JsonWebTokenError') {

@@ -48,6 +48,20 @@ const objectIdSchema = z
   .length(24, 'Invalid ID format')
   .regex(/^[a-f0-9]{24}$/, 'Invalid ID format');
 
+const BLOG_CATEGORY_MAP = {
+  market_trends: 'market_trends',
+  'market-insights': 'market_trends',
+  buying_guide: 'buying_guide',
+  'buying-guide': 'buying_guide',
+  legal: 'legal',
+  investment: 'investment',
+  lifestyle: 'lifestyle',
+};
+
+const blogCategorySchema = z
+  .enum(Object.keys(BLOG_CATEGORY_MAP))
+  .transform((value) => BLOG_CATEGORY_MAP[value]);
+
 // ─────────────────────────────────────────────
 // SCHEMAS
 // ─────────────────────────────────────────────
@@ -134,59 +148,54 @@ const schemas = {
   },
 
   // ── PROPERTIES ────────────────────────────
+  // All field names match the Mongoose Property model exactly.
   property: {
     create: z.object({
-      title: z.string().trim().min(5).max(200),
+      title:       z.string().trim().min(5).max(200),
       description: z.string().trim().min(20).max(5000),
-      category: z.enum(['buy', 'rent', 'commercial', 'new_launch']),
-      propertyType: z.enum(['Apartment', 'Penthouse', 'Villa', 'Commercial', 'Land']).optional(),
+      category:    z.enum(['buy', 'rent', 'commercial', 'new_launch']),
       location: z.object({
-        city: z.string().default('Mumbai'),
-        area: z.string().trim().min(1),
+        city:    z.string().trim().default('Mumbai'),
+        area:    z.string().trim().min(1),
         address: z.string().trim().optional(),
-        coordinates: z
-          .object({
-            lat: z.number().min(-90).max(90),
-            lng: z.number().min(-180).max(180),
-          })
-          .optional(),
+        pincode: z.string().trim().optional(),
+        coordinates: z.object({
+          lat: z.number().min(-90).max(90),
+          lng: z.number().min(-180).max(180),
+        }).optional(),
       }),
-      price: z.number().min(0),
-      pricePerSqft: z.number().min(0).optional(),
-      priceOnRequest: z.boolean().default(false),
-      bhk: z.enum(['1BHK', '2BHK', '3BHK', '4BHK', '5+BHK']).optional(),
-      superArea: z.number().min(0).optional(),
-      carpetArea: z.number().min(0).optional(),
-      builtArea: z.number().min(0).optional(),
-      floorNumber: z.number().int().min(0).optional(),
-      totalFloors: z.number().int().min(1).optional(),
-      possessionStatus: z
-        .enum(['Ready to Move', 'Within 1 Year', 'Under Construction'])
-        .optional(),
-      possessionDate: z.coerce.date().optional(),
-      furnishingType: z.enum(['Fully-furnished', 'Semi-furnished', 'Unfurnished']).optional(),
-      reraNumber: z.string().trim().optional(),
-      reraRegistered: z.boolean().default(false),
-      builderName: z.string().trim().max(200).optional(),
-      keyHighlights: z.array(z.string()).max(20).optional(),
-      amenities: z.array(z.string()).max(50).optional(),
-      isFeatured: z.boolean().default(false),
+      price:        z.number().min(0),
+      priceUnit:    z.enum(['total', 'per_sqft', 'per_month']).default('total'),
+      isNegotiable: z.boolean().default(false),
+      bhk:          z.coerce.number().int().min(1).max(10).optional(),
+      bathrooms:    z.coerce.number().int().min(1).max(20).optional(),
+      areaSqft:     z.number().min(1).optional(),
+      floor:        z.number().int().min(0).optional(),
+      totalFloors:  z.number().int().min(1).optional(),
+      parking:      z.number().int().min(0).default(0),
+      furnishing:   z.enum(['unfurnished', 'semi_furnished', 'furnished']).optional(),
+      facing:       z.string().trim().optional(),
+      possession:   z.string().trim().optional(),
+      age:          z.string().trim().optional(),
+      reraNumber:   z.string().trim().optional(),
+      amenities:    z.array(z.string().trim()).max(50).optional(),
+      highlights:   z.array(z.string().trim()).max(20).optional(),
+      isFeatured:   z.boolean().default(false),
+      seoTitle:       z.string().trim().max(70).optional(),
+      seoDescription: z.string().trim().max(160).optional(),
     }),
 
     list: z.object({
-      page: z.coerce.number().int().min(1).default(1),
-      limit: z.coerce.number().int().min(1).max(50).default(10),
-      category: z.enum(['buy', 'rent', 'commercial', 'new_launch']).optional(),
-      bhk: z.enum(['1BHK', '2BHK', '3BHK', '4BHK', '5+BHK']).optional(),
-      minPrice: z.coerce.number().min(0).optional(),
-      maxPrice: z.coerce.number().min(0).optional(),
-      area: z.string().trim().optional(),
-      furnishingType: z.enum(['Fully-furnished', 'Semi-furnished', 'Unfurnished']).optional(),
-      possessionStatus: z
-        .enum(['Ready to Move', 'Within 1 Year', 'Under Construction'])
-        .optional(),
+      page:      z.coerce.number().int().min(1).default(1),
+      limit:     z.coerce.number().int().min(1).max(50).default(10),
+      category:  z.enum(['buy', 'rent', 'commercial', 'new_launch']).optional(),
+      bhk:       z.coerce.number().int().min(1).max(10).optional(),
+      minPrice:  z.coerce.number().min(0).optional(),
+      maxPrice:  z.coerce.number().min(0).optional(),
+      area:      z.string().trim().optional(),
+      furnishing: z.enum(['unfurnished', 'semi_furnished', 'furnished']).optional(),
       isFeatured: z.coerce.boolean().optional(),
-      sortBy: z.enum(['price_asc', 'price_desc', 'newest']).default('newest'),
+      sortBy:    z.enum(['price_asc', 'price_desc', 'newest']).default('newest'),
     }),
   },
 
@@ -195,11 +204,15 @@ const schemas = {
     create: z.object({
       title: z.string().trim().min(5).max(200),
       content: z.string().trim().min(100),
-      category: z.string().trim().min(1),
+      category: blogCategorySchema,
       tags: z.array(z.string().trim()).max(10).optional(),
+      seoTitle: z.string().trim().max(70).optional(),
+      seoDescription: z.string().trim().max(160).optional(),
+      // Backward-compatibility aliases accepted for existing clients
       metaTitle: z.string().trim().max(70).optional(),
       metaDescription: z.string().trim().max(160).optional(),
       keywords: z.array(z.string().trim()).max(20).optional(),
+      isPublished: z.boolean().optional(),
     }),
 
     addComment: z.object({
@@ -210,7 +223,7 @@ const schemas = {
     list: z.object({
       page: z.coerce.number().int().min(1).default(1),
       limit: z.coerce.number().int().min(1).max(20).default(10),
-      category: z.string().trim().optional(),
+      category: blogCategorySchema.optional(),
       tag: z.string().trim().optional(),
       search: z.string().trim().max(100).optional(),
     }),
@@ -262,6 +275,18 @@ const schemas = {
 
   // ── USER ──────────────────────────────────
   user: {
+    adminList: z.object({
+      page: z.coerce.number().int().min(1).default(1),
+      limit: z.coerce.number().int().min(1).max(100).default(10),
+      search: z.string().trim().max(100).optional(),
+      role: z.enum(['user', 'admin']).optional(),
+      isActive: z.coerce.boolean().optional(),
+    }),
+
+    userIdParam: z.object({
+      id: objectIdSchema,
+    }),
+
     saveProperty: z.object({
       propertyId: objectIdSchema,
     }),
