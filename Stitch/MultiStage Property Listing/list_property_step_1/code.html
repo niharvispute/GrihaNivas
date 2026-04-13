@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>List Property - EstatePro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#005227",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-secondary-container": "#75082d",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#ffd9de",
+                        "primary": "#b80049",
+                        "on-tertiary-container": "#f6fff3",
+                        "tertiary-container": "#008644",
+                        "secondary": "#a73451",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-secondary-fixed-variant": "#871a3a",
+                        "outline-variant": "#e4bdc2",
+                        "surface-container": "#f0eded",
+                        "on-secondary-fixed": "#400014",
+                        "on-surface": "#1b1c1c",
+                        "secondary-container": "#ff7794",
+                        "surface-dim": "#dcd9d9",
+                        "inverse-primary": "#ffb2be",
+                        "tertiary-fixed-dim": "#6ddd8e",
+                        "on-background": "#1b1c1c",
+                        "tertiary": "#006a34",
+                        "on-primary-container": "#fffbff",
+                        "secondary-fixed-dim": "#ffb2be",
+                        "surface-tint": "#bc004b",
+                        "error-container": "#ffdad6",
+                        "background": "#fcf9f8",
+                        "tertiary-fixed": "#89faa8",
+                        "on-primary-fixed": "#400014",
+                        "surface-bright": "#fcf9f8",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e5e2e1",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#e2165f",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffd9de",
+                        "on-surface-variant": "#5b3f43",
+                        "primary-fixed-dim": "#ffb2be",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#00210c",
+                        "surface-container-low": "#f6f3f2",
+                        "surface": "#fcf9f8",
+                        "surface-container-high": "#eae7e7",
+                        "inverse-surface": "#303030",
+                        "outline": "#8f6f73",
+                        "on-primary-fixed-variant": "#900038",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 z-40 w-full flex justify-between items-center px-6 py-4 bg-white/80 backdrop-blur-md border-b border-zinc-200">
+<div class="flex items-center gap-2">
+<span class="text-lg font-black text-primary">EstatePro</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors duration-150 active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors duration-150 active:scale-95">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Agent Avatar" class="h-full w-full object-cover" data-alt="Professional real estate agent avatar, male, smiling, wearing a sleek business suit in a bright modern office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAfR25ZYX7svAWBNmtcvXjVlDg_gHNNTskCKkumap-r9NDjgcdNYV25j-dF6S9QTKgE-iftpumjpRP8oR-nGQ0YO8IiCYGkYuVm8a5gpdI8BbQI4oMyR-Dt0e9fucjVtFk2oP39muPAWUuk0rZkDaDm2k7xXOipwVf1ZeBCCQsEYTKv8TK_GsUWOOPlEdUnTpQuhsvLzsKFosWrF40AB5MwTBGlDAZW38Sah1ijyFG-NrdWKl8ZzXrwFmeKc6Ot7jq62kbYQ2XKmQ"/>
+</div>
+</div>
+</header>
+<div class="flex pt-[72px] min-h-screen">
+<!-- SideNavBar (Vertical Steps) -->
+<aside class="hidden lg:flex flex-col h-[calc(100vh-72px)] w-80 sticky top-[72px] bg-white border-r border-zinc-200">
+<div class="p-8 flex-1">
+<div class="flex items-center gap-4 mb-8">
+<div class="h-12 w-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home_work</span>
+</div>
+<div>
+<h1 class="font-headline font-bold text-on-surface">List Property</h1>
+<p class="text-sm text-on-surface-variant">Step 1 of 5</p>
+</div>
+</div>
+<div class="mb-10">
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-bold text-primary uppercase tracking-wider">Progress</span>
+<span class="text-xs font-bold text-on-surface">20%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/5"></div>
+</div>
+</div>
+<nav class="space-y-1">
+<!-- Property Details (Active) -->
+<div class="flex items-center gap-4 px-4 py-3 text-primary font-bold border-r-2 border-primary bg-zinc-50 transition-colors">
+<span class="material-symbols-outlined">home_work</span>
+<span class="font-label">Property Details</span>
+</div>
+<!-- Location -->
+<div class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50 transition-colors">
+<span class="material-symbols-outlined">location_on</span>
+<span class="font-label">Location</span>
+</div>
+<!-- Media -->
+<div class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50 transition-colors">
+<span class="material-symbols-outlined">image</span>
+<span class="font-label">Media</span>
+</div>
+<!-- Pricing -->
+<div class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50 transition-colors">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label">Pricing</span>
+</div>
+<!-- Review -->
+<div class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-50 transition-colors">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-label">Review</span>
+</div>
+</nav>
+</div>
+<div class="p-6 border-t border-zinc-100">
+<button class="w-full flex items-center justify-center gap-2 px-4 py-3 text-zinc-600 hover:text-primary transition-colors font-medium">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+<span>Back to Dashboard</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-surface-container-low px-4 py-8 md:px-12 lg:px-24">
+<div class="max-w-3xl mx-auto">
+<div class="bg-white rounded-xl shadow-sm border border-zinc-200 overflow-hidden">
+<div class="p-8 md:p-12">
+<div class="mb-10">
+<h2 class="text-3xl font-headline font-extrabold text-on-surface mb-2">Basic Information</h2>
+<p class="text-on-surface-variant">Let's start with the basics of your property in Mumbai.</p>
+</div>
+<form class="space-y-10">
+<!-- Listing & Building Type Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-4">
+<label class="block font-label font-bold text-on-surface-variant uppercase text-xs tracking-widest">Listing Type</label>
+<div class="inline-flex p-1 bg-surface-container-highest rounded-lg w-full">
+<button class="flex-1 py-2 text-sm font-bold bg-white text-primary rounded-md shadow-sm border border-zinc-200" type="button">Sale</button>
+<button class="flex-1 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors" type="button">Rent</button>
+</div>
+</div>
+<div class="space-y-4">
+<label class="block font-label font-bold text-on-surface-variant uppercase text-xs tracking-widest">Building Type</label>
+<div class="inline-flex p-1 bg-surface-container-highest rounded-lg w-full">
+<button class="flex-1 py-2 text-sm font-bold bg-white text-primary rounded-md shadow-sm border border-zinc-200" type="button">Residential</button>
+<button class="flex-1 py-2 text-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors" type="button">Commercial</button>
+</div>
+</div>
+</div>
+<!-- Property Type Chips -->
+<div class="space-y-4">
+<label class="block font-label font-bold text-on-surface-variant uppercase text-xs tracking-widest">Property Type</label>
+<div class="flex flex-wrap gap-3">
+<button class="px-5 py-2.5 rounded-full border-2 border-primary bg-primary-fixed text-primary font-bold text-sm transition-all" type="button">Apartment</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-white text-on-surface-variant hover:border-primary hover:text-primary font-medium text-sm transition-all" type="button">Villa</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-white text-on-surface-variant hover:border-primary hover:text-primary font-medium text-sm transition-all" type="button">Plot</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-white text-on-surface-variant hover:border-primary hover:text-primary font-medium text-sm transition-all" type="button">Builder Floor</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-white text-on-surface-variant hover:border-primary hover:text-primary font-medium text-sm transition-all" type="button">Penthouse</button>
+<button class="px-5 py-2.5 rounded-full border border-outline-variant bg-white text-on-surface-variant hover:border-primary hover:text-primary font-medium text-sm transition-all" type="button">Independent House</button>
+</div>
+</div>
+<!-- City and Locality -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-4">
+<label class="block font-label font-bold text-on-surface-variant uppercase text-xs tracking-widest">City</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-zinc-400">location_city</span>
+<input class="w-full pl-12 pr-4 py-3.5 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-on-surface font-medium placeholder:text-zinc-400" readonly="" type="text" value="Mumbai"/>
+</div>
+</div>
+<div class="space-y-4">
+<label class="block font-label font-bold text-on-surface-variant uppercase text-xs tracking-widest">Locality / Society</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-zinc-400">search</span>
+<input class="w-full pl-12 pr-4 py-3.5 bg-white border border-zinc-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-on-surface font-medium placeholder:text-zinc-400 transition-all" placeholder="Search locality or society name" type="text"/>
+</div>
+<p class="text-[11px] text-on-surface-variant px-1">Example: Worli Sea Face, Hiranandani Estate, etc.</p>
+</div>
+</div>
+<!-- Price Input -->
+<div class="space-y-4">
+<label class="block font-label font-bold text-on-surface-variant uppercase text-xs tracking-widest">Expected Price</label>
+<div class="relative max-w-sm">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-bold text-zinc-500">₹</span>
+<input class="w-full pl-10 pr-4 py-4 bg-white border border-zinc-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-xl font-headline font-bold text-on-surface placeholder:text-zinc-300 transition-all" placeholder="Enter amount" type="number"/>
+</div>
+</div>
+</form>
+</div>
+<!-- Footer Action -->
+<div class="bg-surface-container px-8 py-6 md:px-12 flex justify-between items-center border-t border-zinc-200">
+<button class="px-6 py-3 text-on-surface-variant font-bold hover:text-on-surface transition-colors">Save Draft</button>
+<button class="flex items-center gap-3 px-10 py-4 bg-primary text-white rounded-xl font-headline font-bold hover:bg-primary-container shadow-lg shadow-primary/20 transition-all active:scale-95">
+<span>Next Step</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Secondary Visual Info -->
+<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="p-6 bg-white rounded-xl border border-zinc-100 flex items-start gap-4">
+<div class="text-primary mt-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-sm">Verified Listings</h4>
+<p class="text-xs text-on-surface-variant mt-1">Increase your visibility with verified properties.</p>
+</div>
+</div>
+<div class="p-6 bg-white rounded-xl border border-zinc-100 flex items-start gap-4">
+<div class="text-primary mt-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">speed</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-sm">Fast Response</h4>
+<p class="text-xs text-on-surface-variant mt-1">Our agents respond to listings within 24 hours.</p>
+</div>
+</div>
+<div class="p-6 bg-white rounded-xl border border-zinc-100 flex items-start gap-4">
+<div class="text-primary mt-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-sm">Market Reach</h4>
+<p class="text-xs text-on-surface-variant mt-1">Connect with over 10k potential buyers daily.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
