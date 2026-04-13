@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import AddToCompareButton from './AddToCompareButton';
+import WishlistButton from './WishlistButton';
 
 export default function PropertyCard({ property, variant = 'vertical' }) {
   const isHorizontal = variant === 'horizontal' || property.isFeatured;
@@ -28,9 +29,10 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
             <span className="bg-primary/90 text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Verified</span>
           )}
         </div>
-        <button className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-        </button>
+        <WishlistButton
+          propertyId={property.id || property._id}
+          className="absolute top-4 right-4"
+        />
       </div>
 
       <div className={`p-6 flex flex-col grow ${isHorizontal ? 'lg:p-8 lg:justify-center' : ''}`}>

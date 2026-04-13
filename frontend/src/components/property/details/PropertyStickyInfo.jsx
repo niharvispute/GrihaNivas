@@ -1,3 +1,5 @@
+import WishlistButton from '@/components/property/WishlistButton';
+
 export default function PropertyStickyInfo({ property }) {
   return (
     <div className="sticky top-32 bg-white p-8 rounded-2xl shadow-[0_32px_64px_-15px_rgba(0,0,0,0.06)] border border-slate-100">
@@ -36,10 +38,10 @@ export default function PropertyStickyInfo({ property }) {
         </button>
         
         <div className="flex gap-4 pt-4">
-          <button className="flex-1 flex items-center justify-center gap-2 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors group">
-            <svg className="text-primary group-hover:fill-current transition-colors" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-            <span className="text-sm font-semibold text-slate-600">Save</span>
-          </button>
+          <WishlistButton
+            propertyId={property.id || property._id}
+            variant="row"
+          />
           <button className="flex-1 flex items-center justify-center gap-2 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
             <svg className="text-slate-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
             <span className="text-sm font-semibold text-slate-600">Compare</span>
