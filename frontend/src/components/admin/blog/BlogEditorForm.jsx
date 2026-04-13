@@ -2,29 +2,64 @@
 
 import { useState } from 'react';
 
-const CATEGORIES = ['Market Trends', 'Legal Guides', 'Investment Tips', 'Area Spotlight', 'Interior Design'];
+const CATEGORIES = [
+  { value: 'market_trends', label: 'Market Trends' },
+  { value: 'buying_guide', label: 'Buying Guide' },
+  { value: 'legal', label: 'Legal' },
+  { value: 'investment', label: 'Investment' },
+  { value: 'lifestyle', label: 'Lifestyle' },
+];
+
+const CATEGORY_NORMALIZE_MAP = {
+  market_trends: 'market_trends',
+  'market trends': 'market_trends',
+  'market-insights': 'market_trends',
+  buying_guide: 'buying_guide',
+  'buying guide': 'buying_guide',
+  'buying-guide': 'buying_guide',
+  legal: 'legal',
+  investment: 'investment',
+  lifestyle: 'lifestyle',
+};
+
+const normalizeCategory = (value) => {
+  if (!value || typeof value !== 'string') return 'market_trends';
+  const key = value.trim().toLowerCase();
+  return CATEGORY_NORMALIZE_MAP[key] || 'market_trends';
+};
 
 export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isSaving = false }) {
+  const initialCategory = normalizeCategory(initialData?.raw?.category || initialData.category);
   const [form, setForm] = useState({
     title: initialData.title || '',
-    category: initialData.category || CATEGORIES[0],
-    keyword: initialData.keyword || '',
-    excerpt: initialData.excerpt || '',
+    category: initialCategory,
+    keyword: initialData.keyword || initialData?.raw?.keywords?.[0] || '',
+    excerpt: initialData.excerpt || initialData?.raw?.seoDescription || '',
     content: initialData.content || '',
   });
 
   const set = (field) => (event) => setForm((prev) => ({ ...prev, [field]: event.target.value }));
 
+  const buildPayload = (isPublished) => ({
+    ...initialData,
+    title: form.title.trim(),
+    category: normalizeCategory(form.category),
+    content: form.content,
+    seoDescription: form.excerpt?.trim() || undefined,
+    keywords: form.keyword?.trim() ? [form.keyword.trim()] : undefined,
+    isPublished,
+  });
+
   const handlePublish = () => {
-    if (!form.title.trim()) {
+    if (form.title.trim().length < 5) {
       alert('Post title is required.');
       return;
     }
-    if (!form.content.trim()) {
-      alert('Post content cannot be empty.');
+    if (form.content.trim().length < 100) {
+      alert('Published post content must be at least 100 characters.');
       return;
     }
-    onSave({ ...initialData, ...form });
+    onSave(buildPayload(true));
   };
 
   return (
@@ -60,7 +95,9 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
                   onChange={set('category')}
                 >
                   {CATEGORIES.map((cat) => (
-                    <option key={cat}>{cat}</option>
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
                   ))}
                 </select>
                 <span className="material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-300 group-hover:text-primary transition-colors">
@@ -123,7 +160,7 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
             <button
               type="button"
               disabled={isSaving}
-              onClick={() => onSave({ ...initialData, ...form, status: 'draft' })}
+              onClick={() => onSave(buildPayload(false))}
               className="flex-1 md:flex-none px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest border-2 border-primary/10 text-primary hover:bg-primary/5 transition-all active:scale-95 leading-none disabled:opacity-50"
             >
               Save as Draft

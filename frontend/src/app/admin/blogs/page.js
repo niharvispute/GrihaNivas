@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { listBlogs, createBlog, updateBlog, deleteBlog } from '@/services/blogService';
+import { getErrorMessage } from '@/lib/api/errors';
 import BlogManagementTable from '@/components/admin/blog/BlogManagementTable';
 import BlogEditorForm from '@/components/admin/blog/BlogEditorForm';
 
@@ -19,7 +20,7 @@ export default function AdminBlogCMS() {
   const fetchBlogs = async () => {
     setLoading(true);
     try {
-      const response = await listBlogs({ limit: 100 }, { map: true });
+      const response = await listBlogs({ limit: 20 }, { map: true });
       setBlogs(response.items || []);
     } catch (error) {
       console.error('Failed to fetch blogs:', error);
@@ -63,7 +64,10 @@ export default function AdminBlogCMS() {
       setIsAddingNew(false);
       fetchBlogs();
     } catch (error) {
-      alert('Failed to save post. Please try again.');
+      const detailMessage = Array.isArray(error?.details) && error.details.length
+        ? error.details.map((item) => `${item.field || 'field'}: ${item.message}`).join('\n')
+        : null;
+      alert(detailMessage || getErrorMessage(error, 'Failed to save post. Please try again.'));
     } finally {
       setIsSaving(false);
     }

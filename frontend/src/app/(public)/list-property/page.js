@@ -1,24 +1,14 @@
-import ListingHero from '@/components/listing/ListingHero';
-import ListingBenefits from '@/components/listing/ListingBenefits';
-import HowItWorks from '@/components/listing/HowItWorks';
-import ListingForm from '@/components/listing/ListingForm';
-import ListingTrust from '@/components/listing/ListingTrust';
-import ListingFaq from '@/components/listing/ListingFaq';
+import MultiStageListingForm from '@/components/listing/MultiStageListingForm';
 
 export const metadata = {
-  title: 'List Your Property | Bricks Mumbai',
-  description: 'Submit your luxury property for an editorial showcase. Reach thousands of verified home seekers in Mumbai.',
+  title: 'Showcase Your Property | Bricks Mumbai',
+  description: 'Submit your estate for a premium editorial feature. Professional evaluation and global exposure in 5 steps.',
 };
 
 export default function ListPropertyPage() {
   return (
-    <main className="overflow-x-hidden">
-      <ListingHero />
-      <ListingBenefits />
-      <HowItWorks />
-      <ListingForm />
-      <ListingTrust />
-      <ListingFaq />
+    <main className="overflow-x-hidden pt-0 lg:pt-0">
+      <MultiStageListingForm />
     </main>
   );
 }

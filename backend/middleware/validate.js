@@ -341,19 +341,39 @@ const schemas = {
 
   // ── BLOGS ─────────────────────────────────
   blog: {
-    create: z.object({
-      title: z.string().trim().min(5).max(200),
-      content: z.string().trim().min(100),
-      category: blogCategorySchema,
-      tags: z.array(z.string().trim()).max(10).optional(),
-      seoTitle: z.string().trim().max(70).optional(),
-      seoDescription: z.string().trim().max(160).optional(),
-      // Backward-compatibility aliases accepted for existing clients
-      metaTitle: z.string().trim().max(70).optional(),
-      metaDescription: z.string().trim().max(160).optional(),
-      keywords: z.array(z.string().trim()).max(20).optional(),
-      isPublished: z.boolean().optional(),
-    }),
+    create: z
+      .object({
+        title: z.string().trim().min(1).max(200),
+        content: z.string().trim().min(1),
+        category: blogCategorySchema,
+        tags: z.array(z.string().trim()).max(10).optional(),
+        seoTitle: z.string().trim().max(70).optional(),
+        seoDescription: z.string().trim().max(160).optional(),
+        // Backward-compatibility aliases accepted for existing clients
+        metaTitle: z.string().trim().max(70).optional(),
+        metaDescription: z.string().trim().max(160).optional(),
+        keywords: z.array(z.string().trim()).max(20).optional(),
+        isPublished: z.coerce.boolean().optional(),
+      })
+      .superRefine((data, ctx) => {
+        if (!data.isPublished) return;
+
+        if ((data.title || '').trim().length < 5) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['title'],
+            message: 'Published post title must be at least 5 characters',
+          });
+        }
+
+        if ((data.content || '').trim().length < 100) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['content'],
+            message: 'Published post content must be at least 100 characters',
+          });
+        }
+      }),
 
     addComment: z.object({
       name: z.string().trim().min(2).max(100),

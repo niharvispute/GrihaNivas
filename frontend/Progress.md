@@ -14,7 +14,7 @@ This document tracks the implementation status of the Bricks platform pages and 
 - [x] ~~**Contact Us**: `contact_us_mumbai_editorial`~~
 - [x] ~~**Blogs**: `blogs_mumbai_editorial` (Main Listing)~~
 - [x] ~~**Blog Detail**: `blog_detail_mumbai_editorial` (Individual Post)~~
-- [x] ~~**List Your Property**: `list_your_property_mumbai_editorial`~~
+- [x] ~~**List Your Property**: `multi_stage_editorial_listing_console`~~
 - [x] ~~**Explore Builders**: `explore_builders_mumbai_editorial`~~
 - [x] ~~**Builder Detail**: `builder_detail_skyline_apex_group`~~
 - [ ] **Featured Project**: `marine_drive_luxe`
