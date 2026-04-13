@@ -1,9 +1,8 @@
-import { apiFetch } from '@/lib/api';
 import { authedApiFetch } from '@/lib/api/authedRequest';
 import { mapLeadListToVM } from '@/lib/mappers/leadMapper';
 
 export const createLead = async (payload) => {
-  const res = await apiFetch('/api/leads', {
+  const res = await authedApiFetch('/api/leads', {
     method: 'POST',
     body: payload,
   });

@@ -61,6 +61,11 @@ const leadSchema = new mongoose.Schema(
     },
 
     // ── Lead Classification ───────────────────────────────────────────────
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'Lead owner is required'],
+    },
     leadType: {
       type: String,
       required: [true, 'Lead type is required'],
@@ -157,6 +162,7 @@ const leadSchema = new mongoose.Schema(
 leadSchema.index({ status: 1 });
 leadSchema.index({ leadType: 1 });
 leadSchema.index({ assignedTo: 1 });
+leadSchema.index({ userId: 1 });
 leadSchema.index({ phone: 1 });
 leadSchema.index({ createdAt: -1 });
 

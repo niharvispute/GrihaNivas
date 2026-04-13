@@ -147,10 +147,11 @@ POST {{BASE_URL}}/api/properties
   + Files: heroImage, images[] (gallery), floorPlans[], brochure
 ```
 
-#### Leads (public create, admin manage)
+#### Leads (auth create, admin manage)
 ```
-# Submit a lead (no auth)
+# Submit a lead (requires login)
 POST {{BASE_URL}}/api/leads
+  + Auth header
 Body (JSON):
 {
   "name": "Rahul Sharma",
@@ -158,6 +159,10 @@ Body (JSON):
   "leadType": "buy",
   "message": "Looking for 2BHK in Andheri"
 }
+
+# Fetch my enquiries
+GET {{BASE_URL}}/api/leads/my-enquiries
+  + Auth header
 
 # List leads (admin)
 GET {{BASE_URL}}/api/leads
@@ -337,7 +342,8 @@ Body: { "refreshToken": "{{refreshToken}}" }
 ### Leads (CRM)
 | Method | Endpoint | Auth | Notes |
 |---|---|---|---|
-| `POST` | `/api/leads` | Public | Creates lead, fires emails |
+| `POST` | `/api/leads` | JWT | Creates lead for authenticated user, stores `userId`, fires emails |
+| `GET` | `/api/leads/my-enquiries` | JWT | Returns current user's enquiries |
 | `GET` | `/api/leads` | Admin | Filter: status, leadType, search |
 | `GET` | `/api/leads/:id` | Admin | Populates assignedTo + propertyId |
 | `PUT` | `/api/leads/:id/status` | Admin | No backward transitions |

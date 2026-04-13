@@ -19,6 +19,7 @@ const create = async (req, res, next) => {
   try {
     const lead = await Lead.create({
       ...req.body,
+      userId: req.user.id,
       status: 'new',
       source: 'website',
     });
@@ -41,19 +42,18 @@ const myEnquiries = async (req, res, next) => {
   try {
     const { limit, skip, buildMeta } = parsePagination(req.query);
     const userPhone = req.user.phone;
-
-    if (!userPhone) {
-      return sendSuccess(res, 200, 'No enquiries found', [], buildMeta(0));
-    }
+    const ownershipFilter = userPhone
+      ? { $or: [{ userId: req.user.id }, { phone: userPhone }] }
+      : { userId: req.user.id };
 
     const [leads, total] = await Promise.all([
-      Lead.find({ phone: userPhone })
+      Lead.find(ownershipFilter)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .populate('assignedTo', 'name email')
         .populate('propertyId', 'title slug'),
-      Lead.countDocuments({ phone: userPhone }),
+      Lead.countDocuments(ownershipFilter),
     ]);
 
     return sendSuccess(res, 200, 'Your enquiries fetched', leads, buildMeta(total));

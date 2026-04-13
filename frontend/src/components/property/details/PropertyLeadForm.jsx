@@ -1,23 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { createLead } from '@/services/leadService';
 
+const DRAFT_KEY = 'lead_draft:property_interest';
+
 export default function PropertyLeadForm({ property }) {
+  const { user, openModal } = useAuth();
   const [form, setForm] = useState({ name: '', phone: '', email: '' });
+  const [hasLoadedDraft, setHasLoadedDraft] = useState(false);
+  const [queuedSubmit, setQueuedSubmit] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
   const propertyType = property?.raw?.category === 'rent' ? 'rent' : 'buy';
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      const raw = window.sessionStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        setForm((prev) => ({ ...prev, ...parsed }));
+      }
+    } catch (_error) {}
+    setHasLoadedDraft(true);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !hasLoadedDraft) return;
+    window.sessionStorage.setItem(DRAFT_KEY, JSON.stringify(form));
+  }, [form, hasLoadedDraft]);
+
   const handleChange = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const submitLead = useCallback(async () => {
     const phone = toIndianPhoneE164(form.phone);
 
     if (!phone) {
@@ -48,6 +72,9 @@ export default function PropertyLeadForm({ property }) {
         message: 'Interest submitted. Our consultant will contact you soon.',
       });
       setForm({ name: '', phone: '', email: '' });
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.removeItem(DRAFT_KEY);
+      }
     } catch (error) {
       setFeedback({
         type: 'error',
@@ -56,6 +83,25 @@ export default function PropertyLeadForm({ property }) {
     } finally {
       setIsSubmitting(false);
     }
+  }, [form, property?.id, property?.title, propertyType]);
+
+  useEffect(() => {
+    if (!user || !queuedSubmit || isSubmitting) return;
+    setQueuedSubmit(false);
+    void submitLead();
+  }, [user, queuedSubmit, isSubmitting, submitLead]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!user) {
+      setQueuedSubmit(true);
+      setFeedback({ type: 'error', message: 'Please login to submit your interest.' });
+      openModal('login');
+      return;
+    }
+
+    await submitLead();
   };
 
   return (

@@ -347,19 +347,24 @@ const testLeads = async () => {
     message: 'Looking for 3BHK in Bandra West under 2 crore.',
     budgetMin: 15000000, budgetMax: 20000000,
     preferredLocations: ['Bandra West', 'Juhu'],
-  });
+  }, userAccessToken);
   assert('POST /leads buy → 201', r1.status === 201, r1.body);
+  if (r1.body?.data?._id) createdLeadId = r1.body.data._id;
 
   const r2 = await request('POST', `${BASE}/leads`, {
     name: 'Amit Shah', phone: '+919988776655', leadType: 'rent',
     message: 'Need 2BHK in Andheri West.',
-  });
+  }, userAccessToken);
   assert('POST /leads rent → 201', r2.status === 201, r2.body);
+
+  const rMine = await request('GET', `${BASE}/leads/my-enquiries`, null, userAccessToken);
+  assert('GET /leads/my-enquiries (user) → 200', rMine.status === 200, rMine.body);
+  assert('my-enquiries list is array', Array.isArray(rMine.body?.data), rMine.body);
 
   // Validation: invalid leadType
   const r3 = await request('POST', `${BASE}/leads`, {
     name: 'Test', phone: '+919876543210', leadType: 'investment',
-  });
+  }, userAccessToken);
   assert('POST /leads bad leadType → 400', r3.status === 400, r3.body);
 
   // Admin: list all leads
@@ -367,25 +372,26 @@ const testLeads = async () => {
   assert('GET /leads (admin) → 200', r4.status === 200, r4.body);
   assert('leads list is array', Array.isArray(r4.body?.data), r4.body);
 
-  // Get first lead for further tests
-  if (r4.body?.data?.length > 0) {
-    createdLeadId = r4.body.data[0]._id;
+  // Use a lead created in this test for deterministic updates
+  const leadIdForUpdate = createdLeadId || r4.body?.data?.[0]?._id;
+  if (leadIdForUpdate) {
+    createdLeadId = leadIdForUpdate;
 
-    const r5 = await request('GET', `${BASE}/leads/${createdLeadId}`, null, adminAccessToken);
+    const r5 = await request('GET', `${BASE}/leads/${leadIdForUpdate}`, null, adminAccessToken);
     assert('GET /leads/:id → 200', r5.status === 200, r5.body);
 
     // Update status
-    const r6 = await request('PUT', `${BASE}/leads/${createdLeadId}/status`,
+    const r6 = await request('PUT', `${BASE}/leads/${leadIdForUpdate}/status`,
       { status: 'contacted' }, adminAccessToken);
     assert('PUT /leads/:id/status contacted → 200', r6.status === 200, r6.body);
 
     // Try backward transition
-    const r7 = await request('PUT', `${BASE}/leads/${createdLeadId}/status`,
+    const r7 = await request('PUT', `${BASE}/leads/${leadIdForUpdate}/status`,
       { status: 'new' }, adminAccessToken);
     assert('PUT /leads backward status → 400', r7.status === 400, r7.body);
 
     // Add note
-    const r8 = await request('POST', `${BASE}/leads/${createdLeadId}/notes`,
+    const r8 = await request('POST', `${BASE}/leads/${leadIdForUpdate}/notes`,
       { text: 'Called client, interested in Worli area. Follow up next week.' }, adminAccessToken);
     assert('POST /leads/:id/notes → 201', r8.status === 201, r8.body);
   }
