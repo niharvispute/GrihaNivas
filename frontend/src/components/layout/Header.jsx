@@ -45,6 +45,9 @@ export default function Header() {
           <div className="group relative py-2">
             <Link href="/new-launch" className="hover:text-primary transition-colors">New Launch</Link>
           </div>
+          <div className="group relative py-2">
+            <Link href="/builders" className="hover:text-primary transition-colors">Builders</Link>
+          </div>
           <Link href="/blogs" className="hover:text-primary transition-colors">Blogs</Link>
         </nav>
 
