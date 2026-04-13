@@ -4,8 +4,8 @@ const { validate, schemas } = require('../middleware/validate');
 const { protect } = require('../middleware/auth');
 const { adminOnly } = require('../middleware/adminOnly');
 
-// Public — any user can submit a lead
-router.post('/', validate(schemas.lead.create), leadController.create);
+// Authenticated user — submit a lead
+router.post('/', protect, validate(schemas.lead.create), leadController.create);
 
 // User — fetch their own enquiries by phone
 router.get('/my-enquiries', protect, validate(schemas.lead.list, 'query'), leadController.myEnquiries);

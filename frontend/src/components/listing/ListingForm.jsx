@@ -1,11 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { createLead } from '@/services/leadService';
 
+const DRAFT_KEY = 'lead_draft:list_property';
+
 export default function ListingForm() {
+  const { user, openModal } = useAuth();
   const [propertyType, setPropertyType] = useState('Apartment');
   const [form, setForm] = useState({
     ownerName: '',
@@ -16,10 +20,36 @@ export default function ListingForm() {
     expectedPrice: '',
     description: '',
   });
+  const [hasLoadedDraft, setHasLoadedDraft] = useState(false);
+  const [queuedSubmit, setQueuedSubmit] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
   const propertyTypes = ['Apartment', 'Penthouse', 'Villa', 'Commercial'];
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      const raw = window.sessionStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') {
+        if (parsed.form && typeof parsed.form === 'object') {
+          setForm((prev) => ({ ...prev, ...parsed.form }));
+        }
+        if (typeof parsed.propertyType === 'string' && parsed.propertyType) {
+          setPropertyType(parsed.propertyType);
+        }
+      }
+    } catch (_error) {}
+    setHasLoadedDraft(true);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !hasLoadedDraft) return;
+    window.sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ form, propertyType }));
+  }, [form, propertyType, hasLoadedDraft]);
 
   const handleChange = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
@@ -30,8 +60,7 @@ export default function ListingForm() {
     return Number.isFinite(numeric) ? numeric : 0;
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const submitLead = useCallback(async () => {
     const phone = toIndianPhoneE164(form.phone);
 
     if (!phone) {
@@ -77,6 +106,9 @@ export default function ListingForm() {
         description: '',
       });
       setPropertyType('Apartment');
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.removeItem(DRAFT_KEY);
+      }
     } catch (error) {
       setFeedback({
         type: 'error',
@@ -85,6 +117,25 @@ export default function ListingForm() {
     } finally {
       setIsSubmitting(false);
     }
+  }, [form, propertyType]);
+
+  useEffect(() => {
+    if (!user || !queuedSubmit || isSubmitting) return;
+    setQueuedSubmit(false);
+    void submitLead();
+  }, [user, queuedSubmit, isSubmitting, submitLead]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!user) {
+      setQueuedSubmit(true);
+      setFeedback({ type: 'error', message: 'Please login to submit your property details.' });
+      openModal('login');
+      return;
+    }
+
+    await submitLead();
   };
 
   return (
