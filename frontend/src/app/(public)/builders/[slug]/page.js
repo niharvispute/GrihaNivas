@@ -32,7 +32,7 @@ export default async function BuilderDetailPage({ params }) {
 
   return (
     <div className="min-h-screen bg-background text-on-background antialiased">
-      <Header />
+      {/* <Header /> */}
       
       <main className="pt-16">
         {/* Dynamic Profile Sections */}

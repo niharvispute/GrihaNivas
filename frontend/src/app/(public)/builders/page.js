@@ -14,7 +14,7 @@ export default function ExploreBuildersPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      {/* <Header /> */}
       
       <main className="pt-24 pb-20 max-w-screen-2xl mx-auto px-6">
         {/* Header Section */}
