@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { getErrorMessage } from '@/lib/api/errors';
+import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { submitContactForm } from '@/services/contactService';
 
 export default function ContactPage() {
@@ -21,13 +22,23 @@ export default function ContactPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const phone = toIndianPhoneE164(form.phone);
+
+    if (!phone) {
+      setFeedback({
+        type: 'error',
+        message: 'Please enter a valid Indian mobile number in +91 format.',
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setFeedback({ type: '', message: '' });
 
     try {
       await submitContactForm({
         name: form.name.trim(),
-        phone: form.phone.trim(),
+        phone,
         email: form.email.trim() || undefined,
         message: form.message.trim(),
       });
@@ -85,7 +96,7 @@ export default function ContactPage() {
           </div>
           <span className="text-primary font-black uppercase tracking-[0.4em] text-xs mb-6">CONNECT WITH US</span>
           <h1 className="text-5xl md:text-8xl font-black text-slate-900 tracking-tighter mb-8 leading-none">
-            Let's Start a <br/> Conversation.
+            Let&apos;s Start a <br/> Conversation.
           </h1>
           <p className="text-slate-500 text-lg md:text-xl max-w-2xl leading-relaxed font-medium">
             We’re here to help you find your masterpiece. From heritage estates in SoBo to contemporary Juhu villas, our expertise is at your service.

@@ -1,123 +1,267 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { listUsers, deactivateUser, activateUser, getUserById } from '@/services/userService';
+
+function getInitials(name = '') {
+  return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function hasValue(value) {
+  if (value === null || value === undefined) return false;
+  if (typeof value === 'string') return value.trim().length > 0;
+  if (Array.isArray(value)) return value.length > 0;
+  return true;
+}
 
 export default function UserManagementPage() {
-  const users = [
-    { name: "Ananya Sharma", email: "ananya.s@outlook.com", phone: "+91 98765 43210", joined: "Oct 12, 2024", enquiries: 14, lastActive: "2 hours ago", status: "Active", statusColor: "bg-emerald-50 text-emerald-700", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDhq0nRf3COntWPCmTOdKno4PB52Arvvn48KuCXkutanWKK4P80fHlWquXpLhBMJaVlD0GWi3DfVklc3rtaD4kZTMGmHjvux_vZ6alw-GxvQi9cCTXfjNTKDvdN3Oz5EJ2zOJLux7kVLoWv0Wjwdks05WMK94OXusEzUMnSLFiABomN5ZrnCP1djdpPOAOt_6C7AY8aNBd3vHHuXbpJfOgrCdi6xr9NmvsFuj49re8y-vALrkxf-7qy8zuz277aAlSX3k46M-gPfT4" },
-    { name: "Vikram Malhotra", email: "v.malhotra@gmail.com", phone: "+91 91234 56789", joined: "Sep 28, 2024", enquiries: 8, lastActive: "Yesterday", status: "Inactive", statusColor: "bg-slate-100 text-slate-500", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAbAY5Mpk7F4GXqwA4w6Fa-2siUPXTkOZ_a5_4I7O9j4sCAvFXHA0KZWG-BzeBv7WdOGD5OFWVS5JL4jNgsQorL4qLMXJM0iDHP4lO5WppFFfQja33Gb4vXzbi8QvSywImEijxsBr6bGpusrz2gvI0QHqGto2ADjXxIkK-jN3mjylpXjkEYZh5J0hQEZDzuKQlREDFNgZwD-hXDNk8RKHB97TFzkVZzNMjt7kFvN2IuXymdk9N_rXjpILqYQXbwljV2ylSIYcs6FLA" },
-    { name: "Priya Kapur", email: "priyakapur@icloud.com", phone: "+91 99887 76655", joined: "Nov 02, 2024", enquiries: 21, lastActive: "Just now", status: "Active", statusColor: "bg-emerald-50 text-emerald-700", avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDvHaOxJiuZx1K_WWiJloxgEcrjEvgYe-QVFbB9GUOpH8Xl5sbBaTm8DIN--DLeFW14vuDjeyCWNhjEXieWaE44k7-bswbd01Mz1lEhEc6nJWgIyS4RTkdJP9C8nJ0fGPRVUKxLvXa7EBnTVGh_-10rSYcfbEn6LC2lII-Diq0n_PMHOT6Yut9UIB2RuQgFdBK-WNkr_6tHudDBHDOYIyC6ecWjkNWOiH-874Oj1Q6ybJWcB-Il9WuS_bFK2X-g7runlkZlmvd15K0" },
-    { name: "Rohan Singh", email: "rohan.singh@corporate.in", phone: "+91 77665 44332", joined: "Oct 30, 2024", enquiries: 2, lastActive: "3 days ago", status: "Pending", statusColor: "bg-amber-50 text-amber-700", avatar: null, initials: "RS" }
-  ];
+  const [users, setUsers] = useState([]);
+  const [meta, setMeta] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [actionId, setActionId] = useState(null);
+  const [openActionFor, setOpenActionFor] = useState(null);
+  const [viewingUser, setViewingUser] = useState(null);
+  const [loadingUserDetail, setLoadingUserDetail] = useState(false);
 
-  const stats = [
-    { label: "Monthly Growth", value: "+12.4%", icon: "trending_up", color: "text-pink-600", bg: "bg-pink-50" },
-    { label: "Verified Users", value: "89%", icon: "verified_user", color: "text-emerald-600", bg: "bg-emerald-50" },
-    { label: "New Enquiries", value: "42", icon: "mark_email_unread", color: "text-blue-600", bg: "bg-blue-50" }
-  ];
+  const fetchUsers = useCallback(async () => {
+    setLoading(true);
+    try {
+      const query = { page, limit: 15 };
+      if (search) query.search = search;
+      const res = await listUsers(query, { map: true });
+      setUsers(res.items || []);
+      setMeta(res.meta || null);
+    } catch {
+      setUsers([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [search, page]);
+
+  useEffect(() => { fetchUsers(); }, [fetchUsers]);
+
+  const handleToggleActive = async (user) => {
+    setOpenActionFor(null);
+    setActionId(user.id);
+    try {
+      if (user.isActive) {
+        await deactivateUser(user.id);
+      } else {
+        await activateUser(user.id);
+      }
+      setUsers((prev) => prev.map((u) => u.id === user.id ? { ...u, isActive: !u.isActive } : u));
+    } catch {
+      alert('Failed to update user status.');
+    } finally {
+      setActionId(null);
+    }
+  };
+
+  const handleViewUser = async (userId) => {
+    setOpenActionFor(null);
+    setLoadingUserDetail(true);
+    try {
+      const user = await getUserById(userId, { map: false });
+      setViewingUser(user);
+    } catch {
+      alert('Failed to fetch user details.');
+    } finally {
+      setLoadingUserDetail(false);
+    }
+  };
 
   return (
     <div className="space-y-10 pb-20">
-      {/* 📋 Page Header */}
-      <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-6">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row justify-between items-end gap-6">
         <div>
           <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Users</h1>
-          <p className="text-slate-500 font-bold mt-2">Manage and monitor the Mumbai Editorial community engagement.</p>
+          <p className="text-slate-500 font-bold mt-2">Manage and monitor the Mumbai Editorial community.</p>
         </div>
-        <div className="flex items-center gap-4">
-          <button className="bg-white text-slate-900 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 hover:bg-slate-50 transition-all border border-slate-100 shadow-sm">
-            <span className="material-symbols-outlined text-[20px]">file_download</span>
-            Export
-          </button>
-          <button className="bg-primary text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-3 hover:bg-primary/90 transition-all active:scale-95 shadow-2xl shadow-primary/20">
-            <span className="material-symbols-outlined text-[20px]">add</span>
-            Invite User
-          </button>
+        {meta && (
+          <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
+            {meta.total} members
+          </span>
+        )}
+      </div>
+
+      {/* Search */}
+      <div className="bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-50 flex gap-4 items-end">
+        <div className="flex-1">
+          <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Search</label>
+          <div className="relative">
+            <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+            <input
+              className="w-full bg-slate-50 rounded-2xl py-4 pl-14 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
+              placeholder="Name, email, or phone…"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            />
+          </div>
         </div>
       </div>
 
-      {/* 🔍 User Management Table */}
-      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 overflow-hidden hover:shadow-2xl transition-all">
-        <div className="overflow-x-auto px-6 pb-6 mt-6">
-          <table className="w-full text-left border-separate border-spacing-y-4">
-            <thead>
-              <tr className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
-                <th className="px-6 py-4">User Identity</th>
-                <th className="px-6 py-4">Contact specifics</th>
-                <th className="px-6 py-4">Enrollment date</th>
-                <th className="px-6 py-4 text-center">Inquiry load</th>
-                <th className="px-6 py-4">Last activity</th>
-                <th className="px-6 py-4 text-center">Status lifecycle</th>
-                <th className="px-6 py-4 text-right">Console</th>
-              </tr>
-            </thead>
-            <tbody className="space-y-4">
-              {users.map((user, i) => (
-                <tr key={i} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl">
-                  <td className="px-6 py-6 rounded-l-3xl">
-                    <div className="flex items-center gap-4">
-                      {user.avatar ? (
-                        <img src={user.avatar} alt={user.name} className="w-12 h-12 rounded-2xl object-cover shadow-sm group-hover:rotate-6 transition-transform" />
-                      ) : (
-                        <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-black text-xs shadow-sm">
-                          {user.initials}
-                        </div>
-                      )}
-                      <div>
-                        <p className="text-sm font-black text-slate-900 tracking-tight">{user.name}</p>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{user.email}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-6 text-sm font-bold text-slate-500">{user.phone}</td>
-                  <td className="px-6 py-6 text-sm font-black text-slate-900 tracking-tight italic">{user.joined}</td>
-                  <td className="px-6 py-6 text-center">
-                    <span className="bg-white px-3 py-1.5 rounded-lg font-black text-xs text-slate-600 shadow-sm border border-slate-50">{user.enquiries}</span>
-                  </td>
-                  <td className="px-6 py-6 text-xs font-bold text-slate-400 uppercase tracking-widest">{user.lastActive}</td>
-                  <td className="px-6 py-6 text-center">
-                    <span className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm ${user.statusColor}`}>
-                      {user.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-6 text-right rounded-r-3xl">
-                    <button className="w-10 h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-primary hover:bg-primary/5 transition-all">
-                      <span className="material-symbols-outlined text-[18px]">more_vert</span>
-                    </button>
-                  </td>
+      {/* Users Table */}
+      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 overflow-hidden">
+        {loading ? (
+          <div className="p-10 space-y-4 animate-pulse">
+            {[1, 2, 3, 4, 5].map((i) => <div key={i} className="h-16 bg-slate-100 rounded-2xl" />)}
+          </div>
+        ) : users.length === 0 ? (
+          <div className="py-20 text-center">
+            <span className="material-symbols-outlined text-5xl text-slate-200 mb-4 block">group</span>
+            <p className="text-slate-400 font-bold">No users found.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-separate border-spacing-y-2 p-6">
+              <thead>
+                <tr className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
+                  <th className="px-6 py-5">User</th>
+                  <th className="px-6 py-5">Phone</th>
+                  <th className="px-6 py-5">Joined</th>
+                  <th className="px-6 py-5">Role</th>
+                  <th className="px-6 py-5">Status</th>
+                  <th className="px-6 py-5 text-right">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="px-10 py-8 bg-slate-50/30 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-slate-50">
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Showing 4 of 124 community members</span>
-          <div className="flex gap-3">
-            <button className="w-10 h-10 flex items-center justify-center border border-slate-100 rounded-xl bg-white hover:border-primary transition-all shadow-sm">
-              <span className="material-symbols-outlined text-sm">chevron_left</span>
-            </button>
-            <button className="w-10 h-10 flex items-center justify-center border border-primary bg-primary text-white rounded-xl font-black text-xs shadow-lg shadow-primary/20">1</button>
-            <button className="w-10 h-10 flex items-center justify-center border border-slate-100 rounded-xl bg-white hover:border-primary transition-all shadow-sm">
-              <span className="material-symbols-outlined text-sm">chevron_right</span>
-            </button>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user.id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl">
+                    <td className="px-6 py-5 rounded-l-3xl">
+                      <div className="flex items-center gap-4">
+                        <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-black text-xs shrink-0">
+                          {getInitials(user.name)}
+                        </div>
+                        <div>
+                          <p className="text-sm font-black text-slate-900">{user.name}</p>
+                          <p className="text-[10px] text-slate-400 font-medium">{user.email || '—'}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 text-sm font-bold text-slate-600">{user.phone}</td>
+                    <td className="px-6 py-5 text-sm font-bold text-slate-500">{user.createdAt}</td>
+                    <td className="px-6 py-5">
+                      <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 bg-slate-100 text-slate-600 rounded-full">
+                        {user.role}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5">
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${user.isActive ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-400'}`}>
+                        {user.isActive ? 'Active' : 'Inactive'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 text-right rounded-r-3xl">
+                      <div className="flex justify-end">
+                        <div className="relative">
+                          <button
+                            type="button"
+                            onClick={() => setOpenActionFor((prev) => (prev === user.id ? null : user.id))}
+                            className="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-100 text-slate-400 hover:text-primary hover:bg-primary/5 transition-all"
+                            title="More"
+                          >
+                            <span className="material-symbols-outlined text-lg">more_horiz</span>
+                          </button>
+
+                          {openActionFor === user.id && (
+                            <div className="absolute right-0 top-11 z-20 w-48 rounded-2xl border border-slate-100 bg-white p-2 shadow-2xl shadow-slate-200/60">
+                              <button
+                                type="button"
+                                onClick={() => handleViewUser(user.id)}
+                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all"
+                              >
+                                <span className="material-symbols-outlined text-lg text-primary">visibility</span>
+                                <span>View</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleToggleActive(user)}
+                                disabled={actionId === user.id}
+                                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-40 ${user.isActive ? 'text-red-600 hover:bg-red-50' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                              >
+                                <span className="material-symbols-outlined text-lg">{user.isActive ? 'block' : 'check_circle'}</span>
+                                <span>{actionId === user.id ? 'Working…' : user.isActive ? 'Deactivate' : 'Activate'}</span>
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* 🍱 Engagement Metrics Bento Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {stats.map((stat, i) => (
-          <div key={i} className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50 flex items-center gap-6 hover:shadow-2xl hover:scale-[1.02] transition-all group">
-            <div className={`w-16 h-16 ${stat.bg} ${stat.color} rounded-2xl flex items-center justify-center shadow-inner`}>
-              <span className="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform">{stat.icon}</span>
+      {/* Pagination */}
+      {meta && meta.totalPages > 1 && (
+        <div className="flex justify-center gap-2">
+          {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map((p) => (
+            <button
+              key={p}
+              onClick={() => setPage(p)}
+              className={`w-10 h-10 rounded-xl font-black text-sm transition-all ${p === page ? 'bg-primary text-white shadow-lg' : 'bg-white border border-slate-100 text-slate-500 hover:border-primary hover:text-primary'}`}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {(loadingUserDetail || viewingUser) && (
+        <div className="fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-3xl bg-white rounded-4xl border border-slate-100 shadow-2xl overflow-hidden">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight">User Details</h3>
+              <button
+                type="button"
+                onClick={() => { setViewingUser(null); setLoadingUserDetail(false); }}
+                className="w-10 h-10 rounded-xl bg-slate-50 text-slate-500 hover:text-slate-900 transition-colors"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
             </div>
-            <div>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{stat.label}</p>
-              <h3 className="text-3xl font-black text-slate-900 mt-2 tracking-tighter italic">{stat.value}</h3>
+            <div className="p-8 max-h-[75vh] overflow-y-auto">
+              {loadingUserDetail ? (
+                <div className="space-y-4 animate-pulse">
+                  {[1, 2, 3, 4].map((i) => <div key={i} className="h-12 bg-slate-100 rounded-xl" />)}
+                </div>
+              ) : viewingUser ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {[
+                    { label: 'Name', value: viewingUser.name },
+                    { label: 'Email', value: viewingUser.email },
+                    { label: 'Phone', value: viewingUser.phone },
+                    { label: 'Role', value: viewingUser.role },
+                    { label: 'Status', value: viewingUser.isActive ? 'Active' : 'Inactive' },
+                    { label: 'Verified', value: viewingUser.isVerified ? 'Yes' : 'No' },
+                    { label: 'Joined', value: viewingUser.createdAt ? new Date(viewingUser.createdAt).toLocaleDateString('en-IN') : null },
+                    { label: 'Saved Properties', value: viewingUser.savedProperties?.length },
+                    { label: 'Compared Properties', value: viewingUser.comparedProperties?.length },
+                  ]
+                    .filter((field) => hasValue(field.value))
+                    .map((field) => (
+                      <Info key={field.label} label={field.label} value={field.value} full={field.full} />
+                    ))}
+                </div>
+              ) : null}
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Info({ label, value, full = false }) {
+  return (
+    <div className={`${full ? 'md:col-span-2' : ''} rounded-xl border border-slate-100 bg-slate-50 p-4`}>
+      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">{label}</p>
+      <p className="text-sm font-bold text-slate-800 wrap-break-word">{String(value)}</p>
     </div>
   );
 }

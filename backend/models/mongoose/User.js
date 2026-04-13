@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema(
       sparse: true,  // Allows multiple docs with null phone (Google-only accounts)
       trim: true,
       match: [/^\+91[6-9]\d{9}$/, 'Phone must be a valid Indian number in E.164 format (+91XXXXXXXXXX)'],
-      default: null,
+      // Keep undefined so sparse unique index skips docs without phone.
+      default: undefined,
     },
     email: {
       type: String,
@@ -28,7 +29,8 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
       match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address'],
-      default: null,
+      // Keep undefined so sparse unique index skips docs without email.
+      default: undefined,
     },
     name: {
       type: String,
@@ -68,7 +70,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
       sparse: true,
-      default: null,
+      // Keep undefined so sparse unique index skips non-Google users.
+      default: undefined,
     },
     firebaseUid: {
       type: String,

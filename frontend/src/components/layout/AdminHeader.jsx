@@ -1,4 +1,23 @@
+'use client';
+
+import { useAuth } from '@/context/AuthContext';
+
+function getInitials(name = '') {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('');
+}
+
 export default function AdminHeader() {
+  const { user } = useAuth();
+  const displayName = user?.name || user?.email || 'Admin User';
+  const roleLabel = user?.role ? `${user.role} access` : 'admin access';
+  const avatarSrc = user?.profilePictureUrl || user?.photoURL || user?.imageUrl || null;
+  const initials = getInitials(displayName);
+
   return (
     <header className="fixed top-0 right-0 w-[calc(100%-16rem)] h-20 z-40 bg-white/70 backdrop-blur-xl border-b border-slate-100 flex justify-between items-center px-10">
       <div className="flex items-center gap-6 flex-1">
@@ -24,15 +43,19 @@ export default function AdminHeader() {
         <div className="h-10 w-px bg-slate-100 mx-2"></div>
         <div className="flex items-center gap-4 group cursor-pointer">
           <div className="text-right">
-            <p className="text-sm font-black text-slate-900 leading-none">Mumbai HQ</p>
-            <p className="text-[10px] font-black text-primary uppercase tracking-widest mt-1">NARIMAN POINT</p>
+            <p className="text-sm font-black text-slate-900 leading-none truncate max-w-55">{displayName}</p>
+            <p className="text-[10px] font-black text-primary uppercase tracking-widest mt-1">{roleLabel}</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center border-2 border-white shadow-xl overflow-hidden group-hover:scale-105 transition-all">
-            <img 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy2tiNApv03nEZazvzuzSGmTWVgEvuRT8ObJ2iMtNC9YUUHL1NJnzq3QUbJGdj-qDNBiIQW0ImBBR8Ca8ydR-HQr1fGwhu8flkjzMV16KAzqhI1Q1gml0nIAVLyIskeehDX8q3AXZbP1IxuQZvr9rQQjHafSBMkm_Cc2ObohKM5XTGLppJt-5bMp7iJiyvs8KGH8UejePvVmhlMiZo_Q1viLqz_0Lwt4PD1vzJabmt6Gm8WsF60XtnbhY-UfLHBi9qywHVkILoiPU" 
-              alt="HQ" 
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
-            />
+          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-primary/15 via-white to-primary/5 flex items-center justify-center border-2 border-white shadow-xl overflow-hidden group-hover:scale-105 transition-all text-primary font-black text-xs">
+            {avatarSrc ? (
+              <img
+                src={avatarSrc}
+                alt={displayName}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span>{initials || 'A'}</span>
+            )}
           </div>
         </div>
       </div>

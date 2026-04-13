@@ -1,3 +1,5 @@
+/* global fetch */
+
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const { sendOtpEmail, sendWelcome } = require('../services/emailService');

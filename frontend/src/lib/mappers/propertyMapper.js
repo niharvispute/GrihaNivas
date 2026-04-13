@@ -14,6 +14,32 @@ const getPriceSuffix = (priceUnit) => {
   return '';
 };
 
+const mapBuilderToVM = (builder) => {
+  if (!builder) return null;
+
+  const currentYear = new Date().getFullYear();
+  const establishedYear = Number(builder?.establishedYear);
+  const totalProjects = Number(builder?.totalProjects);
+
+  const experience =
+    Number.isFinite(establishedYear) && establishedYear > 1900 && establishedYear <= currentYear
+      ? `${currentYear - establishedYear}+ yrs`
+      : 'Established Brand';
+
+  return {
+    id: builder?._id || builder?.id || null,
+    slug: builder?.slug || '',
+    name: builder?.name || 'Builder',
+    logo: builder?.logo?.url || builder?.logo || null,
+    description:
+      builder?.shortDescription ||
+      builder?.description ||
+      'Project delivered by a trusted Mumbai developer.',
+    projects: Number.isFinite(totalProjects) && totalProjects > 0 ? totalProjects : 'Multiple',
+    experience,
+  };
+};
+
 export const mapPropertyToCardVM = (property) => ({
   id: property?._id,
   slug: property?.slug,
@@ -66,7 +92,7 @@ export const mapPropertyToDetailVM = (property) => ({
     location: [property?.location?.area, property?.location?.city].filter(Boolean).join(', '),
     highlights: [],
   },
-  builder: null,
+  builder: mapBuilderToVM(property?.builder),
   raw: property,
 });
 

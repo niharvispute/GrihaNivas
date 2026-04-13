@@ -68,6 +68,8 @@ const TRANSFORMS = {
   blogFeatured: { width: 1200, height: 630, crop: 'fill', gravity: 'auto', quality: 'auto:good', fetch_format: 'auto' },
   testimonialPhoto: { width: 200, height: 200, crop: 'fill', gravity: 'face', quality: 'auto', fetch_format: 'auto' },
   bannerImage: { width: 1400, height: 500, crop: 'fill', gravity: 'auto', quality: 'auto:good', fetch_format: 'auto' },
+  builderLogo: { width: 300, height: 300, crop: 'fill', gravity: 'auto', quality: 'auto', fetch_format: 'auto' },
+  builderCover: { width: 1400, height: 500, crop: 'fill', gravity: 'auto', quality: 'auto:good', fetch_format: 'auto' },
   profilePicture: { width: 300, height: 300, crop: 'fill', gravity: 'face', quality: 'auto', fetch_format: 'auto' },
 };
 

@@ -19,6 +19,11 @@ export const listLeads = async (query = {}, { map = true } = {}) => {
   };
 };
 
+export const getLeadById = async (leadId) => {
+  const res = await authedApiFetch(`/api/leads/${leadId}`);
+  return res.data;
+};
+
 export const updateLeadStatus = async (leadId, status) => {
   const res = await authedApiFetch(`/api/leads/${leadId}/status`, {
     method: 'PUT',
@@ -39,6 +44,13 @@ export const addLeadNote = async (leadId, text) => {
   const res = await authedApiFetch(`/api/leads/${leadId}/notes`, {
     method: 'POST',
     body: { text },
+  });
+  return res.data;
+};
+
+export const deleteLead = async (leadId) => {
+  const res = await authedApiFetch(`/api/leads/${leadId}`, {
+    method: 'DELETE',
   });
   return res.data;
 };

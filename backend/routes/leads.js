@@ -13,5 +13,6 @@ router.get('/:id',    protect, adminOnly, leadController.getOne);
 router.put('/:id/status', protect, adminOnly, validate(schemas.lead.updateStatus), leadController.updateStatus);
 router.put('/:id/assign', protect, adminOnly, leadController.assign);
 router.post('/:id/notes', protect, adminOnly, validate(schemas.lead.addNote), leadController.addNote);
+router.delete('/:id', protect, adminOnly, validate(schemas.lead.idParams, 'params'), leadController.remove);
 
 module.exports = router;

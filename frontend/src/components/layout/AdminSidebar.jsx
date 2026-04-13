@@ -2,9 +2,25 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
+
+function getInitials(name = '') {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('');
+}
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const { user, logout } = useAuth();
+
+  const displayName = user?.name || user?.email || 'Admin User';
+  const roleLabel = user?.role ? `${user.role} console` : 'admin console';
+  const avatarSrc = user?.profilePictureUrl || user?.photoURL || user?.imageUrl || null;
+  const initials = getInitials(displayName);
 
   const menuItems = [
     { name: 'Dashboard', icon: 'dashboard', href: '/admin' },
@@ -50,18 +66,32 @@ export default function AdminSidebar() {
         <div className="p-5 bg-neutral-800/30 rounded-[2rem] border border-neutral-700/30 backdrop-blur-sm">
           <div className="flex items-center gap-4 overflow-hidden">
             <div className="relative">
-              <img 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR1fdGuaC5bauEuGoODuNyXlS4_6wWpoaDdXOnGaxvnrYsjioN7sRvxmsmm1duPGGNXM1-f-_ORAN8W_CWUopGCZASvEePQl6jNEY6IjsvTCREy8S0rK5tg87JMVpNkoBsNJ8RUOrUBbFmKo4iTABa1XaoKvW-MaYYgX23RQlmStizfgBxhYgA630ql2FL4CfnV6O8lAhdmXyVCKrlLNIhROurdgteUcO6n6HqYwiUQXisj9gC3b0cm9lGbQrBAndoRTZR6XZXpIA" 
-                alt="Admin Profile" 
-                className="w-12 h-12 rounded-2xl object-cover border-2 border-primary/20"
-              />
+              <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-primary/20 bg-linear-to-br from-primary/15 via-neutral-100 to-primary/5 text-primary flex items-center justify-center text-xs font-black">
+                {avatarSrc ? (
+                  <img
+                    src={avatarSrc}
+                    alt={displayName}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span>{initials || 'A'}</span>
+                )}
+              </div>
               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-primary border-2 border-neutral-900 rounded-full"></div>
             </div>
             <div className="overflow-hidden">
-              <p className="text-white text-sm font-black truncate tracking-tight">Vikram Oberoi</p>
-              <p className="text-neutral-500 text-[10px] truncate font-bold uppercase tracking-widest leading-none mt-1">Chief Editor</p>
+              <p className="text-white text-sm font-black truncate tracking-tight">{displayName}</p>
+              <p className="text-neutral-500 text-[10px] truncate font-bold uppercase tracking-widest leading-none mt-1">{roleLabel}</p>
             </div>
           </div>
+          <button
+            type="button"
+            onClick={logout}
+            className="mt-4 w-full flex items-center justify-center gap-2 rounded-xl bg-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-700 py-2.5 text-[11px] font-black uppercase tracking-widest transition-all"
+          >
+            <span className="material-symbols-outlined text-base">logout</span>
+            <span>Logout</span>
+          </button>
         </div>
       </div>
     </aside>

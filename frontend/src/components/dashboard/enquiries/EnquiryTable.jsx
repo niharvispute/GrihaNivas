@@ -1,55 +1,62 @@
-export default function EnquiryTable() {
-  const enquiries = [
-    {
-      id: 1,
-      name: "Marine Drive Penthouse",
-      image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=200",
-      type: "Buy",
-      date: "Oct 24, 2023",
-      status: "Qualified",
-      note: "Documents verified, ready for site visit.",
-      theme: "emerald"
-    },
-    {
-      id: 2,
-      name: "The Sky Loft - Studio B",
-      image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&q=80&w=200",
-      type: "Rent",
-      date: "Oct 22, 2023",
-      status: "Contacted",
-      note: "Call scheduled for tomorrow at 10 AM.",
-      theme: "blue"
-    },
-    {
-      id: 3,
-      name: "Home Loan Assistance",
-      type: "Loan",
-      date: "Oct 20, 2023",
-      status: "New",
-      note: "Awaiting agent assignment.",
-      theme: "orange",
-      isService: true,
-      serviceIcon: "payments"
-    },
-    {
-      id: 4,
-      name: "Lease Agreement Service",
-      type: "Agreement",
-      date: "Oct 15, 2023",
-      status: "Closed",
-      note: "Agreement signed and delivered.",
-      theme: "slate",
-      isService: true,
-      serviceIcon: "description"
-    }
-  ];
+'use client';
 
-  const statusThemes = {
-    emerald: "bg-emerald-50 text-emerald-600 border-emerald-100",
-    blue: "bg-blue-50 text-blue-600 border-blue-100",
-    orange: "bg-orange-50 text-orange-600 border-orange-100",
-    slate: "bg-slate-50 text-slate-500 border-slate-100"
-  };
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { apiFetch } from '@/lib/api';
+import { authedApiFetch } from '@/lib/api/authedRequest';
+
+const STATUS_THEMES = {
+  new:       'bg-blue-50 text-blue-600 border-blue-100',
+  contacted: 'bg-amber-50 text-amber-600 border-amber-100',
+  qualified: 'bg-emerald-50 text-emerald-600 border-emerald-100',
+  closed:    'bg-slate-50 text-slate-500 border-slate-100',
+};
+
+const TYPE_ICON = {
+  loan:      'payments',
+  agreement: 'description',
+  rent:      'apartment',
+  buy:       'home',
+  list_property: 'sell',
+};
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+export default function EnquiryTable() {
+  const { user } = useAuth();
+  const [enquiries, setEnquiries] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) return;
+    // Fetch user's own leads using their phone as a search filter (admin endpoint)
+    // Falls back to empty if user doesn't have admin access
+    authedApiFetch('/api/leads', { query: { search: user.phone, limit: 20 } })
+      .then((res) => setEnquiries(res.data || []))
+      .catch(() => setEnquiries([]))
+      .finally(() => setLoading(false));
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 p-10 animate-pulse space-y-4 mb-8">
+        {[1, 2, 3].map((i) => <div key={i} className="h-14 bg-slate-100 rounded-xl" />)}
+      </div>
+    );
+  }
+
+  if (enquiries.length === 0) {
+    return (
+      <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 py-16 text-center mb-8">
+        <span className="material-symbols-outlined text-5xl text-slate-200 mb-4 block">inbox</span>
+        <h3 className="font-heading font-black text-slate-900 text-lg mb-1">No enquiries yet</h3>
+        <p className="text-slate-400 text-sm font-medium">Your submitted enquiries will appear here.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -61,48 +68,55 @@ export default function EnquiryTable() {
               <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Type</th>
               <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Submitted</th>
               <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Status</th>
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Note</th>
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-right">Actions</th>
+              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Message</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
-            {enquiries.map((item) => (
-              <tr key={item.id} className="hover:bg-primary/[0.02] transition-colors group">
-                <td className="px-8 py-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200 shadow-inner flex items-center justify-center">
-                      {item.isService ? (
-                        <span className="material-symbols-outlined text-primary text-2xl">{item.serviceIcon}</span>
-                      ) : (
-                        <img alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src={item.image} />
-                      )}
+            {enquiries.map((item) => {
+              const leadType = item.leadType || 'buy';
+              const statusKey = item.status || 'new';
+              const isService = ['loan', 'agreement', 'list_property'].includes(leadType);
+              const themeClass = STATUS_THEMES[statusKey] || STATUS_THEMES.new;
+              const icon = TYPE_ICON[leadType] || 'home';
+              const propertyTitle = item.propertyId?.title || item.message || 'General Enquiry';
+
+              return (
+                <tr key={item._id} className="hover:bg-primary/[0.02] transition-colors group">
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200 shadow-inner flex items-center justify-center">
+                        {isService ? (
+                          <span className="material-symbols-outlined text-primary text-2xl">{icon}</span>
+                        ) : item.propertyId?.heroImage?.url ? (
+                          <img alt={propertyTitle} className="w-full h-full object-cover" src={item.propertyId.heroImage.url} />
+                        ) : (
+                          <span className="material-symbols-outlined text-primary text-2xl">{icon}</span>
+                        )}
+                      </div>
+                      <span className="font-heading font-bold text-slate-900 leading-snug group-hover:text-primary transition-colors">
+                        {propertyTitle}
+                      </span>
                     </div>
-                    <span className="font-heading font-bold text-slate-900 leading-snug group-hover:text-primary transition-colors">{item.name}</span>
-                  </div>
-                </td>
-                <td className="px-8 py-6">
-                  <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest border border-slate-200">
-                    {item.type}
-                  </span>
-                </td>
-                <td className="px-8 py-6">
-                  <span className="text-sm font-bold text-slate-500">{item.date}</span>
-                </td>
-                <td className="px-8 py-6">
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${statusThemes[item.theme]}`}>
-                    {item.status}
-                  </span>
-                </td>
-                <td className="px-8 py-6">
-                  <p className="text-sm text-slate-400 font-medium max-w-xs truncate" title={item.note}>{item.note}</p>
-                </td>
-                <td className="px-8 py-6 text-right">
-                  <button className="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-primary hover:bg-primary/5 transition-all">
-                    <span className="material-symbols-outlined">more_horiz</span>
-                  </button>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-8 py-6">
+                    <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest border border-slate-200">
+                      {leadType.replace('_', ' ')}
+                    </span>
+                  </td>
+                  <td className="px-8 py-6">
+                    <span className="text-sm font-bold text-slate-500">{formatDate(item.createdAt)}</span>
+                  </td>
+                  <td className="px-8 py-6">
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${themeClass}`}>
+                      {statusKey}
+                    </span>
+                  </td>
+                  <td className="px-8 py-6">
+                    <p className="text-sm text-slate-400 font-medium max-w-xs truncate" title={item.message}>{item.message || '—'}</p>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

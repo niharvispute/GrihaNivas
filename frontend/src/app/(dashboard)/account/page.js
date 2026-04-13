@@ -1,14 +1,16 @@
+'use client';
+
 import KPISection from '@/components/dashboard/KPISection';
 import ActivityTimeline from '@/components/dashboard/ActivityTimeline';
 import DashboardQuickActions from '@/components/dashboard/DashboardQuickActions';
 import FeaturedGuideCard from '@/components/dashboard/FeaturedGuideCard';
-
-export const metadata = {
-  title: 'My Dashboard | Bricks',
-  description: 'Manage your property enquiries, saved listings, and profile.',
-};
+import { useAuth } from '@/context/AuthContext';
 
 export default function UserDashboardPage() {
+  const { user } = useAuth();
+
+  const firstName = user?.name?.split(' ')[0] || 'There';
+
   const currentDate = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
@@ -16,13 +18,16 @@ export default function UserDashboardPage() {
     day: 'numeric',
   });
 
+  const savedCount = user?.savedProperties?.length ?? 0;
+  const compareCount = user?.comparedProperties?.length ?? 0;
+
   return (
     <div className="space-y-10">
       {/* Header & Greeting */}
       <div className="flex flex-col md:flex-row justify-between items-end gap-4">
         <div>
           <h1 className="text-4xl font-heading font-black text-slate-900 tracking-tight">
-            Good morning, <span className="text-primary underline decoration-primary/20 decoration-8 underline-offset-4">Alex</span>
+            Good morning, <span className="text-primary underline decoration-primary/20 decoration-8 underline-offset-4">{firstName}</span>
           </h1>
           <p className="text-slate-400 mt-2 font-bold uppercase tracking-[0.2em] text-[10px]">
             Today is {currentDate}
@@ -41,7 +46,7 @@ export default function UserDashboardPage() {
       </div>
 
       {/* KPI Section */}
-      <KPISection />
+      <KPISection savedCount={savedCount} compareCount={compareCount} />
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">

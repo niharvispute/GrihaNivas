@@ -5,6 +5,14 @@ import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { getErrorMessage } from '@/lib/api/errors';
 import {
+  EMAIL_REGEX,
+  INDIA_PHONE_DIGITS_REGEX,
+  PASSWORD_REGEX,
+  isValidAuthIdentifier,
+  normalizeAuthIdentifier,
+  normalizeIndianPhoneInput,
+} from '@/lib/validation/phone';
+import {
   completeSignupVerification,
   forgotPasswordRequest,
   forgotPasswordReset,
@@ -14,47 +22,8 @@ import {
   signupResendOtp,
 } from '@/services/authService';
 
-const PHONE_DIGITS_REGEX = /^[6-9]\d{9}$/;
-const E164_IN_PHONE_REGEX = /^\+91[6-9]\d{9}$/;
-const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
-const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
-const normalizePhone = (value) => {
-  const digits = String(value || '').replace(/\D/g, '');
-  if (digits.length > 10) return digits.slice(-10);
-  return digits;
-};
-
-const normalizeIdentifier = (value) => {
-  const raw = String(value || '').trim();
-  if (!raw) return '';
-
-  if (EMAIL_REGEX.test(raw)) {
-    return raw.toLowerCase();
-  }
-
-  if (E164_IN_PHONE_REGEX.test(raw)) {
-    return raw;
-  }
-
-  const digits = raw.replace(/\D/g, '');
-  if (digits.length === 10) {
-    return `+91${digits}`;
-  }
-  if (digits.length === 12 && digits.startsWith('91')) {
-    return `+${digits}`;
-  }
-
-  return raw;
-};
-
-const isValidIdentifier = (value) => {
-  const normalized = normalizeIdentifier(value);
-  return EMAIL_REGEX.test(normalized) || E164_IN_PHONE_REGEX.test(normalized);
-};
-
 const routeAfterAuth = (router, data) => {
-  const destination = data?.user?.role === 'admin' ? '/admin' : '/dashboard';
+  const destination = data?.user?.role === 'admin' ? '/admin' : '/account';
   router.push(destination);
   router.refresh();
 };
@@ -82,7 +51,10 @@ export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
-  const normalizedSignupPhone = useMemo(() => normalizePhone(signupPhone), [signupPhone]);
+  const normalizedSignupPhone = useMemo(
+    () => normalizeIndianPhoneInput(signupPhone),
+    [signupPhone]
+  );
 
   const resetFeedback = () => setFeedback({ type: '', message: '' });
 
@@ -93,9 +65,9 @@ export default function LoginPage() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    const identifier = normalizeIdentifier(loginIdentifier);
+    const identifier = normalizeAuthIdentifier(loginIdentifier);
 
-    if (!isValidIdentifier(identifier)) {
+    if (!isValidAuthIdentifier(identifier)) {
       setFeedback({
         type: 'error',
         message: 'Enter a valid email or +91 mobile number.',
@@ -141,7 +113,7 @@ export default function LoginPage() {
       return;
     }
 
-    if (!PHONE_DIGITS_REGEX.test(normalizedSignupPhone)) {
+    if (!INDIA_PHONE_DIGITS_REGEX.test(normalizedSignupPhone)) {
       setFeedback({
         type: 'error',
         message: 'Please enter a valid 10-digit Indian mobile number.',
@@ -226,9 +198,9 @@ export default function LoginPage() {
 
   const handleForgotRequest = async (event) => {
     event.preventDefault();
-    const identifier = normalizeIdentifier(forgotIdentifier);
+    const identifier = normalizeAuthIdentifier(forgotIdentifier);
 
-    if (!isValidIdentifier(identifier)) {
+    if (!isValidAuthIdentifier(identifier)) {
       setFeedback({ type: 'error', message: 'Enter a valid email or +91 mobile number.' });
       return;
     }
@@ -442,7 +414,7 @@ export default function LoginPage() {
                     inputMode="numeric"
                     maxLength={10}
                     value={signupPhone}
-                    onChange={(event) => setSignupPhone(normalizePhone(event.target.value))}
+                    onChange={(event) => setSignupPhone(normalizeIndianPhoneInput(event.target.value))}
                     placeholder="9876543210"
                     className="w-full bg-transparent py-4 outline-none text-sm font-semibold text-slate-700"
                     required

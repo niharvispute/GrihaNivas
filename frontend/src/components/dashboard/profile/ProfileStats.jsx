@@ -1,29 +1,26 @@
-export default function ProfileStats() {
+export default function ProfileStats({ user }) {
+  const savedCount = user?.savedProperties?.length ?? 0;
+  const compareCount = user?.comparedProperties?.length ?? 0;
+
   const stats = [
     {
-      label: "Properties Viewed",
-      value: "24",
-      icon: "domain",
+      label: "Saved Properties",
+      value: String(savedCount).padStart(2, '0'),
+      icon: "bookmark",
       gradient: "from-pink-500 to-pink-700",
       text: "text-white"
     },
     {
-      label: "Enquiries Made",
-      value: "08",
-      icon: "chat",
-      type: "agents",
-      agents: [
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100",
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100"
-      ],
-      extra: "+6",
+      label: "Comparing",
+      value: String(compareCount).padStart(2, '0'),
+      icon: "compare_arrows",
       text: "text-slate-900"
     },
     {
-      label: "Upcoming Viewings",
-      value: "03",
-      icon: "calendar_month",
-      action: "View Schedule",
+      label: "Account Status",
+      value: user?.isVerified ? "Verified" : "Pending",
+      icon: "verified_user",
+      action: user?.isVerified ? null : "Verify Now",
       text: "text-slate-900"
     }
   ];
@@ -33,8 +30,8 @@ export default function ProfileStats() {
       {stats.map((stat, idx) => (
         <div 
           key={idx} 
-          className={`relative overflow-hidden rounded-[2rem] p-8 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-slate-100 ${
-            stat.gradient ? `bg-gradient-to-br ${stat.gradient} border-transparent` : 'bg-white'
+          className={`relative overflow-hidden rounded-4xl p-8 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-slate-100 ${
+            stat.gradient ? `bg-linear-to-br ${stat.gradient} border-transparent` : 'bg-white'
           }`}
         >
           <div className="relative z-10 flex flex-col h-full justify-between">

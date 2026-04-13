@@ -11,6 +11,7 @@ router.use(protect);
 
 router.get('/me',     userController.getProfile);
 router.put('/me',     uploadLimiter, uploadImage.single('profilePicture'), validate(schemas.user.updateProfile), userController.updateProfile);
+router.get('/properties', validate(schemas.user.myPropertiesList, 'query'), userController.getMyProperties);
 
 router.get('/saved',  userController.getSaved);
 router.post('/saved', validate(schemas.user.saveProperty), userController.saveProperty);

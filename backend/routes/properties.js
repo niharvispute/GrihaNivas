@@ -9,6 +9,23 @@ const { uploadLimiter: uploadRateLimit } = require('../middleware/rateLimiter');
 // Public
 router.get('/',          validate(schemas.property.list, 'query'), propertyController.list);
 router.get('/slug/:slug', propertyController.getBySlug);
+
+// User submission
+router.post(
+  '/submit',
+  protect,
+  uploadRateLimit,
+  propertyUploadFields,
+  validate(schemas.property.submit),
+  propertyController.submit
+);
+
+// Admin moderation routes
+router.get('/admin', protect, adminOnly, validate(schemas.property.adminList, 'query'), propertyController.adminList);
+router.patch('/:id/approve', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.approve);
+router.patch('/:id/reject', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.reject);
+
+// Public detail routes
 router.get('/:id',       propertyController.getOne);
 
 // Admin only

@@ -39,12 +39,16 @@ const BlogManagementTable = ({ blogs, onEdit, onDelete, onAddNew }) => {
               <tr key={blog.id} className="hover:bg-slate-50/50 transition-all group">
                 <td className="px-10 py-6">
                   <div className="flex items-center gap-5">
-                    <div className="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-slate-100 border-2 border-white shadow-md group-hover:shadow-lg transition-all duration-500">
-                      <img 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                        src={blog.image || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=200&q=80'} 
-                        alt={blog.title} 
-                      />
+                    <div className="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-slate-100 border-2 border-white shadow-md group-hover:shadow-lg transition-all duration-500 flex items-center justify-center">
+                      {blog.image ? (
+                        <img
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          src={blog.image}
+                          alt={blog.title}
+                        />
+                      ) : (
+                        <span className="material-symbols-outlined text-primary text-2xl">article</span>
+                      )}
                     </div>
                     <div className="max-w-xs">
                       <span className="font-black text-slate-900 group-hover:text-primary transition-colors tracking-tight line-clamp-1 block mb-1">

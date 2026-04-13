@@ -7,6 +7,7 @@
  *
  * Usage:
  *   node scripts/test-apis.js
+ *   node scripts/test-apis.js --scope=builders
  */
 
 'use strict';
@@ -37,12 +38,15 @@ let userId = '';
 let adminUserId = '';
 
 let createdPropertyId = '';
+let createdBuilderId  = '';
+let createdBuilderSlug = '';
 let createdLeadId     = '';
 let createdBlogId     = '';
 let createdBlogSlug   = '';
 let createdContactId  = '';
 let createdTestimonialId = '';
 let createdBannerId   = '';
+const moderationPropertyIds = [];
 
 const cookieJar = {};
 
@@ -54,6 +58,10 @@ const TEST_PASSWORD = 'TestPass123';
 const ADMIN_PHONE = process.env.ADMIN_PHONE || '+919876543210';
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'bricks.dev@gmail.com').toLowerCase();
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123';
+
+const scopeArg = process.argv.find((arg) => arg.startsWith('--scope='));
+const TEST_SCOPE = (scopeArg ? scopeArg.split('=')[1] : 'all').toLowerCase();
+const isBuilderScope = TEST_SCOPE === 'builders';
 
 // ── HTTP helper ───────────────────────────────────────────────────────────────
 
@@ -410,9 +418,58 @@ const testStampDuty = async () => {
   assert('PUT /stamp-duty non-admin → 403', r3.status === 403, r3.body);
 };
 
-// ── 8. Properties ─────────────────────────────────────────────────────────────
+// ── 8. Builders ────────────────────────────────────────────────────────────────
+const testBuilders = async () => {
+  console.log('\n[8] Builders');
+
+  const builderName = `Lodha Group ${TEST_SUFFIX}`;
+  const r1 = await request(
+    'POST',
+    `${BASE}/admin/builders`,
+    {
+      name: builderName,
+      shortDescription: 'Premium real estate developer with strong Mumbai portfolio.',
+      description:
+        'Lodha has delivered multiple flagship projects across Mumbai and continues to launch premium residences in key micro-markets.',
+      establishedYear: 1980,
+      totalProjects: 100,
+      headquarters: 'Mumbai',
+      isFeatured: true,
+      isActive: true,
+      seo: {
+        metaTitle: 'Lodha Group Projects in Mumbai',
+        metaDescription: 'Explore Lodha Group projects and listings in Mumbai.',
+        keywords: ['lodha', 'mumbai builder'],
+      },
+    },
+    adminAccessToken
+  );
+  assert('POST /admin/builders (admin) → 201', r1.status === 201, r1.body);
+
+  createdBuilderId = r1.body?.data?._id || '';
+  createdBuilderSlug = r1.body?.data?.slug || '';
+
+  const r2 = await request('GET', `${BASE}/builders`);
+  assert('GET /builders → 200', r2.status === 200, r2.body);
+  assert('builders.data is array', Array.isArray(r2.body?.data), r2.body);
+
+  if (createdBuilderSlug) {
+    const r3 = await request('GET', `${BASE}/builders/${createdBuilderSlug}`);
+    assert('GET /builders/:slug → 200', r3.status === 200, r3.body);
+    assert('builder detail has builder object', !!r3.body?.data?.builder, r3.body);
+    assert('builder detail has properties array', Array.isArray(r3.body?.data?.properties), r3.body);
+  }
+
+  const r4 = await request('GET', `${BASE}/admin/builders?page=1&limit=10`, null, adminAccessToken);
+  assert('GET /admin/builders (admin) → 200', r4.status === 200, r4.body);
+
+  const r5 = await request('GET', `${BASE}/admin/builders`, null, userAccessToken);
+  assert('GET /admin/builders non-admin → 403', r5.status === 403, r5.body);
+};
+
+// ── 9. Properties ─────────────────────────────────────────────────────────────
 const testProperties = async () => {
-  console.log('\n[8] Properties');
+  console.log('\n[9] Properties');
 
   // Create (admin, no file upload for test)
   const r1 = await request('POST', `${BASE}/properties`, {
@@ -423,6 +480,7 @@ const testProperties = async () => {
     price: 25000000,
     bhk: 3,
     areaSqft: 1450,
+    ...(createdBuilderId ? { builder: createdBuilderId } : {}),
     furnishing: 'semi_furnished',
     possession: 'Ready to Move',
     amenities: ['Swimming Pool', 'Gym', 'Parking'],
@@ -453,11 +511,32 @@ const testProperties = async () => {
   const r5 = await request('GET', `${BASE}/properties?bhk=3`);
   assert('GET /properties?bhk=3 → 200', r5.status === 200, r5.body);
 
+  if (createdBuilderId) {
+    const r5a = await request('GET', `${BASE}/properties?builder=${createdBuilderId}`);
+    assert('GET /properties?builder=builderId → 200', r5a.status === 200, r5a.body);
+    const foundByBuilder = Array.isArray(r5a.body?.data)
+      ? r5a.body.data.some((property) => property?._id === createdPropertyId)
+      : false;
+    assert('builderId filter includes created property', foundByBuilder, r5a.body);
+  }
+
+  if (createdBuilderSlug) {
+    const r5b = await request('GET', `${BASE}/properties?builderSlug=${encodeURIComponent(createdBuilderSlug)}`);
+    assert('GET /properties?builderSlug=slug → 200', r5b.status === 200, r5b.body);
+    const foundByBuilderSlug = Array.isArray(r5b.body?.data)
+      ? r5b.body.data.some((property) => property?._id === createdPropertyId)
+      : false;
+    assert('builderSlug filter includes created property', foundByBuilderSlug, r5b.body);
+  }
+
   if (createdPropertyId) {
     // Get by ID
     const r6 = await request('GET', `${BASE}/properties/${createdPropertyId}`);
     assert('GET /properties/:id → 200', r6.status === 200, r6.body);
     assert('property title matches', r6.body?.data?.title === 'Sea View 3BHK in Worli', r6.body);
+    if (createdBuilderId) {
+      assert('property includes populated builder', r6.body?.data?.builder?._id === createdBuilderId, r6.body);
+    }
 
     // Get by slug
     const slug = r6.body?.data?.slug;
@@ -470,6 +549,14 @@ const testProperties = async () => {
     const r8 = await request('PUT', `${BASE}/properties/${createdPropertyId}`,
       { price: 26000000, isFeatured: false }, adminAccessToken);
     assert('PUT /properties/:id → 200', r8.status === 200, r8.body);
+
+    if (createdBuilderSlug) {
+      const r8a = await request('GET', `${BASE}/builders/${createdBuilderSlug}`);
+      const hasBuilderProperty = Array.isArray(r8a.body?.data?.properties)
+        ? r8a.body.data.properties.some((property) => property?._id === createdPropertyId)
+        : false;
+      assert('GET /builders/:slug includes linked property', r8a.status === 200 && hasBuilderProperty, r8a.body);
+    }
   }
 
   // Invalid ObjectId → 400 (not 500)
@@ -484,9 +571,117 @@ const testProperties = async () => {
   assert('POST /properties non-admin → 403', r10.status === 403, r10.body);
 };
 
-// ── 9. User — Saved & Compare ─────────────────────────────────────────────────
+// ── 10. Property Moderation Lifecycle ─────────────────────────────────────────
+const testPropertyModeration = async () => {
+  console.log('\n[10] Property Moderation Lifecycle');
+
+  const pendingArea = `Moderation Pending ${TEST_SUFFIX}`;
+  const pendingPayload = {
+    title: `Moderation Pending Property ${TEST_SUFFIX}`,
+    description:
+      'This property is submitted by a user and should remain hidden from public endpoints until admin approval.',
+    category: 'buy',
+    location: { city: 'Mumbai', area: pendingArea },
+    price: 18500000,
+    bhk: 2,
+    areaSqft: 980,
+    furnishing: 'semi_furnished',
+    amenities: ['Gym'],
+    highlights: ['Moderation Test'],
+  };
+
+  const r1 = await request('POST', `${BASE}/properties/submit`, pendingPayload, userAccessToken);
+  assert('POST /properties/submit → 201', r1.status === 201, r1.body);
+  assert('submitted property status = pending', r1.body?.data?.status === 'pending', r1.body);
+  assert('submitted property isActive = false', r1.body?.data?.isActive === false, r1.body);
+
+  const pendingPropertyId = r1.body?.data?.id || '';
+  if (!pendingPropertyId) return;
+  moderationPropertyIds.push(pendingPropertyId);
+
+  const r2 = await request('GET', `${BASE}/properties?area=${encodeURIComponent(pendingArea)}`);
+  const pendingVisiblePublicly = Array.isArray(r2.body?.data)
+    ? r2.body.data.some((property) => property?._id === pendingPropertyId)
+    : false;
+  assert('pending property hidden from public list', r2.status === 200 && !pendingVisiblePublicly, r2.body);
+
+  const r3 = await request('GET', `${BASE}/properties/${pendingPropertyId}`);
+  assert('pending property hidden from public detail', r3.status === 404, r3.body);
+
+  const r4 = await request(
+    'GET',
+    `${BASE}/properties/admin?status=pending&search=${encodeURIComponent(pendingArea)}`,
+    null,
+    adminAccessToken
+  );
+  const pendingInAdminQueue = Array.isArray(r4.body?.data)
+    ? r4.body.data.some((property) => property?._id === pendingPropertyId)
+    : false;
+  assert('pending property visible in admin queue', r4.status === 200 && pendingInAdminQueue, r4.body);
+
+  const r5 = await request('PATCH', `${BASE}/properties/${pendingPropertyId}/approve`, null, adminAccessToken);
+  assert('PATCH /properties/:id/approve → 200', r5.status === 200, r5.body);
+  assert('approved property status = approved', r5.body?.data?.status === 'approved', r5.body);
+  assert('approved property isActive = true', r5.body?.data?.isActive === true, r5.body);
+
+  const r6 = await request('GET', `${BASE}/properties?area=${encodeURIComponent(pendingArea)}`);
+  const approvedVisiblePublicly = Array.isArray(r6.body?.data)
+    ? r6.body.data.some((property) => property?._id === pendingPropertyId)
+    : false;
+  assert('approved property visible in public list', r6.status === 200 && approvedVisiblePublicly, r6.body);
+
+  const r7 = await request('GET', `${BASE}/properties/${pendingPropertyId}`);
+  assert('approved property visible in public detail', r7.status === 200, r7.body);
+
+  const rejectArea = `Moderation Rejected ${TEST_SUFFIX}`;
+  const rejectPayload = {
+    title: `Moderation Rejected Property ${TEST_SUFFIX}`,
+    description:
+      'This property is submitted by a user and should become hidden again after admin rejection.',
+    category: 'buy',
+    location: { city: 'Mumbai', area: rejectArea },
+    price: 9900000,
+    bhk: 1,
+    areaSqft: 620,
+    furnishing: 'unfurnished',
+  };
+
+  const r8 = await request('POST', `${BASE}/properties/submit`, rejectPayload, userAccessToken);
+  assert('POST /properties/submit (reject scenario) → 201', r8.status === 201, r8.body);
+
+  const rejectedPropertyId = r8.body?.data?.id || '';
+  if (!rejectedPropertyId) return;
+  moderationPropertyIds.push(rejectedPropertyId);
+
+  const r9 = await request('PATCH', `${BASE}/properties/${rejectedPropertyId}/reject`, null, adminAccessToken);
+  assert('PATCH /properties/:id/reject → 200', r9.status === 200, r9.body);
+  assert('rejected property status = rejected', r9.body?.data?.status === 'rejected', r9.body);
+  assert('rejected property isActive = false', r9.body?.data?.isActive === false, r9.body);
+
+  const r10 = await request('GET', `${BASE}/properties/${rejectedPropertyId}`);
+  assert('rejected property hidden from public detail', r10.status === 404, r10.body);
+
+  const r11 = await request('GET', `${BASE}/properties?area=${encodeURIComponent(rejectArea)}`);
+  const rejectedVisiblePublicly = Array.isArray(r11.body?.data)
+    ? r11.body.data.some((property) => property?._id === rejectedPropertyId)
+    : false;
+  assert('rejected property hidden from public list', r11.status === 200 && !rejectedVisiblePublicly, r11.body);
+
+  const r12 = await request(
+    'GET',
+    `${BASE}/properties/admin?status=rejected&search=${encodeURIComponent(rejectArea)}`,
+    null,
+    adminAccessToken
+  );
+  const rejectedInAdminQueue = Array.isArray(r12.body?.data)
+    ? r12.body.data.some((property) => property?._id === rejectedPropertyId)
+    : false;
+  assert('rejected property visible in admin rejected list', r12.status === 200 && rejectedInAdminQueue, r12.body);
+};
+
+// ── 11. User — Saved & Compare ───────────────────────────────────────────────
 const testUserActions = async () => {
-  console.log('\n[9] User — Saved & Compare');
+  console.log('\n[11] User — Saved & Compare');
 
   if (!createdPropertyId) {
     console.log('  ⚠️  No property ID, skipping');
@@ -531,9 +726,9 @@ const testUserActions = async () => {
   assert('GET /users/me → 200', r8.status === 200, r8.body);
 };
 
-// ── 10. Blogs ─────────────────────────────────────────────────────────────────
+// ── 12. Users — Admin Management ─────────────────────────────────────────────
 const testAdminUserManagement = async () => {
-  console.log('\n[10] Users — Admin Management');
+  console.log('\n[12] Users — Admin Management');
 
   const r1 = await request('GET', `${BASE}/users?page=1&limit=10`, null, adminAccessToken);
   assert('GET /users (admin) → 200', r1.status === 200, r1.body);
@@ -567,9 +762,9 @@ const testAdminUserManagement = async () => {
   assert('reactivated user access restored → 200', r7.status === 200, r7.body);
 };
 
-// ── 11. Blogs ─────────────────────────────────────────────────────────────────
+// ── 13. Blogs ─────────────────────────────────────────────────────────────────
 const testBlogs = async () => {
-  console.log('\n[11] Blogs');
+  console.log('\n[13] Blogs');
 
   // Create (admin)
   const r1 = await request('POST', `${BASE}/blogs`, {
@@ -619,9 +814,9 @@ const testBlogs = async () => {
   }
 };
 
-// ── 12. Testimonials ──────────────────────────────────────────────────────────
+// ── 14. Testimonials ──────────────────────────────────────────────────────────
 const testTestimonials = async () => {
-  console.log('\n[12] Testimonials');
+  console.log('\n[14] Testimonials');
 
   // List (public)
   const r1 = await request('GET', `${BASE}/testimonials`);
@@ -634,9 +829,9 @@ const testTestimonials = async () => {
   assert('POST /testimonials non-admin → 403', r2.status === 403, r2.body);
 };
 
-// ── 13. Dashboard ─────────────────────────────────────────────────────────────
+// ── 15. Dashboard ─────────────────────────────────────────────────────────────
 const testDashboard = async () => {
-  console.log('\n[13] Dashboard');
+  console.log('\n[15] Dashboard');
 
   const r1 = await request('GET', `${BASE}/dashboard`, null, adminAccessToken);
   assert('GET /dashboard (admin) → 200', r1.status === 200, r1.body);
@@ -650,9 +845,9 @@ const testDashboard = async () => {
   assert('GET /dashboard non-admin → 403', r2.status === 403, r2.body);
 };
 
-// ── 14. Error Hardening ───────────────────────────────────────────────────────
+// ── 16. Error Hardening ───────────────────────────────────────────────────────
 const testHardening = async () => {
-  console.log('\n[14] Security & Error Hardening');
+  console.log('\n[16] Security & Error Hardening');
 
   // 404
   const r1 = await request('GET', `${BASE}/nonexistent-route`);
@@ -687,13 +882,23 @@ const testHardening = async () => {
   assert('Reused refresh token after logout → 401', r7.status === 401, r7.body);
 };
 
-// ── 15. Cleanup — Delete test property & blog ─────────────────────────────────
+// ── 17. Cleanup — Delete test property, builder & blog ───────────────────────
 const testCleanup = async () => {
-  console.log('\n[15] Cleanup');
+  console.log('\n[17] Cleanup');
+
+  for (const moderationPropertyId of moderationPropertyIds) {
+    const r = await request('DELETE', `${BASE}/properties/${moderationPropertyId}`, null, adminAccessToken);
+    assert(`DELETE moderation property ${moderationPropertyId} → 204`, r.status === 204, r.body);
+  }
 
   if (createdPropertyId) {
     const r = await request('DELETE', `${BASE}/properties/${createdPropertyId}`, null, adminAccessToken);
     assert('DELETE /properties/:id → 204', r.status === 204, r.body);
+  }
+
+  if (createdBuilderId) {
+    const r = await request('DELETE', `${BASE}/admin/builders/${createdBuilderId}`, null, adminAccessToken);
+    assert('DELETE /admin/builders/:id → 204', r.status === 204, r.body);
   }
 
   if (createdBlogId) {
@@ -720,11 +925,33 @@ const run = async () => {
     await testHealth();
     await testAuthUser();
     await testAuthAdmin();
+
+    if (isBuilderScope) {
+      await testBuilders();
+      await testProperties();
+      await testCleanup();
+
+      const totalBuilder = passed + failed;
+      console.log(`\n${'─'.repeat(55)}`);
+      console.log(`[scope=builders] Results: ${passed}/${totalBuilder} passed`);
+      if (failures.length) {
+        console.log('\nFailed tests:');
+        failures.forEach((f) => console.log(`  ❌ ${f.label}`));
+      } else {
+        console.log('All scoped tests passed! 🎉');
+      }
+
+      server.close(() => process.exit(failed > 0 ? 1 : 0));
+      return;
+    }
+
     await testCalculators();
     await testContact();
     await testLeads();
     await testStampDuty();
+    await testBuilders();
     await testProperties();
+    await testPropertyModeration();
     await testUserActions();
     await testAdminUserManagement();
     await testBlogs();

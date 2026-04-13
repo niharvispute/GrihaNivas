@@ -136,6 +136,10 @@ const schemas = {
 
   // ── LEADS ─────────────────────────────────
   lead: {
+    idParams: z.object({
+      id: objectIdSchema,
+    }),
+
     create: z.object({
       name: z.string().trim().min(2, 'Name too short').max(100),
       phone: phoneSchema,
@@ -193,6 +197,7 @@ const schemas = {
       totalFloors:  z.number().int().min(1).optional(),
       parking:      z.number().int().min(0).default(0),
       furnishing:   z.enum(['unfurnished', 'semi_furnished', 'furnished']).optional(),
+      builder:      objectIdSchema.optional(),
       facing:       z.string().trim().optional(),
       possession:   z.string().trim().optional(),
       age:          z.string().trim().optional(),
@@ -204,10 +209,58 @@ const schemas = {
       seoDescription: z.string().trim().max(160).optional(),
     }),
 
+    submit: z.object({
+      title:       z.string().trim().min(5).max(200),
+      description: z.string().trim().min(20).max(5000),
+      category:    z.enum(['buy', 'rent', 'commercial', 'new_launch']),
+      location: z.object({
+        city:    z.string().trim().default('Mumbai'),
+        area:    z.string().trim().min(1),
+        address: z.string().trim().optional(),
+        pincode: z.string().trim().optional(),
+        coordinates: z.object({
+          lat: z.number().min(-90).max(90),
+          lng: z.number().min(-180).max(180),
+        }).optional(),
+      }),
+      price:        z.number().min(0),
+      priceUnit:    z.enum(['total', 'per_sqft', 'per_month']).default('total'),
+      isNegotiable: z.boolean().default(false),
+      bhk:          z.coerce.number().int().min(1).max(10).optional(),
+      bathrooms:    z.coerce.number().int().min(1).max(20).optional(),
+      areaSqft:     z.number().min(1).optional(),
+      floor:        z.number().int().min(0).optional(),
+      totalFloors:  z.number().int().min(1).optional(),
+      parking:      z.number().int().min(0).default(0),
+      furnishing:   z.enum(['unfurnished', 'semi_furnished', 'furnished']).optional(),
+      builder:      objectIdSchema.optional(),
+      facing:       z.string().trim().optional(),
+      possession:   z.string().trim().optional(),
+      age:          z.string().trim().optional(),
+      reraNumber:   z.string().trim().optional(),
+      amenities:    z.array(z.string().trim()).max(50).optional(),
+      highlights:   z.array(z.string().trim()).max(20).optional(),
+      seoTitle:       z.string().trim().max(70).optional(),
+      seoDescription: z.string().trim().max(160).optional(),
+    }),
+
+    adminList: z.object({
+      page: z.coerce.number().int().min(1).default(1),
+      limit: z.coerce.number().int().min(1).max(100).default(10),
+      status: z.enum(['pending', 'approved', 'rejected']).optional(),
+      search: z.string().trim().max(100).optional(),
+    }),
+
+    moderationParams: z.object({
+      id: objectIdSchema,
+    }),
+
     list: z.object({
       page:      z.coerce.number().int().min(1).default(1),
       limit:     z.coerce.number().int().min(1).max(50).default(10),
       category:  z.enum(['buy', 'rent', 'commercial', 'new_launch']).optional(),
+      builder:   objectIdSchema.optional(),
+      builderSlug: z.string().trim().max(200).optional(),
       bhk:       z.coerce.number().int().min(1).max(10).optional(),
       minPrice:  z.coerce.number().min(0).optional(),
       maxPrice:  z.coerce.number().min(0).optional(),
@@ -216,6 +269,74 @@ const schemas = {
       isFeatured: z.coerce.boolean().optional(),
       sortBy:    z.enum(['price_asc', 'price_desc', 'newest']).default('newest'),
     }),
+  },
+
+  // ── BUILDERS ──────────────────────────────
+  builder: {
+    publicList: z.object({
+      page: z.coerce.number().int().min(1).default(1),
+      limit: z.coerce.number().int().min(1).max(50).default(10),
+      search: z.string().trim().max(100).optional(),
+      isFeatured: z.coerce.boolean().optional(),
+    }),
+
+    slugParams: z.object({
+      slug: z.string().trim().min(1),
+    }),
+
+    adminList: z.object({
+      page: z.coerce.number().int().min(1).default(1),
+      limit: z.coerce.number().int().min(1).max(100).default(10),
+      search: z.string().trim().max(100).optional(),
+      isActive: z.coerce.boolean().optional(),
+      isFeatured: z.coerce.boolean().optional(),
+    }),
+
+    idParams: z.object({
+      id: objectIdSchema,
+    }),
+
+    create: z.object({
+      name: z.string().trim().min(2).max(150),
+      slug: z.string().trim().min(2).max(200).optional(),
+      description: z.string().trim().max(4000).optional(),
+      shortDescription: z.string().trim().max(300).optional(),
+      establishedYear: z.coerce.number().int().min(1800).max(new Date().getFullYear()).optional(),
+      totalProjects: z.coerce.number().int().min(0).optional(),
+      headquarters: z.string().trim().max(200).optional(),
+      isFeatured: z.boolean().optional(),
+      isActive: z.boolean().optional(),
+      seo: z
+        .object({
+          metaTitle: z.string().trim().max(70).optional(),
+          metaDescription: z.string().trim().max(160).optional(),
+          keywords: z.array(z.string().trim()).max(20).optional(),
+        })
+        .optional(),
+    }),
+
+    update: z
+      .object({
+        name: z.string().trim().min(2).max(150).optional(),
+        slug: z.string().trim().min(2).max(200).optional(),
+        description: z.string().trim().max(4000).optional(),
+        shortDescription: z.string().trim().max(300).optional(),
+        establishedYear: z.coerce.number().int().min(1800).max(new Date().getFullYear()).optional(),
+        totalProjects: z.coerce.number().int().min(0).optional(),
+        headquarters: z.string().trim().max(200).optional(),
+        isFeatured: z.boolean().optional(),
+        isActive: z.boolean().optional(),
+        seo: z
+          .object({
+            metaTitle: z.string().trim().max(70).optional(),
+            metaDescription: z.string().trim().max(160).optional(),
+            keywords: z.array(z.string().trim()).max(20).optional(),
+          })
+          .optional(),
+      })
+      .refine((value) => Object.keys(value).length > 0, {
+        message: 'At least one field must be provided',
+      }),
   },
 
   // ── BLOGS ─────────────────────────────────
@@ -260,12 +381,28 @@ const schemas = {
 
   // ── TESTIMONIALS ──────────────────────────
   testimonial: {
-    create: z.object({
-      name: z.string().trim().min(2).max(100),
-      rating: z.number().int().min(1).max(5),
-      message: z.string().trim().min(10).max(1000),
-      videoUrl: z.string().url().optional(),
-    }),
+    create: z
+      .object({
+        name: z.string().trim().min(2).max(100),
+        rating: z.coerce.number().int().min(1).max(5).default(5),
+        testimonial: z.string().trim().min(10).max(800).optional(),
+        message: z.string().trim().min(10).max(800).optional(), // backward compatibility
+        designation: z.string().trim().max(100).optional(),
+        company: z.string().trim().max(100).optional(),
+        isActive: z.coerce.boolean().optional(),
+        order: z.coerce.number().int().min(0).optional(),
+      })
+      .refine((data) => Boolean(data.testimonial || data.message), {
+        message: 'Testimonial text is required',
+        path: ['testimonial'],
+      })
+      .transform((data) => {
+        const { message, ...rest } = data;
+        return {
+          ...rest,
+          testimonial: (data.testimonial || message || '').trim(),
+        };
+      }),
   },
 
   // ── STAMP DUTY ────────────────────────────
@@ -300,6 +437,12 @@ const schemas = {
       search: z.string().trim().max(100).optional(),
       role: z.enum(['user', 'admin']).optional(),
       isActive: z.coerce.boolean().optional(),
+    }),
+
+    myPropertiesList: z.object({
+      page: z.coerce.number().int().min(1).default(1),
+      limit: z.coerce.number().int().min(1).max(100).default(10),
+      status: z.enum(['pending', 'approved', 'rejected']).optional(),
     }),
 
     userIdParam: z.object({

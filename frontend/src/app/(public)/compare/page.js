@@ -1,19 +1,30 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { properties as allProperties } from '@/data/properties';
 import CompareHeader from '@/components/property/compare/CompareHeader';
 import CompareGrid from '@/components/property/compare/CompareGrid';
+import { getCompareProperties, removeCompareProperty } from '@/services/userService';
 
 export default function ComparePage() {
-  // Use the first 3 properties as default for the demo
-  const [comparedIds, setComparedIds] = useState([1, 2, 3]);
+  const [comparedProperties, setComparedProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const comparedProperties = allProperties.filter(p => comparedIds.includes(p.id));
+  useEffect(() => {
+    getCompareProperties()
+      .then(setComparedProperties)
+      .catch(() => setComparedProperties([]))
+      .finally(() => setLoading(false));
+  }, []);
 
-  const handleRemove = (id) => {
-    setComparedIds(prev => prev.filter(i => i !== id));
+  const handleRemove = async (id) => {
+    try {
+      await removeCompareProperty(id);
+      setComparedProperties((prev) => prev.filter((p) => p.id !== id));
+    } catch {
+      // Remove locally even if API fails
+      setComparedProperties((prev) => prev.filter((p) => p.id !== id));
+    }
   };
 
   return (

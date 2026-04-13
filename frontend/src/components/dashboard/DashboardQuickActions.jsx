@@ -1,21 +1,26 @@
+import Link from 'next/link';
+
 export default function DashboardQuickActions() {
   const actions = [
     {
       title: "Browse Properties",
       desc: "Find your dream home",
       icon: "travel_explore",
+      href: "/buy",
       primary: true
     },
     {
       title: "EMI Calculator",
       desc: "Plan your finances",
       icon: "calculate",
+      href: "/emi-calculator",
       primary: false
     },
     {
       title: "List Property",
       desc: "Sell or rent your space",
       icon: "add_business",
+      href: "/list-property",
       primary: false
     }
   ];
@@ -24,8 +29,9 @@ export default function DashboardQuickActions() {
     <div className="space-y-4">
       <h2 className="text-xl font-heading font-black text-slate-900 mb-6">Quick Actions</h2>
       {actions.map((action, idx) => (
-        <button 
-          key={idx} 
+        <Link
+          key={idx}
+          href={action.href}
           className={`w-full flex items-center justify-between p-5 rounded-[1.25rem] transition-all active:scale-[0.98] group relative overflow-hidden ${
             action.primary 
               ? 'bg-primary text-white shadow-xl shadow-primary/20 hover:shadow-primary/30' 
@@ -50,7 +56,7 @@ export default function DashboardQuickActions() {
           {action.primary && (
             <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-2xl"></div>
           )}
-        </button>
+        </Link>
       ))}
     </div>
   );

@@ -168,14 +168,44 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
+// ── GET /api/users/properties ───────────────────────────────────────────────
+
+const getMyProperties = async (req, res, next) => {
+  try {
+    const { limit, skip, buildMeta } = parsePagination(req.query);
+    const filter = { createdBy: req.user.id };
+
+    if (req.query.status) {
+      filter.status = req.query.status;
+    }
+
+    const [properties, total] = await Promise.all([
+      Property.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .select('title slug category price priceUnit location.area status isActive approvedAt rejectedAt createdAt'),
+      Property.countDocuments(filter),
+    ]);
+
+    return sendSuccess(res, 200, 'My properties fetched', properties, buildMeta(total));
+  } catch (err) {
+    next(err);
+  }
+};
+
 // ── GET /api/users/saved ──────────────────────────────────────────────────────
 
 const getSaved = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id)
-      .populate('savedProperties', 'title heroImage price location bhk category slug');
+      .populate({
+        path: 'savedProperties',
+        match: { isActive: true, status: 'approved' },
+        select: 'title heroImage price location bhk category slug',
+      });
 
-    return sendSuccess(res, 200, 'Saved properties fetched', user.savedProperties);
+    return sendSuccess(res, 200, 'Saved properties fetched', (user.savedProperties || []).filter(Boolean));
   } catch (err) {
     next(err);
   }
@@ -187,7 +217,7 @@ const saveProperty = async (req, res, next) => {
   try {
     const { propertyId } = req.body;
 
-    const property = await Property.findOne({ _id: propertyId, isActive: true });
+    const property = await Property.findOne({ _id: propertyId, isActive: true, status: 'approved' });
     if (!property) throw new AppError('Property not found', 404);
 
     // $addToSet is idempotent — no-op if already saved
@@ -220,9 +250,12 @@ const unsaveProperty = async (req, res, next) => {
 const getCompare = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id)
-      .populate('comparedProperties');
+      .populate({
+        path: 'comparedProperties',
+        match: { isActive: true, status: 'approved' },
+      });
 
-    return sendSuccess(res, 200, 'Compare list fetched', user.comparedProperties);
+    return sendSuccess(res, 200, 'Compare list fetched', (user.comparedProperties || []).filter(Boolean));
   } catch (err) {
     next(err);
   }
@@ -236,6 +269,9 @@ const addToCompare = async (req, res, next) => {
 
     const user = await User.findById(req.user.id);
     if (!user) throw new AppError('User not found', 404);
+
+    const property = await Property.findOne({ _id: propertyId, isActive: true, status: 'approved' });
+    if (!property) throw new AppError('Property not found', 404);
 
     // Already in list — idempotent
     if (user.comparedProperties.some(id => id.toString() === propertyId)) {
@@ -278,6 +314,7 @@ module.exports = {
   activateUser,
   getProfile,
   updateProfile,
+  getMyProperties,
   getSaved,
   saveProperty,
   unsaveProperty,

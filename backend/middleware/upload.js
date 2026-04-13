@@ -118,10 +118,16 @@ const propertyUploadFields = uploadMixed.fields([
   { name: 'brochure',    maxCount: 1  },
 ]);
 
+const builderUploadFields = uploadImages.fields([
+  { name: 'logo', maxCount: 1 },
+  { name: 'coverImage', maxCount: 1 },
+]);
+
 module.exports = {
   uploadImage,
   uploadImages,
   uploadPDF,
   uploadMixed,
   propertyUploadFields,
+  builderUploadFields,
 };

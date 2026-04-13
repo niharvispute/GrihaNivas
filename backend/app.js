@@ -62,7 +62,7 @@ app.use(mongoSanitize());
 app.use(xss());
 // Prevents HTTP Parameter Pollution (e.g. ?status=new&status=closed)
 // Whitelist allows multiple values for these specific params
-app.use(hpp({ whitelist: ['category', 'bhk', 'amenities', 'highlights'] }));
+app.use(hpp({ whitelist: ['category', 'bhk', 'amenities', 'highlights', 'builder', 'builderSlug'] }));
 
 // ── 5. Compression ─────────────────────────────────────────────────────────
 app.use(compression());

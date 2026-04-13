@@ -1,17 +1,17 @@
-export default function KPISection() {
+export default function KPISection({ savedCount = 0, compareCount = 0 }) {
   const kpis = [
     {
       title: "Saved Properties",
-      value: "12",
-      change: "+2 this week",
+      value: String(savedCount),
+      change: savedCount === 1 ? "1 property" : `${savedCount} properties`,
       icon: "bookmark",
       theme: "pink"
     },
     {
-      title: "Enquiries Sent",
-      value: "5",
-      change: "3 Pending",
-      icon: "chat_bubble",
+      title: "Comparing",
+      value: String(compareCount),
+      change: `of 3 max`,
+      icon: "compare_arrows",
       theme: "blue"
     },
     {

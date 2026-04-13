@@ -6,6 +6,7 @@ const { disconnectDB } = require('./config/db');
 const { initCloudinary } = require('./config/cloudinary');
 const { initFirebase } = require('./config/firebase');
 const { initRedis, closeRedis } = require('./config/redis');
+const { startRejectedPropertyCleanupJob } = require('./services/propertyLifecycleService');
 
 const PORT = process.env.PORT || 5000;
 
@@ -28,7 +29,10 @@ const bootstrap = async () => {
     // 4. Redis (JWT blacklist store)
     await initRedis();
 
-    // 5. Start HTTP server — only after all services are ready
+    // 5. Scheduled cleanup for rejected property submissions
+    startRejectedPropertyCleanupJob();
+
+    // 6. Start HTTP server — only after all services are ready
     const server = app.listen(PORT, () => {
       console.info(`\n🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
       console.info(`📡 Health: http://localhost:${PORT}/health`);

@@ -4,6 +4,7 @@ const { parsePagination } = require('../utils/pagination');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
 const AppError = require('../utils/AppError');
 const Property = require('../models/mongoose/Property');
+const Builder = require('../models/mongoose/Builder');
 
 /**
  * Property Controller
@@ -22,16 +23,29 @@ const Property = require('../models/mongoose/Property');
 
 // ── Filter Builder ────────────────────────────────────────────────────────────
 
-const buildMongoFilter = (query) => {
-  const { category, bhk, area, minPrice, maxPrice, furnishing, isFeatured } = query;
+const buildMongoFilter = async (query) => {
+  const { category, bhk, area, minPrice, maxPrice, furnishing, isFeatured, builder, builderSlug } = query;
 
-  const filter = { isActive: true };
+  const filter = {
+    isActive: true,
+    status: 'approved',
+  };
 
   if (category)    filter.category = category;
+  if (builder)     filter.builder = builder;
   if (bhk)         filter.bhk = Number(bhk);
   if (area)        filter['location.area'] = new RegExp(area, 'i');
   if (furnishing)  filter.furnishing = furnishing;
   if (isFeatured !== undefined) filter.isFeatured = isFeatured === 'true' || isFeatured === true;
+
+  if (!builder && builderSlug) {
+    const matchedBuilder = await Builder.findOne({ slug: builderSlug, isActive: true }).select('_id');
+    if (!matchedBuilder) {
+      filter._id = null;
+    } else {
+      filter.builder = matchedBuilder._id;
+    }
+  }
 
   if (minPrice || maxPrice) {
     filter.price = {};
@@ -40,6 +54,17 @@ const buildMongoFilter = (query) => {
   }
 
   return filter;
+};
+
+const resolveBuilderReference = async (builderId) => {
+  if (!builderId) return null;
+
+  const builder = await Builder.findById(builderId).select('_id isActive');
+  if (!builder) {
+    throw new AppError('Invalid builder selected', 400);
+  }
+
+  return builder._id;
 };
 
 const buildMongoSort = (sortBy) => {
@@ -51,16 +76,40 @@ const buildMongoSort = (sortBy) => {
   return map[sortBy] || map.newest;
 };
 
+const buildAdminFilter = (query) => {
+  const { status, search } = query;
+  const filter = {
+    status: status || 'pending',
+  };
+
+  if (search) {
+    const regex = new RegExp(search, 'i');
+    filter.$or = [
+      { title: regex },
+      { 'location.area': regex },
+      { 'location.city': regex },
+      { reraNumber: regex },
+    ];
+  }
+
+  return filter;
+};
+
 // ── GET /api/properties ───────────────────────────────────────────────────────
 
 const list = async (req, res, next) => {
   try {
     const { limit, skip, buildMeta } = parsePagination(req.query);
-    const filter = buildMongoFilter(req.query);
+    const filter = await buildMongoFilter(req.query);
     const sort   = buildMongoSort(req.query.sortBy);
 
     const [properties, total] = await Promise.all([
-      Property.find(filter).sort(sort).skip(skip).limit(limit).select('-__v'),
+      Property.find(filter)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .select('-__v')
+        .populate('builder', 'name slug logo'),
       Property.countDocuments(filter),
     ]);
 
@@ -74,7 +123,11 @@ const list = async (req, res, next) => {
 
 const getOne = async (req, res, next) => {
   try {
-    const property = await Property.findOne({ _id: req.params.id, isActive: true });
+    const property = await Property.findOne({
+      _id: req.params.id,
+      isActive: true,
+      status: 'approved',
+    }).populate('builder', 'name slug logo');
     if (!property) throw new AppError('Property not found', 404);
 
     // fire-and-forget view increment
@@ -90,7 +143,11 @@ const getOne = async (req, res, next) => {
 
 const getBySlug = async (req, res, next) => {
   try {
-    const property = await Property.findOne({ slug: req.params.slug, isActive: true });
+    const property = await Property.findOne({
+      slug: req.params.slug,
+      isActive: true,
+      status: 'approved',
+    }).populate('builder', 'name slug logo');
     if (!property) throw new AppError('Property not found', 404);
 
     Property.findByIdAndUpdate(property._id, { $inc: { views: 1 } }).catch(() => {});
@@ -107,6 +164,7 @@ const create = async (req, res, next) => {
   try {
     const data = req.body;
     const slug = generateUniqueSlug(data.title);
+    const builderRef = await resolveBuilderReference(data.builder);
 
     let media = { heroImage: null, gallery: [], floorPlans: [], brochure: null };
     if (req.files && Object.keys(req.files).length > 0) {
@@ -116,15 +174,122 @@ const create = async (req, res, next) => {
     const property = await Property.create({
       ...data,
       slug,
+      builder:    builderRef,
       heroImage:  media.heroImage,
       gallery:    media.gallery,
       floorPlans: media.floorPlans,
       brochure:   media.brochure,
+      createdBy:  req.user.id,
       postedBy:   req.user.id,
+      status:     'approved',
+      approvedAt: new Date(),
       isActive:   true,
+      rejectedAt: null,
     });
 
     return sendCreated(res, 'Property created', property);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── POST /api/properties/submit  [user] ─────────────────────────────────────
+
+const submit = async (req, res, next) => {
+  try {
+    const data = req.body;
+    const slug = generateUniqueSlug(data.title);
+    const builderRef = await resolveBuilderReference(data.builder);
+
+    let media = { heroImage: null, gallery: [], floorPlans: [], brochure: null };
+    if (req.files && Object.keys(req.files).length > 0) {
+      media = await uploadPropertyMedia(req.files);
+    }
+
+    const property = await Property.create({
+      ...data,
+      slug,
+      builder:    builderRef,
+      heroImage:  media.heroImage,
+      gallery:    media.gallery,
+      floorPlans: media.floorPlans,
+      brochure:   media.brochure,
+      createdBy:  req.user.id,
+      postedBy:   req.user.id,
+      status:     'pending',
+      isActive:   false,
+      approvedAt: null,
+      rejectedAt: null,
+      isFeatured: false,
+    });
+
+    return sendCreated(res, 'Property submitted for admin review', {
+      id: property._id,
+      status: property.status,
+      isActive: property.isActive,
+      createdAt: property.createdAt,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── GET /api/properties/admin  [admin] ──────────────────────────────────────
+
+const adminList = async (req, res, next) => {
+  try {
+    const { limit, skip, buildMeta } = parsePagination(req.query);
+    const filter = buildAdminFilter(req.query);
+
+    const [properties, total] = await Promise.all([
+      Property.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate('createdBy', 'name email phone role')
+        .populate('builder', 'name slug logo')
+        .select('-__v'),
+      Property.countDocuments(filter),
+    ]);
+
+    return sendSuccess(res, 200, 'Admin properties fetched', properties, buildMeta(total));
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── PATCH /api/properties/:id/approve  [admin] ─────────────────────────────
+
+const approve = async (req, res, next) => {
+  try {
+    const property = await Property.findById(req.params.id);
+    if (!property) throw new AppError('Property not found', 404);
+
+    property.status = 'approved';
+    property.isActive = true;
+    property.approvedAt = new Date();
+    property.rejectedAt = null;
+    await property.save();
+
+    return sendSuccess(res, 200, 'Property approved', property);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── PATCH /api/properties/:id/reject  [admin] ──────────────────────────────
+
+const reject = async (req, res, next) => {
+  try {
+    const property = await Property.findById(req.params.id);
+    if (!property) throw new AppError('Property not found', 404);
+
+    property.status = 'rejected';
+    property.isActive = false;
+    property.rejectedAt = new Date();
+    await property.save();
+
+    return sendSuccess(res, 200, 'Property rejected', property);
   } catch (err) {
     next(err);
   }
@@ -136,6 +301,14 @@ const update = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updates = { ...req.body };
+
+    if (Object.prototype.hasOwnProperty.call(updates, 'builder')) {
+      if (!updates.builder) {
+        updates.builder = null;
+      } else {
+        updates.builder = await resolveBuilderReference(updates.builder);
+      }
+    }
 
     if (updates.title) {
       updates.slug = generateUniqueSlug(updates.title);
@@ -190,4 +363,15 @@ const remove = async (req, res, next) => {
   }
 };
 
-module.exports = { list, getOne, getBySlug, create, update, remove };
+module.exports = {
+  list,
+  getOne,
+  getBySlug,
+  create,
+  submit,
+  adminList,
+  approve,
+  reject,
+  update,
+  remove,
+};

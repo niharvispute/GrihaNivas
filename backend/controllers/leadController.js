@@ -158,4 +158,19 @@ const addNote = async (req, res, next) => {
   }
 };
 
-module.exports = { create, list, getOne, updateStatus, assign, addNote };
+// ── DELETE /api/leads/:id  [admin] ───────────────────────────────────────────
+
+const remove = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const lead = await Lead.findByIdAndDelete(id);
+    if (!lead) throw new AppError('Lead not found', 404);
+
+    return sendSuccess(res, 200, 'Lead deleted', { id: lead._id });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { create, list, getOne, updateStatus, assign, addNote, remove };

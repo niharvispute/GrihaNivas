@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function SavedPropertyCard({ property }) {
+export default function SavedPropertyCard({ property, onUnsave }) {
   const detailHref = `/property/${property.slug || property.id}`;
 
   return (
@@ -17,7 +17,11 @@ export default function SavedPropertyCard({ property }) {
             {property.type || 'BUY'}
           </span>
         </div>
-        <button className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-95 transition-all">
+        <button
+          onClick={onUnsave}
+          className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-95 transition-all"
+          title="Remove from saved"
+        >
           <span className="material-symbols-outlined text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>favorite</span>
         </button>
       </div>

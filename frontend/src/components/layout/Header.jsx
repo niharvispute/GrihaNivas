@@ -7,12 +7,20 @@ export default function Header() {
   const { user, loadingUser, openModal, logout } = useAuth();
   const router = useRouter();
 
+  const displayName = user?.name || user?.email || 'Account';
+  const avatarSrc = user?.profilePictureUrl || user?.photoURL || user?.imageUrl || null;
+  const accountHref = user?.role?.toLowerCase() === 'admin' ? '/admin' : '/account';
+
   const handleListProperty = () => {
     if (user) {
       router.push('/list-property');
     } else {
       openModal('login');
     }
+  };
+
+  const handleLogout = async () => {
+    await logout();
   };
 
   return (
@@ -49,16 +57,68 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-4">
             {!loadingUser && (
               user ? (
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold text-slate-700 max-w-[120px] truncate">
-                    {user.name || user.email}
-                  </span>
+                <div className="group relative">
                   <button
-                    onClick={logout}
-                    className="text-slate-500 hover:text-primary text-sm font-semibold transition-colors"
+                    type="button"
+                    onClick={() => router.push(accountHref)}
+                    className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/90 px-3 py-2 shadow-sm transition-all hover:border-primary/20 hover:shadow-md"
                   >
-                    Logout
+                    <span className="hidden xl:block max-w-35 truncate text-sm font-semibold text-slate-700">
+                      {displayName}
+                    </span>
+                    <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-primary/10 via-white to-tertiary/60 text-primary ring-1 ring-slate-200 transition-transform group-hover:scale-105">
+                      {avatarSrc ? (
+                        <img
+                          src={avatarSrc}
+                          alt={displayName}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="material-symbols-outlined text-2xl">person</span>
+                      )}
+                    </span>
                   </button>
+
+                  <div className="absolute right-0 top-full z-50 pt-3">
+                    <div className="pointer-events-none w-64 translate-y-2 scale-95 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100">
+                      <div className="absolute right-6 -top-2 h-4 w-4 rotate-45 border-l border-t border-slate-100 bg-white/95" />
+                      <div className="overflow-hidden rounded-[1.75rem] border border-slate-100 bg-white/95 shadow-2xl shadow-slate-200/60 backdrop-blur-xl">
+                      <div className="border-b border-slate-100 px-5 py-4">
+                        <p className="text-[10px] font-black uppercase tracking-[0.35em] text-slate-400">Signed in as</p>
+                        <p className="mt-1 truncate font-heading text-sm font-black tracking-tight text-slate-900">
+                          {displayName}
+                        </p>
+                      </div>
+
+                      <div className="p-2">
+                        <Link
+                          href={accountHref}
+                          className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-slate-900"
+                        >
+                          <span className="material-symbols-outlined text-xl text-primary">person</span>
+                          <span>My Account</span>
+                        </Link>
+
+                        <Link
+                          href="/account/saved"
+                          className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-slate-900"
+                        >
+                          <span className="material-symbols-outlined text-xl text-primary">favorite</span>
+                          <span>Wishlist</span>
+                        </Link>
+
+                        <button
+                          type="button"
+                          onClick={handleLogout}
+                          className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold text-slate-600 transition-all hover:bg-red-50 hover:text-red-600"
+                        >
+                          <span className="material-symbols-outlined text-xl">logout</span>
+                          <span>Logout</span>
+                        </button>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <button

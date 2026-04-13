@@ -1,166 +1,362 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { listLeads, updateLeadStatus, getLeadById, deleteLead } from '@/services/leadService';
+
+const STATUS_STYLES = {
+  new:       { bg: 'bg-blue-50 text-blue-700',    dot: 'bg-blue-600' },
+  contacted: { bg: 'bg-amber-50 text-amber-700',  dot: 'bg-amber-600' },
+  qualified: { bg: 'bg-emerald-50 text-emerald-700', dot: 'bg-emerald-600' },
+  closed:    { bg: 'bg-slate-100 text-slate-500', dot: 'bg-slate-400' },
+};
+const NEXT_STATUS = { new: 'contacted', contacted: 'qualified', qualified: 'closed' };
+
+function getInitials(name = '') {
+  return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function hasValue(value) {
+  if (value === null || value === undefined) return false;
+  if (typeof value === 'string') return value.trim().length > 0;
+  if (Array.isArray(value)) return value.length > 0;
+  return true;
+}
 
 export default function LeadCRMPage() {
-  const [activeFilter, setActiveFilter] = useState('All Statuses');
+  const [leads, setLeads] = useState([]);
+  const [meta, setMeta] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [leadType, setLeadType] = useState('');
+  const [status, setStatus] = useState('');
+  const [page, setPage] = useState(1);
+  const [updatingId, setUpdatingId] = useState(null);
+  const [openActionFor, setOpenActionFor] = useState(null);
+  const [viewingLead, setViewingLead] = useState(null);
+  const [loadingLeadDetail, setLoadingLeadDetail] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
 
-  const leads = [
-    { name: "Aryan Sharma", initials: "AS", email: "aryan.s@example.com", phone: "+91 98765 43210", type: "Buy", property: "Lodha World View", date: "Oct 24, 2024", status: "New", statusColor: "bg-blue-50 text-blue-700", dotColor: "bg-blue-600" },
-    { name: "Rohan Mehta", initials: "RM", email: "rohan.mehta@gmail.com", phone: "+91 99887 76655", type: "Rent", property: "Trump Tower Worli", date: "Oct 22, 2024", status: "Contacted", statusColor: "bg-amber-50 text-amber-700", dotColor: "bg-amber-600" },
-    { name: "Priya Varma", initials: "PV", email: "p.varma@outlook.com", phone: "+91 91234 56789", type: "Loan", property: "Oberoi Sky City", date: "Oct 20, 2024", status: "Qualified", statusColor: "bg-emerald-50 text-emerald-700", dotColor: "bg-emerald-600" },
-    { name: "Karan Kapoor", initials: "KK", email: "karan.k@example.com", phone: "+91 98989 89898", type: "Agreement", property: "Godrej Horizon", date: "Oct 18, 2024", status: "Closed", statusColor: "bg-slate-100 text-slate-500", dotColor: "bg-slate-400" },
-    { name: "Sneha Das", initials: "SD", email: "sneha_d@info.com", phone: "+91 95555 44444", type: "Buy", property: "Rustomjee Elements", date: "Oct 15, 2024", status: "New", statusColor: "bg-blue-50 text-blue-700", dotColor: "bg-blue-600" }
-  ];
+  const fetchLeads = useCallback(async () => {
+    setLoading(true);
+    try {
+      const query = { page, limit: 15 };
+      if (search) query.search = search;
+      if (leadType) query.leadType = leadType;
+      if (status) query.status = status;
+      const res = await listLeads(query, { map: false });
+      setLeads(res.items || []);
+      setMeta(res.meta || null);
+    } catch {
+      setLeads([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [search, leadType, status, page]);
 
-  const stats = [
-    { label: "Total Leads", value: "1,284", grow: "+12%", trend: "up" },
-    { label: "Conversion Rate", value: "8.4%", grow: "+2.1%", trend: "up" },
-    { label: "Response Time", value: "2.4h", grow: "-15%", trend: "down" },
-    { label: "Top Interest", value: "Marine Drive", grow: "", trend: "" }
-  ];
+  useEffect(() => { fetchLeads(); }, [fetchLeads]);
+
+  const handleAdvanceStatus = async (lead) => {
+    const next = NEXT_STATUS[lead.status];
+    if (!next) return;
+    setUpdatingId(lead._id);
+    try {
+      await updateLeadStatus(lead._id, next);
+      setLeads((prev) => prev.map((l) => l._id === lead._id ? { ...l, status: next } : l));
+    } catch {
+      alert('Failed to update status.');
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const handleViewLead = async (leadId) => {
+    setOpenActionFor(null);
+    setLoadingLeadDetail(true);
+    try {
+      const lead = await getLeadById(leadId);
+      setViewingLead(lead);
+    } catch {
+      alert('Failed to fetch lead details.');
+    } finally {
+      setLoadingLeadDetail(false);
+    }
+  };
+
+  const handleDeleteLead = async (leadId) => {
+    setOpenActionFor(null);
+    const ok = window.confirm('Delete this lead? This action cannot be undone.');
+    if (!ok) return;
+
+    setDeletingId(leadId);
+    try {
+      await deleteLead(leadId);
+      setLeads((prev) => prev.filter((lead) => lead._id !== leadId));
+      setMeta((prev) => (prev ? { ...prev, total: Math.max((prev.total || 1) - 1, 0) } : prev));
+    } catch {
+      alert('Failed to delete lead.');
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   return (
     <div className="space-y-10 pb-20">
-      {/* 📋 Page Header */}
+      {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-6">
         <div>
           <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Lead CRM</h1>
           <p className="text-slate-500 font-bold mt-2">Centralized portal for lead tracking, segmentation, and conversion metrics.</p>
         </div>
-        <button className="bg-primary text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center gap-3 hover:bg-primary/90 transition-all active:scale-95 shadow-2xl shadow-primary/20">
-          <span className="material-symbols-outlined text-[20px]">file_download</span>
-          Export CSV
-        </button>
+        {meta && (
+          <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
+            {meta.total} total leads
+          </span>
+        )}
       </div>
 
-      {/* 🔍 Segmentation Console */}
-      <div className="bg-white p-10 rounded-[2.5rem] shadow-sm border border-slate-50 flex flex-wrap gap-8 items-end">
-        <div className="flex-1 min-w-[280px]">
+      {/* Filters */}
+      <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
+        <div className="flex-1 min-w-55">
           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Quick Search</label>
-          <div className="relative group">
-            <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
-            <input className="w-full bg-slate-50 border-none rounded-2xl py-4 pl-14 pr-6 text-sm font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-300" placeholder="Name, phone, or email..." type="text"/>
+          <div className="relative">
+            <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+            <input
+              className="w-full bg-slate-50 rounded-2xl py-4 pl-14 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
+              placeholder="Name, phone, or email…"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            />
           </div>
         </div>
-        <div className="w-64">
+        <div className="w-48">
           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Lead Type</label>
-          <div className="relative group">
-            <select className="w-full appearance-none bg-slate-50 border border-slate-50 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer">
-              <option>All Types</option>
-              <option>Buy</option>
-              <option>Rent</option>
-              <option>Loan</option>
-              <option>Agreement</option>
-            </select>
-            <span className="material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-lg group-hover:text-primary transition-colors">keyboard_arrow_down</span>
-          </div>
+          <select
+            className="w-full appearance-none bg-slate-50 rounded-2xl px-5 py-4 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
+            value={leadType}
+            onChange={(e) => { setLeadType(e.target.value); setPage(1); }}
+          >
+            <option value="">All Types</option>
+            <option value="buy">Buy</option>
+            <option value="rent">Rent</option>
+            <option value="loan">Loan</option>
+            <option value="agreement">Agreement</option>
+            <option value="list_property">List Property</option>
+          </select>
         </div>
-        <div className="w-64">
-          <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Lifecycle Status</label>
-          <div className="relative group">
-            <select className="w-full appearance-none bg-slate-50 border border-slate-50 rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer" value={activeFilter} onChange={(e) => setActiveFilter(e.target.value)}>
-              <option>All Statuses</option>
-              <option>New</option>
-              <option>Contacted</option>
-              <option>Qualified</option>
-              <option>Closed</option>
-            </select>
-            <span className="material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-lg group-hover:text-primary transition-colors">filter_list</span>
-          </div>
+        <div className="w-48">
+          <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Status</label>
+          <select
+            className="w-full appearance-none bg-slate-50 rounded-2xl px-5 py-4 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
+            value={status}
+            onChange={(e) => { setStatus(e.target.value); setPage(1); }}
+          >
+            <option value="">All Statuses</option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="qualified">Qualified</option>
+            <option value="closed">Closed</option>
+          </select>
         </div>
-        <button className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-95 shadow-sm">
-          Apply Filter
-        </button>
       </div>
 
-      {/* 📁 Lead Intelligence Table */}
-      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 overflow-hidden hover:shadow-2xl transition-all">
-        <div className="overflow-x-auto px-6 pb-6 mt-6">
-          <table className="w-full text-left border-separate border-spacing-y-4">
-            <thead>
-              <tr className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
-                <th className="px-6 py-4">Client integrity</th>
-                <th className="px-6 py-4">Communication</th>
-                <th className="px-6 py-4">Classification</th>
-                <th className="px-6 py-4">Intent association</th>
-                <th className="px-6 py-4">Ingestion</th>
-                <th className="px-6 py-4 text-center">Status lifecycle</th>
-                <th className="px-6 py-4 text-right">Console</th>
-              </tr>
-            </thead>
-            <tbody className="space-y-4">
-              {leads.map((lead, i) => (
-                <tr key={i} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl">
-                  <td className="px-6 py-6 rounded-l-3xl">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-black text-xs shadow-lg group-hover:bg-primary transition-colors">
-                        {lead.initials}
-                      </div>
-                      <div>
-                        <p className="text-sm font-black text-slate-900 tracking-tight">{lead.name}</p>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{lead.email}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-6 text-sm font-bold text-slate-500">{lead.phone}</td>
-                  <td className="px-6 py-6 text-xs font-black uppercase tracking-widest">
-                    <span className="bg-slate-200/50 px-3 py-1.5 rounded-full">{lead.type}</span>
-                  </td>
-                  <td className="px-6 py-6">
-                    <span className="text-sm font-black text-primary italic tracking-tight cursor-pointer hover:underline">{lead.property}</span>
-                  </td>
-                  <td className="px-6 py-6 text-sm font-bold text-slate-400">{lead.date}</td>
-                  <td className="px-6 py-6 text-center">
-                    <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm ${lead.statusColor}`}>
-                      <span className={`w-2 h-2 rounded-full animate-pulse ${lead.dotColor}`}></span>
-                      {lead.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-6 text-right rounded-r-3xl">
-                    <button className="w-10 h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-primary hover:bg-primary/5 transition-all">
-                      <span className="material-symbols-outlined text-[18px]">open_in_new</span>
-                    </button>
-                  </td>
+      {/* Leads Table */}
+      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 overflow-hidden">
+        {loading ? (
+          <div className="p-10 space-y-4 animate-pulse">
+            {[1, 2, 3, 4, 5].map((i) => <div key={i} className="h-16 bg-slate-100 rounded-2xl" />)}
+          </div>
+        ) : leads.length === 0 ? (
+          <div className="py-20 text-center">
+            <span className="material-symbols-outlined text-5xl text-slate-200 mb-4 block">inbox</span>
+            <p className="text-slate-400 font-bold">No leads found.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-separate border-spacing-y-2 px-6 pb-6">
+              <thead>
+                <tr className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
+                  <th className="px-6 py-5">Name</th>
+                  <th className="px-6 py-5">Contact</th>
+                  <th className="px-6 py-5">Type</th>
+                  <th className="px-6 py-5">Date</th>
+                  <th className="px-6 py-5">Status</th>
+                  <th className="px-6 py-5 text-right">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="px-10 py-8 bg-slate-50/30 flex flex-col md:flex-row justify-between items-center gap-6">
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Showing 5 of 1,284 leads</span>
-          <div className="flex gap-3">
-            <button className="w-10 h-10 flex items-center justify-center border border-slate-100 rounded-xl bg-white hover:border-primary transition-all shadow-sm">
-              <span className="material-symbols-outlined text-sm">chevron_left</span>
-            </button>
-            {[1, 2, 3].map(page => (
-              <button key={page} className={`w-10 h-10 flex items-center justify-center border rounded-xl font-black text-xs transition-all ${page === 1 ? 'border-primary bg-primary text-white shadow-lg shadow-primary/20' : 'border-slate-100 bg-white text-slate-400 hover:border-primary'}`}>
-                {page}
-              </button>
-            ))}
-            <button className="w-10 h-10 flex items-center justify-center border border-slate-100 rounded-xl bg-white hover:border-primary transition-all shadow-sm">
-              <span className="material-symbols-outlined text-sm">chevron_right</span>
-            </button>
+              </thead>
+              <tbody>
+                {leads.map((lead) => {
+                  const style = STATUS_STYLES[lead.status] || STATUS_STYLES.new;
+                  const nextStatus = NEXT_STATUS[lead.status];
+                  const busy = updatingId === lead._id;
+                  const deleting = deletingId === lead._id;
+                  return (
+                    <tr key={lead._id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl">
+                      <td className="px-6 py-5 rounded-l-3xl">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-2xl bg-white text-primary flex items-center justify-center font-black text-xs shadow-sm border border-slate-100 group-hover:bg-primary group-hover:text-white transition-all">
+                            {getInitials(lead.name)}
+                          </div>
+                          <span className="text-sm font-black text-slate-900">{lead.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-5">
+                        <p className="text-sm font-bold text-slate-700">{lead.phone}</p>
+                        {lead.email && <p className="text-[10px] text-slate-400 font-medium">{lead.email}</p>}
+                      </td>
+                      <td className="px-6 py-5">
+                        <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 bg-slate-100 text-slate-600 rounded-full">
+                          {(lead.leadType || '').replace('_', ' ')}
+                        </span>
+                      </td>
+                      <td className="px-6 py-5 text-sm font-bold text-slate-500">{formatDate(lead.createdAt)}</td>
+                      <td className="px-6 py-5">
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${style.bg}`}>
+                          <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
+                          {lead.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-5 text-right rounded-r-3xl">
+                        <div className="flex items-center justify-end gap-2">
+                          {nextStatus && (
+                            <button
+                              onClick={() => handleAdvanceStatus(lead)}
+                              disabled={busy || deleting}
+                              className="text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl bg-primary/5 text-primary hover:bg-primary hover:text-white transition-all disabled:opacity-50"
+                            >
+                              {busy ? '…' : `→ ${nextStatus}`}
+                            </button>
+                          )}
+
+                          <div className="relative">
+                            <button
+                              type="button"
+                              onClick={() => setOpenActionFor((prev) => (prev === lead._id ? null : lead._id))}
+                              className="w-9 h-9 rounded-xl bg-white border border-slate-100 text-slate-500 hover:text-primary hover:border-primary/20 transition-all"
+                              aria-label="Lead options"
+                            >
+                              <span className="material-symbols-outlined text-lg">more_horiz</span>
+                            </button>
+
+                            {openActionFor === lead._id && (
+                              <div className="absolute right-0 top-11 z-20 w-44 rounded-2xl border border-slate-100 bg-white p-2 shadow-2xl shadow-slate-200/60">
+                                <button
+                                  type="button"
+                                  onClick={() => handleViewLead(lead._id)}
+                                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all"
+                                >
+                                  <span className="material-symbols-outlined text-lg text-primary">visibility</span>
+                                  <span>View</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteLead(lead._id)}
+                                  disabled={deleting}
+                                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all disabled:opacity-50"
+                                >
+                                  <span className="material-symbols-outlined text-lg">delete</span>
+                                  <span>{deleting ? 'Deleting…' : 'Delete'}</span>
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* 📈 Performance Analytics Bento */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {stats.map((stat, i) => (
-          <div key={i} className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50 flex flex-col gap-6 hover:shadow-2xl hover:scale-[1.02] transition-all group">
-            <div className="flex justify-between items-center">
-              <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">{stat.label}</p>
-              {stat.grow && (
-                <span className={`text-[10px] font-black flex items-center gap-1 bg-white px-3 py-1.5 rounded-full border border-slate-50 shadow-sm ${stat.trend === 'up' ? 'text-emerald-600' : 'text-primary'}`}>
-                  {stat.grow} <span className="material-symbols-outlined text-[14px]">{stat.trend === 'up' ? 'arrow_upward' : 'arrow_downward'}</span>
-                </span>
-              )}
+      {/* Pagination */}
+      {meta && meta.totalPages > 1 && (
+        <div className="flex justify-center gap-2">
+          {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map((p) => (
+            <button
+              key={p}
+              onClick={() => setPage(p)}
+              className={`w-10 h-10 rounded-xl font-black text-sm transition-all ${p === page ? 'bg-primary text-white shadow-lg' : 'bg-white border border-slate-100 text-slate-500 hover:border-primary hover:text-primary'}`}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Lead View Modal */}
+      {(loadingLeadDetail || viewingLead) && (
+        <div className="fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-3xl bg-white rounded-4xl border border-slate-100 shadow-2xl overflow-hidden">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight">Lead Details</h3>
+              <button
+                type="button"
+                onClick={() => { setViewingLead(null); setLoadingLeadDetail(false); }}
+                className="w-10 h-10 rounded-xl bg-slate-50 text-slate-500 hover:text-slate-900 transition-colors"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
             </div>
-            <h3 className={`font-black tracking-tighter ${i === 3 ? 'text-xl text-primary mt-1' : 'text-3xl text-slate-900 mt-2'}`}>{stat.value}</h3>
+
+            <div className="p-8 max-h-[75vh] overflow-y-auto">
+              {loadingLeadDetail ? (
+                <div className="space-y-4 animate-pulse">
+                  {[1, 2, 3, 4].map((i) => <div key={i} className="h-12 bg-slate-100 rounded-xl" />)}
+                </div>
+              ) : viewingLead ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {[
+                    { label: 'Name', value: viewingLead.name },
+                    { label: 'Phone', value: viewingLead.phone },
+                    { label: 'Email', value: viewingLead.email },
+                    { label: 'Lead Type', value: (viewingLead.leadType || '').replace('_', ' ') },
+                    { label: 'Status', value: viewingLead.status },
+                    { label: 'Submitted On', value: viewingLead.createdAt ? formatDate(viewingLead.createdAt) : null },
+                    { label: 'Budget Min', value: viewingLead.budgetMin },
+                    { label: 'Budget Max', value: viewingLead.budgetMax },
+                    { label: 'Monthly Income', value: viewingLead.monthlyIncome },
+                    { label: 'Source', value: viewingLead.source },
+                    {
+                      label: 'Preferred Locations',
+                      value: Array.isArray(viewingLead.preferredLocations) ? viewingLead.preferredLocations.join(', ') : null,
+                      full: true,
+                    },
+                    { label: 'Property', value: viewingLead.propertyId?.title, full: true },
+                    {
+                      label: 'Assigned To',
+                      value: viewingLead.assignedTo
+                        ? [viewingLead.assignedTo.name, viewingLead.assignedTo.email].filter(Boolean).join(' • ')
+                        : null,
+                      full: true,
+                    },
+                    { label: 'Message', value: viewingLead.message, full: true },
+                  ]
+                    .filter((field) => hasValue(field.value))
+                    .map((field) => (
+                      <Info key={field.label} label={field.label} value={field.value} full={field.full} />
+                    ))}
+                </div>
+              ) : null}
+            </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Info({ label, value, full = false }) {
+  return (
+    <div className={`${full ? 'md:col-span-2' : ''} rounded-xl border border-slate-100 bg-slate-50 p-4`}>
+      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">{label}</p>
+      <p className="text-sm font-bold text-slate-800 wrap-break-word">{String(value)}</p>
     </div>
   );
 }

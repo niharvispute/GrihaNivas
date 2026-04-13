@@ -9,6 +9,7 @@
  */
 
 const User           = require('./User');
+const Builder        = require('./Builder');
 const Property       = require('./Property');
 const Lead           = require('./Lead');
 const Blog           = require('./Blog');
@@ -20,6 +21,7 @@ const AuthOtpFlow    = require('./AuthOtpFlow');
 
 module.exports = {
   User,
+  Builder,
   Property,
   Lead,
   Blog,

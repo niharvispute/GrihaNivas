@@ -12,6 +12,13 @@ import {
   forgotPasswordReset,
   googleAuth,
 } from '@/services/authService';
+import {
+  isValidAuthIdentifier,
+  normalizeAuthIdentifier,
+  toIndianPhoneE164,
+} from '@/lib/validation/phone';
+
+const GOOGLE_OAUTH_ENABLED = Boolean(String(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '').trim());
 
 // ── OTP Boxes ─────────────────────────────────────────────────────────────────
 
@@ -237,10 +244,17 @@ function LoginView({ ctx }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const normalizedIdentifier = normalizeAuthIdentifier(identifier);
+
+    if (!isValidAuthIdentifier(normalizedIdentifier)) {
+      setError('Enter a valid email or +91 mobile number.');
+      return;
+    }
+
     setError('');
     setLoading(true);
     try {
-      const data = await loginWithPassword({ identifier, password });
+      const data = await loginWithPassword({ identifier: normalizedIdentifier, password });
       onAuthSuccess(data.user);
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
@@ -271,8 +285,12 @@ function LoginView({ ctx }) {
           <p className="text-sm text-slate-500 mt-0.5">Sign in to your account</p>
         </div>
 
-        <GoogleButton label="Continue with Google" onToken={handleGoogle} disabled={loading} />
-        <Divider />
+        {GOOGLE_OAUTH_ENABLED ? (
+          <>
+            <GoogleButton label="Continue with Google" onToken={handleGoogle} disabled={loading} />
+            <Divider />
+          </>
+        ) : null}
         <ErrorAlert message={error} />
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -328,11 +346,22 @@ function RegisterView({ ctx }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const phone = toIndianPhoneE164(form.phone);
+    if (!phone) {
+      setError('Enter a valid Indian mobile number in +91 format.');
+      return;
+    }
+
     setError('');
     setLoading(true);
     try {
-      await signupRequest(form);
-      setFlowData({ email: form.email });
+      await signupRequest({
+        ...form,
+        email: String(form.email || '').trim().toLowerCase(),
+        phone,
+      });
+      setFlowData({ email: String(form.email || '').trim().toLowerCase() });
       setView('register-otp');
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.');
@@ -363,8 +392,12 @@ function RegisterView({ ctx }) {
           <p className="text-sm text-slate-500 mt-0.5">Join Mumbai Editorial today</p>
         </div>
 
-        <GoogleButton label="Sign up with Google" onToken={handleGoogle} disabled={loading} />
-        <Divider />
+        {GOOGLE_OAUTH_ENABLED ? (
+          <>
+            <GoogleButton label="Sign up with Google" onToken={handleGoogle} disabled={loading} />
+            <Divider />
+          </>
+        ) : null}
         <ErrorAlert message={error} />
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -478,11 +511,18 @@ function ForgotView({ ctx }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const normalizedIdentifier = normalizeAuthIdentifier(identifier);
+
+    if (!isValidAuthIdentifier(normalizedIdentifier)) {
+      setError('Enter a valid email or +91 mobile number.');
+      return;
+    }
+
     setError('');
     setLoading(true);
     try {
-      await forgotPasswordRequest({ identifier });
-      setFlowData({ identifier });
+      await forgotPasswordRequest({ identifier: normalizedIdentifier });
+      setFlowData({ identifier: normalizedIdentifier });
       setView('forgot-otp');
     } catch (err) {
       setError(err.message || 'Failed to send OTP. Please try again.');
@@ -652,8 +692,10 @@ export default function AuthModal() {
   const [error, setError] = useState('');
   const [flowData, setFlowData] = useState({});
 
-  // Clear error when switching views
-  useEffect(() => { setError(''); }, [view]);
+  const switchView = (nextView) => {
+    setError('');
+    setView(nextView);
+  };
 
   // ESC to close
   useEffect(() => {
@@ -675,7 +717,17 @@ export default function AuthModal() {
 
   if (!isOpen) return null;
 
-  const ctx = { loading, setLoading, error, setError, setView, flowData, setFlowData, onAuthSuccess, closeModal };
+  const ctx = {
+    loading,
+    setLoading,
+    error,
+    setError,
+    setView: switchView,
+    flowData,
+    setFlowData,
+    onAuthSuccess,
+    closeModal,
+  };
 
   const views = {
     'login': <LoginView ctx={ctx} />,

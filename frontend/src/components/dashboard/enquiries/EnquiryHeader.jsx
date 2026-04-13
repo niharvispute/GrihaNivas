@@ -11,10 +11,6 @@ export default function EnquiryHeader() {
         </nav>
         <h2 className="text-4xl font-heading font-black text-slate-900 tracking-tight">My Enquiries</h2>
       </div>
-      <div className="bg-primary/5 px-6 py-3 rounded-2xl border border-primary/10 flex items-center gap-3 group hover:bg-primary/10 transition-all cursor-default shadow-sm shadow-primary/5">
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Total Submissions</span>
-        <span className="text-2xl font-heading font-black text-primary group-hover:scale-110 transition-transform">12</span>
-      </div>
     </div>
   );
 }

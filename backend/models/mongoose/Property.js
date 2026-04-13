@@ -136,6 +136,11 @@ const propertySchema = new mongoose.Schema(
       },
       default: null,
     },
+    builder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Builder',
+      default: null,
+    },
     facing: {
       type: String,
       trim: true,
@@ -188,16 +193,38 @@ const propertySchema = new mongoose.Schema(
     },
 
     // ── Status ────────────────────────────────────────────────────────────
+    status: {
+      type: String,
+      enum: {
+        values: ['pending', 'approved', 'rejected'],
+        message: 'Status must be pending, approved, or rejected',
+      },
+      default: 'pending',
+      index: true,
+    },
     isFeatured: {
       type: Boolean,
       default: false,
     },
     isActive: {
       type: Boolean,
-      default: true,
+      default: false,
+    },
+    approvedAt: {
+      type: Date,
+      default: null,
+    },
+    rejectedAt: {
+      type: Date,
+      default: null,
     },
 
     // ── Meta ──────────────────────────────────────────────────────────────
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
     postedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -240,11 +267,15 @@ propertySchema.index({ price: 1 });
 propertySchema.index({ bhk: 1 });
 propertySchema.index({ isFeatured: 1 });
 propertySchema.index({ isActive: 1 });
+propertySchema.index({ createdBy: 1 });
+propertySchema.index({ builder: 1 });
+propertySchema.index({ status: 1, rejectedAt: 1 });
 propertySchema.index({ createdAt: -1 });
 
 // Compound indexes for common filter combinations
 propertySchema.index({ category: 1, isActive: 1, price: 1 });
 propertySchema.index({ category: 1, 'location.area': 1, isActive: 1 });
+propertySchema.index({ builder: 1, status: 1, isActive: 1, createdAt: -1 });
 
 // 2dsphere index for geo queries (if lat/lng becomes available)
 // propertySchema.index({ 'location.coordinates': '2dsphere' });

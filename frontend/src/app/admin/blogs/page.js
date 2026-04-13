@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { listBlogs, deleteBlog } from '@/services/blogService';
+import { listBlogs, createBlog, updateBlog, deleteBlog } from '@/services/blogService';
 import BlogManagementTable from '@/components/admin/blog/BlogManagementTable';
 import BlogEditorForm from '@/components/admin/blog/BlogEditorForm';
 
@@ -10,6 +10,7 @@ export default function AdminBlogCMS() {
   const [loading, setLoading] = useState(true);
   const [editingPost, setEditingPost] = useState(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     fetchBlogs();
@@ -51,11 +52,21 @@ export default function AdminBlogCMS() {
   };
 
   const handleSave = async (data) => {
-    // In a real app, logic for create/update would happen here
-    alert('Insight published successfully to the platform.');
-    setEditingPost(null);
-    setIsAddingNew(false);
-    fetchBlogs();
+    setIsSaving(true);
+    try {
+      if (editingPost?.id) {
+        await updateBlog(editingPost.id, data);
+      } else {
+        await createBlog(data);
+      }
+      setEditingPost(null);
+      setIsAddingNew(false);
+      fetchBlogs();
+    } catch (error) {
+      alert('Failed to save post. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -75,10 +86,11 @@ export default function AdminBlogCMS() {
             </h2>
           </div>
           
-          <BlogEditorForm 
-            initialData={editingPost || {}} 
+          <BlogEditorForm
+            initialData={editingPost || {}}
             onSave={handleSave}
             onCancel={() => { setEditingPost(null); setIsAddingNew(false); }}
+            isSaving={isSaving}
           />
         </section>
       ) : (

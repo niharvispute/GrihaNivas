@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { getErrorMessage } from '@/lib/api/errors';
+import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { createLead } from '@/services/leadService';
 
 export default function LeadForm({
@@ -24,13 +25,23 @@ export default function LeadForm({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const phone = toIndianPhoneE164(form.phone);
+
+    if (!phone) {
+      setFeedback({
+        type: 'error',
+        message: 'Please enter a valid Indian mobile number in +91 format.',
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setFeedback({ type: '', message: '' });
 
     try {
       await createLead({
         name: form.name.trim(),
-        phone: form.phone.trim(),
+        phone,
         email: form.email.trim() || undefined,
         leadType,
         propertyId: propertyId || undefined,
