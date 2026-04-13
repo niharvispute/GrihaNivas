@@ -32,9 +32,7 @@ export default function EnquiryTable() {
 
   useEffect(() => {
     if (!user) return;
-    // Fetch user's own leads using their phone as a search filter (admin endpoint)
-    // Falls back to empty if user doesn't have admin access
-    authedApiFetch('/api/leads', { query: { search: user.phone, limit: 20 } })
+    authedApiFetch('/api/leads/my-enquiries', { query: { limit: 20 } })
       .then((res) => setEnquiries(res.data || []))
       .catch(() => setEnquiries([]))
       .finally(() => setLoading(false));

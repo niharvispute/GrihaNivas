@@ -35,6 +35,33 @@ const create = async (req, res, next) => {
   }
 };
 
+// ── GET /api/leads/my-enquiries  [user] ──────────────────────────────────────
+
+const myEnquiries = async (req, res, next) => {
+  try {
+    const { limit, skip, buildMeta } = parsePagination(req.query);
+    const userPhone = req.user.phone;
+
+    if (!userPhone) {
+      return sendSuccess(res, 200, 'No enquiries found', [], buildMeta(0));
+    }
+
+    const [leads, total] = await Promise.all([
+      Lead.find({ phone: userPhone })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate('assignedTo', 'name email')
+        .populate('propertyId', 'title slug'),
+      Lead.countDocuments({ phone: userPhone }),
+    ]);
+
+    return sendSuccess(res, 200, 'Your enquiries fetched', leads, buildMeta(total));
+  } catch (err) {
+    next(err);
+  }
+};
+
 // ── GET /api/leads  [admin] ───────────────────────────────────────────────────
 
 const list = async (req, res, next) => {
@@ -173,4 +200,4 @@ const remove = async (req, res, next) => {
   }
 };
 
-module.exports = { create, list, getOne, updateStatus, assign, addNote, remove };
+module.exports = { create, list, myEnquiries, getOne, updateStatus, assign, addNote, remove };

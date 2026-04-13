@@ -30,15 +30,6 @@ export default function DashboardHeader() {
         </div>
       </div>
       <div className="flex items-center gap-6">
-        <div className="flex gap-4">
-          <button className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-full transition-all relative">
-            <span className="material-symbols-outlined text-2xl">notifications</span>
-            <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
-          </button>
-          <button className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-full transition-all">
-            <span className="material-symbols-outlined text-2xl">settings</span>
-          </button>
-        </div>
         <div className="h-8 w-px bg-slate-100 mx-2"></div>
         <div className="flex items-center gap-3 pl-2">
           <div className="text-right hidden sm:block">

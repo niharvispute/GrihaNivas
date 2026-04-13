@@ -60,7 +60,11 @@
       "Bash(ls E:/PROJECTS/Bricks/frontend/*.env)",
       "Bash(ls E:/PROJECTS/Bricks/*.env)",
       "Bash(node -e \"const p = require\\('./package.json'\\); console.log\\('@react-oauth/google:', p.dependencies['@react-oauth/google']\\)\")",
-      "Bash(npx next:*)"
+      "Bash(npx next:*)",
+      "Bash(curl -i http://localhost:3000/api/leads/my-enquiries?limit=20)",
+      "Bash(curl -i http://localhost:5000/api/leads/my-enquiries?limit=20)",
+      "Bash(curl -s -X GET \"http://localhost:5000/api/leads?leadType=buy\" -H \"Authorization: Bearer test\")",
+      "Bash(xargs grep:*)"
     ]
   }
 }

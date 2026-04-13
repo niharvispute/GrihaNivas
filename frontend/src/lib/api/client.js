@@ -89,6 +89,16 @@ export const apiFetch = async (
   try {
     const res = await fetch(finalUrl, requestInit);
 
+    if (res.status === 304) {
+      return {
+        success: true,
+        message: 'Not modified',
+        data: null,
+        meta: null,
+        status: 304,
+      };
+    }
+
     const contentType = res.headers.get('content-type') || '';
     const hasJson = contentType.includes('application/json');
     const payload = hasJson ? await res.json() : null;

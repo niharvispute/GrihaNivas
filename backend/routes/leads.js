@@ -7,6 +7,9 @@ const { adminOnly } = require('../middleware/adminOnly');
 // Public — any user can submit a lead
 router.post('/', validate(schemas.lead.create), leadController.create);
 
+// User — fetch their own enquiries by phone
+router.get('/my-enquiries', protect, validate(schemas.lead.list, 'query'), leadController.myEnquiries);
+
 // Admin only
 router.get('/',       protect, adminOnly, validate(schemas.lead.list, 'query'), leadController.list);
 router.get('/:id',    protect, adminOnly, leadController.getOne);

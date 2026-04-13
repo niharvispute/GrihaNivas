@@ -138,6 +138,8 @@ if (forceHttps) {
 }
 
 // ── 10. API Routes ────────────────────────────────────────────────────────
+// Disable ETags on API to prevent 304 responses (which have no body)
+app.disable('etag');
 app.use('/api', routes);
 
 // ── 11. 404 Handler ───────────────────────────────────────────────────────
