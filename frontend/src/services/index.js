@@ -1,5 +1,6 @@
 export * from '@/services/authService';
 export * from '@/services/propertyService';
+export * from '@/services/propertySubmissionService';
 export * from '@/services/blogService';
 export * from '@/services/leadService';
 export * from '@/services/contactService';

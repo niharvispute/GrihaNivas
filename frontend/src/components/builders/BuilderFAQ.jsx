@@ -1,9 +1,12 @@
 export default function BuilderFAQ({ builder }) {
+  const faqs = Array.isArray(builder?.faqs) ? builder.faqs : [];
+  if (faqs.length === 0) return null;
+
   return (
     <div className="lg:w-1/2">
       <h2 className="text-4xl font-extrabold mb-12 font-headline uppercase tracking-tight">Common Inquiries</h2>
       <div className="space-y-6">
-        {builder.faqs.map((faq, i) => (
+        {faqs.map((faq, i) => (
           <details key={i} className="group bg-zinc-800/50 rounded-2xl border border-zinc-700 open:bg-zinc-800 transition-all duration-300">
             <summary className="p-6 cursor-pointer flex justify-between items-center list-none font-bold text-lg font-headline tracking-tight">
               {faq.question}

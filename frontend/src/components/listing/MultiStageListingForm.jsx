@@ -1,13 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
-import { createLead } from '@/services/leadService';
+import { createPropertySubmission } from '@/services/propertySubmissionService';
+
+const parseFeatureLines = (value) =>
+  String(value || '')
+    .split('\n')
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 12);
 
 export default function MultiStageListingForm() {
+  const { user, openModal } = useAuth();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [queuedSubmit, setQueuedSubmit] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
   const [form, setForm] = useState({
@@ -36,10 +46,13 @@ export default function MultiStageListingForm() {
     // Step 4: Pricing & Features
     price: '',
     amenities: [],
+    featureText: '',
+    reraUrl: '',
 
     // Step 5: Review
     title: '',
     description: '',
+    readyToProceed: false,
   });
 
   const steps = [
@@ -70,7 +83,13 @@ export default function MultiStageListingForm() {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleImagesSelected = (event) => {
+    const files = Array.from(event.target.files || []);
+    if (!files.length) return;
+    setForm((prev) => ({ ...prev, images: files }));
+  };
+
+  const submitListing = useCallback(async () => {
     const phone = toIndianPhoneE164(form.phone);
     if (!phone) {
       setFeedback({ type: 'error', message: 'Please go back and enter a valid phone number.' });
@@ -79,25 +98,61 @@ export default function MultiStageListingForm() {
 
     setIsSubmitting(true);
     try {
-      const summaryParts = [
-        `Title: ${form.title}`,
-        `Type: ${form.listingType} | ${form.buildingType} | ${form.propertyType}`,
-        `Locality: ${form.locality}`,
-        `Basics: ${form.possession} | ${form.age} years | ${form.bathrooms} Bath | ${form.balconies} Balcony`,
-        `Parking: Covered ${form.coveredParking} | Open ${form.openParking}`,
-        `Amenities: ${form.amenities.join(', ')}`,
-        `Description: ${form.description}`,
-      ];
+      const payload = new FormData();
+      payload.append('ownerName', form.ownerName);
+      payload.append('phone', phone);
+      if (form.email) payload.append('email', form.email);
+      payload.append('listingType', form.listingType);
+      payload.append('buildingType', form.buildingType);
+      payload.append('propertyType', form.propertyType);
+      payload.append('city', form.city || 'Mumbai');
+      payload.append('locality', form.locality);
+      payload.append('possession', form.possession);
+      payload.append('age', form.age);
+      payload.append('bathrooms', form.bathrooms);
+      if (form.balconies) payload.append('balconies', form.balconies);
+      if (form.coveredParking) payload.append('coveredParking', form.coveredParking);
+      if (form.openParking) payload.append('openParking', form.openParking);
 
-      await createLead({
-        name: form.ownerName,
-        phone,
-        email: form.email || undefined,
-        leadType: 'list_property',
-        preferredLocations: [form.locality],
-        budgetMax: parseInt(form.price.replace(/,/g, '')) || undefined,
-        message: summaryParts.join('\n'),
-      });
+      if (form.price) {
+        const parsedPrice = parseInt(String(form.price).replace(/,/g, ''), 10);
+        if (Number.isFinite(parsedPrice)) payload.append('price', String(parsedPrice));
+      }
+
+      if (form.amenities.length > 0) {
+        payload.append('amenities', JSON.stringify(form.amenities));
+      }
+
+      const features = parseFeatureLines(form.featureText);
+      if (features.length > 0) {
+        payload.append('feature', JSON.stringify(features));
+      }
+
+      if (form.reraUrl && form.reraUrl.trim()) {
+        payload.append('reraUrl', form.reraUrl.trim());
+      }
+
+      if (form.title) payload.append('title', form.title);
+      if (form.description) payload.append('description', form.description);
+      payload.append('readyToProceed', String(Boolean(form.readyToProceed)));
+
+      if (form.images.length > 0) {
+        form.images.forEach((file) => payload.append('images', file));
+      }
+
+      if (form.videoFile) {
+        payload.append('video', form.videoFile);
+        payload.append(
+          'videoMeta',
+          JSON.stringify({
+            name: form.videoFile.name,
+            size: form.videoFile.size,
+            type: form.videoFile.type,
+          })
+        );
+      }
+
+      await createPropertySubmission(payload);
 
       setFeedback({ type: 'success', message: 'Property submitted for review successfully!' });
       // Reset or Redirect logic here
@@ -106,6 +161,23 @@ export default function MultiStageListingForm() {
     } finally {
       setIsSubmitting(false);
     }
+  }, [form]);
+
+  useEffect(() => {
+    if (!user || !queuedSubmit || isSubmitting) return;
+    setQueuedSubmit(false);
+    void submitListing();
+  }, [user, queuedSubmit, isSubmitting, submitListing]);
+
+  const handleSubmit = async () => {
+    if (!user) {
+      setQueuedSubmit(true);
+      setFeedback({ type: 'error', message: 'Please login to submit your property.' });
+      openModal('login');
+      return;
+    }
+
+    await submitListing();
   };
 
   const progress = (step / 5) * 100;
@@ -182,7 +254,7 @@ export default function MultiStageListingForm() {
             <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div>
                 <h1 className="text-4xl font-black text-slate-900 tracking-tighter mb-4 italic">Basic Information</h1>
-                <p className="text-slate-500 font-bold">Let's start with the fundamental details of your Mumbai estate.</p>
+                <p className="text-slate-500 font-bold">Let&apos;s start with the fundamental details of your Mumbai estate.</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="space-y-4">
@@ -352,12 +424,28 @@ export default function MultiStageListingForm() {
                 <p className="text-slate-500 font-bold">High-quality visuals significantly increase listing performance.</p>
               </div>
               
-              <div className="border-4 border-dashed border-slate-100 rounded-[3rem] p-20 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white">
+              <div
+                className="border-4 border-dashed border-slate-100 rounded-[3rem] p-20 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white"
+                onClick={() => document.getElementById('images-upload').click()}
+              >
+                <input
+                  id="images-upload"
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImagesSelected}
+                />
                 <div className="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
                   <span className="material-symbols-outlined text-4xl text-slate-300 group-hover:text-primary transition-colors">cloud_upload</span>
                 </div>
                 <h3 className="text-xl font-black text-slate-900 italic tracking-tight">Upload Property Gallery</h3>
                 <p className="text-slate-400 font-bold text-sm mt-2 max-w-xs mx-auto">PNG, JPG up to 10MB each. Recommend at least 5 high-res interior shots.</p>
+                {form.images.length > 0 && (
+                  <p className="text-emerald-600 font-black text-xs mt-4 uppercase tracking-widest">
+                    {form.images.length} image{form.images.length > 1 ? 's' : ''} selected
+                  </p>
+                )}
                 <button className="mt-8 px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl active:scale-95 transition-all">
                   Select Media
                 </button>
@@ -386,13 +474,13 @@ export default function MultiStageListingForm() {
                 </div>
               </div>
 
-              <div className="bg-emerald-50 p-8 rounded-[2rem] flex items-start gap-6 border border-emerald-100">
+              <div className="bg-emerald-50 p-8 rounded-4xl flex items-start gap-6 border border-emerald-100">
                 <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-emerald-600 shadow-sm shrink-0">
                   <span className="material-symbols-outlined">auto_awesome</span>
                 </div>
                 <div>
                   <h4 className="font-black text-emerald-900 italic tracking-tight uppercase text-xs mb-1">Editorial Tip</h4>
-                  <p className="text-emerald-700/80 text-sm font-bold leading-relaxed">Ensure photos reach into the corners of the room for a sense of scale. Natural daylight at dusk provides the most premium "Editorial" look.</p>
+                  <p className="text-emerald-700/80 text-sm font-bold leading-relaxed">Ensure photos reach into the corners of the room for a sense of scale. Natural daylight at dusk provides the most premium &quot;Editorial&quot; look.</p>
                 </div>
               </div>
             </div>
@@ -410,7 +498,7 @@ export default function MultiStageListingForm() {
                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Expected Price (₹)</label>
                  <div className="relative group max-w-md">
                     <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-2xl text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
-                    <input className="w-full bg-white border-2 border-slate-50 rounded-[2rem] p-8 pl-14 font-black text-4xl tracking-tighter placeholder:text-slate-100 focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.price} onChange={handleChange('price')} />
+                    <input className="w-full bg-white border-2 border-slate-50 rounded-4xl p-8 pl-14 font-black text-4xl tracking-tighter placeholder:text-slate-100 focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.price} onChange={handleChange('price')} />
                  </div>
                  <p className="text-[10px] font-black text-primary uppercase tracking-widest px-6 italic">Price is negotiable for verified listings.</p>
               </div>
@@ -432,6 +520,36 @@ export default function MultiStageListingForm() {
                   ))}
                 </div>
               </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="lg:col-span-7 space-y-4">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Hero Feature Bullets</label>
+                  <textarea
+                    rows="6"
+                    className="w-full bg-white border-2 border-slate-50 rounded-3xl p-6 font-bold placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all resize-none"
+                    placeholder={"One bullet per line\nZero Brokerage\nBest Price Guarantee\nPay 20% now and 80% on possession"}
+                    value={form.featureText}
+                    onChange={handleChange('featureText')}
+                  />
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">
+                    These bullets will appear on the property hero image.
+                  </p>
+                </div>
+
+                <div className="lg:col-span-5 space-y-4">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">RERA URL</label>
+                  <input
+                    type="url"
+                    className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all"
+                    placeholder="https://maharera.mahaonline.gov.in/..."
+                    value={form.reraUrl}
+                    onChange={handleChange('reraUrl')}
+                  />
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">
+                    Add the official MahaRERA project detail link.
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 
@@ -448,7 +566,7 @@ export default function MultiStageListingForm() {
                 <div className="lg:col-span-8 space-y-10">
                    {/* Summary Section */}
                    <div className="bg-slate-50/50 rounded-[2.5rem] p-10 border border-slate-100 space-y-8 shadow-sm">
-                      <h3 className="text-xl font-black text-slate-900 italic tracking-tight uppercase text-xs opacity-50">Data Integrity Summary</h3>
+                      <h3 className="font-black text-slate-900 italic tracking-tight uppercase text-xs opacity-50">Data Integrity Summary</h3>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-12">
                          <div className="space-y-1">
@@ -487,6 +605,18 @@ export default function MultiStageListingForm() {
                             <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Premium Amenities</p>
                             <p className="text-sm font-bold text-slate-900">{form.amenities.length > 0 ? form.amenities.join(', ') : 'No specific amenities selected'}</p>
                          </div>
+                         <div className="md:col-span-2 space-y-1">
+                           <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Hero Feature Bullets</p>
+                           <p className="text-sm font-bold text-slate-900">
+                            {parseFeatureLines(form.featureText).length > 0
+                              ? parseFeatureLines(form.featureText).join(' | ')
+                              : 'No hero bullets added'}
+                           </p>
+                         </div>
+                         <div className="space-y-1">
+                           <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">RERA URL</p>
+                           <p className="text-sm font-bold text-slate-900 break-all">{form.reraUrl || 'Not added'}</p>
+                         </div>
                          {form.videoFile && (
                             <div className="md:col-span-2 space-y-1">
                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Video Engagement Attachment</p>
@@ -506,7 +636,7 @@ export default function MultiStageListingForm() {
                   </div>
                   <div className="space-y-4">
                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Property Description</label>
-                     <textarea rows="8" className="w-full bg-white border-2 border-slate-50 rounded-[2rem] p-8 font-bold placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all resize-none" placeholder="Draft a high-end description focusing on lifestyle and neighborhood..." value={form.description} onChange={handleChange('description')} />
+                     <textarea rows="8" className="w-full bg-white border-2 border-slate-50 rounded-4xl p-8 font-bold placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all resize-none" placeholder="Draft a high-end description focusing on lifestyle and neighborhood..." value={form.description} onChange={handleChange('description')} />
                   </div>
 
                   {/* ✅ Readiness Checkbox */}
@@ -529,7 +659,7 @@ export default function MultiStageListingForm() {
                 <div className="lg:col-span-4 flex justify-center lg:justify-start">
                   <div className="sticky top-24 space-y-6 w-full max-w-md">
                     <div className="bg-white rounded-moderate overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 group border border-slate-100">
-                      <div className="aspect-[4/3] bg-slate-100 flex items-center justify-center relative overflow-hidden">
+                      <div className="aspect-4/3 bg-slate-100 flex items-center justify-center relative overflow-hidden">
                          <span className="material-symbols-outlined text-4xl text-slate-200 group-hover:scale-110 transition-transform">image</span>
                          <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Verified</div>
                          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg text-[10px] font-black text-primary tracking-widest uppercase shadow-sm">Preview</div>
@@ -566,11 +696,11 @@ export default function MultiStageListingForm() {
                       </div>
                     </div>
 
-                    <div className="bg-slate-900 text-white p-8 rounded-[2rem] shadow-2xl relative overflow-hidden group">
+                    <div className="bg-slate-900 text-white p-8 rounded-4xl shadow-2xl relative overflow-hidden group">
                       <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
                       <h4 className="font-black mb-3 flex items-center gap-2 italic uppercase text-xs text-primary">
                         <span className="material-symbols-outlined text-sm">edit_note</span>
-                        Editor's Note
+                        Editor&apos;s Note
                       </h4>
                       <p className="text-slate-400 text-xs leading-relaxed font-bold">
                         High-quality descriptions focus on lifestyle benefits rather than just technical specifications. Mention neighborhood proximity and unique architectural features.
@@ -598,7 +728,7 @@ export default function MultiStageListingForm() {
                {step < 5 ? (
                  <button 
                    onClick={handleNext}
-                   className="flex items-center justify-center gap-3 px-14 py-5 bg-primary text-white rounded-[2rem] font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all active:scale-95 shadow-2xl shadow-primary/20"
+                   className="flex items-center justify-center gap-3 px-14 py-5 bg-primary text-white rounded-4xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all active:scale-95 shadow-2xl shadow-primary/20"
                  >
                    Next Phase
                    <span className="material-symbols-outlined">arrow_forward</span>
@@ -607,7 +737,7 @@ export default function MultiStageListingForm() {
                  <button 
                    onClick={handleSubmit}
                    disabled={isSubmitting || !form.readyToProceed}
-                   className="flex items-center justify-center gap-3 px-14 py-5 bg-emerald-600 text-white rounded-[2rem] font-black text-sm uppercase tracking-widest hover:bg-emerald-700 transition-all active:scale-95 shadow-2xl shadow-emerald-600/20 disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed"
+                   className="flex items-center justify-center gap-3 px-14 py-5 bg-emerald-600 text-white rounded-4xl font-black text-sm uppercase tracking-widest hover:bg-emerald-700 transition-all active:scale-95 shadow-2xl shadow-emerald-600/20 disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed"
                  >
                    {isSubmitting ? 'Submitting...' : 'Confirm Submission'}
                    <span className="material-symbols-outlined">send</span>

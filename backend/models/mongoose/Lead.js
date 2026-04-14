@@ -11,7 +11,6 @@ const mongoose = require('mongoose');
  *   rent         — looking to rent a property
  *   loan         — home loan enquiry
  *   agreement    — rent/sale agreement service
- *   list_property — seller wants to list their property
  *
  * Status flow (enforced in controller — no backward transitions allowed):
  *   new → contacted → qualified → closed
@@ -70,8 +69,8 @@ const leadSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Lead type is required'],
       enum: {
-        values: ['buy', 'rent', 'loan', 'agreement', 'list_property'],
-        message: 'Lead type must be one of: buy, rent, loan, agreement, list_property',
+        values: ['buy', 'rent', 'loan', 'agreement'],
+        message: 'Lead type must be one of: buy, rent, loan, agreement',
       },
     },
     status: {

@@ -21,6 +21,7 @@
     "seed:builders": "node scripts/seedBuilders.js",
     "test:apis": "node scripts/test-apis.js",
     "test:builders": "node scripts/test-apis.js --scope=builders",
+    "smoke:builders-admin": "node scripts/smoke-builder-admin.js",
     "test:auth:v2": "node scripts/test-auth-v2.js",
     "migrate:property-lifecycle": "node scripts/migratePropertyLifecycle.js",
     "cleanup:rejected-properties": "node scripts/cleanupRejectedProperties.js"

@@ -51,7 +51,6 @@ enum LeadType {
   rent
   loan
   agreement
-  list_property
 }
 
 enum LeadStatus {

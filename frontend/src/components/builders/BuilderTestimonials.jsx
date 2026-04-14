@@ -1,9 +1,12 @@
 export default function BuilderTestimonials({ builder }) {
+  const testimonials = Array.isArray(builder?.testimonials) ? builder.testimonials : [];
+  if (testimonials.length === 0) return null;
+
   return (
     <section className="py-24 container mx-auto px-6 bg-white">
       <h2 className="text-4xl font-extrabold text-zinc-900 mb-16 text-center font-headline uppercase tracking-tight">What Our Residents Say</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-        {builder.testimonials.map((testi) => (
+        {testimonials.map((testi) => (
           <div key={testi.id} className="relative bg-white p-10 rounded-[2.5rem] shadow-xl border border-neutral-100 group hover:-translate-y-2 transition-all duration-300">
             <div className="absolute -top-6 left-10">
               <img 
@@ -18,7 +21,7 @@ export default function BuilderTestimonials({ builder }) {
                   <span key={i} className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                 ))}
               </div>
-              <p className="text-zinc-600 italic mb-6 font-body text-base leading-relaxed">"{testi.content}"</p>
+              <p className="text-zinc-600 italic mb-6 font-body text-base leading-relaxed">&quot;{testi.content}&quot;</p>
               <div>
                 <p className="font-bold text-zinc-900 font-headline uppercase tracking-tight">{testi.author}</p>
                 <p className="text-sm text-zinc-400 font-label">{testi.role}</p>

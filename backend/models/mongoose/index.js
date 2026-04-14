@@ -12,6 +12,7 @@ const User           = require('./User');
 const Builder        = require('./Builder');
 const Property       = require('./Property');
 const Lead           = require('./Lead');
+const PropertySubmission = require('./PropertySubmission');
 const Blog           = require('./Blog');
 const Testimonial    = require('./Testimonial');
 const Banner         = require('./Banner');
@@ -24,6 +25,7 @@ module.exports = {
   Builder,
   Property,
   Lead,
+  PropertySubmission,
   Blog,
   Testimonial,
   Banner,

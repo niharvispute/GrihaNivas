@@ -1,16 +1,32 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { builders } from '@/data/builders';
 import BuilderCard from '@/components/builders/BuilderCard';
+import { listBuilders } from '@/services/builderService';
 
 export const metadata = {
   title: 'Explore Builders | Bricks - Mumbai Editorial',
   description: 'Discover trusted real estate developers crafting the future of modern living across Mumbai.',
 };
 
-export default function ExploreBuildersPage() {
-  const featuredBuilder = builders.find(b => b.slug === 'skyline-apex-group');
-  const remainingBuilders = builders.filter(b => b.slug !== 'skyline-apex-group');
+export default async function ExploreBuildersPage({ searchParams }) {
+  const query = {
+    page: Number(searchParams?.page || 1),
+    limit: 20,
+    search: searchParams?.search || undefined,
+    isFeatured:
+      searchParams?.isFeatured === 'true'
+        ? true
+        : searchParams?.isFeatured === 'false'
+          ? false
+          : undefined,
+  };
+
+  const response = await listBuilders(query);
+  const builders = response?.items || [];
+  const featuredBuilder = builders.find((builder) => builder.isFeatured) || builders[0] || null;
+  const remainingBuilders = featuredBuilder
+    ? builders.filter((builder) => builder.slug !== featuredBuilder.slug)
+    : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -28,14 +44,15 @@ export default function ExploreBuildersPage() {
         </header>
 
         {/* Sticky Search & Filter Bar */}
-        <section className="sticky top-[73px] z-40 mb-12 py-4 bg-background/80 backdrop-blur-sm">
+        <section className="sticky top-18.25 z-40 mb-12 py-4 bg-background/80 backdrop-blur-sm">
           <div className="bg-white border border-neutral-200 p-3 xl:rounded-full rounded-2xl shadow-sm flex flex-col xl:flex-row items-center gap-4">
-            <div className="relative flex-grow w-full">
+            <div className="relative grow w-full">
               <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
               <input 
                 className="w-full pl-12 pr-4 py-3 bg-transparent border-none focus:ring-0 text-sm font-medium font-body" 
                 placeholder="Search builder by name..." 
                 type="text"
+                defaultValue={searchParams?.search || ''}
               />
             </div>
             <div className="h-8 w-px bg-neutral-200 hidden xl:block"></div>
@@ -44,7 +61,7 @@ export default function ExploreBuildersPage() {
                 <span className="text-sm font-semibold text-zinc-600 group-hover:text-primary transition-colors font-label">Featured Builders</span>
                 <div className="relative inline-flex items-center cursor-pointer">
                   <input className="sr-only peer" type="checkbox" value="" />
-                  <div className="w-11 h-6 bg-zinc-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  <div className="w-11 h-6 bg-zinc-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                 </div>
               </label>
               <div className="h-8 w-px bg-neutral-200"></div>
@@ -64,14 +81,14 @@ export default function ExploreBuildersPage() {
         {/* Featured Highlight */}
         {featuredBuilder && (
           <section className="mb-16 animate-in fade-in duration-1000">
-            <div className="group relative overflow-hidden rounded-[2.5rem] bg-zinc-900 h-[500px] flex items-center shadow-2xl">
+            <div className="group relative overflow-hidden rounded-[2.5rem] bg-zinc-900 h-125 flex items-center shadow-2xl">
               <div className="absolute inset-0">
                 <img 
                   className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" 
                   src={featuredBuilder.heroImage} 
                   alt={featuredBuilder.name}
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-r from-zinc-950 via-zinc-950/60 to-transparent"></div>
               </div>
               
               <div className="relative z-10 px-8 md:px-16 max-w-3xl">
@@ -122,10 +139,16 @@ export default function ExploreBuildersPage() {
 
         {/* Builder Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {remainingBuilders.map((builder) => (
+          {(featuredBuilder ? remainingBuilders : builders).map((builder) => (
             <BuilderCard key={builder.id} builder={builder} />
           ))}
         </section>
+
+        {builders.length === 0 && (
+          <p className="text-sm font-medium text-zinc-500 text-center py-12">
+            No builders match this search yet.
+          </p>
+        )}
 
         {/* Pagination placeholder */}
         <div className="mt-16 flex justify-center">

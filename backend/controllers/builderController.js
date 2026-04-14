@@ -1,7 +1,8 @@
-const { uploadImage, deleteFile } = require('../services/cloudinaryService');
+const mongoose = require('mongoose');
+const { uploadImage, deleteFile, deleteFiles } = require('../services/cloudinaryService');
 const { generateSlug } = require('../utils/slugify');
 const { parsePagination } = require('../utils/pagination');
-const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
+const { sendSuccess, sendCreated } = require('../utils/apiResponse');
 const AppError = require('../utils/AppError');
 const Builder = require('../models/mongoose/Builder');
 const Property = require('../models/mongoose/Property');
@@ -29,6 +30,37 @@ const parseBoolean = (value) => {
   return undefined;
 };
 
+const parseJsonField = (value) => {
+  if (typeof value !== 'string') return value;
+  const trimmed = value.trim();
+  if (!trimmed) return value;
+
+  if (
+    (trimmed.startsWith('[') && trimmed.endsWith(']')) ||
+    (trimmed.startsWith('{') && trimmed.endsWith('}'))
+  ) {
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      return value;
+    }
+  }
+
+  return value;
+};
+
+const normalizeBuilderPayload = (payload) => {
+  const normalized = { ...payload };
+
+  ['featuredImages', 'faqs', 'testimonials', 'seo'].forEach((field) => {
+    if (Object.prototype.hasOwnProperty.call(normalized, field)) {
+      normalized[field] = parseJsonField(normalized[field]);
+    }
+  });
+
+  return normalized;
+};
+
 const listPublic = async (req, res, next) => {
   try {
     const { limit, skip, buildMeta } = parsePagination(req.query);
@@ -50,7 +82,9 @@ const listPublic = async (req, res, next) => {
         .sort({ isFeatured: -1, createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .select('-__v -seo'),
+        .select(
+          'name slug shortDescription description logo coverImage establishedYear totalProjects ongoingProjects completedDeliveries headquarters isFeatured isActive aboutHeadline qualityStandards innovation'
+        ),
       Builder.countDocuments(filter),
     ]);
 
@@ -132,7 +166,83 @@ const listAdmin = async (req, res, next) => {
       Builder.countDocuments(filter),
     ]);
 
-    return sendSuccess(res, 200, 'Admin builders fetched', builders, buildMeta(total));
+    const builderIds = builders.map((builder) => builder._id);
+    let propertyCountMap = new Map();
+
+    if (builderIds.length > 0) {
+      const propertyCounts = await Property.aggregate([
+        {
+          $match: {
+            builder: { $in: builderIds },
+          },
+        },
+        {
+          $group: {
+            _id: '$builder',
+            total: { $sum: 1 },
+          },
+        },
+      ]);
+
+      propertyCountMap = new Map(
+        propertyCounts.map((entry) => [String(entry._id), entry.total])
+      );
+    }
+
+    const buildersWithStats = builders.map((builder) => {
+      const plain = builder.toObject();
+      plain.propertyCount = propertyCountMap.get(String(builder._id)) || 0;
+      return plain;
+    });
+
+    return sendSuccess(res, 200, 'Admin builders fetched', buildersWithStats, buildMeta(total));
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getAdminOne = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const [builder, propertyCount] = await Promise.all([
+      Builder.findById(id).select('-__v'),
+      Property.countDocuments({ builder: id }),
+    ]);
+
+    if (!builder) throw new AppError('Builder not found', 404);
+
+    const payload = builder.toObject();
+    payload.propertyCount = propertyCount;
+
+    return sendSuccess(res, 200, 'Admin builder fetched', payload);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const toggleFeatured = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { isFeatured } = req.body;
+
+    const builder = await Builder.findByIdAndUpdate(
+      id,
+      { isFeatured },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
+
+    if (!builder) throw new AppError('Builder not found', 404);
+
+    return sendSuccess(
+      res,
+      200,
+      isFeatured ? 'Builder marked as featured' : 'Builder removed from featured list',
+      builder
+    );
   } catch (err) {
     next(err);
   }
@@ -140,7 +250,7 @@ const listAdmin = async (req, res, next) => {
 
 const create = async (req, res, next) => {
   try {
-    const payload = { ...req.body };
+    const payload = normalizeBuilderPayload(req.body || {});
     const baseSlug = payload.slug ? generateSlug(payload.slug) : generateSlug(payload.name);
     payload.slug = await ensureUniqueSlug(baseSlug);
 
@@ -164,7 +274,7 @@ const create = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updates = { ...req.body };
+    const updates = normalizeBuilderPayload(req.body || {});
 
     const existing = await Builder.findById(id);
     if (!existing) throw new AppError('Builder not found', 404);
@@ -202,28 +312,62 @@ const update = async (req, res, next) => {
 };
 
 const remove = async (req, res, next) => {
+  let session = null;
+
   try {
     const { id } = req.params;
 
-    const builder = await Builder.findById(id);
-    if (!builder) throw new AppError('Builder not found', 404);
+    let propertyMediaPublicIds = [];
+    let builderMediaPublicIds = [];
+    let deletedProperties = 0;
 
-    const linkedProperties = await Property.countDocuments({ builder: id });
-    if (linkedProperties > 0) {
-      throw new AppError('Builder cannot be deleted while linked properties exist', 409);
+    session = await mongoose.startSession();
+
+    await session.withTransaction(async () => {
+      const builder = await Builder.findById(id).session(session);
+      if (!builder) throw new AppError('Builder not found', 404);
+
+      const linkedProperties = await Property.find({ builder: id })
+        .select('heroImage gallery floorPlans brochure')
+        .session(session);
+
+      propertyMediaPublicIds = linkedProperties
+        .flatMap((property) => [
+          property.heroImage,
+          ...(property.gallery || []),
+          ...(property.floorPlans || []),
+          property.brochure,
+        ])
+        .filter(Boolean)
+        .map((media) => media.publicId)
+        .filter(Boolean);
+
+      builderMediaPublicIds = [builder.logo?.publicId, builder.coverImage?.publicId].filter(Boolean);
+
+      const propertyDeleteResult = await Property.deleteMany({ builder: id }, { session });
+      deletedProperties = propertyDeleteResult.deletedCount || 0;
+
+      await builder.deleteOne({ session });
+    });
+
+    if (propertyMediaPublicIds.length > 0) {
+      await deleteFiles(propertyMediaPublicIds, 'image').catch(() => {});
     }
 
-    if (builder.logo?.publicId) {
-      deleteFile(builder.logo.publicId, 'image').catch(() => {});
-    }
-    if (builder.coverImage?.publicId) {
-      deleteFile(builder.coverImage.publicId, 'image').catch(() => {});
-    }
+    builderMediaPublicIds.forEach((publicId) => {
+      deleteFile(publicId, 'image').catch(() => {});
+    });
 
-    await builder.deleteOne();
-    return sendNoContent(res);
+    return sendSuccess(res, 200, 'Builder and linked properties deleted', {
+      builderId: id,
+      deletedProperties,
+    });
   } catch (err) {
     next(err);
+  } finally {
+    if (session) {
+      await session.endSession();
+    }
   }
 };
 
@@ -231,6 +375,8 @@ module.exports = {
   listPublic,
   getPublicBySlug,
   listAdmin,
+  getAdminOne,
+  toggleFeatured,
   create,
   update,
   remove,

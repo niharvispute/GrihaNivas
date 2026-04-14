@@ -1,8 +1,10 @@
 import Link from 'next/link';
 
 export default function BuilderCard({ builder }) {
+  const hasLogo = Boolean(builder?.logo);
+
   return (
-    <div className="group bg-white rounded-[1.5rem] border border-zinc-200 overflow-hidden hover:shadow-2xl hover:border-primary/20 transition-all duration-300 flex flex-col">
+    <div className="group bg-white rounded-3xl border border-zinc-200 overflow-hidden hover:shadow-2xl hover:border-primary/20 transition-all duration-300 flex flex-col">
       <div className="relative h-48 overflow-hidden bg-zinc-100">
         <img 
           src={builder.thumbnail || builder.heroImage} 
@@ -18,13 +20,15 @@ export default function BuilderCard({ builder }) {
         )}
       </div>
       
-      <div className="p-6 flex flex-col flex-grow">
+      <div className="p-6 flex flex-col grow">
         <div className="flex items-start justify-between mb-4">
           <div className="w-12 h-12 bg-zinc-50 rounded-lg p-1.5 border border-zinc-100 shadow-sm flex items-center justify-center">
             {builder.isIconLogo ? (
               <span className="material-symbols-outlined text-primary text-3xl">{builder.logo}</span>
-            ) : (
+            ) : hasLogo ? (
               <img src={builder.logo} alt={builder.name} className="w-full h-full object-contain" />
+            ) : (
+              <span className="material-symbols-outlined text-primary text-3xl">domain</span>
             )}
           </div>
           <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">

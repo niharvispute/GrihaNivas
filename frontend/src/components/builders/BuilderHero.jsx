@@ -1,23 +1,34 @@
 export default function BuilderHero({ builder }) {
+  const heroImage =
+    builder?.heroImage ||
+    'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=1600&q=80';
+  const hasLogo = Boolean(builder?.logo);
+
   return (
-    <section className="relative min-h-[614px] flex items-center overflow-hidden">
+    <section className="relative min-h-153.5 flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <img 
-          src={builder.heroImage} 
+          src={heroImage} 
           alt={builder.name} 
           className="w-full h-full object-cover brightness-50" 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/20"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-black/20"></div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10 py-20">
         <div className="max-w-4xl">
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 inline-block mb-8">
-            <img 
-              src={builder.logo} 
-              alt={`${builder.name} Logo`} 
-              className="w-32 h-32 object-contain bg-white rounded-lg shadow-xl mb-6 p-4" 
-            />
+            {hasLogo ? (
+              <img 
+                src={builder.logo} 
+                alt={`${builder.name} Logo`} 
+                className="w-32 h-32 object-contain bg-white rounded-lg shadow-xl mb-6 p-4" 
+              />
+            ) : (
+              <div className="w-32 h-32 bg-white rounded-lg shadow-xl mb-6 p-4 flex items-center justify-center">
+                <span className="material-symbols-outlined text-primary text-5xl">domain</span>
+              </div>
+            )}
             <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-4 tracking-tight font-headline">
               {builder.name}
             </h1>

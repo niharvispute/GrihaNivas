@@ -14,6 +14,31 @@ const getPriceSuffix = (priceUnit) => {
   return '';
 };
 
+const normalizeFeatureBullets = (property) => {
+  if (Array.isArray(property?.feature) && property.feature.length > 0) {
+    return property.feature.filter(Boolean).map((item) => String(item));
+  }
+
+  if (typeof property?.feature === 'string' && property.feature.trim()) {
+    return [property.feature.trim()];
+  }
+
+  if (Array.isArray(property?.highlights) && property.highlights.length > 0) {
+    return property.highlights
+      .map((item) => {
+        if (typeof item === 'string') return item.trim();
+        if (item && typeof item === 'object') {
+          return item.value || item.label || '';
+        }
+        return '';
+      })
+      .filter(Boolean)
+      .slice(0, 7);
+  }
+
+  return [];
+};
+
 const mapBuilderToVM = (builder) => {
   if (!builder) return null;
 
@@ -52,6 +77,9 @@ export const mapPropertyToCardVM = (property) => ({
   area: property?.areaSqft ? Number(property.areaSqft).toLocaleString('en-IN') : 'N/A',
   image: getPropertyImage(property),
   isFeatured: Boolean(property?.isFeatured),
+  feature: Array.isArray(property?.feature)
+    ? property.feature[0] || ''
+    : property?.feature || '',
   isNew: property?.category === 'new_launch',
   isVerified: Boolean(property?.reraNumber),
   savedCount: Number(property?.savedCount || 0),
@@ -73,6 +101,8 @@ export const mapPropertyToDetailVM = (property) => ({
   gallery: [property?.heroImage, ...(property?.gallery || [])]
     .map((media) => media?.url)
     .filter(Boolean),
+  feature: normalizeFeatureBullets(property),
+  reraUrl: property?.reraUrl || '',
   highlights: (property?.highlights || []).map((item) => {
     if (typeof item === 'object' && item) return item;
     return {

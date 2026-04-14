@@ -10,3 +10,9 @@ export {
   mapAdminUserListToVM,
   mapUserProfileVM,
 } from '@/lib/mappers/userMapper';
+export {
+  mapBuilderListToCardVM,
+  mapBuilderPropertyToPortfolioVM,
+  mapBuilderToCardVM,
+  mapBuilderToDetailVM,
+} from '@/lib/mappers/builderMapper';

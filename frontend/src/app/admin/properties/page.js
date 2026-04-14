@@ -163,6 +163,19 @@ export default function PropertyManagementPage() {
                           <div>
                             <p className="text-sm font-black text-slate-900 group-hover:text-primary transition-colors">{prop.title}</p>
                             {prop.reraNumber && <p className="text-[10px] text-slate-400 font-medium">RERA: {prop.reraNumber}</p>}
+                            {Array.isArray(prop.feature) && prop.feature.length > 0 && (
+                              <p className="text-[10px] text-slate-400 font-medium">Features: {prop.feature.length}</p>
+                            )}
+                            {prop.reraUrl && (
+                              <a
+                                href={prop.reraUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-[10px] font-bold text-primary hover:underline"
+                              >
+                                RERA Link
+                              </a>
+                            )}
                           </div>
                         </div>
                       </td>
@@ -276,10 +289,18 @@ export default function PropertyManagementPage() {
                     { label: 'Area (sq.ft)', value: viewingProperty.areaSqft },
                     { label: 'Furnishing', value: viewingProperty.furnishing },
                     { label: 'RERA Number', value: viewingProperty.reraNumber },
+                    { label: 'RERA URL', value: viewingProperty.reraUrl, full: true },
                     { label: 'Location Area', value: viewingProperty.location?.area },
                     { label: 'City', value: viewingProperty.location?.city },
                     { label: 'Address', value: viewingProperty.location?.address, full: true },
                     { label: 'Description', value: viewingProperty.description, full: true },
+                    {
+                      label: 'Hero Features',
+                      value: Array.isArray(viewingProperty.feature)
+                        ? viewingProperty.feature.join(' | ')
+                        : viewingProperty.feature,
+                      full: true,
+                    },
                     {
                       label: 'Amenities',
                       value: Array.isArray(viewingProperty.amenities) ? viewingProperty.amenities.join(', ') : null,

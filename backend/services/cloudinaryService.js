@@ -133,6 +133,25 @@ const uploadPDF = async (buffer, folder) => {
 };
 
 /**
+ * Upload a single video.
+ *
+ * @param {Buffer} buffer
+ * @param {string} folder
+ * @returns {Promise<{url, publicId}>}
+ */
+const uploadVideo = async (buffer, folder) => {
+  if (!buffer || !buffer.length) {
+    throw new AppError('Video buffer is empty', 400);
+  }
+
+  return uploadBuffer(buffer, {
+    folder,
+    resource_type: 'video',
+    quality: 'auto:good',
+  });
+};
+
+/**
  * Upload all property media files in one call.
  * Handles heroImage, gallery images, floor plans, and brochure in parallel.
  *
@@ -178,6 +197,33 @@ const uploadPropertyMedia = async (files = {}) => {
     gallery:    images.map((r) => ({ url: r.url, publicId: r.publicId })),
     floorPlans: floorPlans.map((r) => ({ url: r.url, publicId: r.publicId })),
     brochure:   brochure   ? { url: brochure.url,   publicId: brochure.publicId }   : null,
+  };
+};
+
+/**
+ * Upload media for property submissions.
+ * Handles listing images and optional walkthrough video.
+ *
+ * @param {object} files - req.files from propertySubmissionUploadFields
+ * @returns {Promise<{images: Array<{url, publicId}>, video: {url, publicId} | null}>}
+ */
+const uploadPropertySubmissionMedia = async (files = {}) => {
+  const [images, video] = await Promise.all([
+    files.images?.length
+      ? uploadImages(
+          files.images.map((f) => f.buffer),
+          'bricks/property-submissions/images',
+          'propertyGallery'
+        )
+      : Promise.resolve([]),
+    files.video?.[0]
+      ? uploadVideo(files.video[0].buffer, 'bricks/property-submissions/videos')
+      : Promise.resolve(null),
+  ]);
+
+  return {
+    images: images.map((item) => ({ url: item.url, publicId: item.publicId })),
+    video: video ? { url: video.url, publicId: video.publicId } : null,
   };
 };
 
@@ -252,7 +298,9 @@ module.exports = {
   uploadImage,
   uploadImages,
   uploadPDF,
+  uploadVideo,
   uploadPropertyMedia,
+  uploadPropertySubmissionMedia,
   deleteFile,
   deleteFiles,
   extractPublicId,

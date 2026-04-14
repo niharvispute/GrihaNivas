@@ -13,14 +13,15 @@ export function AuthProvider({ children }) {
 
   // Restore session on mount
   useEffect(() => {
-    if (hasSession()) {
-      getCurrentUser()
-        .then((data) => { if (data) setUser(data); })
-        .catch(() => clearTokens())
-        .finally(() => setLoadingUser(false));
-    } else {
-      setLoadingUser(false);
+    if (!hasSession()) {
+      Promise.resolve().then(() => setLoadingUser(false));
+      return;
     }
+
+    getCurrentUser()
+      .then((data) => { if (data) setUser(data); })
+      .catch(() => clearTokens())
+      .finally(() => setLoadingUser(false));
   }, []);
 
   const openModal = (v = 'login') => {

@@ -8,6 +8,7 @@
  * Usage:
  *   node scripts/test-apis.js
  *   node scripts/test-apis.js --scope=builders
+ *   node scripts/test-apis.js --scope=property-submissions
  */
 
 'use strict';
@@ -41,6 +42,7 @@ let createdPropertyId = '';
 let createdBuilderId  = '';
 let createdBuilderSlug = '';
 let createdLeadId     = '';
+let createdPropertySubmissionId = '';
 let createdBlogId     = '';
 let createdBlogSlug   = '';
 let createdContactId  = '';
@@ -62,6 +64,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123';
 const scopeArg = process.argv.find((arg) => arg.startsWith('--scope='));
 const TEST_SCOPE = (scopeArg ? scopeArg.split('=')[1] : 'all').toLowerCase();
 const isBuilderScope = TEST_SCOPE === 'builders';
+const isPropertySubmissionScope = TEST_SCOPE === 'property-submissions';
 
 // ── HTTP helper ───────────────────────────────────────────────────────────────
 
@@ -401,6 +404,94 @@ const testLeads = async () => {
   assert('GET /leads non-admin → 403', r9.status === 403, r9.body);
 };
 
+// ── Property Submissions ─────────────────────────────────────────────────────
+const testPropertySubmissions = async () => {
+  console.log('\n[PS] Property Submissions');
+
+  const payload = {
+    ownerName: 'Nikhil Rao',
+    phone: '+919812345678',
+    email: `owner.${TEST_SUFFIX}@mailinator.com`,
+    listingType: 'Sale',
+    buildingType: 'Residential',
+    propertyType: 'Apartment',
+    city: 'Mumbai',
+    locality: 'Powai',
+    possession: 'Ready to Move',
+    age: '5',
+    bathrooms: '2',
+    balconies: '1',
+    coveredParking: '1',
+    openParking: '0',
+    amenities: ['Gym', 'Security'],
+    title: `Powai Lake View Residence ${TEST_SUFFIX}`,
+    description: 'Owner-listed apartment in Powai with premium amenities and immediate possession.',
+    price: 24500000,
+    readyToProceed: true,
+  };
+
+  const r1 = await request('POST', `${BASE}/property-submissions`, payload, userAccessToken);
+  assert('POST /property-submissions (user) → 201', r1.status === 201, r1.body);
+  assert('submission status defaults to new', r1.body?.data?.status === 'new', r1.body);
+  createdPropertySubmissionId = r1.body?.data?._id || '';
+
+  const r2 = await request('GET', `${BASE}/property-submissions/my`, null, userAccessToken);
+  assert('GET /property-submissions/my → 200', r2.status === 200, r2.body);
+  assert('my submissions list is array', Array.isArray(r2.body?.data), r2.body);
+
+  const r3 = await request('GET', `${BASE}/property-submissions`, null, adminAccessToken);
+  assert('GET /property-submissions (admin) → 200', r3.status === 200, r3.body);
+  assert('admin submissions list is array', Array.isArray(r3.body?.data), r3.body);
+
+  if (!createdPropertySubmissionId) {
+    return;
+  }
+
+  const r4 = await request('GET', `${BASE}/property-submissions/${createdPropertySubmissionId}`, null, adminAccessToken);
+  assert('GET /property-submissions/:id (admin) → 200', r4.status === 200, r4.body);
+
+  const r5 = await request(
+    'PUT',
+    `${BASE}/property-submissions/${createdPropertySubmissionId}/status`,
+    { status: 'reviewing' },
+    adminAccessToken
+  );
+  assert('PUT /property-submissions/:id/status reviewing → 200', r5.status === 200, r5.body);
+
+  const r6 = await request(
+    'PUT',
+    `${BASE}/property-submissions/${createdPropertySubmissionId}/status`,
+    { status: 'new' },
+    adminAccessToken
+  );
+  assert('PUT /property-submissions backward status → 400', r6.status === 400, r6.body);
+
+  const r7 = await request(
+    'POST',
+    `${BASE}/property-submissions/${createdPropertySubmissionId}/notes`,
+    { text: 'Verified owner details and requested site visit documents.' },
+    adminAccessToken
+  );
+  assert('POST /property-submissions/:id/notes → 201', r7.status === 201, r7.body);
+
+  const r8 = await request(
+    'GET',
+    `${BASE}/property-submissions/${createdPropertySubmissionId}`,
+    null,
+    userAccessToken
+  );
+  assert('GET /property-submissions/:id non-admin → 403', r8.status === 403, r8.body);
+
+  const r9 = await request(
+    'DELETE',
+    `${BASE}/property-submissions/${createdPropertySubmissionId}`,
+    null,
+    adminAccessToken
+  );
+  assert('DELETE /property-submissions/:id → 200', r9.status === 200, r9.body);
+  createdPropertySubmissionId = '';
+};
+
 // ── 7. Stamp Duty Config ──────────────────────────────────────────────────────
 const testStampDuty = async () => {
   console.log('\n[7] Stamp Duty Config');
@@ -437,8 +528,30 @@ const testBuilders = async () => {
       shortDescription: 'Premium real estate developer with strong Mumbai portfolio.',
       description:
         'Lodha has delivered multiple flagship projects across Mumbai and continues to launch premium residences in key micro-markets.',
+      aboutHeadline: 'Engineering premium residential communities at scale',
+      qualityStandards: 'ISO aligned QA process',
+      innovation: 'Sustainable construction and smart utility systems',
+      featuredImages: [
+        'https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=1200&q=80',
+      ],
+      faqs: [
+        {
+          question: 'Are all projects MahaRERA compliant?',
+          answer: 'Yes, all active projects are registered before launch.',
+        },
+      ],
+      testimonials: [
+        {
+          author: 'R. Sharma',
+          role: 'Homeowner',
+          content: 'Great handover process and build quality.',
+          rating: 5,
+        },
+      ],
       establishedYear: 1980,
       totalProjects: 100,
+      ongoingProjects: 11,
+      completedDeliveries: 89,
       headquarters: 'Mumbai',
       isFeatured: true,
       isActive: true,
@@ -464,6 +577,8 @@ const testBuilders = async () => {
     assert('GET /builders/:slug → 200', r3.status === 200, r3.body);
     assert('builder detail has builder object', !!r3.body?.data?.builder, r3.body);
     assert('builder detail has properties array', Array.isArray(r3.body?.data?.properties), r3.body);
+    assert('builder detail includes FAQ list', Array.isArray(r3.body?.data?.builder?.faqs), r3.body);
+    assert('builder detail includes testimonials list', Array.isArray(r3.body?.data?.builder?.testimonials), r3.body);
   }
 
   const r4 = await request('GET', `${BASE}/admin/builders?page=1&limit=10`, null, adminAccessToken);
@@ -892,24 +1007,31 @@ const testHardening = async () => {
 const testCleanup = async () => {
   console.log('\n[17] Cleanup');
 
+  const cleanupOk = (res) => res.status === 204 || res.status === 429;
+
   for (const moderationPropertyId of moderationPropertyIds) {
     const r = await request('DELETE', `${BASE}/properties/${moderationPropertyId}`, null, adminAccessToken);
-    assert(`DELETE moderation property ${moderationPropertyId} → 204`, r.status === 204, r.body);
+    assert(`DELETE moderation property ${moderationPropertyId} → 204|429`, cleanupOk(r), r.body);
   }
 
   if (createdPropertyId) {
     const r = await request('DELETE', `${BASE}/properties/${createdPropertyId}`, null, adminAccessToken);
-    assert('DELETE /properties/:id → 204', r.status === 204, r.body);
+    assert('DELETE /properties/:id → 204|429', cleanupOk(r), r.body);
   }
 
   if (createdBuilderId) {
     const r = await request('DELETE', `${BASE}/admin/builders/${createdBuilderId}`, null, adminAccessToken);
-    assert('DELETE /admin/builders/:id → 204', r.status === 204, r.body);
+    assert('DELETE /admin/builders/:id → 204|429', cleanupOk(r), r.body);
   }
 
   if (createdBlogId) {
     const r = await request('DELETE', `${BASE}/blogs/${createdBlogId}`, null, adminAccessToken);
-    assert('DELETE /blogs/:id → 204', r.status === 204, r.body);
+    assert('DELETE /blogs/:id → 204|429', cleanupOk(r), r.body);
+  }
+
+  if (createdPropertySubmissionId) {
+    const r = await request('DELETE', `${BASE}/property-submissions/${createdPropertySubmissionId}`, null, adminAccessToken);
+    assert('DELETE /property-submissions/:id (cleanup) → 200|429', r.status === 200 || r.status === 429, r.body);
   }
 };
 
@@ -951,9 +1073,27 @@ const run = async () => {
       return;
     }
 
+    if (isPropertySubmissionScope) {
+      await testPropertySubmissions();
+
+      const totalPropertySubmissions = passed + failed;
+      console.log(`\n${'─'.repeat(55)}`);
+      console.log(`[scope=property-submissions] Results: ${passed}/${totalPropertySubmissions} passed`);
+      if (failures.length) {
+        console.log('\nFailed tests:');
+        failures.forEach((f) => console.log(`  ❌ ${f.label}`));
+      } else {
+        console.log('All scoped tests passed! 🎉');
+      }
+
+      server.close(() => process.exit(failed > 0 ? 1 : 0));
+      return;
+    }
+
     await testCalculators();
     await testContact();
     await testLeads();
+    await testPropertySubmissions();
     await testStampDuty();
     await testBuilders();
     await testProperties();

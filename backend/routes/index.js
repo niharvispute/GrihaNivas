@@ -5,6 +5,7 @@ router.use('/builders',     require('./builders'));
 router.use('/admin/builders', require('./adminBuilders'));
 router.use('/properties',   require('./properties'));
 router.use('/leads',        require('./leads'));
+router.use('/property-submissions', require('./propertySubmissions'));
 router.use('/users',        require('./users'));
 router.use('/blogs',        require('./blogs'));
 router.use('/testimonials', require('./testimonials'));
