@@ -1,6 +1,13 @@
+'use client';
+
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import WishlistButton from '@/components/property/WishlistButton';
+import ReraQRModal from './ReraQRModal';
 
 export default function PropertyStickyInfo({ property }) {
+  const [isReraModalOpen, setIsReraModalOpen] = useState(false);
+
   return (
     <div className="sticky top-32 bg-white p-8 rounded-2xl shadow-[0_32px_64px_-15px_rgba(0,0,0,0.06)] border border-slate-100">
       <div className="mb-6">
@@ -11,10 +18,39 @@ export default function PropertyStickyInfo({ property }) {
         </p>
       </div>
 
-      <div className="flex items-baseline gap-2 mb-8">
-        <span className="text-4xl font-heading font-black text-primary">₹{property.price}</span>
-        <span className="text-slate-400 text-sm font-medium">{property.priceSuffix === 'Price on Request' ? 'Estimated' : 'Price'}</span>
+      <div className="flex items-center justify-between gap-4 mb-2">
+        <div className="flex items-baseline gap-2">
+          <span className="text-4xl font-heading font-black text-primary">₹{property.price}</span>
+          <span className="text-slate-400 text-sm font-medium">{property.priceSuffix === 'Price on Request' ? 'Estimated' : 'Price'}</span>
+        </div>
+        
+        {/* RERA Badge Component (Trigger) */}
+        <motion.div 
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsReraModalOpen(true)}
+          className="flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 px-4 py-2 rounded-xl cursor-pointer border border-emerald-100 transition-all group"
+        >
+          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-emerald-50">
+             <img 
+               src="https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=RERA&color=059669" 
+               alt="QR" 
+               className="w-5 h-5 opacity-40 group-hover:opacity-100 transition-opacity"
+             />
+          </div>
+          <div className="leading-none">
+             <div className="flex items-center gap-1">
+                <span className="material-symbols-outlined text-emerald-600 text-[12px]">verified</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-emerald-700 italic">RERA</span>
+             </div>
+             <p className="text-[8px] font-bold text-emerald-600/60 uppercase">Verify</p>
+          </div>
+        </motion.div>
       </div>
+
+      <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-8 bg-primary/5 inline-block px-3 py-1 rounded-full">Editorial Verified Collection</p>
 
       <div className="flex gap-4 p-4 bg-slate-50 rounded-xl mb-8 border border-slate-100">
         <div className="flex-1 text-center">
@@ -48,6 +84,13 @@ export default function PropertyStickyInfo({ property }) {
           </button>
         </div>
       </div>
+
+      <ReraQRModal 
+        isOpen={isReraModalOpen} 
+        onClose={() => setIsReraModalOpen(false)} 
+        reraId={property?.raw?.reraNumber}
+        propertyName={property?.title}
+      />
     </div>
   );
 }
