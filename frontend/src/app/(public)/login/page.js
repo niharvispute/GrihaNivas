@@ -24,8 +24,13 @@ import {
 
 const routeAfterAuth = (router, data) => {
   const destination = data?.user?.role === 'admin' ? '/admin' : '/account';
-  router.push(destination);
-  router.refresh();
+  try {
+    router.push(destination);
+  } catch {
+    if (typeof window !== 'undefined') {
+      window.location.assign(destination);
+    }
+  }
 };
 
 export default function LoginPage() {

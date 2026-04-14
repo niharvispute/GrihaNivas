@@ -75,7 +75,7 @@ export default async function PropertyDetailPage({ params }) {
       {/* Hero Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
         <div className="lg:col-span-8">
-          <PropertyGallery images={gallery} />
+          <PropertyGallery images={gallery} property={property} />
         </div>
         <div className="lg:col-span-4">
           <PropertyStickyInfo property={property} />

@@ -1,23 +1,35 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { listLeads, updateLeadStatus, getLeadById, deleteLead } from '@/services/leadService';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  deletePropertySubmission,
+  getPropertySubmissionById,
+  listPropertySubmissions,
+  updatePropertySubmissionStatus,
+} from '@/services/propertySubmissionService';
 
 const STATUS_STYLES = {
-  new:       { bg: 'bg-blue-50 text-blue-700',    dot: 'bg-blue-600' },
-  contacted: { bg: 'bg-amber-50 text-amber-700',  dot: 'bg-amber-600' },
-  qualified: { bg: 'bg-emerald-50 text-emerald-700', dot: 'bg-emerald-600' },
-  closed:    { bg: 'bg-slate-100 text-slate-500', dot: 'bg-slate-400' },
+  new: { bg: 'bg-blue-50 text-blue-700', dot: 'bg-blue-600' },
+  reviewing: { bg: 'bg-amber-50 text-amber-700', dot: 'bg-amber-600' },
+  approved: { bg: 'bg-emerald-50 text-emerald-700', dot: 'bg-emerald-600' },
+  rejected: { bg: 'bg-rose-50 text-rose-700', dot: 'bg-rose-600' },
+  closed: { bg: 'bg-slate-100 text-slate-500', dot: 'bg-slate-400' },
 };
-const NEXT_STATUS = { new: 'contacted', contacted: 'qualified', qualified: 'closed' };
 
-function getInitials(name = '') {
-  return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
-}
+const NEXT_STATUS = {
+  new: 'reviewing',
+  reviewing: 'approved',
+  approved: 'closed',
+  rejected: 'closed',
+};
 
 function formatDate(iso) {
   if (!iso) return '—';
-  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  return new Date(iso).toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
 }
 
 function hasValue(value) {
@@ -27,46 +39,55 @@ function hasValue(value) {
   return true;
 }
 
-export default function LeadCRMPage() {
-  const [leads, setLeads] = useState([]);
+export default function PropertySubmissionsPage() {
+  const [items, setItems] = useState([]);
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [leadType, setLeadType] = useState('');
   const [status, setStatus] = useState('');
+  const [listingType, setListingType] = useState('');
   const [page, setPage] = useState(1);
-  const [updatingId, setUpdatingId] = useState(null);
   const [openActionFor, setOpenActionFor] = useState(null);
-  const [viewingLead, setViewingLead] = useState(null);
-  const [loadingLeadDetail, setLoadingLeadDetail] = useState(false);
+  const [updatingId, setUpdatingId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [viewingItem, setViewingItem] = useState(null);
+  const [loadingDetail, setLoadingDetail] = useState(false);
 
-  const fetchLeads = useCallback(async () => {
+  const fetchItems = useCallback(async () => {
     setLoading(true);
     try {
       const query = { page, limit: 15 };
       if (search) query.search = search;
-      if (leadType) query.leadType = leadType;
       if (status) query.status = status;
-      const res = await listLeads(query, { map: false });
-      setLeads(res.items || []);
+      if (listingType) query.listingType = listingType;
+
+      const res = await listPropertySubmissions(query);
+      setItems(res.items || []);
       setMeta(res.meta || null);
     } catch {
-      setLeads([]);
+      setItems([]);
+      setMeta(null);
     } finally {
       setLoading(false);
     }
-  }, [search, leadType, status, page]);
+  }, [search, status, listingType, page]);
 
-  useEffect(() => { fetchLeads(); }, [fetchLeads]);
+  useEffect(() => {
+    fetchItems();
+  }, [fetchItems]);
 
-  const handleAdvanceStatus = async (lead) => {
-    const next = NEXT_STATUS[lead.status];
-    if (!next) return;
-    setUpdatingId(lead._id);
+  const handleAdvanceStatus = async (item) => {
+    const nextStatus = NEXT_STATUS[item.status];
+    if (!nextStatus) return;
+
+    setUpdatingId(item._id);
     try {
-      await updateLeadStatus(lead._id, next);
-      setLeads((prev) => prev.map((l) => l._id === lead._id ? { ...l, status: next } : l));
+      await updatePropertySubmissionStatus(item._id, nextStatus);
+      setItems((prev) =>
+        prev.map((entry) =>
+          entry._id === item._id ? { ...entry, status: nextStatus } : entry
+        )
+      );
     } catch {
       alert('Failed to update status.');
     } finally {
@@ -74,31 +95,33 @@ export default function LeadCRMPage() {
     }
   };
 
-  const handleViewLead = async (leadId) => {
+  const handleView = async (id) => {
     setOpenActionFor(null);
-    setLoadingLeadDetail(true);
+    setLoadingDetail(true);
     try {
-      const lead = await getLeadById(leadId);
-      setViewingLead(lead);
+      const detail = await getPropertySubmissionById(id);
+      setViewingItem(detail);
     } catch {
-      alert('Failed to fetch lead details.');
+      alert('Failed to fetch submission details.');
     } finally {
-      setLoadingLeadDetail(false);
+      setLoadingDetail(false);
     }
   };
 
-  const handleDeleteLead = async (leadId) => {
+  const handleDelete = async (id) => {
     setOpenActionFor(null);
-    const ok = window.confirm('Delete this lead? This action cannot be undone.');
+    const ok = window.confirm('Delete this property submission? This action cannot be undone.');
     if (!ok) return;
 
-    setDeletingId(leadId);
+    setDeletingId(id);
     try {
-      await deleteLead(leadId);
-      setLeads((prev) => prev.filter((lead) => lead._id !== leadId));
-      setMeta((prev) => (prev ? { ...prev, total: Math.max((prev.total || 1) - 1, 0) } : prev));
+      await deletePropertySubmission(id);
+      setItems((prev) => prev.filter((entry) => entry._id !== id));
+      setMeta((prev) =>
+        prev ? { ...prev, total: Math.max((prev.total || 1) - 1, 0) } : prev
+      );
     } catch {
-      alert('Failed to delete lead.');
+      alert('Failed to delete submission.');
     } finally {
       setDeletingId(null);
     }
@@ -106,20 +129,18 @@ export default function LeadCRMPage() {
 
   return (
     <div className="space-y-10 pb-20">
-      {/* Page Header */}
-      <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-6">
+      <div className="flex flex-col md:flex-row justify-between items-end gap-6">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Lead CRM</h1>
-          <p className="text-slate-500 font-bold mt-2">Centralized portal for lead tracking, segmentation, and conversion metrics.</p>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Property Submissions</h1>
+          <p className="text-slate-500 font-bold mt-2">Review and process owner listing requests.</p>
         </div>
         {meta && (
           <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
-            {meta.total} total leads
+            {meta.total} submissions
           </span>
         )}
       </div>
 
-      {/* Filters */}
       <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
         <div className="flex-1 min-w-55">
           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Quick Search</label>
@@ -127,26 +148,26 @@ export default function LeadCRMPage() {
             <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400">search</span>
             <input
               className="w-full bg-slate-50 rounded-2xl py-4 pl-14 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
-              placeholder="Name, phone, or email…"
+              placeholder="Owner, phone, locality, title..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             />
           </div>
         </div>
+
         <div className="w-48">
-          <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Lead Type</label>
+          <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Listing Type</label>
           <select
             className="w-full appearance-none bg-slate-50 rounded-2xl px-5 py-4 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
-            value={leadType}
-            onChange={(e) => { setLeadType(e.target.value); setPage(1); }}
+            value={listingType}
+            onChange={(e) => { setListingType(e.target.value); setPage(1); }}
           >
             <option value="">All Types</option>
-            <option value="buy">Buy</option>
-            <option value="rent">Rent</option>
-            <option value="loan">Loan</option>
-            <option value="agreement">Agreement</option>
+            <option value="Sale">Sale</option>
+            <option value="Rent">Rent</option>
           </select>
         </div>
+
         <div className="w-48">
           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Status</label>
           <select
@@ -156,74 +177,92 @@ export default function LeadCRMPage() {
           >
             <option value="">All Statuses</option>
             <option value="new">New</option>
-            <option value="contacted">Contacted</option>
-            <option value="qualified">Qualified</option>
+            <option value="reviewing">Reviewing</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
             <option value="closed">Closed</option>
           </select>
         </div>
       </div>
 
-      {/* Leads Table */}
       <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 overflow-hidden">
         {loading ? (
           <div className="p-10 space-y-4 animate-pulse">
-            {[1, 2, 3, 4, 5].map((i) => <div key={i} className="h-16 bg-slate-100 rounded-2xl" />)}
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-16 bg-slate-100 rounded-2xl" />
+            ))}
           </div>
-        ) : leads.length === 0 ? (
+        ) : items.length === 0 ? (
           <div className="py-20 text-center">
             <span className="material-symbols-outlined text-5xl text-slate-200 mb-4 block">inbox</span>
-            <p className="text-slate-400 font-bold">No leads found.</p>
+            <p className="text-slate-400 font-bold">No submissions found.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-separate border-spacing-y-2 px-6 pb-6">
+            <table className="w-full text-left border-separate border-spacing-y-2 p-6">
               <thead>
                 <tr className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
-                  <th className="px-6 py-5">Name</th>
-                  <th className="px-6 py-5">Contact</th>
+                  <th className="px-6 py-5">Owner</th>
+                  <th className="px-6 py-5">Locality</th>
                   <th className="px-6 py-5">Type</th>
+                  <th className="px-6 py-5">Feature / RERA</th>
                   <th className="px-6 py-5">Date</th>
                   <th className="px-6 py-5">Status</th>
                   <th className="px-6 py-5 text-right">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {leads.map((lead) => {
-                  const style = STATUS_STYLES[lead.status] || STATUS_STYLES.new;
-                  const nextStatus = NEXT_STATUS[lead.status];
-                  const busy = updatingId === lead._id;
-                  const deleting = deletingId === lead._id;
+                {items.map((item) => {
+                  const style = STATUS_STYLES[item.status] || STATUS_STYLES.new;
+                  const nextStatus = NEXT_STATUS[item.status];
+                  const busy = updatingId === item._id;
+                  const deleting = deletingId === item._id;
+
                   return (
-                    <tr key={lead._id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl">
+                    <tr key={item._id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl">
                       <td className="px-6 py-5 rounded-l-3xl">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-2xl bg-white text-primary flex items-center justify-center font-black text-xs shadow-sm border border-slate-100 group-hover:bg-primary group-hover:text-white transition-all">
-                            {getInitials(lead.name)}
-                          </div>
-                          <span className="text-sm font-black text-slate-900">{lead.name}</span>
+                        <div className="space-y-1">
+                          <p className="text-sm font-black text-slate-900">{item.ownerName}</p>
+                          <p className="text-[10px] text-slate-400 font-medium">{item.phone}</p>
                         </div>
                       </td>
-                      <td className="px-6 py-5">
-                        <p className="text-sm font-bold text-slate-700">{lead.phone}</p>
-                        {lead.email && <p className="text-[10px] text-slate-400 font-medium">{lead.email}</p>}
-                      </td>
+                      <td className="px-6 py-5 text-sm font-bold text-slate-600">{item.locality}</td>
                       <td className="px-6 py-5">
                         <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 bg-slate-100 text-slate-600 rounded-full">
-                          {(lead.leadType || '').replace('_', ' ')}
+                          {item.listingType} / {item.buildingType}
                         </span>
                       </td>
-                      <td className="px-6 py-5 text-sm font-bold text-slate-500">{formatDate(lead.createdAt)}</td>
+                      <td className="px-6 py-5">
+                        <div className="space-y-1">
+                          <p className="text-[10px] font-bold text-slate-500">
+                            Features: {Array.isArray(item.feature) ? item.feature.length : 0}
+                          </p>
+                          {item.reraUrl ? (
+                            <a
+                              href={item.reraUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-[10px] font-bold text-primary hover:underline"
+                            >
+                              Open RERA Link
+                            </a>
+                          ) : (
+                            <p className="text-[10px] font-bold text-slate-400">No RERA URL</p>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-6 py-5 text-sm font-bold text-slate-500">{formatDate(item.createdAt)}</td>
                       <td className="px-6 py-5">
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${style.bg}`}>
                           <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
-                          {lead.status}
+                          {item.status}
                         </span>
                       </td>
                       <td className="px-6 py-5 text-right rounded-r-3xl">
                         <div className="flex items-center justify-end gap-2">
                           {nextStatus && (
                             <button
-                              onClick={() => handleAdvanceStatus(lead)}
+                              onClick={() => handleAdvanceStatus(item)}
                               disabled={busy || deleting}
                               className="text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl bg-primary/5 text-primary hover:bg-primary hover:text-white transition-all disabled:opacity-50"
                             >
@@ -234,18 +273,17 @@ export default function LeadCRMPage() {
                           <div className="relative">
                             <button
                               type="button"
-                              onClick={() => setOpenActionFor((prev) => (prev === lead._id ? null : lead._id))}
+                              onClick={() => setOpenActionFor((prev) => (prev === item._id ? null : item._id))}
                               className="w-9 h-9 rounded-xl bg-white border border-slate-100 text-slate-500 hover:text-primary hover:border-primary/20 transition-all"
-                              aria-label="Lead options"
                             >
                               <span className="material-symbols-outlined text-lg">more_horiz</span>
                             </button>
 
-                            {openActionFor === lead._id && (
+                            {openActionFor === item._id && (
                               <div className="absolute right-0 top-11 z-20 w-44 rounded-2xl border border-slate-100 bg-white p-2 shadow-2xl shadow-slate-200/60">
                                 <button
                                   type="button"
-                                  onClick={() => handleViewLead(lead._id)}
+                                  onClick={() => handleView(item._id)}
                                   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all"
                                 >
                                   <span className="material-symbols-outlined text-lg text-primary">visibility</span>
@@ -253,7 +291,7 @@ export default function LeadCRMPage() {
                                 </button>
                                 <button
                                   type="button"
-                                  onClick={() => handleDeleteLead(lead._id)}
+                                  onClick={() => handleDelete(item._id)}
                                   disabled={deleting}
                                   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all disabled:opacity-50"
                                 >
@@ -274,7 +312,6 @@ export default function LeadCRMPage() {
         )}
       </div>
 
-      {/* Pagination */}
       {meta && meta.totalPages > 1 && (
         <div className="flex justify-center gap-2">
           {Array.from({ length: meta.totalPages }, (_, i) => i + 1).map((p) => (
@@ -289,15 +326,14 @@ export default function LeadCRMPage() {
         </div>
       )}
 
-      {/* Lead View Modal */}
-      {(loadingLeadDetail || viewingLead) && (
+      {(loadingDetail || viewingItem) && (
         <div className="fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-3xl bg-white rounded-4xl border border-slate-100 shadow-2xl overflow-hidden">
+          <div className="w-full max-w-4xl bg-white rounded-4xl border border-slate-100 shadow-2xl overflow-hidden">
             <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
-              <h3 className="text-2xl font-black text-slate-900 tracking-tight">Lead Details</h3>
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight">Submission Details</h3>
               <button
                 type="button"
-                onClick={() => { setViewingLead(null); setLoadingLeadDetail(false); }}
+                onClick={() => { setViewingItem(null); setLoadingDetail(false); }}
                 className="w-10 h-10 rounded-xl bg-slate-50 text-slate-500 hover:text-slate-900 transition-colors"
               >
                 <span className="material-symbols-outlined">close</span>
@@ -305,37 +341,53 @@ export default function LeadCRMPage() {
             </div>
 
             <div className="p-8 max-h-[75vh] overflow-y-auto">
-              {loadingLeadDetail ? (
+              {loadingDetail ? (
                 <div className="space-y-4 animate-pulse">
                   {[1, 2, 3, 4].map((i) => <div key={i} className="h-12 bg-slate-100 rounded-xl" />)}
                 </div>
-              ) : viewingLead ? (
+              ) : viewingItem ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {[
-                    { label: 'Name', value: viewingLead.name },
-                    { label: 'Phone', value: viewingLead.phone },
-                    { label: 'Email', value: viewingLead.email },
-                    { label: 'Lead Type', value: (viewingLead.leadType || '').replace('_', ' ') },
-                    { label: 'Status', value: viewingLead.status },
-                    { label: 'Submitted On', value: viewingLead.createdAt ? formatDate(viewingLead.createdAt) : null },
-                    { label: 'Budget Min', value: viewingLead.budgetMin },
-                    { label: 'Budget Max', value: viewingLead.budgetMax },
-                    { label: 'Monthly Income', value: viewingLead.monthlyIncome },
-                    { label: 'Source', value: viewingLead.source },
+                    { label: 'Owner Name', value: viewingItem.ownerName },
+                    { label: 'Phone', value: viewingItem.phone },
+                    { label: 'Email', value: viewingItem.email },
+                    { label: 'Listing Type', value: viewingItem.listingType },
+                    { label: 'Building Type', value: viewingItem.buildingType },
+                    { label: 'Property Type', value: viewingItem.propertyType },
+                    { label: 'City', value: viewingItem.city },
+                    { label: 'Locality', value: viewingItem.locality },
+                    { label: 'Possession', value: viewingItem.possession },
+                    { label: 'Age', value: viewingItem.age },
+                    { label: 'Bathrooms', value: viewingItem.bathrooms },
+                    { label: 'Balconies', value: viewingItem.balconies },
+                    { label: 'Covered Parking', value: viewingItem.coveredParking },
+                    { label: 'Open Parking', value: viewingItem.openParking },
+                    { label: 'Price', value: viewingItem.price },
+                    { label: 'Status', value: viewingItem.status },
                     {
-                      label: 'Preferred Locations',
-                      value: Array.isArray(viewingLead.preferredLocations) ? viewingLead.preferredLocations.join(', ') : null,
+                      label: 'Hero Features',
+                      value: Array.isArray(viewingItem.feature)
+                        ? viewingItem.feature.join(' | ')
+                        : viewingItem.feature,
                       full: true,
                     },
-                    { label: 'Property', value: viewingLead.propertyId?.title, full: true },
+                    { label: 'RERA URL', value: viewingItem.reraUrl, full: true },
                     {
-                      label: 'Assigned To',
-                      value: viewingLead.assignedTo
-                        ? [viewingLead.assignedTo.name, viewingLead.assignedTo.email].filter(Boolean).join(' • ')
-                        : null,
+                      label: 'Amenities',
+                      value: Array.isArray(viewingItem.amenities) ? viewingItem.amenities.join(', ') : null,
                       full: true,
                     },
-                    { label: 'Message', value: viewingLead.message, full: true },
+                    { label: 'Title', value: viewingItem.title, full: true },
+                    { label: 'Description', value: viewingItem.description, full: true },
+                    {
+                      label: 'Image Count',
+                      value: Array.isArray(viewingItem.images) ? viewingItem.images.length : 0,
+                    },
+                    {
+                      label: 'Video',
+                      value: viewingItem.videoMeta?.url || viewingItem.videoMeta?.name,
+                      full: true,
+                    },
                   ]
                     .filter((field) => hasValue(field.value))
                     .map((field) => (

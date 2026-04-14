@@ -13,8 +13,31 @@ const DEFAULT_BUILDERS = [
     shortDescription: 'Premium residential and mixed-use developer in Mumbai.',
     description:
       'Lodha develops premium and luxury projects across key Mumbai micro-markets with strong focus on quality and scale.',
+    aboutHeadline: "Crafting Mumbai's next-generation skylines",
+    qualityStandards: 'ISO aligned quality execution and delivery governance',
+    innovation: 'Data-driven design and sustainable construction',
+    featuredImages: [
+      'https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1400&q=80',
+    ],
+    faqs: [
+      {
+        question: 'Are all projects RERA registered?',
+        answer: 'Yes, all active launches are RERA registered and shared transparently in project documentation.',
+      },
+    ],
+    testimonials: [
+      {
+        author: 'A. Mehta',
+        role: 'Homeowner',
+        content: 'Strong execution quality and timely communication throughout the buying cycle.',
+        rating: 5,
+      },
+    ],
     establishedYear: 1980,
     totalProjects: 100,
+    ongoingProjects: 14,
+    completedDeliveries: 86,
     headquarters: 'Mumbai',
     isFeatured: true,
     isActive: true,

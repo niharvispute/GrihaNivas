@@ -25,6 +25,8 @@ export default function AdminSidebar() {
   const menuItems = [
     { name: 'Dashboard', icon: 'dashboard', href: '/admin' },
     { name: 'Properties', icon: 'real_estate_agent', href: '/admin/properties' },
+    { name: 'Builders', icon: 'apartment', href: '/admin/builders' },
+    { name: 'Property Submissions', icon: 'home_work', href: '/admin/property-submissions' },
     { name: 'Leads', icon: 'leaderboard', href: '/admin/leads' },
     { name: 'Blogs', icon: 'edit_note', href: '/admin/blogs' },
     { name: 'Banners', icon: 'view_carousel', href: '/admin/banners' },
@@ -44,7 +46,10 @@ export default function AdminSidebar() {
 
       <nav className="flex-1 px-4 space-y-2">
         {menuItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive =
+            item.href === '/admin'
+              ? pathname === item.href
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <Link 
               key={item.name}
@@ -63,7 +68,7 @@ export default function AdminSidebar() {
       </nav>
 
       <div className="mt-auto px-4">
-        <div className="p-5 bg-neutral-800/30 rounded-[2rem] border border-neutral-700/30 backdrop-blur-sm">
+        <div className="p-5 bg-neutral-800/30 rounded-4xl border border-neutral-700/30 backdrop-blur-sm">
           <div className="flex items-center gap-4 overflow-hidden">
             <div className="relative">
               <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-primary/20 bg-linear-to-br from-primary/15 via-neutral-100 to-primary/5 text-primary flex items-center justify-center text-xs font-black">

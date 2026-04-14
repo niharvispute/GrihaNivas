@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function BuilderPortfolio({ builder }) {
+export default function BuilderPortfolio({ builder, properties = [] }) {
   return (
     <section className="py-24 bg-neutral-50" id="portfolio">
       <div className="container mx-auto px-6">
@@ -38,8 +38,8 @@ export default function BuilderPortfolio({ builder }) {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {builder.portfolio.map((prop, i) => (
-            <div key={i} className="group bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-neutral-100 flex flex-col">
+          {builder.portfolio.map((prop) => (
+            <div key={prop.id || prop.slug} className="group bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-neutral-100 flex flex-col">
               <div className="relative overflow-hidden h-72">
                 <img 
                   src={prop.image} 
@@ -50,7 +50,7 @@ export default function BuilderPortfolio({ builder }) {
                   {prop.status}
                 </div>
               </div>
-              <div className="p-8 flex flex-col flex-grow">
+              <div className="p-8 flex flex-col grow">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-2xl font-bold text-zinc-900 font-headline tracking-tight">{prop.title}</h3>
                   <p className="text-primary font-bold text-lg font-body">{prop.price}</p>
@@ -69,7 +69,7 @@ export default function BuilderPortfolio({ builder }) {
                   </div>
                 </div>
                 <Link 
-                  href={`/property/${prop.id}`}
+                  href={`/property/${prop.slug || prop.id}`}
                   className="mt-auto w-full border-2 border-zinc-900 text-center text-zinc-900 py-3 rounded-xl font-bold hover:bg-zinc-900 hover:text-white transition-all text-sm uppercase tracking-widest"
                 >
                   View Property Details
@@ -78,6 +78,12 @@ export default function BuilderPortfolio({ builder }) {
             </div>
           ))}
         </div>
+
+        {properties.length === 0 && (
+          <p className="text-center text-sm font-medium text-zinc-500 mt-12">
+            Portfolio listings for this builder will be published soon.
+          </p>
+        )}
       </div>
     </section>
   );

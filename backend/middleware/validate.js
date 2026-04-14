@@ -70,6 +70,88 @@ const objectIdSchema = z
   .length(24, 'Invalid ID format')
   .regex(/^[a-f0-9]{24}$/, 'Invalid ID format');
 
+const builderFaqSchema = z.object({
+  question: z.string().trim().min(3).max(300),
+  answer: z.string().trim().min(3).max(2000),
+});
+
+const builderTestimonialSchema = z.object({
+  author: z.string().trim().min(2).max(120),
+  role: z.string().trim().max(150).optional(),
+  content: z.string().trim().min(5).max(1500),
+  rating: z.coerce.number().int().min(1).max(5).optional(),
+  avatar: z.string().trim().url().optional(),
+});
+
+const parseJsonIfString = (value) => {
+  if (typeof value !== 'string') return value;
+  const trimmed = value.trim();
+  if (!trimmed) return value;
+
+  if (
+    (trimmed.startsWith('[') && trimmed.endsWith(']')) ||
+    (trimmed.startsWith('{') && trimmed.endsWith('}'))
+  ) {
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      return value;
+    }
+  }
+
+  return value;
+};
+
+const builderFeaturedImagesSchema = z.preprocess(
+  parseJsonIfString,
+  z.array(z.string().trim().url()).max(12)
+);
+
+const builderFaqListSchema = z.preprocess(
+  parseJsonIfString,
+  z.array(builderFaqSchema).max(20)
+);
+
+const builderTestimonialsListSchema = z.preprocess(
+  parseJsonIfString,
+  z.array(builderTestimonialSchema).max(30)
+);
+
+const builderSeoSchema = z.preprocess(
+  parseJsonIfString,
+  z.object({
+    metaTitle: z.string().trim().max(70).optional(),
+    metaDescription: z.string().trim().max(160).optional(),
+    keywords: z.array(z.string().trim()).max(20).optional(),
+  })
+);
+
+const propertySubmissionStringArraySchema = z.preprocess(
+  parseJsonIfString,
+  z.array(z.string().trim().min(1).max(300)).max(12)
+);
+
+const propertySubmissionImagesSchema = z.preprocess(
+  parseJsonIfString,
+  z.array(z.string().trim().min(1).max(300)).max(20)
+);
+
+const propertySubmissionAmenitiesSchema = z.preprocess(
+  parseJsonIfString,
+  z.array(z.string().trim().min(1).max(120)).max(30)
+);
+
+const propertySubmissionVideoMetaSchema = z.preprocess(
+  parseJsonIfString,
+  z.object({
+    name: z.string().trim().max(255).optional(),
+    size: z.coerce.number().min(0).optional(),
+    type: z.string().trim().max(120).optional(),
+    url: z.string().trim().url().optional(),
+    publicId: z.string().trim().max(400).optional(),
+  })
+);
+
 const BLOG_CATEGORY_MAP = {
   market_trends: 'market_trends',
   'market-insights': 'market_trends',
@@ -144,7 +226,7 @@ const schemas = {
       name: z.string().trim().min(2, 'Name too short').max(100),
       phone: phoneSchema,
       email: emailSchema.optional(),
-      leadType: z.enum(['buy', 'rent', 'loan', 'agreement', 'list_property']),
+      leadType: z.enum(['buy', 'rent', 'loan', 'agreement']),
       propertyId: objectIdSchema.optional(),
       message: z.string().trim().max(1000).optional(),
       budgetMin: z.number().min(0).optional(),
@@ -165,8 +247,62 @@ const schemas = {
       page: z.coerce.number().int().min(1).default(1),
       limit: z.coerce.number().int().min(1).max(100).default(10),
       status: z.enum(['new', 'contacted', 'qualified', 'closed']).optional(),
-      leadType: z.enum(['buy', 'rent', 'loan', 'agreement', 'list_property']).optional(),
+      leadType: z.enum(['buy', 'rent', 'loan', 'agreement']).optional(),
       search: z.string().trim().max(100).optional(),
+    }),
+  },
+
+  // ── PROPERTY SUBMISSIONS ──────────────────
+  propertySubmission: {
+    idParams: z.object({
+      id: objectIdSchema,
+    }),
+
+    create: z.object({
+      ownerName: z.string().trim().min(2).max(120),
+      phone: phoneSchema,
+      email: emailSchema.optional(),
+      listingType: z.enum(['Sale', 'Rent']),
+      buildingType: z.enum(['Residential', 'Commercial']),
+      propertyType: z.string().trim().min(2).max(100),
+      city: z.string().trim().min(2).max(100).default('Mumbai'),
+      locality: z.string().trim().min(2).max(200),
+      possession: z.enum(['Ready to Move', 'Under Construction']),
+      age: z.string().trim().min(1).max(20),
+      bathrooms: z.string().trim().min(1).max(20),
+      balconies: z.string().trim().max(30).optional(),
+      coveredParking: z.string().trim().max(30).optional(),
+      openParking: z.string().trim().max(30).optional(),
+      images: propertySubmissionImagesSchema.optional(),
+      videoMeta: propertySubmissionVideoMetaSchema.optional(),
+      price: z.coerce.number().min(0).optional(),
+      amenities: propertySubmissionAmenitiesSchema.optional(),
+      feature: propertySubmissionStringArraySchema.optional(),
+      reraUrl: z.string().trim().url().max(500).optional(),
+      title: z.string().trim().max(200).optional(),
+      description: z.string().trim().max(5000).optional(),
+      readyToProceed: z.coerce.boolean().optional(),
+    }),
+
+    list: z.object({
+      page: z.coerce.number().int().min(1).default(1),
+      limit: z.coerce.number().int().min(1).max(100).default(10),
+      status: z.enum(['new', 'reviewing', 'approved', 'rejected', 'closed']).optional(),
+      listingType: z.enum(['Sale', 'Rent']).optional(),
+      buildingType: z.enum(['Residential', 'Commercial']).optional(),
+      search: z.string().trim().max(100).optional(),
+    }),
+
+    updateStatus: z.object({
+      status: z.enum(['new', 'reviewing', 'approved', 'rejected', 'closed']),
+    }),
+
+    assign: z.object({
+      adminId: objectIdSchema,
+    }),
+
+    addNote: z.object({
+      text: z.string().trim().min(1).max(2000),
     }),
   },
 
@@ -202,7 +338,9 @@ const schemas = {
       possession:   z.string().trim().optional(),
       age:          z.string().trim().optional(),
       reraNumber:   z.string().trim().optional(),
+      reraUrl:      z.string().trim().url().max(500).optional(),
       amenities:    z.array(z.string().trim()).max(50).optional(),
+      feature:      z.array(z.string().trim()).max(12).optional(),
       highlights:   z.array(z.string().trim()).max(20).optional(),
       isFeatured:   z.boolean().default(false),
       seoTitle:       z.string().trim().max(70).optional(),
@@ -238,7 +376,9 @@ const schemas = {
       possession:   z.string().trim().optional(),
       age:          z.string().trim().optional(),
       reraNumber:   z.string().trim().optional(),
+      reraUrl:      z.string().trim().url().max(500).optional(),
       amenities:    z.array(z.string().trim()).max(50).optional(),
+      feature:      z.array(z.string().trim()).max(12).optional(),
       highlights:   z.array(z.string().trim()).max(20).optional(),
       seoTitle:       z.string().trim().max(70).optional(),
       seoDescription: z.string().trim().max(160).optional(),
@@ -301,18 +441,24 @@ const schemas = {
       slug: z.string().trim().min(2).max(200).optional(),
       description: z.string().trim().max(4000).optional(),
       shortDescription: z.string().trim().max(300).optional(),
+      aboutHeadline: z.string().trim().max(200).optional(),
+      qualityStandards: z.string().trim().max(250).optional(),
+      innovation: z.string().trim().max(250).optional(),
+      featuredImages: builderFeaturedImagesSchema.optional(),
+      faqs: builderFaqListSchema.optional(),
+      testimonials: builderTestimonialsListSchema.optional(),
       establishedYear: z.coerce.number().int().min(1800).max(new Date().getFullYear()).optional(),
       totalProjects: z.coerce.number().int().min(0).optional(),
+      ongoingProjects: z.coerce.number().int().min(0).optional(),
+      completedDeliveries: z.coerce.number().int().min(0).optional(),
       headquarters: z.string().trim().max(200).optional(),
-      isFeatured: z.boolean().optional(),
-      isActive: z.boolean().optional(),
-      seo: z
-        .object({
-          metaTitle: z.string().trim().max(70).optional(),
-          metaDescription: z.string().trim().max(160).optional(),
-          keywords: z.array(z.string().trim()).max(20).optional(),
-        })
-        .optional(),
+      isFeatured: z.coerce.boolean().optional(),
+      isActive: z.coerce.boolean().optional(),
+      seo: builderSeoSchema.optional(),
+    }),
+
+    featureToggle: z.object({
+      isFeatured: z.coerce.boolean(),
     }),
 
     update: z
@@ -321,18 +467,20 @@ const schemas = {
         slug: z.string().trim().min(2).max(200).optional(),
         description: z.string().trim().max(4000).optional(),
         shortDescription: z.string().trim().max(300).optional(),
+        aboutHeadline: z.string().trim().max(200).optional(),
+        qualityStandards: z.string().trim().max(250).optional(),
+        innovation: z.string().trim().max(250).optional(),
+        featuredImages: builderFeaturedImagesSchema.optional(),
+        faqs: builderFaqListSchema.optional(),
+        testimonials: builderTestimonialsListSchema.optional(),
         establishedYear: z.coerce.number().int().min(1800).max(new Date().getFullYear()).optional(),
         totalProjects: z.coerce.number().int().min(0).optional(),
+        ongoingProjects: z.coerce.number().int().min(0).optional(),
+        completedDeliveries: z.coerce.number().int().min(0).optional(),
         headquarters: z.string().trim().max(200).optional(),
-        isFeatured: z.boolean().optional(),
-        isActive: z.boolean().optional(),
-        seo: z
-          .object({
-            metaTitle: z.string().trim().max(70).optional(),
-            metaDescription: z.string().trim().max(160).optional(),
-            keywords: z.array(z.string().trim()).max(20).optional(),
-          })
-          .optional(),
+        isFeatured: z.coerce.boolean().optional(),
+        isActive: z.coerce.boolean().optional(),
+        seo: builderSeoSchema.optional(),
       })
       .refine((value) => Object.keys(value).length > 0, {
         message: 'At least one field must be provided',

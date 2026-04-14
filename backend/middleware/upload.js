@@ -17,10 +17,12 @@ const multer = require('multer');
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;  // 5 MB
 const MAX_PDF_SIZE   = 10 * 1024 * 1024; // 10 MB
+const MAX_VIDEO_SIZE = 50 * 1024 * 1024; // 50 MB
 const MAX_GALLERY    = 10;
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const ALLOWED_PDF_TYPES   = ['application/pdf'];
+const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm'];
 
 // ── Storage ─────────────────────────────────────────────────────────────────
 
@@ -57,6 +59,19 @@ const mixedFilter = (req, file, cb) => {
   } else {
     const err = new Error(
       `Invalid file type: "${file.mimetype}". Allowed: JPEG, PNG, WEBP, PDF.`
+    );
+    err.code = 'INVALID_FILE_TYPE';
+    cb(err, false);
+  }
+};
+
+const propertySubmissionFilter = (req, file, cb) => {
+  const allowed = [...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEO_TYPES];
+  if (allowed.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    const err = new Error(
+      `Invalid file type: "${file.mimetype}". Allowed: JPEG, PNG, WEBP, MP4, MOV, WEBM.`
     );
     err.code = 'INVALID_FILE_TYPE';
     cb(err, false);
@@ -111,6 +126,12 @@ const uploadMixed = multer({
   limits: { fileSize: MAX_PDF_SIZE, files: 17 }, // 1 + 10 + 5 + 1
 });
 
+const uploadPropertySubmission = multer({
+  storage: memoryStorage,
+  fileFilter: propertySubmissionFilter,
+  limits: { fileSize: MAX_VIDEO_SIZE, files: 11 },
+});
+
 const propertyUploadFields = uploadMixed.fields([
   { name: 'heroImage',   maxCount: 1  },
   { name: 'images',      maxCount: 10 },
@@ -123,6 +144,11 @@ const builderUploadFields = uploadImages.fields([
   { name: 'coverImage', maxCount: 1 },
 ]);
 
+const propertySubmissionUploadFields = uploadPropertySubmission.fields([
+  { name: 'images', maxCount: 10 },
+  { name: 'video', maxCount: 1 },
+]);
+
 module.exports = {
   uploadImage,
   uploadImages,
@@ -130,4 +156,5 @@ module.exports = {
   uploadMixed,
   propertyUploadFields,
   builderUploadFields,
+  propertySubmissionUploadFields,
 };

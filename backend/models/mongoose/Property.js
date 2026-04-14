@@ -161,7 +161,16 @@ const propertySchema = new mongoose.Schema(
       trim: true,
       default: null,
     },
+    reraUrl: {
+      type: String,
+      trim: true,
+      default: null,
+    },
     amenities: {
+      type: [String],
+      default: [],
+    },
+    feature: {
       type: [String],
       default: [],
     },

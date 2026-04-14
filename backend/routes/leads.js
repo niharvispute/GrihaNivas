@@ -12,10 +12,10 @@ router.get('/my-enquiries', protect, validate(schemas.lead.list, 'query'), leadC
 
 // Admin only
 router.get('/',       protect, adminOnly, validate(schemas.lead.list, 'query'), leadController.list);
-router.get('/:id',    protect, adminOnly, leadController.getOne);
-router.put('/:id/status', protect, adminOnly, validate(schemas.lead.updateStatus), leadController.updateStatus);
-router.put('/:id/assign', protect, adminOnly, leadController.assign);
-router.post('/:id/notes', protect, adminOnly, validate(schemas.lead.addNote), leadController.addNote);
+router.get('/:id',    protect, adminOnly, validate(schemas.lead.idParams, 'params'), leadController.getOne);
+router.put('/:id/status', protect, adminOnly, validate(schemas.lead.idParams, 'params'), validate(schemas.lead.updateStatus), leadController.updateStatus);
+router.put('/:id/assign', protect, adminOnly, validate(schemas.lead.idParams, 'params'), leadController.assign);
+router.post('/:id/notes', protect, adminOnly, validate(schemas.lead.idParams, 'params'), validate(schemas.lead.addNote), leadController.addNote);
 router.delete('/:id', protect, adminOnly, validate(schemas.lead.idParams, 'params'), leadController.remove);
 
 module.exports = router;

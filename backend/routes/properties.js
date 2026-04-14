@@ -26,7 +26,7 @@ router.patch('/:id/approve', protect, adminOnly, validate(schemas.property.moder
 router.patch('/:id/reject', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.reject);
 
 // Public detail routes
-router.get('/:id',       propertyController.getOne);
+router.get('/:id', validate(schemas.property.moderationParams, 'params'), propertyController.getOne);
 
 // Admin only
 router.post(

@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { builders } from '@/data/builders';
 import BuilderHero from '@/components/builders/BuilderHero';
 import BuilderAbout from '@/components/builders/BuilderAbout';
 import BuilderStats from '@/components/builders/BuilderStats';
@@ -9,26 +8,38 @@ import BuilderPortfolio from '@/components/builders/BuilderPortfolio';
 import BuilderTestimonials from '@/components/builders/BuilderTestimonials';
 import BuilderFAQ from '@/components/builders/BuilderFAQ';
 import BuilderEnquiryForm from '@/components/builders/BuilderEnquiryForm';
+import { getBuilderBySlug } from '@/services/builderService';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const builder = builders.find((b) => b.slug === slug);
-  
-  if (!builder) return { title: 'Builder Not Found' };
-  
-  return {
-    title: `${builder.name} | Bricks - Mumbai Editorial`,
-    description: builder.tagline,
-  };
+
+  try {
+    const { builder } = await getBuilderBySlug(slug, { limit: 1 });
+    return {
+      title: `${builder.name} | Bricks - Mumbai Editorial`,
+      description: builder.tagline,
+    };
+  } catch {
+    return { title: 'Builder Not Found' };
+  }
 }
 
 export default async function BuilderDetailPage({ params }) {
   const { slug } = await params;
-  const builder = builders.find((b) => b.slug === slug);
+  let payload;
 
-  if (!builder) {
+  try {
+    payload = await getBuilderBySlug(slug, { limit: 12 });
+  } catch {
+    payload = null;
+  }
+
+  if (!payload?.builder) {
     notFound();
   }
+
+  const builder = payload.builder;
+  const properties = payload.properties || [];
 
   return (
     <div className="min-h-screen bg-background text-on-background antialiased">
@@ -42,7 +53,7 @@ export default async function BuilderDetailPage({ params }) {
         
         <BuilderStats builder={builder} />
         
-        <BuilderPortfolio builder={builder} />
+        <BuilderPortfolio builder={builder} properties={properties} />
         
         <BuilderTestimonials builder={builder} />
         
@@ -56,18 +67,11 @@ export default async function BuilderDetailPage({ params }) {
           </div>
           
           {/* Decorative decorative layer */}
-          <div className="absolute -bottom-64 -right-64 w-[512px] h-[512px] bg-primary/10 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-64 -right-64 w-lg h-128 bg-primary/10 rounded-full blur-3xl"></div>
         </section>
       </main>
 
       <Footer />
     </div>
   );
-}
-
-// Generate static params for all known builders for better performance
-export async function generateStaticParams() {
-  return builders.map((builder) => ({
-    slug: builder.slug,
-  }));
 }
