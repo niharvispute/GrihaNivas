@@ -1,13 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { addCompareProperty, removeCompareProperty } from '@/services/userService';
 import { useAuth } from '@/context/AuthContext';
 
-export default function AddToCompareButton({ propertyId }) {
+export default function AddToCompareButton({ propertyId, initialAdded = false }) {
   const { user, openModal } = useAuth();
-  const [added, setAdded] = useState(false);
+  const [added, setAdded] = useState(initialAdded);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setAdded(initialAdded);
+  }, [initialAdded]);
 
   const handleClick = async () => {
     if (!user) {

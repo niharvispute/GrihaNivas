@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { listProperties, deleteProperty, getPropertyById } from '@/services/propertyService';
+import { listProperties, deleteProperty, getPropertyById, updateProperty } from '@/services/propertyService';
 
 const CATEGORY_LABEL = { buy: 'Buy', rent: 'Rent', commercial: 'Commercial', new_launch: 'New Launch' };
 
@@ -31,6 +31,7 @@ export default function PropertyManagementPage() {
   const [openActionFor, setOpenActionFor] = useState(null);
   const [viewingProperty, setViewingProperty] = useState(null);
   const [loadingPropertyDetail, setLoadingPropertyDetail] = useState(false);
+  const [togglingFeatured, setTogglingFeatured] = useState(null);
 
   const fetchProperties = useCallback(async () => {
     setLoading(true);
@@ -74,6 +75,20 @@ export default function PropertyManagementPage() {
       alert('Failed to fetch property details.');
     } finally {
       setLoadingPropertyDetail(false);
+    }
+  };
+
+  const handleToggleFeatured = async (id, currentStatus) => {
+    setTogglingFeatured(id);
+    try {
+      await updateProperty(id, { isFeatured: !currentStatus });
+      setProperties((prev) =>
+        prev.map((p) => (p._id === id ? { ...p, isFeatured: !currentStatus } : p))
+      );
+    } catch {
+      alert('Failed to update featured status.');
+    } finally {
+      setTogglingFeatured(null);
     }
   };
 
@@ -144,6 +159,7 @@ export default function PropertyManagementPage() {
                   <th className="px-6 py-5">BHK</th>
                   <th className="px-6 py-5">Price</th>
                   <th className="px-6 py-5">Status</th>
+                  <th className="px-6 py-5">Featured</th>
                   <th className="px-6 py-5 text-right">Actions</th>
                 </tr>
               </thead>
@@ -191,6 +207,21 @@ export default function PropertyManagementPage() {
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${prop.isActive !== false ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-400'}`}>
                           {prop.isActive !== false ? 'Active' : 'Inactive'}
                         </span>
+                      </td>
+                      <td className="px-6 py-5">
+                        <button
+                          onClick={() => handleToggleFeatured(prop._id, prop.isFeatured)}
+                          disabled={togglingFeatured === prop._id}
+                          className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all ${prop.isFeatured ? 'bg-amber-50 text-amber-500 border border-amber-100' : 'bg-slate-50 text-slate-300 border border-slate-100 hover:border-amber-200 hover:text-amber-300'}`}
+                        >
+                          {togglingFeatured === prop._id ? (
+                            <div className="w-4 h-4 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <span className="material-symbols-outlined text-xl" style={{ fontVariationSettings: prop.isFeatured ? "'FILL' 1" : "'FILL' 0" }}>
+                              star
+                            </span>
+                          )}
+                        </button>
                       </td>
                       <td className="px-6 py-5 text-right rounded-r-3xl">
                         <div className="flex justify-end">

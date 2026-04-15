@@ -76,6 +76,7 @@ export default function PropertyStickyInfo({ property }) {
         <div className="flex gap-4 pt-4">
           <WishlistButton
             propertyId={property.id || property._id}
+            initialSaved={property.isSaved}
             variant="row"
           />
           <button className="flex-1 flex items-center justify-center gap-2 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">

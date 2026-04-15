@@ -31,6 +31,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
         </div>
         <WishlistButton
           propertyId={property.id || property._id}
+          initialSaved={property.isSaved}
           className="absolute top-4 right-4"
         />
       </div>
@@ -95,7 +96,10 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
               Schedule a Private Tour
             </button>
           ) : (
-            <AddToCompareButton propertyId={property.id || property._id} />
+            <AddToCompareButton 
+              propertyId={property.id || property._id} 
+              initialAdded={property.isCompared}
+            />
           )}
         </div>
       </div>

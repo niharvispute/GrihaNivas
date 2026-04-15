@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { saveProperty, unsaveProperty } from '@/services/userService';
@@ -9,16 +9,22 @@ import { saveProperty, unsaveProperty } from '@/services/userService';
  * Heart button for saving / unsaving a property.
  *
  * Props:
- *  - propertyId  string          — MongoDB _id of the property
- *  - variant     'overlay'|'row' — 'overlay' = frosted glass for image overlays;
- *                                  'row' = bordered for use inside card/detail layouts
- *  - className   string          — extra classes on the wrapper
+ *  - propertyId    string          — MongoDB _id of the property
+ *  - initialSaved  boolean         — initial status from backend
+ *  - variant       'overlay'|'row' — 'overlay' = frosted glass for image overlays;
+ *                                    'row' = bordered for use inside card/detail layouts
+ *  - className     string          — extra classes on the wrapper
  */
-export default function WishlistButton({ propertyId, variant = 'overlay', className = '' }) {
+export default function WishlistButton({ propertyId, initialSaved = false, variant = 'overlay', className = '' }) {
   const { user, openModal } = useAuth();
   const { addToast } = useToast();
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(initialSaved);
   const [loading, setLoading] = useState(false);
+
+  // Sync state if initialSaved changes (e.g. after data fetch or refresh)
+  useEffect(() => {
+    setSaved(initialSaved);
+  }, [initialSaved]);
 
   const handleClick = async (e) => {
     e.preventDefault();

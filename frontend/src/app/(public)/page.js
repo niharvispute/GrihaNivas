@@ -79,31 +79,27 @@ const MOCK_BLOGS = [
   }
 ];
 
+import BuilderCard from '@/components/builders/BuilderCard';
+import SectionCarousel from '@/components/home/SectionCarousel';
+import { listBuilders } from '@/services/builderService';
+
 export default async function HomePage() {
-  let featuredProperties = MOCK_PROPERTIES;
+  let featuredProperties = [];
+  let featuredBuilders = [];
   let latestBlogs = MOCK_BLOGS;
 
   try {
-    const featuredResponse = await listProperties({ isFeatured: true, limit: 3 });
-    if (featuredResponse.items?.length) {
-      featuredProperties = featuredResponse.items;
-    } else {
-      const fallbackResponse = await listProperties({ limit: 3 });
-      if (fallbackResponse.items?.length) {
-        featuredProperties = fallbackResponse.items;
-      }
-    }
-  } catch {
-    featuredProperties = MOCK_PROPERTIES;
-  }
+    const [propRes, buildRes, blogRes] = await Promise.all([
+      listProperties({ isFeatured: true, limit: 12 }),
+      listBuilders({ isFeatured: true, limit: 12 }),
+      listBlogs({ limit: 3 })
+    ]);
 
-  try {
-    const blogsResponse = await listBlogs({ limit: 3 });
-    if (blogsResponse.items?.length) {
-      latestBlogs = blogsResponse.items;
-    }
-  } catch {
-    latestBlogs = MOCK_BLOGS;
+    featuredProperties = propRes.items || [];
+    featuredBuilders = buildRes.items || [];
+    if (blogRes.items?.length) latestBlogs = blogRes.items;
+  } catch (error) {
+    console.error('Home Page Data Fetch Error:', error);
   }
 
   return (
@@ -131,24 +127,25 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 2. Featured Properties */}
-      <section className="py-24 px-8 max-w-screen-2xl mx-auto">
-        <div className="flex justify-between items-end mb-12">
-          <SectionHeader 
-            title="Exclusive Penthouses" 
-            subtitle="Handpicked luxury selections from the heart of SoBo."
-            className="mb-0"
-          />
-          <Link href="/buy" className="text-primary font-black flex items-center gap-2 hover:translate-x-1 transition-transform mb-4">
-            View All <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </Link>
-        </div>
-        <PropertyGrid>
-          {featuredProperties.map((prop) => (
-            <PropertyCard key={prop.id} property={prop} />
-          ))}
-        </PropertyGrid>
-      </section>
+      {/* 2. Featured Properties Carousel */}
+      {featuredProperties.length > 0 && (
+        <SectionCarousel 
+          title="Signature Collection"
+          subtitle="Handpicked luxury selections from the heart of SoBo and the most premium coastal stretches of Mumbai."
+          items={featuredProperties}
+          renderItem={(prop) => <PropertyCard property={prop} />}
+        />
+      )}
+
+      {/* 3. Featured Builders Carousel */}
+      {featuredBuilders.length > 0 && (
+        <SectionCarousel 
+          title="The Master Builders"
+          subtitle="Discover the visionaries behind Mumbai's most iconic skylines and architectural marvels."
+          items={featuredBuilders}
+          renderItem={(builder) => <BuilderCard builder={builder} />}
+        />
+      )}
 
       {/* 3. Categories */}
       <section className="py-24 bg-slate-50 px-8">

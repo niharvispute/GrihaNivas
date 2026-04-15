@@ -1,14 +1,14 @@
 const router = require('express').Router();
 const propertyController = require('../controllers/propertyController');
 const { validate, schemas } = require('../middleware/validate');
-const { protect } = require('../middleware/auth');
+const { protect, optionalAuth } = require('../middleware/auth');
 const { adminOnly } = require('../middleware/adminOnly');
 const { propertyUploadFields } = require('../middleware/upload');
 const { uploadLimiter: uploadRateLimit } = require('../middleware/rateLimiter');
 
 // Public
-router.get('/',          validate(schemas.property.list, 'query'), propertyController.list);
-router.get('/slug/:slug', propertyController.getBySlug);
+router.get('/', optionalAuth, validate(schemas.property.list, 'query'), propertyController.list);
+router.get('/slug/:slug', optionalAuth, propertyController.getBySlug);
 
 // User submission
 router.post(
@@ -26,7 +26,7 @@ router.patch('/:id/approve', protect, adminOnly, validate(schemas.property.moder
 router.patch('/:id/reject', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.reject);
 
 // Public detail routes
-router.get('/:id', validate(schemas.property.moderationParams, 'params'), propertyController.getOne);
+router.get('/:id', optionalAuth, validate(schemas.property.moderationParams, 'params'), propertyController.getOne);
 
 // Admin only
 router.post(

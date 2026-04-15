@@ -5,6 +5,7 @@ const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiRespons
 const AppError = require('../utils/AppError');
 const Property = require('../models/mongoose/Property');
 const Builder = require('../models/mongoose/Builder');
+const User = require('../models/mongoose/User');
 
 /**
  * Property Controller
@@ -95,6 +96,30 @@ const buildAdminFilter = (query) => {
   return filter;
 };
 
+const enrichPropertiesWithUserStatus = async (userId, properties) => {
+  if (!userId) return properties;
+
+  const user = await User.findById(userId).select('savedProperties comparedProperties');
+  if (!user) return properties;
+
+  const savedIds = new Set(user.savedProperties.map((id) => id.toString()));
+  const comparedIds = new Set(user.comparedProperties.map((id) => id.toString()));
+
+  const isArray = Array.isArray(properties);
+  const items = isArray ? properties : [properties];
+
+  const enriched = items.map((p) => {
+    const propertyObj = p.toObject ? p.toObject() : p;
+    return {
+      ...propertyObj,
+      isSaved: savedIds.has(propertyObj._id?.toString()),
+      isCompared: comparedIds.has(propertyObj._id?.toString()),
+    };
+  });
+
+  return isArray ? enriched : enriched[0];
+};
+
 // ── GET /api/properties ───────────────────────────────────────────────────────
 
 const list = async (req, res, next) => {
@@ -113,7 +138,9 @@ const list = async (req, res, next) => {
       Property.countDocuments(filter),
     ]);
 
-    return sendSuccess(res, 200, 'Properties fetched', properties, buildMeta(total));
+    const enrichedProperties = await enrichPropertiesWithUserStatus(req.user?.id, properties);
+
+    return sendSuccess(res, 200, 'Properties fetched', enrichedProperties, buildMeta(total));
   } catch (err) {
     next(err);
   }
@@ -133,7 +160,9 @@ const getOne = async (req, res, next) => {
     // fire-and-forget view increment
     Property.findByIdAndUpdate(req.params.id, { $inc: { views: 1 } }).catch(() => {});
 
-    return sendSuccess(res, 200, 'Property fetched', property);
+    const enrichedProperty = await enrichPropertiesWithUserStatus(req.user?.id, property);
+
+    return sendSuccess(res, 200, 'Property fetched', enrichedProperty);
   } catch (err) {
     next(err);
   }
@@ -152,7 +181,9 @@ const getBySlug = async (req, res, next) => {
 
     Property.findByIdAndUpdate(property._id, { $inc: { views: 1 } }).catch(() => {});
 
-    return sendSuccess(res, 200, 'Property fetched', property);
+    const enrichedProperty = await enrichPropertiesWithUserStatus(req.user?.id, property);
+
+    return sendSuccess(res, 200, 'Property fetched', enrichedProperty);
   } catch (err) {
     next(err);
   }
