@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import PropertyCard from '@/components/property/PropertyCard';
 import PropertyGrid from '@/components/property/PropertyGrid';
 import LeadForm from '@/components/forms/LeadForm';
@@ -83,24 +86,33 @@ import BuilderCard from '@/components/builders/BuilderCard';
 import SectionCarousel from '@/components/home/SectionCarousel';
 import { listBuilders } from '@/services/builderService';
 
-export default async function HomePage() {
-  let featuredProperties = [];
-  let featuredBuilders = [];
-  let latestBlogs = MOCK_BLOGS;
+export default function HomePage() {
+  const [featuredProperties, setFeaturedProperties] = useState([]);
+  const [featuredBuilders, setFeaturedBuilders] = useState([]);
+  const [latestBlogs, setLatestBlogs] = useState(MOCK_BLOGS);
+  const [loading, setLoading] = useState(true);
 
-  try {
-    const [propRes, buildRes, blogRes] = await Promise.all([
-      listProperties({ isFeatured: true, limit: 12 }),
-      listBuilders({ isFeatured: true, limit: 12 }),
-      listBlogs({ limit: 3 })
-    ]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [propRes, buildRes, blogRes] = await Promise.all([
+          listProperties({ isFeatured: true, limit: 12 }),
+          listBuilders({ isFeatured: true, limit: 12 }),
+          listBlogs({ limit: 3 })
+        ]);
 
-    featuredProperties = propRes.items || [];
-    featuredBuilders = buildRes.items || [];
-    if (blogRes.items?.length) latestBlogs = blogRes.items;
-  } catch (error) {
-    console.error('Home Page Data Fetch Error:', error);
-  }
+        setFeaturedProperties(propRes.items || []);
+        setFeaturedBuilders(buildRes.items || []);
+        if (blogRes.items?.length) setLatestBlogs(blogRes.items);
+      } catch (error) {
+        console.error('Home Page Data Fetch Error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="w-full">
