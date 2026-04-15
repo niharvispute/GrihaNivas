@@ -9,7 +9,6 @@ import HeroSearch from '@/components/home/HeroSearch';
 import Link from 'next/link';
 import { listBlogs } from '@/services/blogService';
 import { listProperties } from '@/services/propertyService';
-import { getSavedProperties } from '@/services/userService';
 import { useAuth } from '@/context/AuthContext';
 
 const MOCK_PROPERTIES = [
@@ -89,7 +88,6 @@ import SectionCarousel from '@/components/home/SectionCarousel';
 import { listBuilders } from '@/services/builderService';
 
 export default function HomePage() {
-  const { user } = useAuth();
   const [featuredProperties, setFeaturedProperties] = useState([]);
   const [featuredBuilders, setFeaturedBuilders] = useState([]);
   const [latestBlogs, setLatestBlogs] = useState(MOCK_BLOGS);
@@ -104,28 +102,8 @@ export default function HomePage() {
           listBlogs({ limit: 3 })
         ]);
 
-        let properties = propRes.items || [];
-
-        // Fetch saved properties if user is logged in
-        if (user?.id || user?._id) {
-          try {
-            const savedProperties = await getSavedProperties();
-            const savedIds = new Set(
-              savedProperties.map(p => String(p.id || p._id))
-            );
-
-            // Mark properties that are saved
-            properties = properties.map(prop => ({
-              ...prop,
-              isSaved: savedIds.has(String(prop.id || prop._id))
-            }));
-          } catch (error) {
-            console.error('Error fetching saved properties:', error);
-            // Continue without saved properties data
-          }
-        }
-
-        setFeaturedProperties(properties);
+        // Backend already enriches properties with isSaved flag via enrichPropertiesWithUserStatus
+        setFeaturedProperties(propRes.items || []);
         setFeaturedBuilders(buildRes.items || []);
         if (blogRes.items?.length) setLatestBlogs(blogRes.items);
       } catch (error) {
@@ -136,7 +114,7 @@ export default function HomePage() {
     };
 
     fetchData();
-  }, [user?.id, user?._id]);
+  }, []);
 
   return (
     <div className="w-full">
