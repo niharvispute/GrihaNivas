@@ -89,26 +89,11 @@ export default async function HomePage() {
   let latestBlogs = MOCK_BLOGS;
 
   try {
-<<<<<<< HEAD
     const [propRes, buildRes, blogRes] = await Promise.all([
       listProperties({ isFeatured: true, limit: 12 }),
       listBuilders({ isFeatured: true, limit: 12 }),
       listBlogs({ limit: 3 })
     ]);
-=======
-    const featuredResponse = await listProperties({ limit: 9, sortBy: 'newest', hasMedia: true });
-    if (featuredResponse.items?.length >= 3) {
-      featuredProperties = featuredResponse.items.slice(0, 3);
-    } else {
-      const fallbackResponse = await listProperties({ limit: 6, sortBy: 'newest' });
-      if (fallbackResponse.items?.length) {
-        featuredProperties = fallbackResponse.items.slice(0, 3);
-      }
-    }
-  } catch {
-    featuredProperties = MOCK_PROPERTIES;
-  }
->>>>>>> 2cb51e1cc3eb1d59797484fe89c1c995a4dcd1a8
 
     featuredProperties = propRes.items || [];
     featuredBuilders = buildRes.items || [];
@@ -142,10 +127,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-<<<<<<< HEAD
       {/* 2. Featured Properties Carousel */}
       {featuredProperties.length > 0 && (
-        <SectionCarousel 
+        <SectionCarousel
           title="Signature Collection"
           subtitle="Handpicked luxury selections from the heart of SoBo and the most premium coastal stretches of Mumbai."
           items={featuredProperties}
@@ -155,33 +139,13 @@ export default async function HomePage() {
 
       {/* 3. Featured Builders Carousel */}
       {featuredBuilders.length > 0 && (
-        <SectionCarousel 
+        <SectionCarousel
           title="The Master Builders"
           subtitle="Discover the visionaries behind Mumbai's most iconic skylines and architectural marvels."
           items={featuredBuilders}
           renderItem={(builder) => <BuilderCard builder={builder} />}
         />
       )}
-=======
-      {/* 2. Featured Properties */}
-      <section className="py-24 px-8 max-w-screen-2xl mx-auto">
-        <div className="flex justify-between items-end mb-12">
-          <SectionHeader 
-            title="Latest Approved Listings" 
-            subtitle="Freshly approved homes and spaces now live across Mumbai."
-            className="mb-0"
-          />
-          <Link href="/buy" className="text-primary font-black flex items-center gap-2 hover:translate-x-1 transition-transform mb-4">
-            View All <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </Link>
-        </div>
-        <PropertyGrid>
-          {featuredProperties.map((prop) => (
-            <PropertyCard key={prop.id} property={prop} />
-          ))}
-        </PropertyGrid>
-      </section>
->>>>>>> 2cb51e1cc3eb1d59797484fe89c1c995a4dcd1a8
 
       {/* 3. Categories */}
       <section className="py-24 bg-slate-50 px-8">

@@ -26,10 +26,6 @@ export default function PropertyGallery({ images, property }) {
     );
   }
 
-<<<<<<< HEAD
-  const displayImages = images.slice(0, 5);
-  const remainingCount = images.length - 5;
-=======
   const displayImages = safeImages.slice(0, 5);
   const remainingCount = safeImages.length - 5;
   const categoryLabel =
@@ -42,7 +38,6 @@ export default function PropertyGallery({ images, property }) {
   const areaLabel = property?.area && property?.area !== 'N/A' ? `${property.area} sq.ft` : 'Area pending';
   const statusLabel = property?.raw?.status || 'approved';
   const reraStatus = property?.reraNumber || property?.raw?.reraNumber ? 'RERA verified' : 'RERA details pending';
->>>>>>> 2cb51e1cc3eb1d59797484fe89c1c995a4dcd1a8
 
   return (
     <div className="space-y-6">
