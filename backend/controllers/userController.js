@@ -202,7 +202,7 @@ const getSaved = async (req, res, next) => {
       .populate({
         path: 'savedProperties',
         match: { isActive: true, status: 'approved' },
-        select: 'title heroImage price location bhk category slug',
+        select: '_id title heroImage price location bhk category slug',
       });
 
     return sendSuccess(res, 200, 'Saved properties fetched', (user.savedProperties || []).filter(Boolean));
