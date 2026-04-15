@@ -147,7 +147,7 @@ export default function HomePage() {
           title="Signature Collection"
           subtitle="Handpicked luxury selections from the heart of SoBo and the most premium coastal stretches of Mumbai."
           items={featuredProperties}
-          renderItem={(prop) => <PropertyCard property={prop} />}
+          renderItem={(prop) => <PropertyCard property={prop} variant="horizontal" />}
         />
       )}
 

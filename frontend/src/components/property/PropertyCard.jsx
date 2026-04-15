@@ -4,7 +4,7 @@ import AddToCompareButton from './AddToCompareButton';
 import WishlistButton from './WishlistButton';
 
 export default function PropertyCard({ property, variant = 'vertical' }) {
-  const isHorizontal = variant === 'horizontal' || property.isFeatured;
+  const isHorizontal = variant === 'horizontal';
   const detailKey = property?.slug || property?.id;
   const detailHref = detailKey ? `/property/${detailKey}` : '/buy';
   const hasNumericPrice = Number.isFinite(Number(property?.priceValue)) && Number(property.priceValue) > 0;

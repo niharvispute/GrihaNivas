@@ -82,6 +82,7 @@ const buildListingHref = (basePath, query, page) => {
   if (query.bhk) params.set('bhk', query.bhk);
   if (query.furnishing) params.set('furnishing', query.furnishing);
   if (query.sortBy && query.sortBy !== 'newest') params.set('sortBy', query.sortBy);
+  if (query.view && query.view !== 'grid') params.set('view', query.view);
   if (page > 1) params.set('page', String(page));
 
   const queryString = params.toString();
@@ -100,6 +101,7 @@ export default async function PropertiesPage({ searchParams }) {
     bhk: normalizeBhk(params?.bhk),
     furnishing: normalizeFurnishing(params?.furnishing),
     sortBy: normalizeSort(params?.sortBy),
+    view: params?.view === 'list' ? 'list' : 'grid',
   };
 
   let properties = [];
@@ -165,9 +167,13 @@ export default async function PropertiesPage({ searchParams }) {
         <div className="grow">
           <PropertySortBar basePath={BASE_PATH} currentQuery={currentQuery} />
           
-          <PropertyGrid columns={2}>
+          <PropertyGrid columns={currentQuery.view === 'list' ? 1 : 2}>
             {properties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
+              <PropertyCard 
+                key={property.id} 
+                property={property} 
+                variant={currentQuery.view === 'list' ? 'horizontal' : 'vertical'}
+              />
             ))}
           </PropertyGrid>
 
