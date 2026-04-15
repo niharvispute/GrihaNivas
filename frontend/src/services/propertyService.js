@@ -6,7 +6,7 @@ import {
 } from '@/lib/mappers/propertyMapper';
 
 export const listProperties = async (query = {}, { map = true } = {}) => {
-  const res = await apiFetch('/api/properties', { query });
+  const res = await apiFetch('/api/properties', { query, includeAuth: true });
   return {
     items: map ? mapPropertyListToCardVM(res.data || []) : res.data || [],
     meta: res.meta,

@@ -5,6 +5,7 @@ import {
   DEFAULT_HEADERS,
 } from '@/lib/api/config';
 import { ApiError, parseErrorPayload } from '@/lib/api/errors';
+import { getAccessToken } from '@/lib/auth/tokenStore';
 
 const joinUrl = (path) => {
   if (!path) return API_BASE_URL;
@@ -51,6 +52,7 @@ export const apiFetch = async (
     signal,
     credentials,
     cache,
+    includeAuth = false,
   } = {}
 ) => {
   const controller = new AbortController();
@@ -61,8 +63,10 @@ export const apiFetch = async (
     ...(headers || {}),
   };
 
-  if (token) {
-    mergedHeaders.Authorization = `Bearer ${token}`;
+  // Include token if explicitly provided, or auto-include if includeAuth=true
+  const finalToken = token || (includeAuth ? getAccessToken() : null);
+  if (finalToken) {
+    mergedHeaders.Authorization = `Bearer ${finalToken}`;
   }
 
   const requestInit = {
