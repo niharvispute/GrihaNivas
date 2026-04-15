@@ -1,11 +1,6 @@
 'use client';
 
-<<<<<<< HEAD
-import { useState, useEffect } from 'react';
-import { addCompareProperty, removeCompareProperty } from '@/services/userService';
-=======
 import { useEffect, useState } from 'react';
->>>>>>> 2cb51e1cc3eb1d59797484fe89c1c995a4dcd1a8
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { getErrorMessage } from '@/lib/api/errors';
@@ -15,18 +10,6 @@ import {
   removeCompareProperty,
 } from '@/services/userService';
 
-<<<<<<< HEAD
-export default function AddToCompareButton({ propertyId, initialAdded = false }) {
-  const { user, openModal } = useAuth();
-  const [added, setAdded] = useState(initialAdded);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setAdded(initialAdded);
-  }, [initialAdded]);
-
-  const handleClick = async () => {
-=======
 let compareCacheUserId = null;
 let compareIdCache = null;
 let compareFetchPromise = null;
@@ -132,8 +115,6 @@ export default function AddToCompareButton({ propertyId, variant = 'icon', class
   const handleClick = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-
->>>>>>> 2cb51e1cc3eb1d59797484fe89c1c995a4dcd1a8
     if (!user) {
       openModal('login');
       addToast('Please log in to compare properties.', 'info');

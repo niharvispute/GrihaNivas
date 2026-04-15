@@ -64,7 +64,9 @@
       "Bash(curl -i http://localhost:3000/api/leads/my-enquiries?limit=20)",
       "Bash(curl -i http://localhost:5000/api/leads/my-enquiries?limit=20)",
       "Bash(curl -s -X GET \"http://localhost:5000/api/leads?leadType=buy\" -H \"Authorization: Bearer test\")",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000)"
     ]
   }
 }
