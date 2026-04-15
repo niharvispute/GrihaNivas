@@ -1,6 +1,23 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
+
+const getHighlightValue = (property, label, fallback = 'N/A') => {
+  const highlights = Array.isArray(property?.highlights) ? property.highlights : [];
+  const match = highlights.find((item) => item?.label === label);
+  return match?.value || fallback;
+};
+
+const getAmenities = (property) =>
+  Array.isArray(property?.amenities) ? property.amenities : [];
+
+const getBuilderName = (property) => property?.builder?.name || 'Builder details pending';
+
+const getPropertyHref = (property) => {
+  const key = property?.slug || property?.id;
+  return key ? `/property/${key}` : '/buy';
+};
 
 const CompareGrid = ({ properties }) => {
   const parameters = [
@@ -10,25 +27,28 @@ const CompareGrid = ({ properties }) => {
     { label: 'Super Area', key: 'area', format: (v) => `${v} sq.ft`, isHighlighted: true },
     { 
       label: 'Possession', 
-      getValue: (p) => p.highlights.find(h => h.label === 'Possession')?.value || 'Ready',
+      getValue: (p) => getHighlightValue(p, 'Possession', 'Ready to Move'),
       isPrice: (v) => v !== 'Ready to Move' 
     },
     { 
       label: 'Furnishing', 
-      getValue: (p) => p.highlights.find(h => h.label === 'Furnishing')?.value || 'N/A',
+      getValue: (p) => getHighlightValue(p, 'Furnishing'),
       isHighlighted: true 
     },
     { 
       label: 'Amenities', 
       getValue: (p) => (
         <div className="flex gap-2 flex-wrap max-w-xs">
-          {p.amenities.slice(0, 3).map((a, i) => (
-            <span key={i} className="px-2 py-1 bg-slate-100 rounded-[4px] text-[9px] font-black tracking-widest uppercase text-slate-500">
-              {a.label}
+          {getAmenities(p).slice(0, 3).map((a, i) => (
+            <span key={i} className="px-2 py-1 bg-slate-100 rounded-sm text-[9px] font-black tracking-widest uppercase text-slate-500">
+              {a?.label || 'Amenity'}
             </span>
           ))}
-          {p.amenities.length > 3 && (
-            <span className="text-[9px] font-black text-slate-400 mt-1">+{p.amenities.length - 3} More</span>
+          {getAmenities(p).length > 3 && (
+            <span className="text-[9px] font-black text-slate-400 mt-1">+{getAmenities(p).length - 3} More</span>
+          )}
+          {getAmenities(p).length === 0 && (
+            <span className="text-[10px] font-semibold text-slate-400">No amenities listed</span>
           )}
         </div>
       )
@@ -43,13 +63,13 @@ const CompareGrid = ({ properties }) => {
     },
     { 
       label: 'Builder', 
-      getValue: (p) => p.builder.name,
+      getValue: (p) => getBuilderName(p),
       isBold: true
     }
   ];
 
   return (
-    <div className="mt-8 space-y-px overflow-hidden rounded-[2rem] border border-slate-100 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)]">
+    <div className="mt-8 space-y-px overflow-hidden rounded-4xl border border-slate-100 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)]">
       {parameters.map((param, idx) => (
         <div 
           key={param.label} 
@@ -66,15 +86,22 @@ const CompareGrid = ({ properties }) => {
           {properties.map((property) => {
             const value = param.getValue ? param.getValue(property) : property[param.key];
             const formattedValue = param.format ? param.format(value) : value;
+            const isPriceValue =
+              typeof param.isPrice === 'function' ? param.isPrice(value, property) : Boolean(param.isPrice);
+            const isReactNode = React.isValidElement(formattedValue);
+            const displayValue =
+              isReactNode || (formattedValue !== undefined && formattedValue !== null && String(formattedValue).trim() !== '')
+                ? formattedValue
+                : 'N/A';
             
             return (
               <div 
                 key={property.id} 
                 className={`px-8 py-6 text-sm font-bold ${
-                  param.isPrice ? 'text-primary text-xl' : 'text-slate-800'
+                  isPriceValue ? 'text-primary text-xl' : 'text-slate-800'
                 } ${param.isBold ? 'font-black' : ''}`}
               >
-                {formattedValue}
+                {displayValue}
               </div>
             );
           })}
@@ -94,9 +121,12 @@ const CompareGrid = ({ properties }) => {
             <button className="w-full py-4 bg-primary text-white rounded-full font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 leading-none">
               Contact Builder
             </button>
-            <button className="w-full py-4 bg-white text-primary border-2 border-primary/10 rounded-full font-black text-xs uppercase tracking-widest hover:bg-primary/5 transition-all leading-none">
+            <Link
+              href={getPropertyHref(property)}
+              className="w-full py-4 bg-white text-primary border-2 border-primary/10 rounded-full font-black text-xs uppercase tracking-widest hover:bg-primary/5 transition-all leading-none text-center"
+            >
               View Details
-            </button>
+            </Link>
           </div>
         ))}
         {Array.from({ length: 3 - properties.length }).map((_, i) => (

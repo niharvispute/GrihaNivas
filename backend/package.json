@@ -24,6 +24,7 @@
     "smoke:builders-admin": "node scripts/smoke-builder-admin.js",
     "test:auth:v2": "node scripts/test-auth-v2.js",
     "migrate:property-lifecycle": "node scripts/migratePropertyLifecycle.js",
+    "migrate:approved-submissions": "node scripts/migrateApprovedSubmissions.js",
     "cleanup:rejected-properties": "node scripts/cleanupRejectedProperties.js"
   },
   "dependencies": {

@@ -1,12 +1,21 @@
+import Image from 'next/image';
+
 export default function PropertyBuilderProfile({ builder }) {
   if (!builder) return null;
 
   return (
     <section className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
       <div className="flex items-center gap-4 mb-6">
-        <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center p-2 shadow-inner border border-slate-100 overflow-hidden">
+        <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center p-2 shadow-inner border border-slate-100 overflow-hidden relative">
           {builder.logo ? (
-            <img src={builder.logo} className="w-full h-full object-contain" alt={builder.name} />
+            <Image
+              src={builder.logo}
+              alt={builder.name}
+              fill
+              sizes="64px"
+              unoptimized
+              className="w-full h-full object-contain"
+            />
           ) : (
             <span className="text-xl font-bold text-primary">{builder.name[0]}</span>
           )}

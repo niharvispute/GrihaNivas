@@ -628,12 +628,12 @@ Response `201`:
 | GET | `/api/users/me` | User | Get own profile |
 | PUT | `/api/users/me` | User | Update own profile |
 | POST | `/api/users/me/change-password` | User | Change password |
-| POST | `/api/users/me/save-property/:id` | User | Save a property |
-| DELETE | `/api/users/me/save-property/:id` | User | Unsave a property |
-| GET | `/api/users/me/saved` | User | Get saved properties |
-| POST | `/api/users/me/compare/:id` | User | Add to compare list |
-| DELETE | `/api/users/me/compare/:id` | User | Remove from compare |
-| GET | `/api/users/me/compare` | User | Get compare list (max 3) |
+| POST | `/api/users/saved` | User | Save a property |
+| DELETE | `/api/users/saved/:propertyId` | User | Unsave a property |
+| GET | `/api/users/saved` | User | Get saved properties |
+| POST | `/api/users/compare` | User | Add to compare list |
+| DELETE | `/api/users/compare/:propertyId` | User | Remove from compare |
+| GET | `/api/users/compare` | User | Get compare list (max 3) |
 | GET | `/api/users/me/enquiries` | User | User's own leads |
 | GET | `/api/users` | Admin | List all users |
 | PUT | `/api/users/:id/status` | Admin | Activate / deactivate user |

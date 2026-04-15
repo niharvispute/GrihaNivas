@@ -407,6 +407,7 @@ const schemas = {
       area:      z.string().trim().optional(),
       furnishing: z.enum(['unfurnished', 'semi_furnished', 'furnished']).optional(),
       isFeatured: z.coerce.boolean().optional(),
+      hasMedia: z.coerce.boolean().optional(),
       sortBy:    z.enum(['price_asc', 'price_desc', 'newest']).default('newest'),
     }),
   },

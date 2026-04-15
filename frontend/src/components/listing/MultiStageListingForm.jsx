@@ -6,6 +6,11 @@ import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { createPropertySubmission } from '@/services/propertySubmissionService';
 
+const MIN_PROPERTY_IMAGES = 5;
+const MAX_PROPERTY_IMAGES = 10;
+
+const toFileKey = (file) => `${file.name}-${file.size}-${file.lastModified}`;
+
 const parseFeatureLines = (value) =>
   String(value || '')
     .split('\n')
@@ -63,7 +68,18 @@ export default function MultiStageListingForm() {
     { id: 5, name: 'Review', icon: 'fact_check' },
   ];
 
-  const handleNext = () => setStep((s) => Math.min(s + 1, 5));
+  const handleNext = () => {
+    if (step === 3 && form.images.length < MIN_PROPERTY_IMAGES) {
+      setFeedback({
+        type: 'error',
+        message: `Please upload at least ${MIN_PROPERTY_IMAGES} property images before continuing.`,
+      });
+      return;
+    }
+
+    setFeedback((prev) => (prev.type === 'error' ? { type: '', message: '' } : prev));
+    setStep((s) => Math.min(s + 1, 5));
+  };
   const handleBack = () => setStep((s) => Math.max(s - 1, 1));
 
   const handleChange = (field) => (event) => {
@@ -84,12 +100,58 @@ export default function MultiStageListingForm() {
   };
 
   const handleImagesSelected = (event) => {
-    const files = Array.from(event.target.files || []);
-    if (!files.length) return;
-    setForm((prev) => ({ ...prev, images: files }));
+    const selectedFiles = Array.from(event.target.files || []);
+    if (!selectedFiles.length) return;
+
+    const existingFiles = Array.isArray(form.images) ? form.images : [];
+    const mergedFiles = [...existingFiles];
+    const seenKeys = new Set(existingFiles.map(toFileKey));
+
+    selectedFiles.forEach((file) => {
+      const key = toFileKey(file);
+      if (seenKeys.has(key)) return;
+      mergedFiles.push(file);
+      seenKeys.add(key);
+    });
+
+    const exceededLimit = mergedFiles.length > MAX_PROPERTY_IMAGES;
+    const nextImages = exceededLimit ? mergedFiles.slice(0, MAX_PROPERTY_IMAGES) : mergedFiles;
+
+    setForm((prev) => ({ ...prev, images: nextImages }));
+    setFeedback((prev) => {
+      if (exceededLimit) {
+        return {
+          type: 'error',
+          message: `You can upload up to ${MAX_PROPERTY_IMAGES} property images.`,
+        };
+      }
+
+      if (nextImages.length >= MIN_PROPERTY_IMAGES && prev.type === 'error') {
+        return { type: '', message: '' };
+      }
+
+      return prev;
+    });
+
+    event.target.value = '';
+  };
+
+  const clearSelectedImages = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setForm((prev) => ({ ...prev, images: [] }));
   };
 
   const submitListing = useCallback(async () => {
+    if (form.images.length < MIN_PROPERTY_IMAGES) {
+      setStep(3);
+      setFeedback({
+        type: 'error',
+        message: `Please upload at least ${MIN_PROPERTY_IMAGES} property images before submitting.`,
+      });
+      return;
+    }
+
     const phone = toIndianPhoneE164(form.phone);
     if (!phone) {
       setFeedback({ type: 'error', message: 'Please go back and enter a valid phone number.' });
@@ -440,15 +502,33 @@ export default function MultiStageListingForm() {
                   <span className="material-symbols-outlined text-4xl text-slate-300 group-hover:text-primary transition-colors">cloud_upload</span>
                 </div>
                 <h3 className="text-xl font-black text-slate-900 italic tracking-tight">Upload Property Gallery</h3>
-                <p className="text-slate-400 font-bold text-sm mt-2 max-w-xs mx-auto">PNG, JPG up to 10MB each. Recommend at least 5 high-res interior shots.</p>
+                <p className="text-slate-400 font-bold text-sm mt-2 max-w-xs mx-auto">PNG, JPG up to 10MB each. Add images in multiple selections. Minimum 5 and maximum 10 photos per listing.</p>
                 {form.images.length > 0 && (
-                  <p className="text-emerald-600 font-black text-xs mt-4 uppercase tracking-widest">
-                    {form.images.length} image{form.images.length > 1 ? 's' : ''} selected
+                  <p
+                    className={`font-black text-xs mt-4 uppercase tracking-widest ${
+                      form.images.length >= MIN_PROPERTY_IMAGES ? 'text-emerald-600' : 'text-primary'
+                    }`}
+                  >
+                    {form.images.length}/{MAX_PROPERTY_IMAGES} image{form.images.length > 1 ? 's' : ''} selected
+                    {form.images.length < MIN_PROPERTY_IMAGES
+                      ? ` (${MIN_PROPERTY_IMAGES - form.images.length} more required)`
+                      : ''}
                   </p>
                 )}
-                <button className="mt-8 px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl active:scale-95 transition-all">
-                  Select Media
-                </button>
+                <div className="mt-8 flex items-center gap-3">
+                  <button className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl active:scale-95 transition-all">
+                    {form.images.length > 0 ? 'Add More Media' : 'Select Media'}
+                  </button>
+                  {form.images.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={clearSelectedImages}
+                      className="px-6 py-4 border-2 border-slate-200 text-slate-500 rounded-2xl font-black text-xs uppercase tracking-widest hover:border-primary/30 hover:text-primary transition-all"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-4">

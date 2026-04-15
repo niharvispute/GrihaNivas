@@ -239,6 +239,11 @@ const propertySchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    sourceSubmission: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'PropertySubmission',
+      default: null,
+    },
     views: {
       type: Number,
       default: 0,
@@ -285,6 +290,7 @@ propertySchema.index({ createdAt: -1 });
 propertySchema.index({ category: 1, isActive: 1, price: 1 });
 propertySchema.index({ category: 1, 'location.area': 1, isActive: 1 });
 propertySchema.index({ builder: 1, status: 1, isActive: 1, createdAt: -1 });
+propertySchema.index({ sourceSubmission: 1 }, { unique: true, sparse: true });
 
 // 2dsphere index for geo queries (if lat/lng becomes available)
 // propertySchema.index({ 'location.coordinates': '2dsphere' });

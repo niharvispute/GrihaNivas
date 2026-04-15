@@ -4,11 +4,14 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import CompareHeader from '@/components/property/compare/CompareHeader';
 import CompareGrid from '@/components/property/compare/CompareGrid';
+import { useToast } from '@/context/ToastContext';
+import { getErrorMessage } from '@/lib/api/errors';
 import { getCompareProperties, removeCompareProperty } from '@/services/userService';
 
 export default function ComparePage() {
   const [comparedProperties, setComparedProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { addToast } = useToast();
 
   useEffect(() => {
     getCompareProperties()
@@ -21,15 +24,15 @@ export default function ComparePage() {
     try {
       await removeCompareProperty(id);
       setComparedProperties((prev) => prev.filter((p) => p.id !== id));
-    } catch {
-      // Remove locally even if API fails
-      setComparedProperties((prev) => prev.filter((p) => p.id !== id));
+      addToast('Property removed from comparison list.', 'info');
+    } catch (error) {
+      addToast(getErrorMessage(error, 'Unable to remove property from compare list.'), 'error');
     }
   };
 
   return (
     <div className="bg-white min-h-screen">
-      <main className="max-w-[1440px] mx-auto px-8 py-12">
+      <main className="max-w-360 mx-auto px-8 py-12">
         {/* Header Section */}
         <div className="flex items-center gap-6 mb-16">
           <Link 
@@ -61,7 +64,11 @@ export default function ComparePage() {
           </div>
         </div>
 
-        {comparedProperties.length > 0 ? (
+        {loading ? (
+          <div className="py-20 text-center">
+            <p className="text-slate-500 font-medium">Loading your comparison list...</p>
+          </div>
+        ) : comparedProperties.length > 0 ? (
           <>
             <CompareHeader 
               properties={comparedProperties} 
@@ -92,7 +99,7 @@ export default function ComparePage() {
         {/* Comparison Insight Section */}
         {comparedProperties.length > 0 && (
           <section className="mt-32 p-12 bg-slate-900 rounded-[3rem] text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 blur-[100px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute top-0 right-0 w-100 h-100 bg-primary/10 blur-[100px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
               <div>
                 <span className="text-primary font-black uppercase tracking-[0.4em] text-xs mb-6 block">Editorial Insight</span>
@@ -117,7 +124,7 @@ export default function ComparePage() {
                   <p className="text-xs font-bold uppercase tracking-widest text-slate-500">RERA Compliance</p>
                 </div>
                 <div className="p-8 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-sm col-span-2">
-                  <p className="text-slate-300 font-medium italic">"The side-by-side comparison saved us weeks of site visits. Precise and visually clear."</p>
+                  <p className="text-slate-300 font-medium italic">&ldquo;The side-by-side comparison saved us weeks of site visits. Precise and visually clear.&rdquo;</p>
                   <p className="mt-4 text-xs font-black uppercase tracking-widest text-primary">— Mumbai Resident</p>
                 </div>
               </div>

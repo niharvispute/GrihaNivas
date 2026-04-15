@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
@@ -69,11 +70,14 @@ export default function Header() {
                     <span className="hidden xl:block max-w-35 truncate text-sm font-semibold text-slate-700">
                       {displayName}
                     </span>
-                    <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-primary/10 via-white to-tertiary/60 text-primary ring-1 ring-slate-200 transition-transform group-hover:scale-105">
+                    <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-primary/10 via-white to-tertiary/60 text-primary ring-1 ring-slate-200 transition-transform group-hover:scale-105">
                       {avatarSrc ? (
-                        <img
+                        <Image
                           src={avatarSrc}
                           alt={displayName}
+                          fill
+                          sizes="44px"
+                          unoptimized
                           className="h-full w-full object-cover"
                         />
                       ) : (

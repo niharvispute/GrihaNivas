@@ -2,6 +2,7 @@ import { authedApiFetch } from '@/lib/api/authedRequest';
 import {
   mapAdminUserListToVM,
   mapPropertyListToCardVM,
+  mapPropertyListToCompareVM,
   mapUserProfileVM,
 } from '@/lib/mappers';
 
@@ -40,7 +41,7 @@ export const unsaveProperty = async (propertyId) => {
 
 export const getCompareProperties = async ({ map = true } = {}) => {
   const res = await authedApiFetch('/api/users/compare');
-  return map ? mapPropertyListToCardVM(res.data || []) : res.data || [];
+  return map ? mapPropertyListToCompareVM(res.data || []) : res.data || [];
 };
 
 export const addCompareProperty = async (propertyId) => {
@@ -48,7 +49,7 @@ export const addCompareProperty = async (propertyId) => {
     method: 'POST',
     body: { propertyId },
   });
-  return res.data;
+  return res;
 };
 
 export const removeCompareProperty = async (propertyId) => {

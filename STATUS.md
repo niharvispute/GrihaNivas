@@ -123,7 +123,7 @@ Current readiness split:
 - No app-level session bootstrap yet to auto-hydrate current user state on refresh
 - Several non-critical pages still consume static/mock data
 - Admin and user dashboard data are hardcoded placeholders
-- Property save/compare actions are UI-only (no API calls)
+- Property save/compare actions are API-wired; compare UI was hardened with a dedicated compare mapper and defensive rendering
 - Blog search and listing controls are wired server-side; remaining integration work is now mainly Phase 3/4 (user/admin/protected flows)
 
 ### Routing and UI consistency gaps

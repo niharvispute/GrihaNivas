@@ -84,13 +84,13 @@ export default async function HomePage() {
   let latestBlogs = MOCK_BLOGS;
 
   try {
-    const featuredResponse = await listProperties({ isFeatured: true, limit: 3 });
-    if (featuredResponse.items?.length) {
-      featuredProperties = featuredResponse.items;
+    const featuredResponse = await listProperties({ limit: 9, sortBy: 'newest', hasMedia: true });
+    if (featuredResponse.items?.length >= 3) {
+      featuredProperties = featuredResponse.items.slice(0, 3);
     } else {
-      const fallbackResponse = await listProperties({ limit: 3 });
+      const fallbackResponse = await listProperties({ limit: 6, sortBy: 'newest' });
       if (fallbackResponse.items?.length) {
-        featuredProperties = fallbackResponse.items;
+        featuredProperties = fallbackResponse.items.slice(0, 3);
       }
     }
   } catch {
@@ -135,8 +135,8 @@ export default async function HomePage() {
       <section className="py-24 px-8 max-w-screen-2xl mx-auto">
         <div className="flex justify-between items-end mb-12">
           <SectionHeader 
-            title="Exclusive Penthouses" 
-            subtitle="Handpicked luxury selections from the heart of SoBo."
+            title="Latest Approved Listings" 
+            subtitle="Freshly approved homes and spaces now live across Mumbai."
             className="mb-0"
           />
           <Link href="/buy" className="text-primary font-black flex items-center gap-2 hover:translate-x-1 transition-transform mb-4">

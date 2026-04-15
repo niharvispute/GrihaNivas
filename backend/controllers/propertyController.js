@@ -24,7 +24,7 @@ const Builder = require('../models/mongoose/Builder');
 // ── Filter Builder ────────────────────────────────────────────────────────────
 
 const buildMongoFilter = async (query) => {
-  const { category, bhk, area, minPrice, maxPrice, furnishing, isFeatured, builder, builderSlug } = query;
+  const { category, bhk, area, minPrice, maxPrice, furnishing, isFeatured, hasMedia, builder, builderSlug } = query;
 
   const filter = {
     isActive: true,
@@ -37,6 +37,13 @@ const buildMongoFilter = async (query) => {
   if (area)        filter['location.area'] = new RegExp(area, 'i');
   if (furnishing)  filter.furnishing = furnishing;
   if (isFeatured !== undefined) filter.isFeatured = isFeatured === 'true' || isFeatured === true;
+
+  if (hasMedia === 'true' || hasMedia === true) {
+    filter.$or = [
+      { 'heroImage.url': { $exists: true, $nin: [null, ''] } },
+      { 'gallery.0': { $exists: true } },
+    ];
+  }
 
   if (!builder && builderSlug) {
     const matchedBuilder = await Builder.findOne({ slug: builderSlug, isActive: true }).select('_id');

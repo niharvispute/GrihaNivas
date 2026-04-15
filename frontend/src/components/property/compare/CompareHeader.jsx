@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React from 'react';
 
 const CompareHeader = ({ properties, onRemove }) => {
@@ -25,12 +26,21 @@ const CompareHeader = ({ properties, onRemove }) => {
             </button>
             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 transition-all duration-300 group-hover:bg-white group-hover:shadow-xl group-hover:shadow-slate-200/50">
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-slate-200">
-                  <img 
-                    alt={property.title} 
-                    className="w-full h-full object-cover" 
-                    src={property.image} 
-                  />
+                <div className="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-slate-200 relative">
+                  {property.image ? (
+                    <Image
+                      alt={property.title}
+                      src={property.image}
+                      fill
+                      sizes="80px"
+                      unoptimized
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400">
+                      <span className="material-symbols-outlined text-xl">image_not_supported</span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex flex-col justify-center min-w-0">
                   <span className="text-primary font-black text-lg leading-tight truncate">

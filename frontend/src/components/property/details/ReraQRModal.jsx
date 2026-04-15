@@ -1,9 +1,12 @@
 'use client';
 
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function ReraQRModal({ isOpen, onClose, reraId, propertyName }) {
+export default function ReraQRModal({ isOpen, onClose, reraId, reraUrl, propertyName }) {
   if (!isOpen) return null;
+
+  const verificationData = reraUrl || reraId || propertyName || 'RERA Verification';
 
   return (
     <AnimatePresence>
@@ -43,9 +46,12 @@ export default function ReraQRModal({ isOpen, onClose, reraId, propertyName }) {
           <div className="p-10 flex flex-col items-center text-center">
             <div className="p-4 bg-slate-50 rounded-[2rem] border-4 border-slate-100 mb-8">
               <div className="relative p-2 bg-white rounded-2xl shadow-inner border border-slate-200">
-                <img 
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://maharera.mahaonline.gov.in/&color=b80049`} 
+                <Image
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(verificationData)}&color=b80049`}
                   alt="RERA QR Code"
+                  width={192}
+                  height={192}
+                  unoptimized
                   className="w-48 h-48 block"
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
@@ -63,13 +69,25 @@ export default function ReraQRModal({ isOpen, onClose, reraId, propertyName }) {
               <div className="flex flex-col items-center">
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">RERA Registration ID</p>
                 <span className="px-6 py-2 bg-primary/5 text-primary text-sm font-black rounded-full border border-primary/10 italic">
-                  {reraId || 'P51800000000'}
+                  {reraId || 'Not Provided'}
                 </span>
               </div>
 
+              {reraUrl ? (
+                <a
+                  href={reraUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/20 text-primary text-xs font-black uppercase tracking-widest hover:bg-primary/5 transition-colors"
+                >
+                  Open RERA Page
+                  <span className="material-symbols-outlined text-sm">open_in_new</span>
+                </a>
+              ) : null}
+
               <p className="text-xs text-slate-500 font-medium leading-relaxed pt-4 border-t border-slate-100">
                 This project is officially registered with the Maharashtra Real Estate Regulatory Authority. 
-                Scan the QR code to view the certificate and project timeline on the official portal.
+                Scan the QR code to view the registration details and project timeline from the listing data.
               </p>
             </div>
           </div>
