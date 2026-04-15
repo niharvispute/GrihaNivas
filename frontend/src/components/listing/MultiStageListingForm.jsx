@@ -338,18 +338,12 @@ export default function MultiStageListingForm() {
                 </div>
                 <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Building Type</label>
-                  <div className="grid grid-cols-2 p-1.5 bg-slate-100 rounded-2xl">
+                  <div className="grid grid-cols-1 p-1.5 bg-slate-100 rounded-2xl">
                     <button 
                       onClick={() => handleToggle('buildingType', 'Residential')}
-                      className={`py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${form.buildingType === 'Residential' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                      className={`py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all bg-white text-primary shadow-sm`}
                     >
-                      Residential
-                    </button>
-                    <button 
-                      onClick={() => handleToggle('buildingType', 'Commercial')}
-                      className={`py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${form.buildingType === 'Commercial' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                    >
-                      Commercial
+                      Residential Only
                     </button>
                   </div>
                 </div>

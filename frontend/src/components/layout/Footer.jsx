@@ -24,7 +24,7 @@ export default function Footer() {
           <ul className="space-y-4">
             <li><Link href="/buy" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Buy</Link></li>
             <li><Link href="/rent" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Rent</Link></li>
-            <li><Link href="/commercial" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Commercial</Link></li>
+            <li><Link href="/builders" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Builders</Link></li>
             <li><Link href="/launches" className="hover:translate-x-1 hover:text-primary transition-all inline-block">New Launch</Link></li>
           </ul>
         </div>

@@ -41,9 +41,6 @@ export default function Header() {
             <Link href="/rent" className="hover:text-primary transition-colors">Rent</Link>
           </div>
           <div className="group relative py-2">
-            <Link href="/commercial" className="hover:text-primary transition-colors">Commercial</Link>
-          </div>
-          <div className="group relative py-2">
             <Link href="/new-launch" className="hover:text-primary transition-colors">New Launch</Link>
           </div>
           <div className="group relative py-2">

@@ -110,14 +110,14 @@ export default function LeadForm({
   };
 
   return (
-    <div className="bg-white p-8 rounded-moderate shadow-xl border border-slate-100">
-      <h3 className="text-xl font-bold text-slate-900 mb-6">{title}</h3>
+    <div className="bg-white p-7 rounded-moderate shadow-2xl border border-slate-50">
+      <h3 className="text-xl font-bold text-black mb-6 tracking-tight">{title}</h3>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Full Name</label>
+          <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-black mb-2 opacity-50">Full Name</label>
           <input 
             type="text" 
-            className="w-full bg-slate-50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+            className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-black focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400"
             placeholder="John Doe"
             value={form.name}
             onChange={handleChange('name')}
@@ -125,20 +125,20 @@ export default function LeadForm({
           />
         </div>
         <div>
-          <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Email Address</label>
+          <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-black mb-2 opacity-50">Email Address</label>
           <input 
             type="email" 
-            className="w-full bg-slate-50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+            className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-black focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400"
             placeholder="john@example.com"
             value={form.email}
             onChange={handleChange('email')}
           />
         </div>
         <div>
-          <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Phone Number</label>
+          <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-black mb-2 opacity-50">Phone Number</label>
           <input 
             type="tel" 
-            className="w-full bg-slate-50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+            className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-black focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400"
             placeholder="+91 98765 43210"
             value={form.phone}
             onChange={handleChange('phone')}
@@ -146,7 +146,7 @@ export default function LeadForm({
           />
         </div>
         <div>
-          <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Message</label>
+          <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-black mb-2 opacity-50">Message</label>
           <textarea 
             rows="4"
             className="w-full bg-slate-50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all resize-none"

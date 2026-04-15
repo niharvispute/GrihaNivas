@@ -171,12 +171,12 @@ export default function HomePage() {
           />
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {[
-              { title: "Buy", desc: "Permanent Residencies", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDtrP7J1G4WhTfOYemMEfQdOGNosX21kxNtOuO7NwHYCiXkLpDNAOl29r0R11-WorVdi8UdnB0cJGAJP-5qWr6V4sdQ-iSAyUPycFbbP08uSNeP6vzGSWtnpMUOWmcv5cujMW1_eXIH6myhWnV-lHp-b6LkbPOmn_Dan6bax3RktDgx61YuqoLQyruWVI4BwE8PxdNuSgDuWfv2jkdKN2_y303DEHnptYvMF2UzFUxjxz4nJcuf5_T2Bh57y1UPNcHlF0H07_WxZpg" },
-              { title: "Rent", desc: "Curated Luxury Stays", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0_-GLExTLnnHHswJYutJ0WAmNz4HI89AWs9t6IN9-Pqcv6nHN8M0P-9Oe7AwCvZsIcbyqmuDpRatKEhePTlbj842dsve0MjcTqpxrRXdkzehYTUUd_wGb_Wg2NWXC5RzQ9NrBN7_tXveDhNIA2v8BYrQ86pM8qeiPtBC-wJ5O03h_RFRMj13w6hKBH2grM_7DFwwuU5qYDrXJy7WueQXUpFQ5pP5hZJrzDbislpiWGvaiUbgnHM7iIp-UnVit9eoNXbKNFKAQhbs" },
-              { title: "Commercial", desc: "Premium Office Spaces", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZFILInTcBoIKclQhYU_2ZcT5VhjD5dPVp-BLTSjIMId6a4p8hlyJvfM9rCB02NnM4aEsZt7xZgnn4aHvxhSipMLnbS7mJ7WYj2QrCEOIajVtB_1km5f3u7Mi4fgaUXxPjS1t0tNw7-gZkE8riGNAPwFfXKpB3pBJHbWQg-Ondx4q3Jn4-56lNXdnXIluPZQJs6ImQjyUHjYWa2DRJ64YAgzGStITyjpS4jEiqfPshklxvq3n6Xlc7wgmkxY1MvuIY_hhUn1L8JLs" },
-              { title: "New Launch", desc: "Investment Opportunities", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBNTx25QeH5OPXLzM40sHriQNtaNHjXe5TSk3kPZNuN6hI8HMqMUxkWvTqlZs_mmFuSe8O12Wt4Qgraf6p6G0_Bi1wmS0dbj5vhIXkfKG7vXB7A3yyfkPP3BPUGQut9zn1giIeqYuM3qKwfqwYRDBpEj2xAz8FjiyvZ9HKurADOgk4X-ZOE1nhP1ohd-X0GRuWwrvrerw7DPesDig7_3bQJxOk03B_wwJGiVw6H2LDUFQWP61kaGcywudiZgUP0bakt0OJVlwOdFB0" }
+              { title: "Buy", desc: "Permanent Residencies", href: "/buy", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDtrP7J1G4WhTfOYemMEfQdOGNosX21kxNtOuO7NwHYCiXkLpDNAOl29r0R11-WorVdi8UdnB0cJGAJP-5qWr6V4sdQ-iSAyUPycFbbP08uSNeP6vzGSWtnpMUOWmcv5cujMW1_eXIH6myhWnV-lHp-b6LkbPOmn_Dan6bax3RktDgx61YuqoLQyruWVI4BwE8PxdNuSgDuWfv2jkdKN2_y303DEHnptYvMF2UzFUxjxz4nJcuf5_T2Bh57y1UPNcHlF0H07_WxZpg" },
+              { title: "Rent", desc: "Curated Luxury Stays", href: "/rent", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0_-GLExTLnnHHswJYutJ0WAmNz4HI89AWs9t6IN9-Pqcv6nHN8M0P-9Oe7AwCvZsIcbyqmuDpRatKEhePTlbj842dsve0MjcTqpxrRXdkzehYTUUd_wGb_Wg2NWXC5RzQ9NrBN7_tXveDhNIA2v8BYrQ86pM8qeiPtBC-wJ5O03h_RFRMj13w6hKBH2grM_7DFwwuU5qYDrXJy7WueQXUpFQ5pP5hZJrzDbislpiWGvaiUbgnHM7iIp-UnVit9eoNXbKNFKAQhbs" },
+              { title: "Builders", desc: "Crafting Mumbai's Skyline", href: "/builders", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZFILInTcBoIKclQhYU_2ZcT5VhjD5dPVp-BLTSjIMId6a4p8hlyJvfM9rCB02NnM4aEsZt7xZgnn4aHvxhSipMLnbS7mJ7WYj2QrCEOIajVtB_1km5f3u7Mi4fgaUXxPjS1t0tNw7-gZkE8riGNAPwFfXKpB3pBJHbWQg-Ondx4q3Jn4-56lNXdnXIluPZQJs6ImQjyUHjYWa2DRJ64YAgzGStITyjpS4jEiqfPshklxvq3n6Xlc7wgmkxY1MvuIY_hhUn1L8JLs" },
+              { title: "New Launch", desc: "Investment Opportunities", href: "/new-launch", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBNTx25QeH5OPXLzM40sHriQNtaNHjXe5TSk3kPZNuN6hI8HMqMUxkWvTqlZs_mmFuSe8O12Wt4Qgraf6p6G0_Bi1wmS0dbj5vhIXkfKG7vXB7A3yyfkPP3BPUGQut9zn1giIeqYuM3qKwfqwYRDBpEj2xAz8FjiyvZ9HKurADOgk4X-ZOE1nhP1ohd-X0GRuWwrvrerw7DPesDig7_3bQJxOk03B_wwJGiVw6H2LDUFQWP61kaGcywudiZgUP0bakt0OJVlwOdFB0" }
             ].map((cat, i) => (
-              <div key={i} className="group relative h-96 rounded-moderate overflow-hidden cursor-pointer">
+              <Link key={i} href={cat.href} className="group relative h-96 rounded-moderate overflow-hidden cursor-pointer block">
                 <img src={cat.img} alt={cat.title} className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6">
@@ -186,7 +186,7 @@ export default function HomePage() {
                     Explore <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                   </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

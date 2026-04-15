@@ -154,7 +154,6 @@ const StampDutyCalculator = () => {
                   className="w-full bg-slate-50 border-none rounded-2xl py-5 px-6 font-bold text-lg text-slate-900 focus:ring-2 focus:ring-primary/20 appearance-none cursor-pointer"
                 >
                   <option value="residential">Apartment / Residential</option>
-                  <option value="commercial">Commercial Space</option>
                   <option value="agricultural">Agricultural Land</option>
                 </select>
                 <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">

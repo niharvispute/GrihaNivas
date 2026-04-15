@@ -7,7 +7,7 @@ import { listProperties } from '@/services/propertyService';
 
 const PAGE_SIZE = 12;
 const BASE_PATH = '/buy';
-const ALLOWED_CATEGORY = new Set(['buy', 'commercial', 'new_launch']);
+const ALLOWED_CATEGORY = new Set(['buy', 'new_launch']);
 const ALLOWED_SORT = new Set(['newest', 'price_asc', 'price_desc']);
 const ALLOWED_FURNISHING = new Set(['unfurnished', 'semi_furnished', 'furnished']);
 
@@ -17,12 +17,6 @@ const CATEGORY_CONTENT = {
     title: 'Luxury Homes in Mumbai',
     description:
       "Discover curated luxury residences across South Mumbai, Bandra, and beyond. Refined living in India's most vibrant skyline.",
-  },
-  commercial: {
-    breadcrumb: 'Commercial Spaces',
-    title: 'Commercial Real Estate in Mumbai',
-    description:
-      'Explore premium offices, retail spaces, and income-generating commercial assets across Mumbai business districts.',
   },
   new_launch: {
     breadcrumb: 'New Launches',

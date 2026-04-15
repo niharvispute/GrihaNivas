@@ -259,33 +259,33 @@ export default async function BlogsPage({ searchParams }) {
           <aside className="lg:w-1/3">
             <div className="sticky top-32 space-y-12">
               {/* Popular Categories */}
-              <div className="bg-slate-50 p-10 rounded-[3rem] border border-slate-100">
-                <h4 className="text-2xl font-black text-slate-900 mb-8 tracking-tighter">Popular Series</h4>
-                <div className="space-y-6">
+              <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100">
+                <h4 className="text-xl font-black text-slate-900 mb-6 tracking-tighter">Popular Series</h4>
+                <div className="space-y-4">
                   {popularSeries.map((cat) => (
                     <Link key={cat.value} href={buildBlogsHref(1, { category: cat.value })} className="flex items-center justify-between group">
-                      <span className="text-slate-500 font-black text-sm tracking-tight group-hover:text-primary transition-colors">{cat.label}</span>
-                      <span className="bg-white w-10 h-10 flex items-center justify-center rounded-full text-xs font-black text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">{cat.count}</span>
+                      <span className="text-slate-500 font-black text-xs tracking-tight group-hover:text-primary transition-colors">{cat.label}</span>
+                      <span className="bg-white w-9 h-9 flex items-center justify-center rounded-full text-[10px] font-black text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">{cat.count}</span>
                     </Link>
                   ))}
                 </div>
               </div>
 
               {/* Trending Now */}
-              <div>
-                <h4 className="text-2xl font-black text-slate-900 mb-8 tracking-tighter italic">Trending <span className="text-primary tracking-normal">Now</span></h4>
-                <div className="space-y-10">
+              <div className="px-2">
+                <h4 className="text-xl font-black text-slate-900 mb-7 tracking-tighter italic">Trending <span className="text-primary tracking-normal">Now</span></h4>
+                <div className="space-y-8">
                   {[
                     { title: "Navigating the Resale Market in South Mumbai", time: "10 min read", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDrnjcGoKcEUn24VJmBmhIpFaAXEC0YetjJ9SZzLs2gp_mE464NrUBXscX50mymvG6PXL9wO-jEYtzxWFzI8JbdFHq8xJyG1LbOlu5oseUByt4uuI3rnAuCnPRvL54G5pxdafaunXnxjAMIJ8S3IfP7L7IBXdqBcehHR2pd_Iw301FcAd9p8DUoACKUZKvP7bt2s5I4vu7V3qW51vLTvHaacdy_Dq4xGIY8ggzDLDjzHuESn8-gkwp6hH_YExvoTHSZIzGhxCThZCg" },
                     { title: "How Metro Line 3 is Reshaping Property Values", time: "7 min read", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuC_3Lytpw_NSLWittm05OLvrFTV1lkwAnkTXP-iE-hXzqYb9Xvl3YyypuvyQ4GdbOHZx77dZ4Knuhrma8UjIoQ0s7khhGmNkvI2GhB1sIYj6VvOm3NDh__afskWk1J0Knj2hDMEpAI4RXbgBoj7YRZ-9uVZ85Rj3xg7NNIsciCDNmcmI5CsBbsh2xlUM41pWCu4CmEyUWUtrm2-t9WV8KIcdaPZ6GHxsqTn-i12FFTfdlcx93fUVBq8PT1f1JewFTse7XqHkc1c6Yo" }
                   ].map((trend, i) => (
-                    <div key={i} className="flex gap-6 group cursor-pointer">
-                      <div className="w-24 h-24 shrink-0 rounded-3xl overflow-hidden shadow-lg border-2 border-white group-hover:rotate-3 transition-all duration-500">
+                    <div key={i} className="flex gap-4 group cursor-pointer">
+                      <div className="w-20 h-20 shrink-0 rounded-2xl overflow-hidden shadow-md border-2 border-white group-hover:rotate-3 transition-all duration-500">
                         <img src={trend.img} alt={trend.title} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex flex-col justify-center">
-                        <h5 className="font-black text-sm text-slate-900 leading-snug group-hover:text-primary transition-colors line-clamp-2 tracking-tight">{trend.title}</h5>
-                        <span className="text-[10px] text-slate-400 uppercase font-black tracking-widest mt-2">{trend.time}</span>
+                        <h5 className="font-black text-xs text-slate-900 leading-snug group-hover:text-primary transition-colors line-clamp-2 tracking-tight">{trend.title}</h5>
+                        <span className="text-[9px] text-slate-400 uppercase font-black tracking-widest mt-1.5">{trend.time}</span>
                       </div>
                     </div>
                   ))}
@@ -293,18 +293,18 @@ export default async function BlogsPage({ searchParams }) {
               </div>
 
               {/* Newsletter */}
-              <div className="bg-primary p-12 rounded-[3.5rem] text-white shadow-2xl shadow-primary/40 relative overflow-hidden group">
+              <div className="bg-primary p-9 rounded-[3rem] text-white shadow-2xl shadow-primary/40 relative overflow-hidden group">
                 <div className="absolute -top-20 -left-20 w-48 h-48 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-8 opacity-40"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                <h4 className="text-3xl font-black mb-4 tracking-tighter leading-none">Subscribe for <br /> Insights</h4>
-                <p className="text-white/70 text-sm mb-8 leading-relaxed font-medium">Join 5,000+ investors receiving our weekly analysis.</p>
-                <div className="space-y-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-6 opacity-40"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <h4 className="text-2xl font-black mb-3 tracking-tighter leading-none uppercase italic">Subscribe for <br /> Insights</h4>
+                <p className="text-white/70 text-xs mb-7 leading-relaxed font-bold">Join 5,000+ investors receiving our weekly analysis.</p>
+                <div className="space-y-3">
                   <input 
-                    className="w-full px-8 py-5 rounded-full bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:ring-white/40 focus:border-white/40 text-sm font-bold transition-all" 
+                    className="w-full px-6 py-4 rounded-full bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:ring-white/40 focus:border-white/40 text-[13px] font-bold transition-all" 
                     placeholder="Your email address" 
                     type="email"
                   />
-                  <button className="w-full py-5 rounded-full bg-white text-primary font-black text-sm hover:scale-[1.03] transition-all shadow-2xl shadow-black/10">Subscribe Now</button>
+                  <button className="w-full py-4 rounded-full bg-white text-primary font-black text-xs hover:scale-[1.03] transition-all shadow-2xl shadow-black/10 uppercase tracking-widest">Subscribe Now</button>
                 </div>
               </div>
             </div>

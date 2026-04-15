@@ -7,7 +7,7 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
           <div>
             <h2 className="text-4xl font-extrabold text-zinc-900 mb-4 font-headline uppercase tracking-tight">Portfolio Showcase</h2>
-            <p className="text-zinc-600 max-w-xl font-body">Explore our current residential and commercial masterpieces across the Mumbai Metropolitan Region.</p>
+            <p className="text-zinc-600 max-w-xl font-body">Explore our current residential masterpieces across the Mumbai Metropolitan Region.</p>
           </div>
           
           <div className="flex flex-wrap gap-3 bg-white p-2 rounded-2xl shadow-sm border border-neutral-200">

@@ -25,7 +25,7 @@ export default function ListingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
-  const propertyTypes = ['Apartment', 'Penthouse', 'Villa', 'Commercial'];
+  const propertyTypes = ['Apartment', 'Penthouse', 'Villa'];
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
