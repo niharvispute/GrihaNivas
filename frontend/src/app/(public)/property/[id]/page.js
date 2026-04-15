@@ -54,6 +54,14 @@ export default async function PropertyDetailPage({ params }) {
   const gallery = property?.gallery || [];
   const highlights = property?.highlights || [];
   const amenities = property?.amenities || [];
+  const floorPlans = property?.floorPlans || [];
+  const locationQuery =
+    [property?.raw?.location?.address, property?.raw?.location?.area, property?.raw?.location?.city]
+      .filter(Boolean)
+      .join(', ') || property?.location;
+  const mapEmbedUrl = locationQuery
+    ? `https://www.google.com/maps?q=${encodeURIComponent(locationQuery)}&output=embed`
+    : null;
 
   return (
     <main className="pt-8 pb-24 max-w-7xl mx-auto px-6 lg:px-8">
@@ -88,17 +96,26 @@ export default async function PropertyDetailPage({ params }) {
           <PropertyHighlights highlights={highlights} />
           <PropertyAbout description={property.longDescription || property.description} />
           <PropertyAmenities amenities={amenities} />
-          <PropertyFloorPlans />
+          <PropertyFloorPlans floorPlans={floorPlans} brochureUrl={property?.brochureUrl} />
           
           {/* Neighborhood Placeholder */}
           <section>
             <h2 className="text-2xl font-heading font-extrabold mb-8 text-slate-900">Neighborhood & Location</h2>
             <div className="rounded-2xl overflow-hidden shadow-lg h-96 relative mb-8 border border-slate-100">
-              <img 
-                className="w-full h-full object-cover" 
-                src="https://images.unsplash.com/photo-1524813686514-a57563d77965?auto=format&fit=crop&q=80&w=1200" 
-                alt="Neighborhood Map Placeholder" 
-              />
+              {mapEmbedUrl ? (
+                <iframe
+                  title="Property Neighborhood Map"
+                  src={mapEmbedUrl}
+                  className="w-full h-full"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              ) : (
+                <div className="w-full h-full bg-linear-to-br from-slate-100 to-white flex flex-col items-center justify-center text-slate-400">
+                  <span className="material-symbols-outlined text-5xl">map</span>
+                  <p className="mt-3 text-xs font-bold uppercase tracking-widest">Location details unavailable</p>
+                </div>
+              )}
               <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md p-6 rounded-xl flex flex-wrap gap-8 border border-white shadow-xl">
                   {neighborhoodHighlights.map((nh, idx) => (
                     <div key={idx} className="flex items-center gap-3">

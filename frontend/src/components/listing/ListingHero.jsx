@@ -1,13 +1,17 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ListingHero() {
   return (
     <section className="relative h-[700px] flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img 
-          alt="Mumbai Skyline" 
-          className="w-full h-full object-cover object-center" 
-          src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=2000" 
+        <Image
+          alt="Mumbai Skyline"
+          src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=2000"
+          fill
+          sizes="100vw"
+          unoptimized
+          className="w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
       </div>
@@ -18,7 +22,7 @@ export default function ListingHero() {
             List Your <br/><span className="text-primary">Property</span> with Us
           </h1>
           <p className="text-lg text-slate-500 mb-10 max-w-lg leading-relaxed font-medium">
-            Access Mumbai's most exclusive network of high-net-worth buyers and tenants through our curated editorial showcase.
+            Access Mumbai&apos;s most exclusive network of high-net-worth buyers and tenants through our curated editorial showcase.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link 

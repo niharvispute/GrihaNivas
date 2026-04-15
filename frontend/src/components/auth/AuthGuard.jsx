@@ -1,19 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
 export default function AuthGuard({ children, requireAdmin = false }) {
   const { user, loadingUser } = useAuth();
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  const safeReplace = (href) => {
+  const safeReplace = useCallback((href) => {
     try {
       router.replace(href);
     } catch {
@@ -21,10 +16,10 @@ export default function AuthGuard({ children, requireAdmin = false }) {
         window.location.replace(href);
       }
     }
-  };
+  }, [router]);
 
   useEffect(() => {
-    if (!isMounted || loadingUser) return;
+    if (loadingUser) return;
     if (!user) {
       safeReplace('/login');
       return;
@@ -32,9 +27,9 @@ export default function AuthGuard({ children, requireAdmin = false }) {
     if (requireAdmin && user.role?.toLowerCase() !== 'admin') {
       safeReplace('/account');
     }
-  }, [user, loadingUser, requireAdmin, isMounted]);
+  }, [user, loadingUser, requireAdmin, safeReplace]);
 
-  if (!isMounted || loadingUser) {
+  if (loadingUser) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-neutral-50">
         <div className="flex flex-col items-center gap-4">

@@ -408,6 +408,9 @@ const testLeads = async () => {
 const testPropertySubmissions = async () => {
   console.log('\n[PS] Property Submissions');
 
+  let publishedPropertyId = '';
+  let publishedCategory = 'buy';
+
   const payload = {
     ownerName: 'Nikhil Rao',
     phone: '+919812345678',
@@ -423,12 +426,33 @@ const testPropertySubmissions = async () => {
     balconies: '1',
     coveredParking: '1',
     openParking: '0',
+    images: [
+      'https://example.com/property-submission-1.jpg',
+      'https://example.com/property-submission-2.jpg',
+      'https://example.com/property-submission-3.jpg',
+      'https://example.com/property-submission-4.jpg',
+      'https://example.com/property-submission-5.jpg',
+    ],
     amenities: ['Gym', 'Security'],
     title: `Powai Lake View Residence ${TEST_SUFFIX}`,
     description: 'Owner-listed apartment in Powai with premium amenities and immediate possession.',
     price: 24500000,
     readyToProceed: true,
   };
+
+  publishedCategory = payload.buildingType === 'Commercial'
+    ? 'commercial'
+    : payload.listingType === 'Rent'
+      ? 'rent'
+      : 'buy';
+
+  const insufficientImagesPayload = {
+    ...payload,
+    images: payload.images.slice(0, 4),
+  };
+
+  const r0 = await request('POST', `${BASE}/property-submissions`, insufficientImagesPayload, userAccessToken);
+  assert('POST /property-submissions with <5 images → 400', r0.status === 400, r0.body);
 
   const r1 = await request('POST', `${BASE}/property-submissions`, payload, userAccessToken);
   assert('POST /property-submissions (user) → 201', r1.status === 201, r1.body);
@@ -453,10 +477,23 @@ const testPropertySubmissions = async () => {
   const r5 = await request(
     'PUT',
     `${BASE}/property-submissions/${createdPropertySubmissionId}/status`,
-    { status: 'reviewing' },
+    { status: 'approved' },
     adminAccessToken
   );
-  assert('PUT /property-submissions/:id/status reviewing → 200', r5.status === 200, r5.body);
+  assert('PUT /property-submissions/:id/status approved → 200', r5.status === 200, r5.body);
+
+  publishedPropertyId = String(r5.body?.data?.publishedProperty || '');
+  assert('approved submission linked to published property', Boolean(publishedPropertyId), r5.body);
+
+  const r5a = await request('GET', `${BASE}/properties?category=${publishedCategory}&limit=20`);
+  assert('approved submission visible in public category list', r5a.status === 200, r5a.body);
+  const isPublishedInCategoryList = Array.isArray(r5a.body?.data)
+    ? r5a.body.data.some((property) => property?._id === publishedPropertyId)
+    : false;
+  assert('published property id appears in category list', isPublishedInCategoryList, r5a.body);
+
+  const r5b = await request('GET', `${BASE}/properties/${publishedPropertyId}`);
+  assert('GET /properties/:id for published submission → 200', r5b.status === 200, r5b.body);
 
   const r6 = await request(
     'PUT',
@@ -489,6 +526,12 @@ const testPropertySubmissions = async () => {
     adminAccessToken
   );
   assert('DELETE /property-submissions/:id → 200', r9.status === 200, r9.body);
+
+  if (publishedPropertyId) {
+    const r10 = await request('DELETE', `${BASE}/properties/${publishedPropertyId}`, null, adminAccessToken);
+    assert('DELETE published property from submission test → 204', r10.status === 204, r10.body);
+  }
+
   createdPropertySubmissionId = '';
 };
 

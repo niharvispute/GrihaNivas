@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
@@ -37,12 +38,15 @@ export default function UserSidebar() {
       {/* Header Profile */}
       <div className="flex flex-col items-center gap-2 mb-8 px-4">
         <div className="relative group">
-          <div className="w-16 h-16 rounded-full overflow-hidden bg-linear-to-br from-primary/10 via-white to-tertiary/60 ring-4 ring-primary/10 group-hover:ring-primary/20 transition-all duration-300 flex items-center justify-center text-primary font-black text-sm">
+          <div className="relative w-16 h-16 rounded-full overflow-hidden bg-linear-to-br from-primary/10 via-white to-tertiary/60 ring-4 ring-primary/10 group-hover:ring-primary/20 transition-all duration-300 flex items-center justify-center text-primary font-black text-sm">
             {avatarSrc ? (
-              <img
+              <Image
                 alt={displayName}
-                className="w-full h-full object-cover"
                 src={avatarSrc}
+                fill
+                sizes="64px"
+                unoptimized
+                className="w-full h-full object-cover"
               />
             ) : (
               <span>{initials || 'U'}</span>

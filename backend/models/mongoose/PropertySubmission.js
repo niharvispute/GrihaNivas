@@ -162,6 +162,11 @@ const propertySubmissionSchema = new mongoose.Schema(
       trim: true,
       default: 'list_property_form',
     },
+    publishedProperty: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Property',
+      default: null,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -187,5 +192,6 @@ propertySubmissionSchema.index({ status: 1, createdAt: -1 });
 propertySubmissionSchema.index({ createdBy: 1, createdAt: -1 });
 propertySubmissionSchema.index({ phone: 1 });
 propertySubmissionSchema.index({ listingType: 1, buildingType: 1 });
+propertySubmissionSchema.index({ publishedProperty: 1 });
 
 module.exports = mongoose.model('PropertySubmission', propertySubmissionSchema);

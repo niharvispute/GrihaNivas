@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 
 function getInitials(name = '') {
@@ -36,11 +37,14 @@ export default function DashboardHeader() {
             <p className="text-sm font-bold text-slate-900 leading-none">{displayName}</p>
             <p className="text-[10px] font-bold text-primary uppercase tracking-tighter mt-1">Active Now</p>
           </div>
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/10 hover:border-primary transition-colors cursor-pointer bg-linear-to-br from-primary/10 via-white to-tertiary/60 flex items-center justify-center text-primary font-black text-xs">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-primary/10 hover:border-primary transition-colors cursor-pointer bg-linear-to-br from-primary/10 via-white to-tertiary/60 flex items-center justify-center text-primary font-black text-xs">
             {avatarSrc ? (
-              <img
+              <Image
                 src={avatarSrc}
                 alt={displayName}
+                fill
+                sizes="40px"
+                unoptimized
                 className="w-full h-full object-cover"
               />
             ) : (

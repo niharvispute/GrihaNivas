@@ -3,6 +3,10 @@ const { sendSuccess, sendCreated } = require('../utils/apiResponse');
 const AppError = require('../utils/AppError');
 const PropertySubmission = require('../models/mongoose/PropertySubmission');
 const { uploadPropertySubmissionMedia } = require('../services/cloudinaryService');
+const {
+  ensureSubmissionPublished,
+  syncPublishedPropertyVisibility,
+} = require('../services/propertySubmissionPublishingService');
 
 const STATUS_ORDER = {
   new: 0,
@@ -37,6 +41,17 @@ const create = async (req, res, next) => {
       ...(Array.isArray(req.body.images) ? req.body.images : []),
       ...media.images.map((item) => item.url),
     ];
+    const normalizedImages = mergedImages
+      .map((value) => (typeof value === 'string' ? value.trim() : ''))
+      .filter(Boolean);
+
+    if (normalizedImages.length < 5) {
+      throw new AppError('Please upload at least 5 property images before submitting.', 400);
+    }
+
+    if (normalizedImages.length > 20) {
+      throw new AppError('You can upload up to 20 property images per submission.', 400);
+    }
 
     const existingVideoMeta = req.body.videoMeta || {};
     const mergedVideoMeta = media.video
@@ -49,7 +64,7 @@ const create = async (req, res, next) => {
 
     const submission = await PropertySubmission.create({
       ...req.body,
-      images: mergedImages,
+      images: normalizedImages,
       videoMeta: Object.keys(mergedVideoMeta).length > 0 ? mergedVideoMeta : null,
       createdBy: req.user.id,
       status: 'new',
@@ -145,6 +160,15 @@ const updateStatus = async (req, res, next) => {
     }
 
     submission.status = status;
+
+    if (status === 'approved') {
+      await ensureSubmissionPublished(submission);
+    }
+
+    if (status === 'rejected' || status === 'closed') {
+      await syncPublishedPropertyVisibility(submission, status);
+    }
+
     await submission.save();
 
     return sendSuccess(res, 200, 'Submission status updated', submission);

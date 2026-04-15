@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 
 function getInitials(name = '') {
@@ -46,11 +47,14 @@ export default function AdminHeader() {
             <p className="text-sm font-black text-slate-900 leading-none truncate max-w-55">{displayName}</p>
             <p className="text-[10px] font-black text-primary uppercase tracking-widest mt-1">{roleLabel}</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-primary/15 via-white to-primary/5 flex items-center justify-center border-2 border-white shadow-xl overflow-hidden group-hover:scale-105 transition-all text-primary font-black text-xs">
+          <div className="relative w-12 h-12 rounded-2xl bg-linear-to-br from-primary/15 via-white to-primary/5 flex items-center justify-center border-2 border-white shadow-xl overflow-hidden group-hover:scale-105 transition-all text-primary font-black text-xs">
             {avatarSrc ? (
-              <img
+              <Image
                 src={avatarSrc}
                 alt={displayName}
+                fill
+                sizes="48px"
+                unoptimized
                 className="w-full h-full object-cover"
               />
             ) : (

@@ -1,6 +1,8 @@
 export {
   mapPropertyListToCardVM,
+  mapPropertyListToCompareVM,
   mapPropertyToCardVM,
+  mapPropertyToCompareVM,
   mapPropertyToDetailVM,
 } from '@/lib/mappers/propertyMapper';
 export { mapBlogListToCardVM, mapBlogToCardVM, mapBlogToDetailVM } from '@/lib/mappers/blogMapper';

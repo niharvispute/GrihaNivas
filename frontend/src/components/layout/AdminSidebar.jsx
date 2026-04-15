@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
@@ -71,11 +72,14 @@ export default function AdminSidebar() {
         <div className="p-5 bg-neutral-800/30 rounded-4xl border border-neutral-700/30 backdrop-blur-sm">
           <div className="flex items-center gap-4 overflow-hidden">
             <div className="relative">
-              <div className="w-12 h-12 rounded-2xl overflow-hidden border-2 border-primary/20 bg-linear-to-br from-primary/15 via-neutral-100 to-primary/5 text-primary flex items-center justify-center text-xs font-black">
+              <div className="relative w-12 h-12 rounded-2xl overflow-hidden border-2 border-primary/20 bg-linear-to-br from-primary/15 via-neutral-100 to-primary/5 text-primary flex items-center justify-center text-xs font-black">
                 {avatarSrc ? (
-                  <img
+                  <Image
                     src={avatarSrc}
                     alt={displayName}
+                    fill
+                    sizes="48px"
+                    unoptimized
                     className="w-full h-full object-cover"
                   />
                 ) : (
