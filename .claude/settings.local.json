@@ -69,7 +69,10 @@
       "Bash(curl -s http://localhost:3000)",
       "Bash(curl -s -w \"\\\\n%{http_code}\\\\n\" http://localhost:3000)",
       "Bash(curl -s -w \"\\\\nHTTP Status: %{http_code}\\\\n\" http://localhost:3001)",
-      "Bash(curl -s -w \"\\\\nStatus: %{http_code}\\\\n\" http://localhost:3000)"
+      "Bash(curl -s -w \"\\\\nStatus: %{http_code}\\\\n\" http://localhost:3000)",
+      "Bash(curl -s http://localhost:3001)",
+      "Bash(curl -s -w \"\\\\nStatus: %{http_code}\\\\n\" http://localhost:3001)",
+      "Bash(curl *)"
     ]
   }
 }
