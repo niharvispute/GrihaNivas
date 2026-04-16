@@ -1,4 +1,5 @@
 'use client';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -7,10 +8,33 @@ import { useAuth } from '@/context/AuthContext';
 export default function Header() {
   const { user, loadingUser, openModal, logout } = useAuth();
   const router = useRouter();
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const displayName = user?.name || user?.email || 'Account';
   const avatarSrc = user?.profilePictureUrl || user?.photoURL || user?.imageUrl || null;
   const accountHref = user?.role?.toLowerCase() === 'admin' ? '/admin' : '/account';
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsAccountOpen(false);
+      }
+    };
+
+    if (isAccountOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isAccountOpen]);
+
+  const toggleDropdown = (e) => {
+    e.stopPropagation();
+    setIsAccountOpen(!isAccountOpen);
+  };
 
   const handleListProperty = () => {
     if (user) {
@@ -22,6 +46,7 @@ export default function Header() {
 
   const handleLogout = async () => {
     await logout();
+    setIsAccountOpen(false);
   };
 
   return (
@@ -34,16 +59,16 @@ export default function Header() {
 
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center gap-8 font-semibold tracking-tight text-sm text-slate-600">
-          <div className="group relative py-2">
+          <div className="py-2">
             <Link href="/buy" className="hover:text-primary transition-colors">Buy</Link>
           </div>
-          <div className="group relative py-2">
+          <div className="py-2">
             <Link href="/rent" className="hover:text-primary transition-colors">Rent</Link>
           </div>
-          <div className="group relative py-2">
+          <div className="py-2">
             <Link href="/new-launch" className="hover:text-primary transition-colors">New Launch</Link>
           </div>
-          <div className="group relative py-2">
+          <div className="py-2">
             <Link href="/builders" className="hover:text-primary transition-colors">Builders</Link>
           </div>
           <Link href="/blogs" className="hover:text-primary transition-colors">Blogs</Link>
@@ -58,16 +83,16 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-4">
             {!loadingUser && (
               user ? (
-                <div className="group relative">
+                <div className="relative" ref={dropdownRef}>
                   <button
                     type="button"
-                    onClick={() => router.push(accountHref)}
-                    className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/90 px-3 py-2 shadow-sm transition-all hover:border-primary/20 hover:shadow-md"
+                    onClick={toggleDropdown}
+                    className={`flex items-center gap-3 rounded-full border px-3 py-2 shadow-sm transition-all hover:shadow-md ${isAccountOpen ? 'border-primary bg-white shadow-lg' : 'border-slate-200 bg-white/90 hover:border-primary/20'}`}
                   >
                     <span className="hidden xl:block max-w-35 truncate text-sm font-semibold text-slate-700">
                       {displayName}
                     </span>
-                    <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-primary/10 via-white to-tertiary/60 text-primary ring-1 ring-slate-200 transition-transform group-hover:scale-105">
+                    <span className={`relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full transition-transform bg-linear-to-br from-primary/10 via-white to-tertiary/60 text-primary ring-1 ring-slate-200 ${isAccountOpen ? 'scale-105 ring-primary/30' : ''}`}>
                       {avatarSrc ? (
                         <Image
                           src={avatarSrc}
@@ -83,43 +108,45 @@ export default function Header() {
                     </span>
                   </button>
 
-                  <div className="absolute right-0 top-full z-50 pt-3">
-                    <div className="pointer-events-none w-64 translate-y-2 scale-95 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100">
-                      <div className="absolute right-6 -top-2 h-4 w-4 rotate-45 border-l border-t border-slate-100 bg-white/95" />
-                      <div className="overflow-hidden rounded-[1.75rem] border border-slate-100 bg-white/95 shadow-2xl shadow-slate-200/60 backdrop-blur-xl">
-                      <div className="border-b border-slate-100 px-5 py-4">
-                        <p className="text-[10px] font-black uppercase tracking-[0.35em] text-slate-400">Signed in as</p>
-                        <p className="mt-1 truncate font-heading text-sm font-black tracking-tight text-slate-900">
+                  <div className={`absolute right-0 top-full z-50 pt-3 transition-all duration-300 ${isAccountOpen ? 'pointer-events-auto translate-y-0 scale-100 opacity-100' : 'pointer-events-none translate-y-2 scale-95 opacity-0'}`}>
+                    <div className="absolute right-6 -top-2 h-4 w-4 rotate-45 border-l border-t border-slate-100 bg-white" />
+                    <div className="w-72 overflow-hidden rounded-[2rem] border border-slate-100 bg-white shadow-2xl shadow-slate-200/60 backdrop-blur-xl">
+                      <div className="border-b border-slate-50 px-6 py-5 bg-slate-50/50">
+                        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Account</p>
+                        <p className="mt-0.5 truncate font-heading text-sm font-black tracking-tight text-slate-900">
                           {displayName}
                         </p>
                       </div>
 
-                      <div className="p-2">
+                      <div className="p-3 grid gap-1">
                         <Link
                           href={accountHref}
-                          className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-slate-900"
+                          onClick={() => setIsAccountOpen(false)}
+                          className="flex items-center gap-3 rounded-2xl px-4 py-2.5 text-sm font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-primary"
                         >
-                          <span className="material-symbols-outlined text-xl text-primary">person</span>
+                          <span className="material-symbols-outlined text-lg opacity-70">person</span>
                           <span>My Account</span>
                         </Link>
 
                         <Link
                           href="/account/saved"
-                          className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-slate-900"
+                          onClick={() => setIsAccountOpen(false)}
+                          className="flex items-center gap-3 rounded-2xl px-4 py-2.5 text-sm font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-primary"
                         >
-                          <span className="material-symbols-outlined text-xl text-primary">favorite</span>
+                          <span className="material-symbols-outlined text-lg opacity-70">favorite</span>
                           <span>Wishlist</span>
                         </Link>
+
+                        <div className="h-px bg-slate-50 my-1 mx-2" />
 
                         <button
                           type="button"
                           onClick={handleLogout}
-                          className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold text-slate-600 transition-all hover:bg-red-50 hover:text-red-600"
+                          className="flex w-full items-center gap-3 rounded-2xl px-4 py-2.5 text-left text-sm font-bold text-slate-500 transition-all hover:bg-red-50 hover:text-red-600"
                         >
-                          <span className="material-symbols-outlined text-xl">logout</span>
+                          <span className="material-symbols-outlined text-lg opacity-70">logout</span>
                           <span>Logout</span>
                         </button>
-                      </div>
                       </div>
                     </div>
                   </div>
