@@ -45,6 +45,7 @@ export default async function ExploreBuildersPage({ searchParams }) {
         <BuilderFilterBar 
           initialSearch={params?.search || ''} 
           initialIsFeatured={params?.isFeatured === 'true'} 
+          initialCity={params?.city || ''}
         />
 
         {/* Featured Highlight */}
