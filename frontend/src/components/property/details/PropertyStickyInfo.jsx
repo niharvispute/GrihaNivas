@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -105,9 +106,11 @@ export default function PropertyStickyInfo({ property }) {
             Brochure Not Available
           </button>
         )}
-        <button className="w-full border-2 border-primary text-primary py-4 rounded-full font-bold text-lg hover:bg-tertiary transition-all">
-          Contact Expert
-        </button>
+        <Link href="/contact" className="block w-full">
+          <button className="w-full border-2 border-primary text-primary py-4 rounded-full font-bold text-lg hover:bg-tertiary transition-all">
+            Contact Expert
+          </button>
+        </Link>
         
         <div className="flex gap-4 pt-4">
           <WishlistButton

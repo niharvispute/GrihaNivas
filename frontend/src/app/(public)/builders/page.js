@@ -1,6 +1,5 @@
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import BuilderCard from '@/components/builders/BuilderCard';
+import BuilderFilterBar from '@/components/builders/BuilderFilterBar';
 import { listBuilders } from '@/services/builderService';
 
 export const metadata = {
@@ -9,14 +8,15 @@ export const metadata = {
 };
 
 export default async function ExploreBuildersPage({ searchParams }) {
+  const params = await searchParams;
   const query = {
-    page: Number(searchParams?.page || 1),
+    page: Number(params?.page || 1),
     limit: 20,
-    search: searchParams?.search || undefined,
+    search: params?.search || undefined,
     isFeatured:
-      searchParams?.isFeatured === 'true'
+      params?.isFeatured === 'true'
         ? true
-        : searchParams?.isFeatured === 'false'
+        : params?.isFeatured === 'false'
           ? false
           : undefined,
   };
@@ -30,12 +30,10 @@ export default async function ExploreBuildersPage({ searchParams }) {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* <Header /> */}
-      
       <main className="pt-24 pb-20 max-w-screen-2xl mx-auto px-6">
         {/* Header Section */}
         <header className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h1 className="font-headline text-4xl md:text-5xl font-extrabold text-on-background tracking-tight mb-3 uppercase">
+          <h1 className="font-headline text-4xl md:text-5xl font-extrabold text-on-background tracking-tight mb-3 uppercase text-slate-900">
             Explore <span className="text-primary italic">Builders</span>
           </h1>
           <p className="text-zinc-500 text-lg font-body max-w-2xl">
@@ -43,40 +41,12 @@ export default async function ExploreBuildersPage({ searchParams }) {
           </p>
         </header>
 
-        {/* Sticky Search & Filter Bar */}
-        <section className="sticky top-18.25 z-40 mb-12 py-4 bg-background/80 backdrop-blur-sm">
-          <div className="bg-white border border-neutral-200 p-3 xl:rounded-full rounded-2xl shadow-sm flex flex-col xl:flex-row items-center gap-4">
-            <div className="relative grow w-full">
-              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
-              <input 
-                className="w-full pl-12 pr-4 py-3 bg-transparent border-none focus:ring-0 text-sm font-medium font-body" 
-                placeholder="Search builder by name..." 
-                type="text"
-                defaultValue={searchParams?.search || ''}
-              />
-            </div>
-            <div className="h-8 w-px bg-neutral-200 hidden xl:block"></div>
-            <div className="flex items-center gap-6 w-full xl:w-auto px-4">
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <span className="text-sm font-semibold text-zinc-600 group-hover:text-primary transition-colors font-label">Featured Builders</span>
-                <div className="relative inline-flex items-center cursor-pointer">
-                  <input className="sr-only peer" type="checkbox" value="" />
-                  <div className="w-11 h-6 bg-zinc-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                </div>
-              </label>
-              <div className="h-8 w-px bg-neutral-200"></div>
-              <div className="relative group w-full xl:w-48">
-                <button className="flex items-center justify-between w-full px-2 text-sm font-semibold text-zinc-600 font-label">
-                  <span>All Locations</span>
-                  <span className="material-symbols-outlined">expand_more</span>
-                </button>
-              </div>
-            </div>
-            <button className="bg-black text-white px-8 py-3 rounded-full font-bold text-sm hover:opacity-90 transition-opacity w-full xl:w-auto uppercase tracking-widest">
-              Search
-            </button>
-          </div>
-        </section>
+        {/* Dynamic Search & Filter Bar */}
+        <BuilderFilterBar 
+          initialSearch={params?.search || ''} 
+          initialIsFeatured={params?.isFeatured === 'true'} 
+          initialCity={params?.city || ''}
+        />
 
         {/* Featured Highlight */}
         {featuredBuilder && (
@@ -158,8 +128,6 @@ export default async function ExploreBuildersPage({ searchParams }) {
           </button>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

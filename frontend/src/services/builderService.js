@@ -18,6 +18,14 @@ export const listBuilders = async (query = {}, { map = true } = {}) => {
 };
 
 /**
+ * Fetch unique cities across builders with active properties.
+ */
+export const listBuilderCities = async () => {
+  const res = await apiFetch('/api/builders/cities');
+  return res.data || [];
+};
+
+/**
  * Get a builder profile by their slug.
  */
 export const getBuilderBySlug = async (slug, query = {}, { map = true } = {}) => {

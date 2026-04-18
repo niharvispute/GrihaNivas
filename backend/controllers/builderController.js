@@ -64,7 +64,7 @@ const normalizeBuilderPayload = (payload) => {
 const listPublic = async (req, res, next) => {
   try {
     const { limit, skip, buildMeta } = parsePagination(req.query);
-    const { search, isFeatured } = req.query;
+    const { search, isFeatured, city } = req.query;
 
     const filter = { isActive: true };
     const featured = parseBoolean(isFeatured);
@@ -75,6 +75,15 @@ const listPublic = async (req, res, next) => {
     if (search) {
       const regex = new RegExp(search, 'i');
       filter.$or = [{ name: regex }, { headquarters: regex }];
+    }
+
+    if (city) {
+      const builderIdsWithPropertiesInCity = await Property.distinct('builder', {
+        'location.city': { $regex: new RegExp(`^${city}$`, 'i') },
+        isActive: true,
+        status: 'approved',
+      });
+      filter._id = { $in: builderIdsWithPropertiesInCity };
     }
 
     const [builders, total] = await Promise.all([
@@ -371,9 +380,24 @@ const remove = async (req, res, next) => {
   }
 };
 
+const getPublicCities = async (req, res, next) => {
+  try {
+    const cities = await Property.distinct('location.city', {
+      isActive: true,
+      status: 'approved',
+      builder: { $ne: null },
+    });
+
+    return sendSuccess(res, 200, 'Available cities fetched', cities.filter(Boolean).sort());
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   listPublic,
   getPublicBySlug,
+  getPublicCities,
   listAdmin,
   getAdminOne,
   toggleFeatured,
