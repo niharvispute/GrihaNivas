@@ -25,9 +25,9 @@ export default function LeadForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
+  // Load session draft
   useEffect(() => {
     if (typeof window === 'undefined') return;
-
     try {
       const raw = window.sessionStorage.getItem(DRAFT_KEY);
       if (!raw) return;
@@ -39,6 +39,18 @@ export default function LeadForm({
     setHasLoadedDraft(true);
   }, []);
 
+  // Pre-fill from authenticated user
+  useEffect(() => {
+    if (!user) return;
+    setForm((prev) => ({
+      ...prev,
+      name: prev.name || user.name || user.displayName || '',
+      email: prev.email || user.email || '',
+      phone: prev.phone || user.phone || '',
+    }));
+  }, [user]);
+
+  // Persist draft to session
   useEffect(() => {
     if (typeof window === 'undefined' || !hasLoadedDraft) return;
     window.sessionStorage.setItem(DRAFT_KEY, JSON.stringify(form));
@@ -50,11 +62,10 @@ export default function LeadForm({
 
   const submitLead = useCallback(async () => {
     const phone = toIndianPhoneE164(form.phone);
-
     if (!phone) {
       setFeedback({
         type: 'error',
-        message: 'Please enter a valid Indian mobile number in +91 format.',
+        message: 'Please enter a valid Indian mobile number (e.g. 98765 43210).',
       });
       return;
     }
@@ -74,7 +85,7 @@ export default function LeadForm({
 
       setFeedback({
         type: 'success',
-        message: 'Inquiry submitted successfully. Our team will contact you shortly.',
+        message: 'Inquiry submitted! Our team will contact you shortly.',
       });
       setForm({ name: '', email: '', phone: '', message: '' });
       if (typeof window !== 'undefined') {
@@ -83,7 +94,7 @@ export default function LeadForm({
     } catch (error) {
       setFeedback({
         type: 'error',
-        message: getErrorMessage(error, 'Unable to submit inquiry right now.'),
+        message: getErrorMessage(error, 'Unable to submit inquiry right now. Please try again.'),
       });
     } finally {
       setIsSubmitting(false);
@@ -98,26 +109,24 @@ export default function LeadForm({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (!user) {
       setQueuedSubmit(true);
       setFeedback({ type: 'error', message: 'Please login to submit your enquiry.' });
       openModal('login');
       return;
     }
-
     await submitLead();
   };
 
   return (
     <div className="bg-white p-7 rounded-moderate shadow-2xl border border-slate-50">
-      <h3 className="text-xl font-bold text-black mb-6 tracking-tight">{title}</h3>
+      <h3 className="text-xl font-bold text-slate-900 mb-6 tracking-tight">{title}</h3>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-black mb-2 opacity-50">Full Name</label>
-          <input 
-            type="text" 
-            className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-black focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400"
+          <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Full Name</label>
+          <input
+            type="text"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-slate-400"
             placeholder="John Doe"
             value={form.name}
             onChange={handleChange('name')}
@@ -125,50 +134,73 @@ export default function LeadForm({
           />
         </div>
         <div>
-          <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-black mb-2 opacity-50">Email Address</label>
-          <input 
-            type="email" 
-            className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-black focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400"
+          <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Email Address</label>
+          <input
+            type="email"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-slate-400"
             placeholder="john@example.com"
             value={form.email}
             onChange={handleChange('email')}
           />
         </div>
         <div>
-          <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-black mb-2 opacity-50">Phone Number</label>
-          <input 
-            type="tel" 
-            className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 text-sm text-black focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400"
-            placeholder="+91 98765 43210"
+          <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">
+            Phone Number <span className="text-primary normal-case font-semibold tracking-normal">*</span>
+          </label>
+          <input
+            type="tel"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-slate-400"
+            placeholder="98765 43210"
             value={form.phone}
             onChange={handleChange('phone')}
             required
           />
         </div>
         <div>
-          <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-black mb-2 opacity-50">Message</label>
-          <textarea 
+          <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Message</label>
+          <textarea
             rows="4"
-            className="w-full bg-slate-50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none placeholder:text-slate-400"
             placeholder="I am interested in this property..."
             value={form.message}
             onChange={handleChange('message')}
-          ></textarea>
+          />
         </div>
-        <button 
-          type="submit" 
+
+        {feedback.message && (
+          <div
+            className={`flex items-start gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+              feedback.type === 'error'
+                ? 'bg-red-50 text-red-700 border border-red-100'
+                : 'bg-emerald-50 text-emerald-700 border border-emerald-100'
+            }`}
+          >
+            <span className="material-symbols-outlined text-base mt-0.5">
+              {feedback.type === 'error' ? 'error' : 'check_circle'}
+            </span>
+            {feedback.message}
+          </div>
+        )}
+
+        <button
+          type="submit"
           disabled={isSubmitting}
-          className="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95"
+          className="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
+          {isSubmitting && (
+            <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+          )}
           {isSubmitting ? 'Sending...' : 'Send Inquiry'}
         </button>
-        {feedback.message && (
-          <p className={`text-xs font-medium ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
-            {feedback.message}
-          </p>
-        )}
-        <p className="text-[10px] text-center text-slate-400 mt-4 leading-relaxed">
-          By submitting this form, you agree to our Terms of Service and Privacy Policy.
+
+        <p className="text-[11px] text-center text-slate-400 leading-relaxed">
+          By submitting, you agree to our{' '}
+          <a href="/terms" className="underline hover:text-primary transition-colors">Terms</a>{' '}
+          and{' '}
+          <a href="/privacy" className="underline hover:text-primary transition-colors">Privacy Policy</a>.
         </p>
       </form>
     </div>

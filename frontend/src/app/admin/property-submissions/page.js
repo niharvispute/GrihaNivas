@@ -39,6 +39,20 @@ function hasValue(value) {
   return true;
 }
 
+function getMediaUrl(value) {
+  if (typeof value === 'string') {
+    const normalized = value.trim();
+    return normalized || null;
+  }
+
+  if (value && typeof value === 'object' && typeof value.url === 'string') {
+    const normalized = value.url.trim();
+    return normalized || null;
+  }
+
+  return null;
+}
+
 export default function PropertySubmissionsPage() {
   const [items, setItems] = useState([]);
   const [meta, setMeta] = useState(null);
@@ -52,6 +66,7 @@ export default function PropertySubmissionsPage() {
   const [deletingId, setDeletingId] = useState(null);
   const [viewingItem, setViewingItem] = useState(null);
   const [loadingDetail, setLoadingDetail] = useState(false);
+  const [closeWarningItem, setCloseWarningItem] = useState(null);
 
   const fetchItems = useCallback(async () => {
     setLoading(true);
@@ -76,10 +91,7 @@ export default function PropertySubmissionsPage() {
     fetchItems();
   }, [fetchItems]);
 
-  const handleAdvanceStatus = async (item) => {
-    const nextStatus = NEXT_STATUS[item.status];
-    if (!nextStatus) return;
-
+  const performStatusUpdate = async (item, nextStatus) => {
     setUpdatingId(item._id);
     try {
       await updatePropertySubmissionStatus(item._id, nextStatus);
@@ -93,6 +105,28 @@ export default function PropertySubmissionsPage() {
     } finally {
       setUpdatingId(null);
     }
+  };
+
+  const handleAdvanceStatus = async (item) => {
+    const nextStatus = NEXT_STATUS[item.status];
+    if (!nextStatus) return;
+
+    if (
+      nextStatus === 'closed' &&
+      (item.status === 'approved' || item.status === 'rejected')
+    ) {
+      setCloseWarningItem(item);
+      return;
+    }
+
+    await performStatusUpdate(item, nextStatus);
+  };
+
+  const handleCloseWarningApprove = async () => {
+    if (!closeWarningItem) return;
+    const item = closeWarningItem;
+    setCloseWarningItem(null);
+    await performStatusUpdate(item, 'closed');
   };
 
   const handleView = async (id) => {
@@ -346,55 +380,93 @@ export default function PropertySubmissionsPage() {
                   {[1, 2, 3, 4].map((i) => <div key={i} className="h-12 bg-slate-100 rounded-xl" />)}
                 </div>
               ) : viewingItem ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {[
-                    { label: 'Owner Name', value: viewingItem.ownerName },
-                    { label: 'Phone', value: viewingItem.phone },
-                    { label: 'Email', value: viewingItem.email },
-                    { label: 'Listing Type', value: viewingItem.listingType },
-                    { label: 'Building Type', value: viewingItem.buildingType },
-                    { label: 'Property Type', value: viewingItem.propertyType },
-                    { label: 'City', value: viewingItem.city },
-                    { label: 'Locality', value: viewingItem.locality },
-                    { label: 'Possession', value: viewingItem.possession },
-                    { label: 'Age', value: viewingItem.age },
-                    { label: 'Bathrooms', value: viewingItem.bathrooms },
-                    { label: 'Balconies', value: viewingItem.balconies },
-                    { label: 'Covered Parking', value: viewingItem.coveredParking },
-                    { label: 'Open Parking', value: viewingItem.openParking },
-                    { label: 'Price', value: viewingItem.price },
-                    { label: 'Status', value: viewingItem.status },
-                    {
-                      label: 'Hero Features',
-                      value: Array.isArray(viewingItem.feature)
-                        ? viewingItem.feature.join(' | ')
-                        : viewingItem.feature,
-                      full: true,
-                    },
-                    { label: 'RERA URL', value: viewingItem.reraUrl, full: true },
-                    {
-                      label: 'Amenities',
-                      value: Array.isArray(viewingItem.amenities) ? viewingItem.amenities.join(', ') : null,
-                      full: true,
-                    },
-                    { label: 'Title', value: viewingItem.title, full: true },
-                    { label: 'Description', value: viewingItem.description, full: true },
-                    {
-                      label: 'Image Count',
-                      value: Array.isArray(viewingItem.images) ? viewingItem.images.length : 0,
-                    },
-                    {
-                      label: 'Video',
-                      value: viewingItem.videoMeta?.url || viewingItem.videoMeta?.name,
-                      full: true,
-                    },
-                  ]
-                    .filter((field) => hasValue(field.value))
-                    .map((field) => (
-                      <Info key={field.label} label={field.label} value={field.value} full={field.full} />
-                    ))}
+                <div className="space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {[
+                      { label: 'Owner Name', value: viewingItem.ownerName },
+                      { label: 'Phone', value: viewingItem.phone },
+                      { label: 'Email', value: viewingItem.email },
+                      { label: 'Listing Type', value: viewingItem.listingType },
+                      { label: 'Building Type', value: viewingItem.buildingType },
+                      { label: 'Property Type', value: viewingItem.propertyType },
+                      { label: 'City', value: viewingItem.city },
+                      { label: 'Locality', value: viewingItem.locality },
+                      { label: 'Possession', value: viewingItem.possession },
+                      { label: 'Age', value: viewingItem.age },
+                      { label: 'Bathrooms', value: viewingItem.bathrooms },
+                      { label: 'Balconies', value: viewingItem.balconies },
+                      { label: 'Covered Parking', value: viewingItem.coveredParking },
+                      { label: 'Open Parking', value: viewingItem.openParking },
+                      { label: 'Price', value: viewingItem.price },
+                      { label: 'Status', value: viewingItem.status },
+                      {
+                        label: 'Hero Features',
+                        value: Array.isArray(viewingItem.feature)
+                          ? viewingItem.feature.join(' | ')
+                          : viewingItem.feature,
+                        full: true,
+                      },
+                      { label: 'RERA URL', value: viewingItem.reraUrl, full: true },
+                      {
+                        label: 'Amenities',
+                        value: Array.isArray(viewingItem.amenities) ? viewingItem.amenities.join(', ') : null,
+                        full: true,
+                      },
+                      { label: 'Title', value: viewingItem.title, full: true },
+                      { label: 'Description', value: viewingItem.description, full: true },
+                      {
+                        label: 'Image Count',
+                        value: Array.isArray(viewingItem.images) ? viewingItem.images.length : 0,
+                      },
+                      {
+                        label: 'Video',
+                        value: viewingItem.videoMeta?.url || viewingItem.videoMeta?.name,
+                        full: true,
+                      },
+                    ]
+                      .filter((field) => hasValue(field.value))
+                      .map((field) => (
+                        <Info key={field.label} label={field.label} value={field.value} full={field.full} />
+                      ))}
+                  </div>
+
+                  <SubmissionMediaPreview item={viewingItem} />
                 </div>
               ) : null}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {closeWarningItem && (
+        <div className="fixed inset-0 z-80 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-xl rounded-3xl border border-slate-100 bg-white p-7 shadow-2xl">
+            <div className="mb-5 flex items-start gap-3">
+              <span className="material-symbols-outlined text-2xl text-amber-500">warning</span>
+              <div>
+                <h3 className="text-xl font-black tracking-tight text-slate-900">Close Property Warning</h3>
+                <p className="mt-2 text-sm font-medium text-slate-600">
+                  If you close this property, it will not be visible on property listings and it will be deleted
+                  from your database within 30 days.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-7 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setCloseWarningItem(null)}
+                className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50"
+              >
+                Reject
+              </button>
+              <button
+                type="button"
+                onClick={handleCloseWarningApprove}
+                className="rounded-xl bg-rose-600 px-5 py-2.5 text-sm font-black uppercase tracking-widest text-white hover:bg-rose-700"
+              >
+                Approve
+              </button>
             </div>
           </div>
         </div>
@@ -408,6 +480,177 @@ function Info({ label, value, full = false }) {
     <div className={`${full ? 'md:col-span-2' : ''} rounded-xl border border-slate-100 bg-slate-50 p-4`}>
       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">{label}</p>
       <p className="text-sm font-bold text-slate-800 wrap-break-word">{String(value)}</p>
+    </div>
+  );
+}
+
+function SubmissionMediaPreview({ item }) {
+  const imageUrls = Array.isArray(item?.images)
+    ? item.images.map(getMediaUrl).filter(Boolean)
+    : [];
+  const videoUrl = getMediaUrl(item?.videoMeta?.url || item?.videoMeta);
+  const [activeImageIndex, setActiveImageIndex] = useState(-1);
+
+  const isLightboxOpen = activeImageIndex >= 0 && activeImageIndex < imageUrls.length;
+
+  const closeLightbox = () => {
+    setActiveImageIndex(-1);
+  };
+
+  const showPreviousImage = (event) => {
+    if (event) event.stopPropagation();
+    setActiveImageIndex((prev) => (prev <= 0 ? imageUrls.length - 1 : prev - 1));
+  };
+
+  const showNextImage = (event) => {
+    if (event) event.stopPropagation();
+    setActiveImageIndex((prev) => (prev >= imageUrls.length - 1 ? 0 : prev + 1));
+  };
+
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        closeLightbox();
+        return;
+      }
+
+      if (event.key === 'ArrowLeft') {
+        setActiveImageIndex((prev) => (prev <= 0 ? imageUrls.length - 1 : prev - 1));
+        return;
+      }
+
+      if (event.key === 'ArrowRight') {
+        setActiveImageIndex((prev) => (prev >= imageUrls.length - 1 ? 0 : prev + 1));
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isLightboxOpen, imageUrls.length]);
+
+  if (!imageUrls.length && !videoUrl) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-8">
+      {imageUrls.length > 0 && (
+        <section className="space-y-4">
+          <h4 className="text-base font-black tracking-tight text-slate-900">
+            Uploaded Images ({imageUrls.length})
+          </h4>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {imageUrls.map((url, index) => (
+              <button
+                type="button"
+                key={`${url}-${index}`}
+                onClick={() => setActiveImageIndex(index)}
+                className="group block overflow-hidden rounded-2xl border border-slate-100 bg-white"
+                title="Open image slider"
+              >
+                <img
+                  src={url}
+                  alt={`Submission image ${index + 1}`}
+                  className="h-36 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {videoUrl && (
+        <section className="space-y-4">
+          <h4 className="text-base font-black tracking-tight text-slate-900">Uploaded Video</h4>
+          <div className="rounded-2xl border border-slate-100 bg-slate-50 p-3">
+            <video
+              controls
+              preload="metadata"
+              className="w-full max-h-105 rounded-xl bg-black"
+              src={videoUrl}
+            >
+              <a href={videoUrl} target="_blank" rel="noreferrer">
+                Open uploaded video
+              </a>
+            </video>
+          </div>
+        </section>
+      )}
+
+      {isLightboxOpen && (
+        <div
+          className="fixed inset-0 z-90 flex items-center justify-center bg-slate-950/90 p-4"
+          onClick={closeLightbox}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Submission image preview"
+        >
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              closeLightbox();
+            }}
+            className="absolute right-5 top-5 z-92 rounded-xl bg-white/10 p-2 text-white hover:bg-white/20"
+            aria-label="Close image preview"
+          >
+            <span className="material-symbols-outlined">close</span>
+          </button>
+
+          {imageUrls.length > 1 && (
+            <button
+              type="button"
+              onClick={showPreviousImage}
+              className="absolute left-4 md:left-8 z-92 rounded-full bg-white/10 p-2.5 text-white hover:bg-white/20"
+              aria-label="Previous image"
+            >
+              <span className="material-symbols-outlined">chevron_left</span>
+            </button>
+          )}
+
+          <div
+            className="relative w-full max-w-5xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img
+              src={imageUrls[activeImageIndex]}
+              alt={`Submission image ${activeImageIndex + 1}`}
+              className="mx-auto max-h-[78vh] w-auto max-w-full rounded-2xl object-contain"
+            />
+
+            <div className="mt-4 flex items-center justify-between text-xs font-bold text-white/85">
+              <span>
+                Image {activeImageIndex + 1} of {imageUrls.length}
+              </span>
+              <a
+                href={imageUrls[activeImageIndex]}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg border border-white/30 px-3 py-1 hover:bg-white/10"
+              >
+                Open Original
+              </a>
+            </div>
+          </div>
+
+          {imageUrls.length > 1 && (
+            <button
+              type="button"
+              onClick={showNextImage}
+              className="absolute right-4 md:right-8 z-92 rounded-full bg-white/10 p-2.5 text-white hover:bg-white/20"
+              aria-label="Next image"
+            >
+              <span className="material-symbols-outlined">chevron_right</span>
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

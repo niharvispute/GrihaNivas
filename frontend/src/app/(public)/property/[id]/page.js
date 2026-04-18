@@ -8,6 +8,7 @@ import PropertyAmenities from '@/components/property/details/PropertyAmenities';
 import PropertyFloorPlans from '@/components/property/details/PropertyFloorPlans';
 import PropertyLeadForm from '@/components/property/details/PropertyLeadForm';
 import PropertyBuilderProfile from '@/components/property/details/PropertyBuilderProfile';
+import MobileStickyBar from '@/components/property/details/MobileStickyBar';
 import PropertyCard from '@/components/property/PropertyCard';
 import {
   getPropertyById,
@@ -163,6 +164,9 @@ export default async function PropertyDetailPage({ params }) {
           </p>
         )}
       </section>
+
+      {/* Mobile Sticky Bar — visible only on mobile, fixed at bottom */}
+      <MobileStickyBar property={property} />
     </main>
   );
 }

@@ -126,12 +126,15 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
             {isHorizontal ? 'Inquire Now' : 'View Details'}
           </Link>
           {isHorizontal ? (
-            <button className="px-8 border-2 border-primary text-primary py-4 rounded-full font-bold text-sm tracking-tight hover:bg-tertiary transition-all">
-              Schedule a Private Tour
-            </button>
+            <Link
+              href={`${detailHref}#lead-form`}
+              className="px-8 border-2 border-primary text-primary py-4 rounded-full font-bold text-sm tracking-tight hover:bg-primary/5 transition-all whitespace-nowrap"
+            >
+              Schedule a Tour
+            </Link>
           ) : (
-            <AddToCompareButton 
-              propertyId={property.id || property._id} 
+            <AddToCompareButton
+              propertyId={property.id || property._id}
               initialAdded={property.isCompared}
             />
           )}
