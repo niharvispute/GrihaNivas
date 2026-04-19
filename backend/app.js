@@ -32,6 +32,28 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
   : [];
 
+const isLocalDevOrigin = (origin) => {
+  if (!origin) return false;
+
+  try {
+    const { protocol, hostname } = new URL(origin);
+    if (protocol !== 'http:' && protocol !== 'https:') return false;
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
+      return true;
+    }
+
+    // Allow LAN/private IPv4 hosts during local development.
+    if (/^192\.168\.\d{1,3}\.\d{1,3}$/.test(hostname)) return true;
+    if (/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(hostname)) return true;
+    if (/^172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}$/.test(hostname)) return true;
+
+    return false;
+  } catch {
+    return false;
+  }
+};
+
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -42,7 +64,12 @@ app.use(
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
-      callback(new Error(`CORS: Origin "${origin}" not allowed`));
+      if (!isProduction && isLocalDevOrigin(origin)) {
+        return callback(null, true);
+      }
+
+      // Do not throw 500 for CORS mismatch; just omit CORS headers.
+      return callback(null, false);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

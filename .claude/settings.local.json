@@ -72,7 +72,9 @@
       "Bash(curl -s -w \"\\\\nStatus: %{http_code}\\\\n\" http://localhost:3000)",
       "Bash(curl -s http://localhost:3001)",
       "Bash(curl -s -w \"\\\\nStatus: %{http_code}\\\\n\" http://localhost:3001)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('scripts',{}\\), indent=2\\)\\)\")",
+      "Bash(node --input-type=module --eval ' *)"
     ]
   }
 }

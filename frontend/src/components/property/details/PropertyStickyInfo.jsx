@@ -22,18 +22,8 @@ export default function PropertyStickyInfo({ property }) {
         ? 'Commercial'
         : 'On Request';
   const areaLabel = property?.area && property.area !== 'N/A' ? `${property.area} sq.ft` : 'On Request';
-  const locationLabel = property?.location || 'Mumbai';
-
   return (
     <div className="sticky top-32 bg-white p-8 rounded-2xl shadow-[0_32px_64px_-15px_rgba(0,0,0,0.06)] border border-slate-100">
-      <div className="mb-6">
-        <h1 className="text-3xl font-heading font-extrabold tracking-tight mb-2 text-slate-900">{property.title}</h1>
-        <p className="text-slate-500 flex items-center gap-1 font-medium text-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-          {locationLabel}
-        </p>
-      </div>
-
       <div className="flex items-center justify-between gap-4 mb-2">
         <div className="flex items-baseline gap-2">
           <span className="text-4xl font-heading font-black text-primary">

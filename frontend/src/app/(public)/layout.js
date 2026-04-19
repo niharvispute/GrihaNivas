@@ -1,5 +1,6 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import WhatsAppCTA from '@/components/common/WhatsAppCTA';
 
 export default function PublicLayout({ children }) {
   return (
@@ -9,6 +10,7 @@ export default function PublicLayout({ children }) {
         {children}
       </main>
       <Footer />
+      <WhatsAppCTA />
     </div>
   );
 }
