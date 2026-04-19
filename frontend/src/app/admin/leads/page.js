@@ -358,6 +358,7 @@ export default function LeadCRMPage() {
                   {[1, 2, 3, 4].map((i) => <div key={i} className="h-12 bg-slate-100 rounded-xl" />)}
                 </div>
               ) : viewingLead ? (
+                <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {[
                     { label: 'Name', value: viewingLead.name },
@@ -431,6 +432,7 @@ export default function LeadCRMPage() {
                     </button>
                   </div>
                 </div>
+                </>
               ) : null}
             </div>
           </div>
