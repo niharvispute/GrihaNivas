@@ -4,10 +4,26 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useSidebar } from '@/context/SidebarContext';
+import { useEffect } from 'react';
 
 export default function UserSidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { isMobileOpen, setIsMobileOpen } = useSidebar();
+
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname, setIsMobileOpen]);
+
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMobileOpen]);
 
   const displayName = user?.name || user?.email || 'Your Account';
   const avatarSrc = user?.profilePictureUrl || user?.photoURL || user?.imageUrl || null;
@@ -26,13 +42,20 @@ export default function UserSidebar() {
     { name: 'My Profile', href: '/account/profile', icon: 'person' },
   ];
 
-  return (
-    <aside className="fixed left-0 top-0 h-screen w-64 flex flex-col p-4 bg-white border-r border-neutral-200 z-50">
+  const SidebarContent = () => (
+    <>
       {/* Brand Logo */}
-      <div className="px-4 py-8">
+      <div className="px-4 py-6 md:py-8 flex items-center justify-between">
         <Link href="/" className="text-2xl font-black text-primary tracking-tighter font-heading">
           Bricks<span className="text-slate-900">.</span>
         </Link>
+        {/* Close button for mobile */}
+        <button
+          onClick={() => setIsMobileOpen(false)}
+          className="md:hidden p-1"
+        >
+          <span className="material-symbols-outlined text-2xl text-slate-600">close</span>
+        </button>
       </div>
 
       {/* Header Profile */}
@@ -61,18 +84,19 @@ export default function UserSidebar() {
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 space-y-1">
+      <nav className="flex-1 space-y-2">
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
           return (
-            <Link 
+            <Link
               key={link.href}
-              href={link.href} 
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl font-heading text-sm font-bold transition-all duration-200 ${
-                isActive 
-                  ? 'bg-primary/5 text-primary border-r-4 border-primary' 
-                  : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+              href={link.href}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg md:rounded-xl font-heading text-sm font-bold transition-all duration-200 ${
+                isActive
+                  ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
               }`}
+              onClick={() => setIsMobileOpen(false)}
             >
               <span className="material-symbols-outlined text-xl">{link.icon}</span>
               <span>{link.name}</span>
@@ -84,7 +108,7 @@ export default function UserSidebar() {
       {/* Logout */}
       <div className="mt-auto">
         <button
-          className="flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:bg-red-50 hover:text-red-600 rounded-xl text-sm font-bold transition-all duration-200"
+          className="flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:bg-red-50 hover:text-red-600 rounded-lg md:rounded-xl text-sm font-bold transition-all duration-200"
           onClick={logout}
           type="button"
         >
@@ -92,6 +116,32 @@ export default function UserSidebar() {
           <span>Logout</span>
         </button>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:fixed md:left-0 md:top-0 md:h-screen md:w-64 md:flex md:flex-col md:p-4 md:bg-white md:border-r md:border-neutral-200 md:z-50">
+        <SidebarContent />
+      </aside>
+
+      {/* Mobile Sidebar Overlay */}
+      {isMobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
+      {/* Mobile Sidebar */}
+      <aside
+        className={`fixed left-0 top-0 h-screen w-64 flex flex-col bg-white z-50 md:hidden transition-transform duration-300 ease-out overflow-y-auto ${
+          isMobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
+        }`}
+      >
+        <SidebarContent />
+      </aside>
+    </>
   );
 }

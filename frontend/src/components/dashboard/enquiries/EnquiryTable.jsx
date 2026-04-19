@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { apiFetch } from '@/lib/api';
 import { authedApiFetch } from '@/lib/api/authedRequest';
 
 const STATUS_THEMES = {
@@ -39,8 +38,8 @@ export default function EnquiryTable() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-4xl shadow-sm border border-slate-100 p-10 animate-pulse space-y-4 mb-8">
-        {[1, 2, 3].map((i) => <div key={i} className="h-14 bg-slate-100 rounded-xl" />)}
+      <div className="space-y-4 mb-8 animate-pulse">
+        {[1, 2, 3].map((i) => <div key={i} className="h-32 bg-slate-100 rounded-2xl" />)}
       </div>
     );
   }
@@ -56,67 +55,62 @@ export default function EnquiryTable() {
   }
 
   return (
-    <div className="bg-white rounded-4xl shadow-sm border border-slate-100 overflow-hidden mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-slate-50/50 border-b border-slate-100">
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Property / Service</th>
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Type</th>
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Submitted</th>
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Status</th>
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Message</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-50">
-            {enquiries.map((item) => {
-              const leadType = item.leadType || 'buy';
-              const statusKey = item.status || 'new';
-              const isService = ['loan', 'agreement'].includes(leadType);
-              const themeClass = STATUS_THEMES[statusKey] || STATUS_THEMES.new;
-              const icon = TYPE_ICON[leadType] || 'home';
-              const propertyTitle = item.propertyId?.title || item.message || 'General Enquiry';
+    <div className="space-y-4 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      {enquiries.map((item) => {
+        const leadType = item.leadType || 'buy';
+        const statusKey = item.status || 'new';
+        const isService = ['loan', 'agreement'].includes(leadType);
+        const themeClass = STATUS_THEMES[statusKey] || STATUS_THEMES.new;
+        const icon = TYPE_ICON[leadType] || 'home';
+        const propertyTitle = item.propertyId?.title || item.message || 'General Enquiry';
 
-              return (
-                <tr key={item._id} className="hover:bg-primary/2 transition-colors group">
-                  <td className="px-8 py-6">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 shadow-inner flex items-center justify-center">
-                        {isService ? (
-                          <span className="material-symbols-outlined text-primary text-2xl">{icon}</span>
-                        ) : item.propertyId?.heroImage?.url ? (
-                          <img alt={propertyTitle} className="w-full h-full object-cover" src={item.propertyId.heroImage.url} />
-                        ) : (
-                          <span className="material-symbols-outlined text-primary text-2xl">{icon}</span>
-                        )}
-                      </div>
-                      <span className="font-heading font-bold text-slate-900 leading-snug group-hover:text-primary transition-colors">
-                        {propertyTitle}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-8 py-6">
-                    <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest border border-slate-200">
-                      {leadType.replace('_', ' ')}
-                    </span>
-                  </td>
-                  <td className="px-8 py-6">
-                    <span className="text-sm font-bold text-slate-500">{formatDate(item.createdAt)}</span>
-                  </td>
-                  <td className="px-8 py-6">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${themeClass}`}>
-                      {statusKey}
-                    </span>
-                  </td>
-                  <td className="px-8 py-6">
-                    <p className="text-sm text-slate-400 font-medium max-w-xs truncate" title={item.message}>{item.message || '—'}</p>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+        return (
+          <div
+            key={item._id}
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-4 sm:p-6"
+          >
+            {/* Header with thumbnail and title */}
+            <div className="flex gap-4 sm:gap-6 mb-4 sm:mb-5">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 shadow-inner flex items-center justify-center flex-none">
+                {isService ? (
+                  <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">{icon}</span>
+                ) : item.propertyId?.heroImage?.url ? (
+                  <img alt={propertyTitle} className="w-full h-full object-cover" src={item.propertyId.heroImage.url} />
+                ) : (
+                  <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">{icon}</span>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-heading font-black text-slate-900 text-sm sm:text-base leading-snug mb-1 line-clamp-2 hover:text-primary transition-colors">
+                  {propertyTitle}
+                </h4>
+                <div className="flex items-center gap-2 text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                  <span className="material-symbols-outlined text-xs">calendar_today</span>
+                  {formatDate(item.createdAt)}
+                </div>
+              </div>
+            </div>
+
+            {/* Type and Status row */}
+            <div className="flex gap-3 sm:gap-4 mb-4 sm:mb-5 flex-wrap">
+              <span className="px-2.5 sm:px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-[8px] sm:text-[10px] font-black uppercase tracking-widest border border-slate-200 whitespace-nowrap">
+                {leadType.replace('_', ' ')}
+              </span>
+              <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest border ${themeClass} whitespace-nowrap`}>
+                {statusKey}
+              </span>
+            </div>
+
+            {/* Message section */}
+            {item.message && (
+              <div className="bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-100 text-[13px] sm:text-sm text-slate-600 font-medium leading-relaxed">
+                <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-2">Message</p>
+                {item.message}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
