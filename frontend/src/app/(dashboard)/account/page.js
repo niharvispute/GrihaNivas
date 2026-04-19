@@ -33,7 +33,7 @@ export default function UserDashboardPage() {
             Today is {currentDate}
           </p>
         </div>
-        <div className="flex gap-3">
+        {/* <div className="flex gap-3">
           <button className="px-5 py-2.5 bg-white rounded-xl shadow-sm border border-slate-200 text-xs font-bold text-slate-600 hover:text-primary hover:border-primary transition-all flex items-center gap-2">
             <span className="material-symbols-outlined text-lg">calendar_today</span>
             This Month
@@ -42,7 +42,7 @@ export default function UserDashboardPage() {
             <span className="material-symbols-outlined text-lg">filter_list</span>
             Filters
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* KPI Section */}

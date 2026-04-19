@@ -68,9 +68,12 @@ export default function SavedPropertyCard({ property, onUnsave }) {
           <Link href={detailHref} className="flex-1 text-center border-2 border-slate-100 text-slate-600 font-heading font-black uppercase tracking-widest text-xs py-4 rounded-full hover:bg-slate-50 hover:border-slate-200 transition-all active:scale-[0.98]">
             View Details
           </Link>
-          <button className="flex-1 bg-primary text-white font-heading font-black uppercase tracking-widest text-xs py-4 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-105 transition-all active:scale-[0.98]">
+          <Link 
+            href={`${detailHref}#lead-form`}
+            className="flex-1 bg-primary text-white font-heading font-black uppercase tracking-widest text-xs py-4 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-105 transition-all active:scale-[0.98] text-center"
+          >
             Enquire Now
-          </button>
+          </Link>
         </div>
       </div>
     </div>

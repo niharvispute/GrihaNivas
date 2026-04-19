@@ -1,18 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { submitContactForm } from '@/services/contactService';
 
-export default function ContactPage() {
+function ContactForm() {
+  const searchParams = useSearchParams();
+  const propertyTitle = searchParams.get('property');
+  
   const [form, setForm] = useState({
     name: '',
     phone: '',
     email: '',
     message: '',
   });
+
+  useEffect(() => {
+    if (propertyTitle) {
+      setForm(prev => ({
+        ...prev,
+        message: `I'm interested in enquiring about "${propertyTitle}". Please provide more details.`
+      }));
+    }
+  }, [propertyTitle]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
@@ -265,5 +278,13 @@ export default function ContactPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ContactForm />
+    </Suspense>
   );
 }
