@@ -1,7 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getSystemBootstrap } from '@/services/systemService';
+import { SYSTEM_DEFAULT_CITY } from '@/lib/system/defaults';
 
 const INTENT_OPTIONS = [
   { label: 'Buy', value: 'buy', route: '/buy' },
@@ -10,12 +12,51 @@ const INTENT_OPTIONS = [
 ];
 
 const BHK_OPTIONS = ['1', '2', '3', '4', '5+'];
+const POPULAR_AREA_FALLBACK = ['Bandra West', 'Worli', 'South Mumbai', 'Powai'];
 
 export default function HeroSearch() {
   const router = useRouter();
   const [intent, setIntent] = useState('buy');
   const [location, setLocation] = useState('');
   const [bhk, setBhk] = useState('');
+  const [bhkOptions, setBhkOptions] = useState(BHK_OPTIONS);
+  const [popularAreas, setPopularAreas] = useState(POPULAR_AREA_FALLBACK);
+  const [defaultCity, setDefaultCity] = useState(SYSTEM_DEFAULT_CITY);
+
+  useEffect(() => {
+    let mounted = true;
+
+    getSystemBootstrap()
+      .then((bootstrap) => {
+        if (!mounted) return;
+
+        const dynamicBhk = Array.isArray(bootstrap?.options?.bhkValues)
+          ? bootstrap.options.bhkValues.map((value) => String(value))
+          : [];
+        const dynamicAreas = Array.isArray(bootstrap?.areas)
+          ? bootstrap.areas.map((value) => String(value))
+          : [];
+
+        if (dynamicBhk.length > 0) {
+          setBhkOptions(dynamicBhk);
+        }
+
+        if (dynamicAreas.length > 0) {
+          setPopularAreas(dynamicAreas.slice(0, 4));
+        }
+
+        if (bootstrap?.config?.city) {
+          setDefaultCity(String(bootstrap.config.city));
+        }
+      })
+      .catch(() => {
+        // Fallback state is already set for resilient UX.
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -56,7 +97,7 @@ export default function HeroSearch() {
             <span className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">Location</span>
             <input
               className="w-full bg-transparent border-none p-0 text-slate-900 focus:ring-0 font-bold placeholder:text-slate-400 text-sm"
-              placeholder="Bandra, Juhu, Worli..."
+              placeholder={`${defaultCity} area or locality...`}
               value={location}
               onChange={(e) => setLocation(e.target.value)}
             />
@@ -74,7 +115,7 @@ export default function HeroSearch() {
               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 h-11 text-sm font-bold text-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20"
             >
               <option value="">Any</option>
-              {BHK_OPTIONS.map((b) => (
+              {bhkOptions.map((b) => (
                 <option key={b} value={b}>
                   {b} BHK
                 </option>
@@ -96,7 +137,7 @@ export default function HeroSearch() {
       {/* Popular Searches */}
       <div className="mt-4 md:mt-5 flex items-center gap-2 justify-center flex-wrap px-2">
         <span className="text-white/70 text-xs font-semibold">Popular:</span>
-        {['Bandra West', 'Worli', 'South Mumbai', 'Powai'].map((area) => (
+        {popularAreas.map((area) => (
           <button
             key={area}
             type="button"

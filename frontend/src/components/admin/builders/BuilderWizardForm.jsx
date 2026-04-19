@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getErrorMessage } from '@/lib/api/errors';
+import { SYSTEM_DEFAULT_CITY } from '@/lib/system/defaults';
+import { getSystemBootstrap } from '@/services/systemService';
 import {
   createAdminBuilder,
   getAdminBuilderById,
@@ -23,7 +25,7 @@ const createDefaultForm = () => ({
   slug: '',
   shortDescription: '',
   description: '',
-  headquarters: 'Mumbai',
+  headquarters: SYSTEM_DEFAULT_CITY,
   establishedYear: '',
   totalProjects: '',
   ongoingProjects: '',
@@ -96,7 +98,7 @@ function mapBuilderToForm(builder) {
     slug: String(builder?.slug || ''),
     shortDescription: String(builder?.shortDescription || ''),
     description: String(builder?.description || ''),
-    headquarters: String(builder?.headquarters || 'Mumbai'),
+    headquarters: String(builder?.headquarters || SYSTEM_DEFAULT_CITY),
     establishedYear: builder?.establishedYear ? String(builder.establishedYear) : '',
     totalProjects: Number.isFinite(Number(builder?.totalProjects)) ? String(builder.totalProjects) : '',
     ongoingProjects: Number.isFinite(Number(builder?.ongoingProjects)) ? String(builder.ongoingProjects) : '',
@@ -184,6 +186,36 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
   useEffect(() => {
     loadBuilder();
   }, [loadBuilder]);
+
+  useEffect(() => {
+    if (isEditMode) return;
+
+    let mounted = true;
+    getSystemBootstrap()
+      .then((bootstrap) => {
+        if (!mounted) return;
+        const city = String(bootstrap?.config?.city || '').trim();
+        if (!city) return;
+
+        setForm((prev) => {
+          if (prev.headquarters && prev.headquarters !== SYSTEM_DEFAULT_CITY) {
+            return prev;
+          }
+
+          return {
+            ...prev,
+            headquarters: city,
+          };
+        });
+      })
+      .catch(() => {
+        // Keep static fallback when config API is not available.
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [isEditMode]);
 
   const validateStep = () => {
     if (step === 1) {

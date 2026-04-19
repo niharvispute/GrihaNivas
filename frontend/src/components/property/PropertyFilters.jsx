@@ -4,8 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import BudgetRangeSlider from './BudgetRangeSlider';
+import { getSystemBootstrap } from '@/services/systemService';
 
-const AREA_OPTIONS = [
+const DEFAULT_AREA_OPTIONS = [
   { label: 'All Locations', value: '' },
   { label: 'South Mumbai', value: 'South Mumbai' },
   { label: 'Bandra West', value: 'Bandra West' },
@@ -15,7 +16,7 @@ const AREA_OPTIONS = [
   { label: 'Powai', value: 'Powai' },
 ];
 
-const BHK_OPTIONS = [
+const DEFAULT_BHK_OPTIONS = [
   { label: 'Any', value: '' },
   { label: '2 BHK', value: '2' },
   { label: '3 BHK', value: '3' },
@@ -40,11 +41,11 @@ function formatPriceToCr(price) {
   return `₹${(Number(price) / 10000000).toFixed(1)} Cr`;
 }
 
-function buildActiveFilterChips(currentQuery, basePath) {
+function buildActiveFilterChips(currentQuery, basePath, areaOptions) {
   const chips = [];
 
   if (currentQuery.area) {
-    const label = AREA_OPTIONS.find((o) => o.value === currentQuery.area)?.label || currentQuery.area;
+    const label = areaOptions.find((o) => o.value === currentQuery.area)?.label || currentQuery.area;
     const params = new URLSearchParams();
     if (currentQuery.category && currentQuery.category !== 'buy') params.set('category', currentQuery.category);
     if (currentQuery.minPrice) params.set('minPrice', currentQuery.minPrice);
@@ -87,6 +88,8 @@ export default function PropertyFilters({ basePath, currentQuery }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [minPrice, setMinPrice] = useState(currentQuery?.minPrice || MIN_BUDGET);
   const [maxPrice, setMaxPrice] = useState(currentQuery?.maxPrice || MAX_BUDGET);
+  const [areaOptions, setAreaOptions] = useState(DEFAULT_AREA_OPTIONS);
+  const [bhkOptions, setBhkOptions] = useState(DEFAULT_BHK_OPTIONS);
   
   const sortBy = currentQuery?.sortBy || 'newest';
   const category = currentQuery?.category || 'buy';
@@ -94,7 +97,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
   if (category !== 'buy') resetParams.set('category', category);
   const resetHref = resetParams.toString() ? `${basePath}?${resetParams.toString()}` : basePath;
 
-  const activeChips = buildActiveFilterChips(currentQuery, basePath);
+  const activeChips = buildActiveFilterChips(currentQuery, basePath, areaOptions);
 
   // Sync state with props if they change
   useEffect(() => {
@@ -109,6 +112,44 @@ export default function PropertyFilters({ basePath, currentQuery }) {
       document.body.style.overflow = '';
     }
   }, [isDrawerOpen]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    getSystemBootstrap()
+      .then((bootstrap) => {
+        if (!mounted) return;
+
+        const dynamicAreas = Array.isArray(bootstrap?.areas)
+          ? bootstrap.areas.map((value) => String(value).trim()).filter(Boolean)
+          : [];
+
+        const dynamicBhk = Array.isArray(bootstrap?.options?.bhkValues)
+          ? bootstrap.options.bhkValues.map((value) => String(value).trim()).filter(Boolean)
+          : [];
+
+        if (dynamicAreas.length > 0) {
+          setAreaOptions([
+            { label: 'All Locations', value: '' },
+            ...dynamicAreas.map((area) => ({ label: area, value: area })),
+          ]);
+        }
+
+        if (dynamicBhk.length > 0) {
+          setBhkOptions([
+            { label: 'Any', value: '' },
+            ...dynamicBhk.map((value) => ({ label: `${value} BHK`, value })),
+          ]);
+        }
+      })
+      .catch(() => {
+        // Component already has static fallbacks.
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const handleBudgetChange = ({ min, max }) => {
     setMinPrice(min);
@@ -131,7 +172,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
           defaultValue={currentQuery?.area || ''}
           className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/20 appearance-none font-medium"
         >
-          {AREA_OPTIONS.map((option) => (
+          {areaOptions.map((option) => (
             <option key={option.label} value={option.value}>{option.label}</option>
           ))}
         </select>
@@ -155,7 +196,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
           defaultValue={currentQuery?.bhk || ''}
           className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/20 appearance-none font-medium"
         >
-          {BHK_OPTIONS.map((option) => (
+          {bhkOptions.map((option) => (
             <option key={option.label} value={option.value}>{option.label}</option>
           ))}
         </select>
@@ -230,7 +271,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
 
       {/* Desktop Sidebar */}
       <aside className="hidden lg:block w-80 shrink-0">
-        <div className="sticky top-24 bg-white rounded-[2rem] p-8 flex flex-col gap-8 shadow-2xl shadow-slate-200/50 border border-slate-100">
+        <div className="sticky top-24 bg-white rounded-4xl p-8 flex flex-col gap-8 shadow-2xl shadow-slate-200/50 border border-slate-100">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-black text-slate-900 tracking-tighter">Filters</h2>

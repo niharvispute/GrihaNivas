@@ -655,6 +655,36 @@ const schemas = {
         .optional(),
     }),
   },
+
+    // ── SYSTEM ────────────────────────────────
+    system: {
+      areasQuery: z.object({
+        city: z.string().trim().max(100).optional(),
+      }),
+
+      updateConfig: z
+        .object({
+          city: z.string().trim().min(2).max(100).optional(),
+          locale: z.string().trim().min(2).max(20).optional(),
+          currency: z.string().trim().min(3).max(10).optional(),
+          defaultCountryCode: z
+            .string()
+            .trim()
+            .regex(/^\+\d{1,4}$/, 'defaultCountryCode must be in +NN format')
+            .optional(),
+          areas: z.array(z.string().trim().min(1).max(120)).max(300).optional(),
+          bhkValues: z.array(z.string().trim().min(1).max(20)).max(20).optional(),
+          amenityList: z.array(z.string().trim().min(1).max(120)).max(300).optional(),
+          propertyTypes: z.array(z.string().trim().min(1).max(40)).max(20).optional(),
+          statusOptions: z.array(z.string().trim().min(1).max(40)).max(20).optional(),
+          furnishingOptions: z.array(z.string().trim().min(1).max(40)).max(20).optional(),
+          allowDynamicAreas: z.coerce.boolean().optional(),
+          allowDynamicAmenities: z.coerce.boolean().optional(),
+        })
+        .refine((value) => Object.keys(value).length > 0, {
+          message: 'At least one field must be provided',
+        }),
+    },
 };
 
 module.exports = { validate, schemas };

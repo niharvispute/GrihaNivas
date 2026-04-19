@@ -14,5 +14,6 @@ router.use('/stamp-duty',   require('./stampDuty'));
 router.use('/calculators',  require('./calculators'));
 router.use('/contact',      require('./contact'));
 router.use('/dashboard',    require('./dashboard'));
+router.use('/system',       require('./system'));
 
 module.exports = router;

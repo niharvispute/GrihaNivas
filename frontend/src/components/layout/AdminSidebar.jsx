@@ -32,7 +32,8 @@ export default function AdminSidebar() {
     { name: 'Blogs', icon: 'edit_note', href: '/admin/blogs' },
     { name: 'Banners', icon: 'view_carousel', href: '/admin/banners' },
     { name: 'Testimonials', icon: 'reviews', href: '/admin/testimonials' },
-    { name: 'Users', icon: 'group', href: '/admin/users' }
+    { name: 'Users', icon: 'group', href: '/admin/users' },
+    { name: 'System Settings', icon: 'tune', href: '/admin/system' }
   ];
 
   return (

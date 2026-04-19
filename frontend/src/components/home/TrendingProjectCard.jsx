@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import WishlistButton from '@/components/property/WishlistButton';
+import { SYSTEM_DEFAULT_CITY } from '@/lib/system/defaults';
 
 export default function TrendingProjectCard({ property }) {
   const detailKey = property?.slug || property?.id;
   const detailHref = detailKey ? `/property/${detailKey}` : '/buy';
-  const locationLabel = property?.location || 'Mumbai';
+  const locationLabel = property?.location || SYSTEM_DEFAULT_CITY;
   const projectTitle = property?.title || 'Project';
   const hasNumericPrice = Number.isFinite(Number(property?.priceValue)) && Number(property.priceValue) > 0;
   const fallbackPriceText = typeof property?.price === 'string' ? property.price.trim() : '';

@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { SYSTEM_DEFAULT_CITY } from '@/lib/system/defaults';
 
 export default function TrendingBuilderCard({ builder }) {
   const detailKey = builder?.slug || builder?.id;
   const detailHref = detailKey ? `/builders/${detailKey}` : '/builders';
   const bannerImage = builder?.thumbnail || builder?.heroImage || builder?.logo || '';
   const builderName = builder?.name || 'Builder';
-  const headquarters = builder?.hqLocation || 'Mumbai';
+  const headquarters = builder?.hqLocation || SYSTEM_DEFAULT_CITY;
   const projectCount = Number.isFinite(Number(builder?.projectCount || builder?.totalProjects))
     ? Number(builder?.projectCount || builder?.totalProjects)
     : 0;

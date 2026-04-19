@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AddToCompareButton from './AddToCompareButton';
 import WishlistButton from './WishlistButton';
+import { SYSTEM_DEFAULT_CITY } from '@/lib/system/defaults';
 
 export default function PropertyCard({ property, variant = 'vertical' }) {
   const isHorizontal = variant === 'horizontal';
@@ -25,7 +26,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
       ? `${property.area} sq.ft`
       : 'Area on request';
   const statusLabel = property?.status || property?.feature || 'Available';
-  const locationLabel = property?.location || 'Mumbai';
+  const locationLabel = property?.location || SYSTEM_DEFAULT_CITY;
 
   return (
     <article className={`group relative bg-white rounded-moderate overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col'}`}>

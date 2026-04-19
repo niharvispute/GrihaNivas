@@ -19,6 +19,7 @@ const Banner         = require('./Banner');
 const StampDutyConfig = require('./StampDutyConfig');
 const Contact        = require('./Contact');
 const AuthOtpFlow    = require('./AuthOtpFlow');
+const SystemConfig   = require('./SystemConfig');
 
 module.exports = {
   User,
@@ -32,4 +33,5 @@ module.exports = {
   StampDutyConfig,
   Contact,
   AuthOtpFlow,
+  SystemConfig,
 };
