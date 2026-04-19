@@ -21,6 +21,7 @@ import {
   signupRequest,
   signupResendOtp,
 } from '@/services/authService';
+import { useAuth } from '@/context/AuthContext';
 
 const routeAfterAuth = (router, data) => {
   const destination = data?.user?.role === 'admin' ? '/admin' : '/account';
@@ -35,6 +36,7 @@ const routeAfterAuth = (router, data) => {
 
 export default function LoginPage() {
   const router = useRouter();
+  const { onAuthSuccess } = useAuth();
   const [mode, setMode] = useState('login');
 
   const [loginIdentifier, setLoginIdentifier] = useState('');
@@ -94,6 +96,7 @@ export default function LoginPage() {
         password: loginPassword,
       });
 
+      onAuthSuccess(data.user);
       routeAfterAuth(router, data);
     } catch (error) {
       setFeedback({
@@ -176,6 +179,7 @@ export default function LoginPage() {
         otp: String(signupOtp).trim(),
       });
 
+      onAuthSuccess(data.user);
       routeAfterAuth(router, data);
     } catch (error) {
       setFeedback({
