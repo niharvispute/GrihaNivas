@@ -87,6 +87,7 @@ export default async function PropertiesPage({ searchParams }) {
   const params = await searchParams;
   const currentPage = getCurrentPage(params?.page);
   const currentCategory = normalizeCategory(params?.category || 'buy');
+  const isNewLaunchListing = currentCategory === 'new_launch';
   const currentQuery = {
     category: currentCategory,
     area: normalizeText(params?.area),
@@ -102,7 +103,8 @@ export default async function PropertiesPage({ searchParams }) {
   let meta = null;
   try {
     const response = await listProperties({
-      category: currentCategory,
+      ...(isNewLaunchListing ? {} : { category: currentCategory }),
+      ...(isNewLaunchListing ? { launchWindow: true } : {}),
       limit: PAGE_SIZE,
       page: currentPage,
       sortBy: currentQuery.sortBy,

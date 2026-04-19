@@ -7,3 +7,11 @@ export const submitContactForm = async (payload) => {
   });
   return res.data;
 };
+
+export const subscribeNewsletter = async (payload) => {
+  const res = await apiFetch('/api/contact/newsletter', {
+    method: 'POST',
+    body: payload,
+  });
+  return res.data;
+};

@@ -9,7 +9,7 @@ import PropertyFloorPlans from '@/components/property/details/PropertyFloorPlans
 import PropertyLeadForm from '@/components/property/details/PropertyLeadForm';
 import PropertyBuilderProfile from '@/components/property/details/PropertyBuilderProfile';
 import MobileStickyBar from '@/components/property/details/MobileStickyBar';
-import PropertyCard from '@/components/property/PropertyCard';
+import SimilarPropertiesCarousel from '@/components/property/details/SimilarPropertiesCarousel';
 import {
   getPropertyById,
   getPropertyBySlug,
@@ -65,9 +65,9 @@ export default async function PropertyDetailPage({ params }) {
     : null;
 
   return (
-    <main className="pt-8 pb-24 max-w-7xl mx-auto px-6 lg:px-8">
+    <main className="pt-5 sm:pt-7 lg:pt-8 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Breadcrumbs */}
-      <nav aria-label="Breadcrumb" className="flex text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-8 px-1">
+      <nav aria-label="Breadcrumb" className="flex text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-5 sm:mb-8 px-1 overflow-x-auto no-scrollbar">
         <ol className="inline-flex items-center space-x-2">
           <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
           <li className="flex items-center">
@@ -82,9 +82,9 @@ export default async function PropertyDetailPage({ params }) {
       </nav>
 
       {/* Hero Section */}
-      <section className="mb-20 space-y-8">
+      <section className="mb-12 sm:mb-16 lg:mb-20 space-y-5 sm:space-y-8">
         <div className="max-w-4xl space-y-3">
-          <h1 className="text-4xl md:text-5xl font-heading font-extrabold tracking-tight text-slate-900">
+          <h1 className="text-[24px]! sm:text-4xl! md:text-5xl! font-heading font-extrabold tracking-tight text-slate-900 leading-tight">
             {property.title}
           </h1>
           <p className="text-slate-500 flex items-center gap-2 font-medium text-sm md:text-base">
@@ -100,8 +100,8 @@ export default async function PropertyDetailPage({ params }) {
       </section>
 
       {/* Main Content Flow */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div className="lg:col-span-8 space-y-20">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+        <div className="lg:col-span-8 space-y-12 sm:space-y-16 lg:space-y-20">
           <PropertyHighlights highlights={highlights} />
           <PropertyAbout description={property.longDescription || property.description} />
           <PropertyAmenities amenities={amenities} />
@@ -109,8 +109,8 @@ export default async function PropertyDetailPage({ params }) {
           
           {/* Neighborhood Placeholder */}
           <section>
-            <h2 className="text-2xl font-heading font-extrabold mb-8 text-slate-900">Neighborhood & Location</h2>
-            <div className="rounded-2xl overflow-hidden shadow-lg h-96 relative mb-8 border border-slate-100">
+            <h2 className="text-2xl font-heading font-extrabold mb-6 sm:mb-8 text-slate-900">Neighborhood & Location</h2>
+            <div className="rounded-2xl overflow-hidden shadow-lg h-72 sm:h-96 relative mb-8 border border-slate-100">
               {mapEmbedUrl ? (
                 <iframe
                   title="Property Neighborhood Map"
@@ -125,7 +125,8 @@ export default async function PropertyDetailPage({ params }) {
                   <p className="mt-3 text-xs font-bold uppercase tracking-widest">Location details unavailable</p>
                 </div>
               )}
-              <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md p-6 rounded-xl flex flex-wrap gap-8 border border-white shadow-xl">
+              {neighborhoodHighlights.length > 0 && (
+                <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6 bg-white/90 backdrop-blur-md p-3 sm:p-6 rounded-xl flex flex-wrap gap-4 sm:gap-8 border border-white shadow-xl">
                   {neighborhoodHighlights.map((nh, idx) => (
                     <div key={idx} className="flex items-center gap-3">
                       <span className="material-symbols-outlined text-primary">{nh.icon}</span>
@@ -135,43 +136,20 @@ export default async function PropertyDetailPage({ params }) {
                       </div>
                     </div>
                  ))}
-              </div>
+                </div>
+              )}
             </div>
           </section>
         </div>
 
         {/* Right Column Sidebar */}
-        <div className="lg:col-span-4 space-y-8">
+        <div className="lg:col-span-4 space-y-6 sm:space-y-8">
           <PropertyLeadForm property={property} />
           <PropertyBuilderProfile builder={property.builder} />
         </div>
       </div>
 
-      {/* Similar Properties Carousel (Simplified for now) */}
-      <section className="mt-32">
-        <div className="flex justify-between items-center mb-10">
-          <h2 className="text-3xl font-heading font-extrabold text-slate-900">You May Also Like</h2>
-          <div className="flex gap-4">
-            <button className="w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all group">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-            </button>
-            <button className="w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {similarProperties.map((p) => (
-            <PropertyCard key={p.id} property={p} />
-          ))}
-        </div>
-
-        {similarProperties.length === 0 && (
-          <p className="mt-6 text-sm font-medium text-slate-500">
-            More similar listings will appear here soon.
-          </p>
-        )}
-      </section>
+      <SimilarPropertiesCarousel properties={similarProperties} />
 
       {/* Mobile Sticky Bar — visible only on mobile, fixed at bottom */}
       <MobileStickyBar property={property} />

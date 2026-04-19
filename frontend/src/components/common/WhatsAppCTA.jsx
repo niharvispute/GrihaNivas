@@ -15,7 +15,7 @@ export default function WhatsAppCTA({ propertyTitle }) {
       target="_blank"
       rel="noreferrer noopener"
       aria-label="Chat on WhatsApp"
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-[#25D366] text-white pl-4 pr-5 py-3.5 rounded-full shadow-2xl shadow-[#25D366]/40 hover:shadow-[#25D366]/60 hover:scale-105 active:scale-95 transition-all group"
+      className="hidden sm:flex fixed bottom-6 right-6 z-50 items-center gap-2.5 bg-[#25D366] text-white pl-4 pr-5 py-3.5 rounded-full shadow-2xl shadow-[#25D366]/40 hover:shadow-[#25D366]/60 hover:scale-105 active:scale-95 transition-all group"
     >
       {/* WhatsApp Icon */}
       <svg

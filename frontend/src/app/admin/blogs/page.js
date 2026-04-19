@@ -1,10 +1,19 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { listBlogs, createBlog, updateBlog, deleteBlog } from '@/services/blogService';
+import {
+  listBlogs,
+  createBlog,
+  updateBlog,
+  deleteBlog,
+  listBlogCommentsAdmin,
+  approveBlogComment,
+  deleteBlogComment,
+} from '@/services/blogService';
 import { getErrorMessage } from '@/lib/api/errors';
 import BlogManagementTable from '@/components/admin/blog/BlogManagementTable';
 import BlogEditorForm from '@/components/admin/blog/BlogEditorForm';
+import BlogCommentsModerationPanel from '@/components/admin/blog/BlogCommentsModerationPanel';
 
 export default function AdminBlogCMS() {
   const [blogs, setBlogs] = useState([]);
@@ -12,9 +21,12 @@ export default function AdminBlogCMS() {
   const [editingPost, setEditingPost] = useState(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [pendingComments, setPendingComments] = useState([]);
+  const [loadingComments, setLoadingComments] = useState(false);
 
   useEffect(() => {
     fetchBlogs();
+    fetchPendingComments();
   }, []);
 
   const fetchBlogs = async () => {
@@ -29,6 +41,19 @@ export default function AdminBlogCMS() {
     }
   };
 
+  const fetchPendingComments = async () => {
+    setLoadingComments(true);
+    try {
+      const response = await listBlogCommentsAdmin({ status: 'pending', limit: 50, page: 1 });
+      setPendingComments(response.items || []);
+    } catch (error) {
+      console.error('Failed to fetch blog comments:', error);
+      setPendingComments([]);
+    } finally {
+      setLoadingComments(false);
+    }
+  };
+
   const handleDelete = async (id) => {
     if (confirm('Are you sure you want to delete this post? This action is irreversible.')) {
       try {
@@ -37,6 +62,26 @@ export default function AdminBlogCMS() {
       } catch (error) {
         alert('Failed to delete post. Please try again.');
       }
+    }
+  };
+
+  const handleApproveComment = async (blogId, commentId) => {
+    try {
+      await approveBlogComment(blogId, commentId);
+      setPendingComments((prev) => prev.filter((item) => item.commentId !== commentId));
+    } catch (error) {
+      alert(getErrorMessage(error, 'Failed to approve comment.'));
+    }
+  };
+
+  const handleDeleteComment = async (blogId, commentId) => {
+    if (!confirm('Delete this comment permanently?')) return;
+
+    try {
+      await deleteBlogComment(blogId, commentId);
+      setPendingComments((prev) => prev.filter((item) => item.commentId !== commentId));
+    } catch (error) {
+      alert(getErrorMessage(error, 'Failed to delete comment.'));
     }
   };
 
@@ -116,12 +161,20 @@ export default function AdminBlogCMS() {
                 <span className="text-xs font-black uppercase tracking-widest">Accessing Archive...</span>
              </div>
            ) : (
-             <BlogManagementTable 
-                blogs={blogs} 
-                onEdit={handleEdit} 
-                onDelete={handleDelete}
-                onAddNew={handleAddNew}
-             />
+             <>
+               <BlogManagementTable 
+                  blogs={blogs} 
+                  onEdit={handleEdit} 
+                  onDelete={handleDelete}
+                  onAddNew={handleAddNew}
+               />
+               <BlogCommentsModerationPanel
+                 comments={pendingComments}
+                 loading={loadingComments}
+                 onApprove={handleApproveComment}
+                 onDelete={handleDeleteComment}
+               />
+             </>
            )}
 
            {/* CMS Statistics Dashboard (Optional Premium Touch) */}

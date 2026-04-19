@@ -45,7 +45,7 @@ export default async function BuilderDetailPage({ params }) {
     <div className="min-h-screen bg-background text-on-background antialiased">
       {/* <Header /> */}
       
-      <main className="pt-16">
+      <main className="pt-0">
         {/* Dynamic Profile Sections */}
         <BuilderHero builder={builder} />
         
@@ -58,9 +58,9 @@ export default async function BuilderDetailPage({ params }) {
         <BuilderTestimonials builder={builder} />
         
         {/* FAQ & Lead Form Section */}
-        <section className="py-24 bg-zinc-900 text-white overflow-hidden relative">
-          <div className="container mx-auto px-6 relative z-10">
-            <div className="flex flex-col lg:flex-row gap-20">
+        <section className="py-14 sm:py-16 lg:py-24 bg-zinc-900 text-white overflow-hidden relative">
+          <div className="container mx-auto px-4 sm:px-6 relative z-10">
+            <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
               <BuilderFAQ builder={builder} />
               <BuilderEnquiryForm builder={builder} />
             </div>
@@ -71,7 +71,6 @@ export default async function BuilderDetailPage({ params }) {
         </section>
       </main>
 
-      <Footer />
     </div>
   );
 }

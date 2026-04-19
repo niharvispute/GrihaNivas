@@ -3,10 +3,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import ReraQRModal from './ReraQRModal';
 
 export default function PropertyGallery({ images, property }) {
   const safeImages = Array.isArray(images) ? images.filter(Boolean) : [];
   const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [isReraModalOpen, setIsReraModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const displayImages = useMemo(() => safeImages.slice(0, 5), [safeImages]);
@@ -33,10 +35,23 @@ export default function PropertyGallery({ images, property }) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [isViewerOpen, safeImages.length]);
 
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    if (isViewerOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isViewerOpen]);
+
   if (!safeImages.length) {
     return (
-      <div className="space-y-6">
-        <div className="h-105 rounded-4xl border border-slate-100 bg-linear-to-br from-slate-100 via-white to-slate-50 flex flex-col items-center justify-center text-slate-400">
+      <div className="space-y-5 sm:space-y-6">
+        <div className="h-72 sm:h-96 lg:h-105 rounded-4xl border border-slate-100 bg-linear-to-br from-slate-100 via-white to-slate-50 flex flex-col items-center justify-center text-slate-400 px-4 text-center">
           <span className="material-symbols-outlined text-6xl">image_not_supported</span>
           <p className="mt-4 text-xs font-black uppercase tracking-widest">No gallery uploaded yet</p>
           <p className="mt-2 text-[11px] font-semibold text-slate-500">This listing is live while media is being verified.</p>
@@ -116,6 +131,35 @@ export default function PropertyGallery({ images, property }) {
       property?.carpetArea
     ) || 'On request';
 
+  const getPropertyAge = () => {
+    const ageField = property?.raw?.age || property?.age;
+    if (ageField) return String(ageField).trim();
+    return 'On request';
+  };
+
+  const getBathrooms = () => {
+    const bathrooms = property?.raw?.bathrooms || property?.bathrooms;
+    if (bathrooms && Number.isFinite(Number(bathrooms))) {
+      return `${bathrooms} Bathroom${Number(bathrooms) > 1 ? 's' : ''}`;
+    }
+    return 'On request';
+  };
+
+  const getCoveredParking = () => {
+    const parking = property?.raw?.parking || property?.parking;
+    if (parking && Number.isFinite(Number(parking))) {
+      return `${parking} Covered Parking${Number(parking) > 1 ? 's' : ''}`;
+    }
+    return 'On request';
+  };
+
+  const getPossessionStatus = () => {
+    return property?.raw?.possession || property?.possession || 'Ready to Move';
+  };
+
+  const reraId = property?.reraNumber || property?.raw?.reraNumber || '';
+  const reraUrl = property?.reraUrl || property?.raw?.reraUrl || '';
+  const qrData = reraUrl || reraId || property?.title || 'RERA';
   const reraStatus = property?.reraNumber || property?.raw?.reraNumber ? 'RERA verified' : 'RERA details pending';
   const openViewer = (index) => {
     setActiveIndex(index);
@@ -125,13 +169,13 @@ export default function PropertyGallery({ images, property }) {
   const currentImage = safeImages[activeIndex] || safeImages[0];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Split Gallery Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,7fr)_minmax(320px,3fr)] gap-4 h-auto lg:h-144">
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,7fr)_minmax(320px,3fr)] gap-3 sm:gap-4 h-auto lg:h-144">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="relative min-h-88 lg:h-full rounded-4xl overflow-hidden group shadow-xl cursor-pointer"
+          className="relative min-h-72 sm:min-h-88 lg:h-full rounded-3xl sm:rounded-4xl overflow-hidden group shadow-xl cursor-pointer"
           onClick={() => openViewer(0)}
         >
           <Image
@@ -143,33 +187,41 @@ export default function PropertyGallery({ images, property }) {
             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/15 to-transparent opacity-80 pointer-events-none" />
-
-          <div className="absolute left-6 right-6 bottom-6 flex flex-wrap gap-3">
-            <div className="bg-white/15 backdrop-blur-xl border border-white/25 px-4 py-3 rounded-2xl flex flex-col min-w-24">
-              <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/70">Price</span>
-              <span className="text-sm font-black text-white tracking-tight">{rawPrice}</span>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              setIsReraModalOpen(true);
+            }}
+            className="absolute left-3 sm:left-5 bottom-3 sm:bottom-5 z-10 flex items-center gap-2 bg-emerald-50/95 hover:bg-emerald-100 px-2.5 sm:px-3.5 py-2 rounded-xl border border-emerald-100 shadow-lg transition-all"
+            aria-label="Open RERA verification"
+          >
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-lg flex items-center justify-center border border-emerald-50">
+              <Image
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${encodeURIComponent(qrData)}&color=059669`}
+                alt="RERA QR"
+                width={20}
+                height={20}
+                unoptimized
+                className="w-4 h-4 sm:w-5 sm:h-5 opacity-70"
+              />
             </div>
-            <div className="bg-white/15 backdrop-blur-xl border border-white/25 px-4 py-3 rounded-2xl flex flex-col min-w-24">
-              <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/70">Type</span>
-              <span className="text-sm font-black text-white tracking-tight">{typeLabel}</span>
+            <div className="leading-none text-left">
+              <div className="flex items-center gap-1">
+                <span className="material-symbols-outlined text-emerald-600 text-[11px]">verified</span>
+                <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest text-emerald-700 italic">RERA</span>
+              </div>
+              <p className="text-[8px] font-bold text-emerald-700/80 uppercase">View QR</p>
             </div>
-            <div className="bg-white/15 backdrop-blur-xl border border-white/25 px-4 py-3 rounded-2xl flex flex-col min-w-24">
-              <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/70">Carpet Area</span>
-              <span className="text-sm font-black text-white tracking-tight">{carpetAreaLabel}</span>
-            </div>
-            <div className="bg-white/15 backdrop-blur-xl border border-white/25 px-4 py-3 rounded-2xl flex flex-col min-w-24">
-              <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/70">Area</span>
-              <span className="text-sm font-black text-white tracking-tight">{areaLabel}</span>
-            </div>
-          </div>
+          </button>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 gap-4 lg:h-full">
+        <div className="grid grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 gap-3 sm:gap-4 lg:h-full">
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1 }}
-            className="relative min-h-44 lg:min-h-0 rounded-3xl overflow-hidden group shadow-md cursor-pointer border border-slate-100"
+            className="relative min-h-32 sm:min-h-44 lg:min-h-0 rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md cursor-pointer border border-slate-100"
             onClick={() => openViewer(Math.min(1, safeImages.length - 1))}
           >
             <Image
@@ -187,7 +239,7 @@ export default function PropertyGallery({ images, property }) {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="relative min-h-44 lg:min-h-0 rounded-3xl overflow-hidden group shadow-md cursor-pointer border border-slate-100"
+            className="relative min-h-32 sm:min-h-44 lg:min-h-0 rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md cursor-pointer border border-slate-100"
             onClick={() => openViewer(Math.min(2, safeImages.length - 1))}
           >
             <Image
@@ -201,15 +253,15 @@ export default function PropertyGallery({ images, property }) {
             <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[1px] flex flex-col items-center justify-center text-white text-center px-4">
               {remainingCount > 0 ? (
                 <>
-                  <span className="text-4xl md:text-5xl font-heading font-black italic tracking-tighter">+{remainingCount}</span>
-                  <span className="mt-1 text-[10px] font-black uppercase tracking-[0.25em] opacity-85">
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-heading font-black italic tracking-tighter">+{remainingCount}</span>
+                  <span className="mt-1 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.25em] opacity-85">
                     Remaining Images
                   </span>
                 </>
               ) : (
-                <span className="text-sm font-black uppercase tracking-[0.25em] opacity-90">Open Gallery</span>
+                <span className="text-xs sm:text-sm font-black uppercase tracking-[0.2em] sm:tracking-[0.25em] opacity-90">Open Gallery</span>
               )}
-              <span className="mt-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-white/15 border border-white/20 px-4 py-2 rounded-full">
+              <span className="mt-3 inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest bg-white/15 border border-white/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full">
                 <span className="material-symbols-outlined text-[18px]">photo_library</span>
                 View All
               </span>
@@ -218,31 +270,53 @@ export default function PropertyGallery({ images, property }) {
         </div>
       </div>
 
-      {/* Action Bar Below Collage */}
-      <div className="flex flex-wrap items-center justify-between gap-4 px-2">
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2 text-slate-400">
-            <span className="material-symbols-outlined text-[18px]">photo_camera</span>
-            <span className="text-[11px] font-bold tracking-tight">{safeImages.length} Gallery Photo{safeImages.length > 1 ? 's' : ''}</span>
-          </div>
-          <div className="flex items-center gap-2 text-slate-400">
-            <span className="material-symbols-outlined text-[18px]">verified</span>
-            <span className="text-[11px] font-bold tracking-tight">{reraStatus}</span>
-          </div>
+      {/* Property Info Chips */}
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Price</span>
+          <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{rawPrice}</span>
         </div>
-        <button
-          type="button"
-          onClick={() => openViewer(0)}
-          className="flex items-center gap-2 px-6 py-2 border-2 border-slate-100 rounded-xl hover:border-primary hover:text-primary transition-all text-sm font-extrabold tracking-tight"
-        >
-          <span className="material-symbols-outlined text-lg">grid_view</span>
-          Browse All Media
-        </button>
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Type</span>
+          <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{typeLabel}</span>
+        </div>
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Carpet Area</span>
+          <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{carpetAreaLabel}</span>
+        </div>
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Area</span>
+          <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{areaLabel}</span>
+        </div>
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Property Age</span>
+          <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{getPropertyAge()}</span>
+        </div>
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Bathrooms</span>
+          <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{getBathrooms()}</span>
+        </div>
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Covered Parking</span>
+          <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{getCoveredParking()}</span>
+        </div>
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Possession</span>
+          <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{getPossessionStatus()}</span>
+        </div>
       </div>
 
       {isViewerOpen && (
         <div
-          className="fixed inset-0 z-9999 bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6"
+          className="fixed inset-0 z-9999 bg-black/20 backdrop-blur-2xl flex items-center justify-center p-4 sm:p-6"
           role="dialog"
           aria-modal="true"
           onClick={() => setIsViewerOpen(false)}
@@ -254,13 +328,13 @@ export default function PropertyGallery({ images, property }) {
             <button
               type="button"
               onClick={() => setIsViewerOpen(false)}
-              className="absolute -top-12 right-0 text-white/80 hover:text-white transition-colors"
+              className="absolute -top-10 sm:-top-12 right-0 text-white/80 hover:text-white transition-colors"
               aria-label="Close gallery"
             >
-              <span className="material-symbols-outlined text-3xl">close</span>
+              <span className="material-symbols-outlined text-2xl sm:text-3xl">close</span>
             </button>
 
-            <div className="relative overflow-hidden rounded-4xl bg-black shadow-2xl border border-white/10 min-h-[60vh] lg:min-h-[72vh]">
+            <div className="relative overflow-hidden rounded-3xl sm:rounded-4xl bg-black shadow-2xl border border-white/10 min-h-[52vh] sm:min-h-[60vh] lg:min-h-[72vh]">
               <div className="absolute inset-0 flex items-center justify-center">
                 <Image
                   src={currentImage}
@@ -275,7 +349,7 @@ export default function PropertyGallery({ images, property }) {
               <button
                 type="button"
                 onClick={() => setActiveIndex((current) => (current - 1 + safeImages.length) % safeImages.length)}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/12 hover:bg-white/20 text-white border border-white/15 flex items-center justify-center transition-colors"
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/12 hover:bg-white/20 text-white border border-white/15 flex items-center justify-center transition-colors"
                 aria-label="Previous image"
               >
                 <span className="material-symbols-outlined">chevron_left</span>
@@ -284,30 +358,30 @@ export default function PropertyGallery({ images, property }) {
               <button
                 type="button"
                 onClick={() => setActiveIndex((current) => (current + 1) % safeImages.length)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/12 hover:bg-white/20 text-white border border-white/15 flex items-center justify-center transition-colors"
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/12 hover:bg-white/20 text-white border border-white/15 flex items-center justify-center transition-colors"
                 aria-label="Next image"
               >
                 <span className="material-symbols-outlined">chevron_right</span>
               </button>
 
-              <div className="absolute left-4 right-4 top-4 flex items-center justify-between gap-4">
-                <div className="bg-black/45 text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] backdrop-blur-md border border-white/10">
+              <div className="absolute left-3 sm:left-4 right-3 sm:right-4 top-3 sm:top-4 flex items-center justify-between gap-3 sm:gap-4">
+                <div className="bg-black/45 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-[0.16em] sm:tracking-[0.2em] backdrop-blur-md border border-white/10">
                   {activeIndex + 1} / {safeImages.length}
                 </div>
-                <div className="hidden sm:flex items-center gap-2 bg-black/45 text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] backdrop-blur-md border border-white/10">
+                <div className="hidden md:flex items-center gap-2 bg-black/45 text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] backdrop-blur-md border border-white/10">
                   <span className="material-symbols-outlined text-[16px]">swipe</span>
                   Use arrows or tap thumbnails
                 </div>
               </div>
             </div>
 
-            <div className="mt-4 flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+            <div className="mt-3 sm:mt-4 flex gap-2 sm:gap-3 overflow-x-auto pb-2 no-scrollbar">
               {safeImages.map((image, index) => (
                 <button
                   key={`${image}-${index}`}
                   type="button"
                   onClick={() => setActiveIndex(index)}
-                  className={`relative w-37.5 h-37.5 shrink-0 rounded-2xl overflow-hidden border transition-all ${
+                  className={`relative w-24 h-24 sm:w-30 sm:h-30 md:w-37.5 md:h-37.5 shrink-0 rounded-xl sm:rounded-2xl overflow-hidden border transition-all ${
                     index === activeIndex ? 'border-white ring-2 ring-white/70 scale-[1.02]' : 'border-white/10 opacity-70 hover:opacity-100'
                   }`}
                   aria-label={`Show image ${index + 1}`}
@@ -326,6 +400,15 @@ export default function PropertyGallery({ images, property }) {
           </div>
         </div>
       )}
+
+      <ReraQRModal
+        isOpen={isReraModalOpen}
+        onClose={() => setIsReraModalOpen(false)}
+        reraId={reraId}
+        reraUrl={reraUrl}
+        propertyName={property?.title}
+      />
     </div>
   );
 }
+

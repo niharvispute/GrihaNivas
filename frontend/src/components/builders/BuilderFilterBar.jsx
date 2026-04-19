@@ -77,10 +77,10 @@ export default function BuilderFilterBar({ initialSearch = '', initialIsFeatured
   };
 
   return (
-    <section className="sticky top-18.25 z-40 mb-12 py-4 bg-background/80 backdrop-blur-sm">
+    <section className="lg:sticky lg:top-18.25 z-40 mb-8 sm:mb-12 py-3 sm:py-4 bg-background/80 backdrop-blur-sm">
       <form 
         onSubmit={handleSearchSubmit}
-        className="bg-white border border-neutral-200 p-3 xl:rounded-full rounded-2xl shadow-sm flex flex-col xl:flex-row items-center gap-4"
+        className="bg-white border border-neutral-200 p-2.5 sm:p-3 xl:rounded-full rounded-2xl shadow-sm flex flex-col xl:flex-row items-stretch xl:items-center gap-3 sm:gap-4"
       >
         <div className="relative grow w-full">
           <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">search</span>
@@ -95,9 +95,9 @@ export default function BuilderFilterBar({ initialSearch = '', initialIsFeatured
         
         <div className="h-8 w-px bg-neutral-200 hidden xl:block"></div>
         
-        <div className="flex items-center gap-6 w-full xl:w-auto px-4">
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-6 w-full xl:w-auto px-2 sm:px-4">
           <label className="flex items-center gap-3 cursor-pointer group">
-            <span className="text-sm font-semibold text-zinc-600 group-hover:text-primary transition-colors font-label">Featured Builders</span>
+            <span className="text-xs sm:text-sm font-semibold text-zinc-600 group-hover:text-primary transition-colors font-label">Featured Builders</span>
             <div className="relative inline-flex items-center cursor-pointer">
               <input 
                 className="sr-only peer" 
@@ -111,7 +111,7 @@ export default function BuilderFilterBar({ initialSearch = '', initialIsFeatured
           
           <div className="h-8 w-px bg-neutral-200"></div>
           
-          <div className="relative w-full xl:w-48" ref={dropdownRef}>
+          <div className="relative w-full min-w-44 xl:w-48" ref={dropdownRef}>
             <button 
               type="button"
               onClick={() => setIsCityDropdownOpen(!isCityDropdownOpen)}
@@ -125,7 +125,7 @@ export default function BuilderFilterBar({ initialSearch = '', initialIsFeatured
             </button>
 
             {isCityDropdownOpen && (
-              <div className="absolute top-full left-0 mt-3 w-64 bg-white border border-slate-100 rounded-3xl shadow-2xl p-3 z-50 animate-in fade-in zoom-in-95 duration-200">
+              <div className="absolute top-full left-0 mt-3 w-full sm:w-64 bg-white border border-slate-100 rounded-3xl shadow-2xl p-3 z-50 animate-in fade-in zoom-in-95 duration-200">
                 <div className="grid gap-1">
                   <button
                     type="button"
@@ -160,7 +160,7 @@ export default function BuilderFilterBar({ initialSearch = '', initialIsFeatured
         <button 
           type="submit"
           disabled={isPending}
-          className="bg-black text-white px-8 py-3 rounded-full font-bold text-sm hover:opacity-90 transition-opacity w-full xl:w-auto uppercase tracking-widest disabled:opacity-50"
+          className="bg-black text-white px-8 py-3 rounded-full font-bold text-xs sm:text-sm hover:opacity-90 transition-opacity w-full xl:w-auto uppercase tracking-widest disabled:opacity-50"
         >
           {isPending ? 'Wait...' : 'Search'}
         </button>

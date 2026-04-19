@@ -399,6 +399,7 @@ const schemas = {
       page:      z.coerce.number().int().min(1).default(1),
       limit:     z.coerce.number().int().min(1).max(50).default(10),
       category:  z.enum(['buy', 'rent', 'commercial', 'new_launch']).optional(),
+      launchWindow: z.coerce.boolean().optional(),
       builder:   objectIdSchema.optional(),
       builderSlug: z.string().trim().max(200).optional(),
       bhk:       z.coerce.number().int().min(1).max(10).optional(),
@@ -530,6 +531,17 @@ const schemas = {
       comment: z.string().trim().min(2).max(1000),
     }),
 
+    commentParams: z.object({
+      id: objectIdSchema,
+      commentId: objectIdSchema,
+    }),
+
+    adminCommentsList: z.object({
+      page: z.coerce.number().int().min(1).default(1),
+      limit: z.coerce.number().int().min(1).max(100).default(20),
+      status: z.enum(['pending', 'approved']).default('pending'),
+    }),
+
     list: z.object({
       page: z.coerce.number().int().min(1).default(1),
       limit: z.coerce.number().int().min(1).max(20).default(10),
@@ -546,6 +558,10 @@ const schemas = {
       phone: phoneSchema,
       email: emailSchema.optional(),
       message: z.string().trim().min(10).max(2000),
+    }),
+    newsletter: z.object({
+      email: emailSchema,
+      source: z.string().trim().min(2).max(80).optional(),
     }),
   },
 
