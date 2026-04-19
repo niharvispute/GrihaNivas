@@ -21,26 +21,7 @@ export default function RentAgreementPage() {
     { title: "Affordable Pricing", desc: "Transparent fee structure with no hidden charges. Starting from just ₹999.", icon: "payments" }
   ];
 
-  const testimonials = [
-    {
-      name: "Mrs. Deshmukh",
-      role: "Landlord, Prabhadevi",
-      text: "The doorstep biometric service was a lifesaver. Being a senior citizen, going to the registrar office in Bandra was impossible. Mumbai Editorial team made it seamless.",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCoFVWF6zSrU7iMThWmg4KiqWfenH6_K6e-tO7uVcLsNJLYHHBNLcKNTmRA1wKVnxO-A3iUDTI0O16osJ-OpZ_12vMdAUYFON-qLlQQwnt2MypxflBPCz4ZgRvS62rdovYLPEzVrVwSNcRGA-i6Vj4L0qnmG05DlaqWemqz5s9B4sDmNrp6YAyTZbjYNwRQMkaSeabqrbI4rmTZro8SRqbkWhWHvoKNDDxZNclTVj4pByzxhmHeXMFI-ygw6xdHym_k4MyTFV7YUgY"
-    },
-    {
-      name: "Aditya Verma",
-      role: "IT Professional, Andheri West",
-      text: "Quick, transparent, and completely digital. As a tenant moving from Bangalore, I was worried about Mumbai's legal hurdles, but they handled everything.",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBVr5yM8tN6MXqpTulX5p3olfHL6ywjMZBU3kfkug4EY1NaZwDMe4KGwI3-DdF5BR88XktrA07a2YIs67gvUNxS0XwfXImLkDLwPeq0dhc1MJ_KehvDeqO4l47nBq51XqrWjyrW8ffYWkkeXFX6KUwIxoWJEICP9mP-WDIpLeuf1WhKTYcVB1xwQ3n10KYal8MAMnQrVl1_gjFLx1H2j3y0YgrxErVqrEOEIKlRevYRvvAlTeqwY2rZR5ttGlIJDRmIGW3_4jPPjJg"
-    },
-    {
-      name: "Rajesh Khanna",
-      role: "Investor, South Mumbai",
-      text: "Their drafting is top-notch. They included specific clauses for my penthouse that other portals missed. Highly recommended for premium properties.",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfSIidxFh24GkqlI2BAoqacIuaHPjpwp49kq0rmoflZImoQkXhJjMLl_N4kX93mw4EsYDROy_jOsPA3TmIk2iq0UdGJrwzOhb5V4OTsufTaXWPF7h-Of58_B-no9gEYo8R2i6grtFvxydrMzvVe9C8Bu3UQGrsw8YaV-BR_swRFp-Z1COOQpZgg-dD98ym_gs5493u_-6omclcN1jmEHhczdzQHplOUVirP7bCfDdczONAYR8Dwq4q0HqeRBc6E5NneTunRJSqckM"
-    }
-  ];
+  
 
   const faqs = [
     { q: "Is E-Registration as valid as offline registration?", a: "Yes, E-Registration is the official method promoted by the Government of Maharashtra. It carries the same legal weight as visiting a Sub-Registrar office and is actually more secure due to biometric verification." },
@@ -252,41 +233,7 @@ export default function RentAgreementPage() {
         </div>
       </section>
 
-      {/* ⭐ Trust & Testimonials */}
-      <section className="px-8 py-32 bg-slate-50">
-        <div className="max-w-screen-2xl mx-auto">
-          <div className="text-center mb-24">
-            <h2 className="text-5xl font-black text-slate-900 mb-8 tracking-tighter">Trusted by Mumbai's Community</h2>
-            <div className="flex flex-wrap justify-center gap-12 mt-12 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700">
-              {["RERA REGISTERED", "LEGAL VERIFIED", "GOVT AUTHORIZED"].map((t, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  <span className="font-black tracking-[0.2em] text-xs">{t}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="grid md:grid-cols-3 gap-12">
-            {testimonials.map((t, i) => (
-              <div key={i} className="p-12 bg-white rounded-[3.5rem] shadow-sm hover:shadow-2xl transition-all duration-700 group">
-                <div className="flex gap-1 text-primary mb-10">
-                  {[1, 2, 3, 4, 5].map(s => (
-                    <svg key={s} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  ))}
-                </div>
-                <p className="italic text-slate-500 mb-12 text-lg font-medium leading-relaxed">"{t.text}"</p>
-                <div className="flex items-center gap-5">
-                  <img className="w-16 h-16 rounded-3xl object-cover grayscale group-hover:grayscale-0 transition-all shadow-xl" src={t.image} alt={t.name} />
-                  <div>
-                    <p className="font-black text-slate-900 leading-none mb-2">{t.name}</p>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+     
 
       {/* ❓ FAQ Section */}
       <section className="px-8 py-32 bg-white pb-48">
