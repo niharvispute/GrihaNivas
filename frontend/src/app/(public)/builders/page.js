@@ -1,5 +1,6 @@
 import BuilderCard from '@/components/builders/BuilderCard';
 import BuilderFilterBar from '@/components/builders/BuilderFilterBar';
+import FeaturedBuildersCarousel from '@/components/builders/FeaturedBuildersCarousel';
 import { listBuilders } from '@/services/builderService';
 
 export const metadata = {
@@ -21,26 +22,17 @@ export default async function ExploreBuildersPage({ searchParams }) {
           : undefined,
   };
 
-  const response = await listBuilders(query);
+  const [response, featuredResponse] = await Promise.all([
+    listBuilders(query),
+    listBuilders({ page: 1, limit: 4, isFeatured: true }),
+  ]);
+
   const builders = response?.items || [];
-  const featuredBuilder = builders.find((builder) => builder.isFeatured) || builders[0] || null;
-  const remainingBuilders = featuredBuilder
-    ? builders.filter((builder) => builder.slug !== featuredBuilder.slug)
-    : [];
+  const featuredBuilders = (featuredResponse?.items || []).slice(0, 4);
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pt-24 pb-20 max-w-screen-2xl mx-auto px-6">
-        {/* Header Section */}
-        <header className="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h1 className="font-headline text-4xl md:text-5xl font-extrabold text-on-background tracking-tight mb-3 uppercase text-slate-900">
-            Explore <span className="text-primary italic">Builders</span>
-          </h1>
-          <p className="text-zinc-500 text-lg font-body max-w-2xl">
-            Discover trusted real estate developers crafting the future of modern living with uncompromising precision.
-          </p>
-        </header>
-
+      <main className="pt-3 sm:pt-4 pb-16 sm:pb-20 max-w-screen-2xl mx-auto px-4 sm:px-6">
         {/* Dynamic Search & Filter Bar */}
         <BuilderFilterBar 
           initialSearch={params?.search || ''} 
@@ -48,68 +40,11 @@ export default async function ExploreBuildersPage({ searchParams }) {
           initialCity={params?.city || ''}
         />
 
-        {/* Featured Highlight */}
-        {featuredBuilder && (
-          <section className="mb-16 animate-in fade-in duration-1000">
-            <div className="group relative overflow-hidden rounded-[2.5rem] bg-zinc-900 h-125 flex items-center shadow-2xl">
-              <div className="absolute inset-0">
-                <img 
-                  className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" 
-                  src={featuredBuilder.heroImage} 
-                  alt={featuredBuilder.name}
-                />
-                <div className="absolute inset-0 bg-linear-to-r from-zinc-950 via-zinc-950/60 to-transparent"></div>
-              </div>
-              
-              <div className="relative z-10 px-8 md:px-16 max-w-3xl">
-                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/20 text-white border border-primary/30 text-[10px] font-bold uppercase tracking-widest mb-6">
-                  Featured Partner
-                </span>
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 bg-white rounded-xl p-2 flex items-center justify-center shadow-xl">
-                    <img 
-                      className="w-full h-full object-contain" 
-                      src={featuredBuilder.logo} 
-                      alt={featuredBuilder.name}
-                    />
-                  </div>
-                  <h2 className="text-4xl md:text-6xl font-headline font-extrabold text-white uppercase tracking-tighter">
-                    {featuredBuilder.name}
-                  </h2>
-                </div>
-                <p className="text-zinc-300 text-lg mb-8 leading-relaxed font-body">
-                  {featuredBuilder.tagline} {featuredBuilder.description[0]}
-                </p>
-                <div className="flex flex-wrap gap-8 mb-10">
-                  <div>
-                    <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold font-label">Est. Year</p>
-                    <p className="text-white text-xl font-bold">{featuredBuilder.establishedYear}</p>
-                  </div>
-                  <div>
-                    <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold font-label">Total Projects</p>
-                    <p className="text-white text-xl font-bold">{featuredBuilder.totalProjects}</p>
-                  </div>
-                  <div>
-                    <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold font-label">HQ Location</p>
-                    <p className="text-white text-xl font-bold">{featuredBuilder.hqLocation}</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <a href={`/builders/${featuredBuilder.slug}`} className="bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary-container transition-all active:scale-95 text-sm uppercase tracking-widest">
-                    View Details
-                  </a>
-                  <a href={`/builders/${featuredBuilder.slug}#portfolio`} className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold hover:bg-white/20 transition-all text-sm uppercase tracking-widest">
-                    View Portfolio
-                  </a>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
+        <FeaturedBuildersCarousel builders={featuredBuilders} />
 
         {/* Builder Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {(featuredBuilder ? remainingBuilders : builders).map((builder) => (
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          {builders.map((builder) => (
             <BuilderCard key={builder.id} builder={builder} />
           ))}
         </section>
@@ -121,8 +56,8 @@ export default async function ExploreBuildersPage({ searchParams }) {
         )}
 
         {/* Pagination placeholder */}
-        <div className="mt-16 flex justify-center">
-          <button className="group flex items-center gap-2 bg-on-background bg-zinc-900 text-white px-10 py-4 rounded-full font-bold hover:bg-zinc-800 transition-all active:scale-95 shadow-xl uppercase tracking-widest text-xs">
+        <div className="mt-10 sm:mt-16 flex justify-center">
+          <button className="group flex items-center gap-2 bg-on-background bg-zinc-900 text-white px-7 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold hover:bg-zinc-800 transition-all active:scale-95 shadow-xl uppercase tracking-widest text-[11px] sm:text-xs">
             <span>Load More Builders</span>
             <span className="material-symbols-outlined group-hover:translate-y-1 transition-transform">expand_more</span>
           </button>

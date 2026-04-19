@@ -68,9 +68,9 @@ export default function BuilderHero({ builder }) {
             >
               View All Properties <span className="material-symbols-outlined">arrow_downward</span>
             </a>
-            <button className="bg-zinc-900 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-zinc-800 transition-all border border-zinc-700 flex items-center gap-2">
+            <a href="#builder-contact-form" className="bg-zinc-900 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-zinc-800 transition-all border border-zinc-700 flex items-center gap-2">
               Contact Expert <span className="material-symbols-outlined">call</span>
-            </button>
+            </a>
           </div>
         </div>
       </div>

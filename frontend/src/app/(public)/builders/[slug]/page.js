@@ -45,7 +45,7 @@ export default async function BuilderDetailPage({ params }) {
     <div className="min-h-screen bg-background text-on-background antialiased">
       {/* <Header /> */}
       
-      <main className="pt-16">
+      <main className="pt-0">
         {/* Dynamic Profile Sections */}
         <BuilderHero builder={builder} />
         
@@ -71,7 +71,6 @@ export default async function BuilderDetailPage({ params }) {
         </section>
       </main>
 
-      <Footer />
     </div>
   );
 }
