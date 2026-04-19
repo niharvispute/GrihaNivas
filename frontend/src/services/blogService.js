@@ -46,3 +46,26 @@ export const deleteBlog = async (id) => {
   });
   return res.data;
 };
+
+export const listBlogCommentsAdmin = async (query = {}) => {
+  const res = await authedApiFetch('/api/blogs/admin/comments', { query });
+  return {
+    items: res.data || [],
+    meta: res.meta,
+    message: res.message,
+  };
+};
+
+export const approveBlogComment = async (blogId, commentId) => {
+  const res = await authedApiFetch(`/api/blogs/${blogId}/comments/${commentId}/approve`, {
+    method: 'PATCH',
+  });
+  return res.data;
+};
+
+export const deleteBlogComment = async (blogId, commentId) => {
+  const res = await authedApiFetch(`/api/blogs/${blogId}/comments/${commentId}`, {
+    method: 'DELETE',
+  });
+  return res.data;
+};

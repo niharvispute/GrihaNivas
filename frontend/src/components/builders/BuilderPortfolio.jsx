@@ -86,17 +86,17 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
   };
 
   return (
-    <section className="py-24 bg-neutral-50" id="portfolio">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
+    <section className="py-14 sm:py-18 lg:py-24 bg-neutral-50" id="portfolio">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex flex-col md:flex-row justify-between md:items-end mb-8 sm:mb-12 gap-6 sm:gap-8">
           <div>
-            <h2 className="text-4xl font-extrabold text-zinc-900 mb-4 font-headline uppercase tracking-tight">Portfolio Showcase</h2>
-            <p className="text-zinc-600 max-w-xl font-body">Explore our current residential masterpieces across the Mumbai Metropolitan Region.</p>
+            <h2 className="text-3xl! sm:text-4xl! font-extrabold text-zinc-900 mb-3 sm:mb-4 font-headline uppercase tracking-tight">Portfolio Showcase</h2>
+            <p className="text-zinc-600 max-w-xl font-body text-sm sm:text-base">Explore our current residential masterpieces across the Mumbai Metropolitan Region.</p>
           </div>
           
-          <div className="flex flex-wrap gap-3 bg-white p-2 rounded-2xl shadow-sm border border-neutral-200">
+          <div className="w-full md:w-auto flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-3 bg-white p-2 rounded-2xl shadow-sm border border-neutral-200">
             <select
-              className="border-0 focus:ring-0 text-sm font-semibold text-zinc-600 bg-transparent font-label"
+              className="w-full sm:w-auto border-0 focus:ring-0 text-sm font-semibold text-zinc-600 bg-transparent font-label"
               value={selectedBhk}
               onChange={(event) => setSelectedBhk(event.target.value)}
             >
@@ -105,9 +105,9 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
               <option value="3">3 BHK</option>
               <option value="4plus">4 BHK+</option>
             </select>
-            <div className="w-px h-6 bg-zinc-200 self-center"></div>
+            <div className="hidden sm:block w-px h-6 bg-zinc-200 self-center"></div>
             <select
-              className="border-0 focus:ring-0 text-sm font-semibold text-zinc-600 bg-transparent font-label"
+              className="w-full sm:w-auto border-0 focus:ring-0 text-sm font-semibold text-zinc-600 bg-transparent font-label"
               value={selectedPriceRange}
               onChange={(event) => setSelectedPriceRange(event.target.value)}
             >
@@ -116,9 +116,9 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
               <option value="5to10">₹5 Cr - ₹10 Cr</option>
               <option value="10plus">Above ₹10 Cr</option>
             </select>
-            <div className="w-px h-6 bg-zinc-200 self-center"></div>
+            <div className="hidden sm:block w-px h-6 bg-zinc-200 self-center"></div>
             <select
-              className="border-0 focus:ring-0 text-sm font-semibold text-zinc-600 bg-transparent font-label"
+              className="w-full sm:w-auto border-0 focus:ring-0 text-sm font-semibold text-zinc-600 bg-transparent font-label"
               value={selectedStatus}
               onChange={(event) => setSelectedStatus(event.target.value)}
             >
@@ -130,17 +130,17 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
             <button
               type="button"
               onClick={resetFilters}
-              className="bg-zinc-900 text-white px-3 py-2 rounded-xl flex items-center justify-center text-xs font-bold uppercase tracking-wider"
+              className="w-full sm:w-auto bg-zinc-900 text-white px-3 py-2 rounded-xl flex items-center justify-center text-xs font-bold uppercase tracking-wider"
             >
               Reset
             </button>
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredPortfolio.map((prop) => (
             <div key={prop.id || prop.slug} className="group bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-neutral-100 flex flex-col">
-              <div className="relative overflow-hidden h-72">
+              <div className="relative overflow-hidden h-60 sm:h-64 lg:h-72">
                 <img 
                   src={prop.image} 
                   alt={prop.title} 
@@ -150,27 +150,27 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
                   {prop.status}
                 </div>
               </div>
-              <div className="p-8 flex flex-col grow">
+              <div className="p-5 sm:p-6 lg:p-8 flex flex-col grow">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-2xl font-bold text-zinc-900 font-headline tracking-tight">{prop.title}</h3>
-                  <p className="text-primary font-bold text-lg font-body">{prop.price}</p>
+                  <h3 className="text-xl sm:text-2xl font-bold text-zinc-900 font-headline tracking-tight leading-tight">{prop.title}</h3>
+                  <p className="text-primary font-bold text-base sm:text-lg font-body">{prop.price}</p>
                 </div>
-                <div className="flex items-center gap-2 text-zinc-500 mb-6 text-sm font-body">
+                <div className="flex items-center gap-2 text-zinc-500 mb-5 sm:mb-6 text-sm font-body">
                   <span className="material-symbols-outlined text-sm">location_on</span> {prop.location}
                 </div>
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                  <div className="bg-neutral-50 p-4 rounded-xl">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
+                  <div className="bg-neutral-50 p-3 sm:p-4 rounded-xl">
                     <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest font-label mb-1">Configurations</p>
                     <p className="font-bold text-zinc-800 text-xs font-body">{prop.type}</p>
                   </div>
-                  <div className="bg-neutral-50 p-4 rounded-xl">
+                  <div className="bg-neutral-50 p-3 sm:p-4 rounded-xl">
                     <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest font-label mb-1">Availability</p>
                     <p className="font-bold text-zinc-800 text-xs font-body">{prop.availability}</p>
                   </div>
                 </div>
                 <Link 
                   href={`/property/${prop.slug || prop.id}`}
-                  className="mt-auto w-full border-2 border-zinc-900 text-center text-zinc-900 py-3 rounded-xl font-bold hover:bg-zinc-900 hover:text-white transition-all text-sm uppercase tracking-widest"
+                  className="mt-auto w-full border-2 border-zinc-900 text-center text-zinc-900 py-3 rounded-xl font-bold hover:bg-zinc-900 hover:text-white transition-all text-xs sm:text-sm uppercase tracking-widest"
                 >
                   View Property Details
                 </Link>

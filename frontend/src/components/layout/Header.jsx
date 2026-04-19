@@ -13,13 +13,23 @@ const NAV_LINKS = [
   { label: 'Blogs', href: '/blogs' },
 ];
 
+const SERVICE_LINKS = [
+  { label: 'Home Loan', href: '/home-loan', icon: 'account_balance' },
+  { label: 'EMI Calculator', href: '/emi-calculator', icon: 'calculate' },
+  { label: 'Stamp Duty', href: '/stamp-duty', icon: 'receipt_long' },
+  { label: 'Rent Agreement', href: '/rent-agreement', icon: 'description' },
+];
+
 export default function Header() {
   const { user, loadingUser, openModal, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isServicesMenuOpen, setIsServicesMenuOpen] = useState(false);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const accountMenuRef = useRef(null);
+  const servicesMenuRef = useRef(null);
 
   const displayName = user?.name || user?.email || 'Account';
   const avatarSrc = user?.profilePictureUrl || user?.photoURL || user?.imageUrl || null;
@@ -29,6 +39,8 @@ export default function Header() {
   // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setIsServicesMenuOpen(false);
+    setIsMobileServicesOpen(false);
   }, [pathname]);
 
   // Prevent body scroll when mobile menu is open
@@ -42,15 +54,20 @@ export default function Header() {
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
-    if (!isAccountMenuOpen) return;
+    if (!isAccountMenuOpen && !isServicesMenuOpen) return;
     const handleOutsideClick = (event) => {
       if (accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
         setIsAccountMenuOpen(false);
+      }
+      if (servicesMenuRef.current && !servicesMenuRef.current.contains(event.target)) {
+        setIsServicesMenuOpen(false);
       }
     };
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
         setIsAccountMenuOpen(false);
+        setIsServicesMenuOpen(false);
+        setIsMobileServicesOpen(false);
         setIsMobileMenuOpen(false);
       }
     };
@@ -60,7 +77,7 @@ export default function Header() {
       document.removeEventListener('mousedown', handleOutsideClick);
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [isAccountMenuOpen]);
+  }, [isAccountMenuOpen, isServicesMenuOpen]);
 
   const handleOpenLogin = () => {
     setIsMobileMenuOpen(false);
@@ -90,6 +107,8 @@ export default function Header() {
     return pathname === href || pathname.startsWith(href + '/');
   };
 
+  const isServicesActive = SERVICE_LINKS.some((service) => isActive(service.href));
+
   return (
     <>
       <header className="sticky top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-gray-100/50 shadow-sm">
@@ -114,6 +133,56 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+
+            <div
+              ref={servicesMenuRef}
+              className="relative"
+              onMouseEnter={() => setIsServicesMenuOpen(true)}
+              onMouseLeave={() => setIsServicesMenuOpen(false)}
+            >
+              <button
+                type="button"
+                aria-expanded={isServicesMenuOpen}
+                aria-haspopup="true"
+                onClick={() => setIsServicesMenuOpen((prev) => !prev)}
+                className={`flex items-center gap-1.5 py-2 border-b-2 transition-colors ${
+                  isServicesActive
+                    ? 'text-primary border-primary'
+                    : 'border-transparent hover:text-primary'
+                }`}
+              >
+                <span>Services</span>
+                <span className={`material-symbols-outlined text-base transition-transform ${isServicesMenuOpen ? 'rotate-180' : ''}`}>
+                  expand_more
+                </span>
+              </button>
+
+              <div
+                className={`absolute left-1/2 top-full pt-3 w-72 -translate-x-1/2 transition-all duration-200 ${
+                  isServicesMenuOpen
+                    ? 'pointer-events-auto translate-y-0 opacity-100'
+                    : 'pointer-events-none -translate-y-1 opacity-0'
+                }`}
+              >
+                <div className="rounded-3xl border border-slate-100 bg-white/95 p-2 shadow-2xl shadow-slate-200/70 backdrop-blur-xl">
+                  {SERVICE_LINKS.map((service) => (
+                    <Link
+                      key={service.href}
+                      href={service.href}
+                      onClick={() => setIsServicesMenuOpen(false)}
+                      className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold transition-all ${
+                        isActive(service.href)
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-lg text-primary">{service.icon}</span>
+                      <span>{service.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
           </nav>
 
           {/* Desktop Actions */}
@@ -292,6 +361,56 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+
+            <div className="rounded-2xl border border-slate-100 bg-slate-50/80">
+              <button
+                type="button"
+                onClick={() => setIsMobileServicesOpen((prev) => !prev)}
+                className={`flex w-full items-center justify-between gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all ${
+                  isServicesActive
+                    ? 'text-primary'
+                    : 'text-slate-700 hover:text-slate-900'
+                }`}
+                aria-expanded={isMobileServicesOpen}
+                aria-controls="mobile-services-menu"
+              >
+                <span className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-base">apps</span>
+                  Services
+                </span>
+                <span className={`material-symbols-outlined text-base transition-transform ${isMobileServicesOpen ? 'rotate-180' : ''}`}>
+                  expand_more
+                </span>
+              </button>
+
+              <div
+                id="mobile-services-menu"
+                className={`grid transition-all duration-300 ${isMobileServicesOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+              >
+                <div className="overflow-hidden">
+                  <div className="px-2 pb-2 space-y-1">
+                    {SERVICE_LINKS.map((service) => (
+                      <Link
+                        key={service.href}
+                        href={service.href}
+                        onClick={() => {
+                          setIsMobileServicesOpen(false);
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
+                          isActive(service.href)
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-slate-600 hover:bg-white hover:text-slate-900'
+                        }`}
+                      >
+                        <span className="material-symbols-outlined text-base text-primary">{service.icon}</span>
+                        <span>{service.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </nav>
 
           {/* Panel Footer */}

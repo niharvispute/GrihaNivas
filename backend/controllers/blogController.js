@@ -233,4 +233,105 @@ const addComment = async (req, res, next) => {
   }
 };
 
-module.exports = { list, getBySlug, create, update, remove, addComment };
+// ── GET /api/blogs/admin/comments  [admin] ──────────────────────────────────
+
+const adminListComments = async (req, res, next) => {
+  try {
+    const { limit, skip, buildMeta } = parsePagination(req.query);
+    const status = req.query.status || 'pending';
+    const onlyApproved = status === 'approved';
+
+    const [rows, totalRows] = await Promise.all([
+      Blog.aggregate([
+        { $match: {} },
+        { $unwind: '$comments' },
+        { $match: { 'comments.isApproved': onlyApproved } },
+        { $sort: { 'comments.createdAt': -1 } },
+        { $skip: skip },
+        { $limit: limit },
+        {
+          $project: {
+            _id: 0,
+            blogId: '$_id',
+            blogTitle: '$title',
+            blogSlug: '$slug',
+            commentId: '$comments._id',
+            name: '$comments.name',
+            email: '$comments.email',
+            content: '$comments.content',
+            isApproved: '$comments.isApproved',
+            createdAt: '$comments.createdAt',
+          },
+        },
+      ]),
+      Blog.aggregate([
+        { $match: {} },
+        { $unwind: '$comments' },
+        { $match: { 'comments.isApproved': onlyApproved } },
+        { $count: 'count' },
+      ]),
+    ]);
+
+    const total = totalRows?.[0]?.count || 0;
+    return sendSuccess(res, 200, 'Blog comments fetched', rows, buildMeta(total));
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── PATCH /api/blogs/:id/comments/:commentId/approve  [admin] ───────────────
+
+const approveComment = async (req, res, next) => {
+  try {
+    const { id, commentId } = req.params;
+
+    const blog = await Blog.findOneAndUpdate(
+      { _id: id, 'comments._id': commentId },
+      { $set: { 'comments.$.isApproved': true } },
+      { returnDocument: 'after' }
+    );
+
+    if (!blog) throw new AppError('Comment not found', 404);
+
+    const comment = blog.comments.find((item) => item._id.toString() === commentId);
+    return sendSuccess(res, 200, 'Comment approved', {
+      blogId: blog._id,
+      commentId,
+      isApproved: Boolean(comment?.isApproved),
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── DELETE /api/blogs/:id/comments/:commentId  [admin] ─────────────────────
+
+const deleteComment = async (req, res, next) => {
+  try {
+    const { id, commentId } = req.params;
+
+    const blog = await Blog.findByIdAndUpdate(
+      id,
+      { $pull: { comments: { _id: commentId } } },
+      { returnDocument: 'after' }
+    );
+
+    if (!blog) throw new AppError('Blog post not found', 404);
+
+    return sendSuccess(res, 200, 'Comment deleted');
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  list,
+  getBySlug,
+  create,
+  update,
+  remove,
+  addComment,
+  adminListComments,
+  approveComment,
+  deleteComment,
+};

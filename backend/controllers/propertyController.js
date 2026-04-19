@@ -25,7 +25,19 @@ const User = require('../models/mongoose/User');
 // ── Filter Builder ────────────────────────────────────────────────────────────
 
 const buildMongoFilter = async (query) => {
-  const { category, bhk, area, minPrice, maxPrice, furnishing, isFeatured, hasMedia, builder, builderSlug } = query;
+  const {
+    category,
+    bhk,
+    area,
+    minPrice,
+    maxPrice,
+    furnishing,
+    isFeatured,
+    hasMedia,
+    builder,
+    builderSlug,
+    launchWindow,
+  } = query;
 
   const filter = {
     isActive: true,
@@ -39,11 +51,38 @@ const buildMongoFilter = async (query) => {
   if (furnishing)  filter.furnishing = furnishing;
   if (isFeatured !== undefined) filter.isFeatured = isFeatured === 'true' || isFeatured === true;
 
+  const andConditions = [];
+
   if (hasMedia === 'true' || hasMedia === true) {
-    filter.$or = [
-      { 'heroImage.url': { $exists: true, $nin: [null, ''] } },
-      { 'gallery.0': { $exists: true } },
-    ];
+    andConditions.push({
+      $or: [
+        { 'heroImage.url': { $exists: true, $nin: [null, ''] } },
+        { 'gallery.0': { $exists: true } },
+      ],
+    });
+  }
+
+  if (launchWindow === 'true' || launchWindow === true) {
+    // New-launch window: under construction OR property age < 2 years.
+    andConditions.push({
+      $or: [
+        { possession: /under\s*construction|under[-\s]*development|ongoing/i },
+        { feature: /under\s*construction|under[-\s]*development|ongoing/i },
+        { highlights: /under\s*construction|under[-\s]*development|ongoing/i },
+        {
+          age: /^\s*(?:0(?:\.\d+)?|1(?:\.\d+)?)(?:\s*(?:year|years|yr|yrs))?\s*$/i,
+        },
+        {
+          age: /^\s*<\s*2(?:\s*(?:year|years|yr|yrs))?\s*$/i,
+        },
+        {
+          age: /^\s*(?:less\s*than|under)\s*2(?:\s*(?:year|years|yr|yrs))?\s*$/i,
+        },
+        {
+          age: /^\s*new(?:\s*construction)?\s*$/i,
+        },
+      ],
+    });
   }
 
   if (!builder && builderSlug) {
@@ -59,6 +98,10 @@ const buildMongoFilter = async (query) => {
     filter.price = {};
     if (minPrice) filter.price.$gte = Number(minPrice);
     if (maxPrice) filter.price.$lte = Number(maxPrice);
+  }
+
+  if (andConditions.length) {
+    filter.$and = andConditions;
   }
 
   return filter;

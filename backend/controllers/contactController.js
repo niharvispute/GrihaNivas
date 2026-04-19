@@ -2,6 +2,7 @@ const { sendContactNotification } = require('../services/emailService');
 const { sendSuccess, sendCreated } = require('../utils/apiResponse');
 const AppError = require('../utils/AppError');
 const Contact = require('../models/mongoose/Contact');
+const NewsletterSubscriber = require('../models/mongoose/NewsletterSubscriber');
 
 // ── POST /api/contact ─────────────────────────────────────────────────────────
 
@@ -15,6 +16,28 @@ const submit = async (req, res, next) => {
 
     return sendCreated(res, 'Message sent. We will get back to you shortly.');
   } catch (err) {
+    next(err);
+  }
+};
+
+// ── POST /api/contact/newsletter ────────────────────────────────────────────
+
+const subscribeNewsletter = async (req, res, next) => {
+  try {
+    const { email, source } = req.body;
+
+    await NewsletterSubscriber.create({
+      email,
+      source: source || 'blog_sidebar',
+      subscribedFromIp: req.ip || null,
+      userAgent: req.get('user-agent') || null,
+    });
+
+    return sendCreated(res, 'Subscribed successfully. You will now receive Mumbai insights.');
+  } catch (err) {
+    if (err?.code === 11000) {
+      return sendSuccess(res, 200, 'You are already subscribed to newsletter updates.');
+    }
     next(err);
   }
 };
@@ -50,4 +73,4 @@ const markRead = async (req, res, next) => {
   }
 };
 
-module.exports = { submit, list, markRead };
+module.exports = { submit, subscribeNewsletter, list, markRead };
