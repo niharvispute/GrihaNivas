@@ -7,7 +7,7 @@ export default function PropertyGrid({ children, columns = 3 }) {
   };
 
   return (
-    <div className={`grid gap-8 ${gridCols[columns] || gridCols[3]}`}>
+    <div className={`grid gap-4 sm:gap-6 lg:gap-8 ${gridCols[columns] || gridCols[3]}`}>
       {children}
     </div>
   );

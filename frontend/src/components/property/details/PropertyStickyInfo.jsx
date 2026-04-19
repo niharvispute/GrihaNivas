@@ -96,7 +96,7 @@ export default function PropertyStickyInfo({ property }) {
             Brochure Not Available
           </button>
         )}
-        <Link href="/contact" className="block w-full">
+        <Link href="#lead-form" className="block w-full">
           <button className="w-full border-2 border-primary text-primary py-4 rounded-full font-bold text-lg hover:bg-tertiary transition-all">
             Contact Expert
           </button>

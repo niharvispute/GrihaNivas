@@ -107,33 +107,33 @@ export default async function PropertiesPage({ searchParams }) {
   }
 
   return (
-    <main className="max-w-7xl mx-auto px-6 py-12 lg:px-8">
+    <main className="w-full">
       {/* Breadcrumbs & Header */}
-      <header className="mb-12">
-        <nav aria-label="Breadcrumb" className="flex text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-4">
+      <header className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:px-8">
+        <nav aria-label="Breadcrumb" className="flex text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-3 sm:mb-4">
           <ol className="inline-flex items-center space-x-2">
-            <li><Link href="/" className="hover:text-primary transition-colors text-[10px]">Home</Link></li>
+            <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
             <li className="flex items-center">
               <svg className="w-3 h-3 mx-1 text-slate-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
-              <span className="text-primary">Properties for Rent</span>
+              <span className="text-primary truncate">Properties for Rent</span>
             </li>
           </ol>
         </nav>
-        <h1 className="text-5xl font-extrabold tracking-tighter text-slate-900 mb-4">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tighter text-slate-900 mb-3 sm:mb-4">
           Mumbai Rental Properties
         </h1>
-        <p className="text-slate-500 text-lg max-w-2xl leading-relaxed">
-          Discover curated luxury residences across South Mumbai, Bandra, and beyond. 
+        <p className="text-slate-500 text-sm sm:text-base lg:text-lg max-w-2xl leading-relaxed">
+          Discover curated luxury residences across South Mumbai, Bandra, and beyond.
           Refined living in India's most vibrant skyline.
         </p>
       </header>
 
-      <div className="flex flex-col lg:flex-row gap-12">
+      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {/* Sidebar Filters */}
         <PropertyFilters basePath={BASE_PATH} currentQuery={currentQuery} />
 
         {/* Main Content */}
-        <div className="grow">
+        <div className="grow w-full">
           <PropertySortBar basePath={BASE_PATH} currentQuery={currentQuery} />
           
           <PropertyGrid columns={currentQuery.view === 'list' ? 1 : 2}>
@@ -153,21 +153,21 @@ export default async function PropertiesPage({ searchParams }) {
           )}
 
           {/* Pagination */}
-          <div className="mt-20 flex justify-center items-center gap-2">
+          <div className="mt-12 sm:mt-16 lg:mt-20 flex justify-center items-center gap-1 sm:gap-2 flex-wrap">
             {prevPage ? (
-              <Link href={buildListingHref(BASE_PATH, currentQuery, prevPage)} className="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-100 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              <Link href={buildListingHref(BASE_PATH, currentQuery, prevPage)} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-100 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
               </Link>
             ) : (
-              <span className="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 cursor-not-allowed">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-slate-300 cursor-not-allowed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
               </span>
             )}
 
             {startPage > 1 && (
               <>
-                <Link href={buildListingHref(BASE_PATH, currentQuery, 1)} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-slate-600 transition-colors">1</Link>
-                {startPage > 2 && <span className="px-2 text-slate-300">...</span>}
+                <Link href={buildListingHref(BASE_PATH, currentQuery, 1)} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-xs sm:text-sm text-slate-600 transition-colors">1</Link>
+                {startPage > 2 && <span className="px-1 text-slate-300 text-xs">...</span>}
               </>
             )}
 
@@ -175,7 +175,7 @@ export default async function PropertiesPage({ searchParams }) {
               <Link
                 key={page}
                 href={buildListingHref(BASE_PATH, currentQuery, page)}
-                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-colors ${page === currentPage ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'hover:bg-slate-100 text-slate-600'}`}
+                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm transition-colors ${page === currentPage ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'hover:bg-slate-100 text-slate-600'}`}
               >
                 {page}
               </Link>
@@ -183,18 +183,18 @@ export default async function PropertiesPage({ searchParams }) {
 
             {endPage < totalPages && (
               <>
-                {endPage < totalPages - 1 && <span className="px-2 text-slate-300">...</span>}
-                <Link href={buildListingHref(BASE_PATH, currentQuery, totalPages)} className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-slate-600 transition-colors">{totalPages}</Link>
+                {endPage < totalPages - 1 && <span className="px-1 text-slate-300 text-xs">...</span>}
+                <Link href={buildListingHref(BASE_PATH, currentQuery, totalPages)} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-xs sm:text-sm text-slate-600 transition-colors">{totalPages}</Link>
               </>
             )}
 
             {nextPage ? (
-              <Link href={buildListingHref(BASE_PATH, currentQuery, nextPage)} className="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-slate-100 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              <Link href={buildListingHref(BASE_PATH, currentQuery, nextPage)} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-primary hover:bg-slate-100 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </Link>
             ) : (
-              <span className="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 cursor-not-allowed">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-slate-300 cursor-not-allowed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </span>
             )}
           </div>

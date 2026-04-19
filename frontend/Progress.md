@@ -1,45 +1,113 @@
-# Bricks - Project Progress Tracker
+# Bricks Frontend - Page Responsive Status
 
-This document tracks the implementation status of the Bricks platform pages and modules based on the "Mumbai Editorial" design system.
+## Dashboard Pages (Protected - `/account`)
 
-## 🏗️ Foundation
-- [x] ~~Design System (Manrope/Inter, Design Tokens)~~
-- [x] ~~Layout System (Header, Footer, Global Layout)~~
+| Page | Route | Responsive | Status |
+|------|-------|-----------|--------|
+| My Dashboard | `/account` | ✅ | KPISection (2 cards), responsive header, spacing |
+| My Profile | `/account/profile` | ✅ | ProfileStats (2 cards), QuickActions (2 cols), responsive typography |
+| Saved Properties | `/account/saved` | ✅ | SavedPropertyCard redesign (left photo + right details), responsive header |
+| My Enquiries | `/account/enquiries` | ✅ | EnquiryTable card-based layout, responsive typography |
 
-## 🌐 Public Pages
-- [x] ~~**Home Page**: `mumbai_real_estate_home_page`~~
-- [x] ~~**Property Listings**: `mumbai_property_listings`~~
-- [x] ~~**Property Detail**: `mumbai_property_detail_page`~~
-- [x] ~~**About Us**: `about_us_mumbai_editorial`~~
-- [x] ~~**Contact Us**: `contact_us_mumbai_editorial`~~
-- [x] ~~**Blogs**: `blogs_mumbai_editorial` (Main Listing)~~
-- [x] ~~**Blog Detail**: `blog_detail_mumbai_editorial` (Individual Post)~~
-- [x] ~~**List Your Property**: `multi_stage_editorial_listing_console`~~
-- [x] ~~**Explore Builders**: `explore_builders_mumbai_editorial`~~
-- [x] ~~**Builder Detail**: `builder_detail_skyline_apex_group`~~
-- [ ] **Featured Project**: `marine_drive_luxe`
-- [x] ~~**Comparison**: `compare_properties`~~
+## Public Pages - Property Listings
 
-## 🔧 Tools & Services
-- [x] ~~**EMI Calculator**: `emi_calculator_mumbai_editorial`~~
-- [x] ~~**Stamp Duty Calculator**: `stamp_duty_calculator_mumbai_editorial`~~
-- [x] ~~**Home Loan Assistance**: `home_loan_assistance_mumbai_editorial`~~
-- [x] ~~**Rent Agreement/E-Registration**: `rent_agreement_e_registration_mumbai_editorial`~~
+| Page | Route | Responsive | Status |
+|------|-------|-----------|--------|
+| Home | `/` | ⚠️ | Partial - needs full mobile optimization |
+| Buy Properties | `/buy` | ✅ | Responsive layout, pagination, typography |
+| Rent Properties | `/rent` | ✅ | Responsive layout, pagination, typography |
+| Commercial Properties | `/commercial` | ⚠️ | Needs mobile optimization |
+| New Launches | `/new-launch` | ⚠️ | Needs mobile optimization |
+| Launches | `/launches` | ⚠️ | Needs mobile optimization |
 
-## 👤 User Panel (Dashboard)
-- [x] ~~**User Dashboard**: `my_dashboard_user_panel` (Main Overview)~~
-- [x] ~~**My Profile**: `my_profile_user_panel`~~
-- [x] ~~**My Enquiries**: `my_enquiries_user_panel`~~
-- [x] ~~**Saved Properties**: `saved_properties_user_panel`~~
+## Public Pages - Tools & Calculators
 
-## 🛡️ Admin Console (Management)
-- [x] ~~**Admin Dashboard**: `admin_dashboard_overview`~~
-- [x] ~~**Property Management**: `property_management_admin_console`~~
-- [x] ~~**Lead/CRM Management**: `lead_crm_admin_console`~~
-- [x] ~~**User Management**: `user_management_admin_console`~~
-- [x] ~~**Blog/CMS**: `blog_cms_admin_console`~~
-- [x] ~~**Banner Management**: `banner_management_admin_console`~~
-- [x] ~~**Testimonial Manager**: `testimonial_manager_admin_console`~~
+| Page | Route | Responsive | Status |
+|------|-------|-----------|--------|
+| EMI Calculator | `/emi-calculator` | ✅ | Responsive slider, calculator layout |
+| Stamp Duty Calculator | `/stamp-duty` | ✅ | Responsive inputs, calculator output |
+| Home Loan | `/home-loan` | ✅ | Responsive form layout |
+| Rent Agreement | `/rent-agreement` | ✅ | Responsive typography |
 
----
-**Last Updated**: 2026-04-15
+## Public Pages - Information & Features
+
+| Page | Route | Responsive | Status |
+|------|-------|-----------|--------|
+| Property Detail | `/property/[id]` | ⚠️ | Needs mobile optimization |
+| Compare Properties | `/compare` | ✅ | CompareGrid & CompareHeader responsive |
+| Contact Us | `/contact` | ✅ | Responsive form layout |
+| Blogs List | `/blogs` | ⚠️ | Needs mobile optimization |
+| Blog Detail | `/blogs/[slug]` | ⚠️ | Needs mobile optimization |
+| Builders List | `/builders` | ⚠️ | Needs mobile optimization |
+| Builder Detail | `/builders/[slug]` | ⚠️ | Needs mobile optimization |
+
+## Public Pages - Services & Info
+
+| Page | Route | Responsive | Status |
+|------|-------|-----------|--------|
+| List Property | `/list-property` | ⚠️ | Needs mobile optimization |
+| Loan Services | `/loan` | ⚠️ | Needs mobile optimization |
+| Agreement Services | `/agreement` | ⚠️ | Needs mobile optimization |
+| About Us | `/about` | ⚠️ | Needs mobile optimization |
+| FAQ / FAQs | `/faq` or `/faqs` | ⚠️ | Needs mobile optimization |
+| Login | `/login` | ⚠️ | Needs mobile optimization |
+
+## Admin Pages (Protected - `/admin`)
+
+| Page | Route | Responsive | Status |
+|------|-------|-----------|--------|
+| Dashboard | `/admin` | ❌ | Not responsive |
+| Properties Management | `/admin/properties` | ❌ | Not responsive |
+| Builders Management | `/admin/builders` | ❌ | Not responsive |
+| New Builder | `/admin/builders/new` | ❌ | Not responsive |
+| Edit Builder | `/admin/builders/[id]/edit` | ❌ | Not responsive |
+| Leads/CRM | `/admin/leads` | ❌ | Not responsive |
+| Blogs Management | `/admin/blogs` | ❌ | Not responsive |
+| Banners Management | `/admin/banners` | ❌ | Not responsive |
+| Testimonials Management | `/admin/testimonials` | ❌ | Not responsive |
+| Users Management | `/admin/users` | ❌ | Not responsive |
+| Property Submissions | `/admin/property-submissions` | ❌ | Not responsive |
+
+## Summary
+
+- **✅ Fully Responsive**: 9 pages
+- **⚠️ Partially Responsive / Needs Work**: 14 pages
+- **❌ Not Responsive**: 11 pages (Admin pages)
+- **Total Pages**: 34 pages
+
+## Responsive Design Standards Applied
+
+When implementing responsive design, follow these standards:
+
+### Breakpoints Used
+- **Mobile**: Default (< 640px)
+- **Small (sm)**: 640px+
+- **Medium (md)**: 768px+
+- **Large (lg)**: 1024px+
+
+### Mobile-First Approach
+1. Design for mobile first (base styles)
+2. Add sm:, md:, lg: modifiers for larger screens
+3. Typography: Use responsive text sizes (text-sm sm:text-base md:text-lg)
+4. Spacing: Use responsive gaps and padding (p-4 sm:p-6 md:p-8)
+5. Grids: Convert to responsive columns (grid-cols-1 sm:grid-cols-2 md:grid-cols-3)
+
+### Key Components to Check
+- ✅ Typography (responsive font sizes)
+- ✅ Spacing & Padding (responsive gaps)
+- ✅ Grid layouts (responsive columns)
+- ✅ Navigation (hamburger menu on mobile)
+- ✅ Images (responsive sizing)
+- ✅ Forms (mobile-friendly inputs)
+- ✅ Cards (single column on mobile)
+- ✅ Modals/Overlays (proper z-index on mobile)
+
+## Next Priority Pages for Responsive Updates
+
+1. `/property/[id]` - Property detail page
+2. `/` - Home page (needs full review)
+3. `/blogs` and `/blogs/[slug]` - Blog pages
+4. `/builders` and `/builders/[slug]` - Builder pages
+5. `/login` - Login page
+6. `/list-property` - Property listing form
+7. Other service pages (loan, agreement, etc.)

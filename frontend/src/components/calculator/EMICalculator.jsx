@@ -141,30 +141,30 @@ const EMICalculator = () => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-12 font-sans">
+    <div className="w-full max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-12 font-sans">
       {/* 1. Header */}
-      <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 mb-4">
+      <div className="text-center mb-8 md:mb-16">
+        <h1 className="text-2xl md:text-5xl font-black tracking-tighter text-slate-900 mb-2 md:mb-4">
           EMI Calculator
         </h1>
-        <p className="text-slate-500 text-lg max-w-2xl mx-auto font-medium">
-          Plan your home ownership journey with our precise financial planning tool. 
+        <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto font-medium px-4">
+          Plan your home ownership journey with precision. 
           Calculate monthly payments and view your interest breakdown instantly.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 mb-12 md:mb-20">
         {/* 2. Inputs Section */}
-        <div className="lg:col-span-7 bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
-          <div className="space-y-10">
+        <div className="lg:col-span-7 bg-white rounded-2xl p-5 md:p-8 border border-slate-100 shadow-sm">
+          <div className="space-y-6 md:space-y-10">
             {/* Loan Amount */}
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div className="flex justify-between items-center">
-                <label className="text-slate-400 font-bold text-[10px] tracking-widest uppercase">
+                <label className="text-slate-400 font-bold text-[9px] md:text-[10px] tracking-widest uppercase">
                   Loan Amount
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</span>
+                  <span className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs md:text-base">₹</span>
                   <input 
                     type="text" 
                     value={loanAmount.toLocaleString('en-IN')}
@@ -172,7 +172,7 @@ const EMICalculator = () => {
                       const val = parseInt(e.target.value.replace(/,/g, '')) || 0;
                       setLoanAmount(val);
                     }}
-                    className="pl-8 pr-4 py-2 bg-slate-50 border-none rounded-xl text-right font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 w-40"
+                    className="pl-6 md:pl-8 pr-3 md:pr-4 py-1.5 md:py-2 bg-slate-50 border-none rounded-lg md:rounded-xl text-right font-bold text-slate-900 focus:ring-1 focus:ring-primary/20 w-32 md:w-40 text-sm md:text-base"
                   />
                 </div>
               </div>
@@ -183,18 +183,18 @@ const EMICalculator = () => {
                 step="50000"
                 value={loanAmount}
                 onChange={(e) => setLoanAmount(parseInt(e.target.value))}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-1 md:h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary"
               />
-              <div className="flex justify-between text-[10px] text-slate-400 font-bold tracking-tighter mt-2">
+              <div className="flex justify-between text-[9px] md:text-[10px] text-slate-400 font-bold tracking-tighter mt-1 md:mt-2">
                 <span>₹ 1L</span>
                 <span>₹ 5Cr</span>
               </div>
             </div>
 
             {/* Interest Rate */}
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div className="flex justify-between items-center">
-                <label className="text-slate-400 font-bold text-[10px] tracking-widest uppercase">
+                <label className="text-slate-400 font-bold text-[9px] md:text-[10px] tracking-widest uppercase">
                   Interest Rate (%)
                 </label>
                 <div className="relative">
@@ -203,9 +203,9 @@ const EMICalculator = () => {
                     step="0.1"
                     value={interestRate}
                     onChange={(e) => setInterestRate(parseFloat(e.target.value) || 0)}
-                    className="pr-8 pl-4 py-2 bg-slate-50 border-none rounded-xl text-right font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 w-32"
+                    className="pr-6 md:pr-8 pl-3 md:pl-4 py-1.5 md:py-2 bg-slate-50 border-none rounded-lg md:rounded-xl text-right font-bold text-slate-900 focus:ring-1 focus:ring-primary/20 w-24 md:w-32 text-sm md:text-base"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">%</span>
+                  <span className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs md:text-base">%</span>
                 </div>
               </div>
               <input 
@@ -215,18 +215,18 @@ const EMICalculator = () => {
                 step="0.1"
                 value={interestRate}
                 onChange={(e) => setInterestRate(parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-1 md:h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary"
               />
-              <div className="flex justify-between text-[10px] text-slate-400 font-bold tracking-tighter mt-2">
+              <div className="flex justify-between text-[9px] md:text-[10px] text-slate-400 font-bold tracking-tighter mt-1 md:mt-2">
                 <span>5%</span>
                 <span>20%</span>
               </div>
             </div>
 
             {/* Tenure */}
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div className="flex justify-between items-center">
-                <label className="text-slate-400 font-bold text-[10px] tracking-widest uppercase">
+                <label className="text-slate-400 font-bold text-[9px] md:text-[10px] tracking-widest uppercase">
                   Loan Tenure
                 </label>
                 <div className="relative">
@@ -234,9 +234,9 @@ const EMICalculator = () => {
                     type="number" 
                     value={tenure}
                     onChange={(e) => setTenure(parseInt(e.target.value) || 0)}
-                    className="pr-12 pl-4 py-2 bg-slate-50 border-none rounded-xl text-right font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 w-32"
+                    className="pr-10 md:pr-12 pl-3 md:pl-4 py-1.5 md:py-2 bg-slate-50 border-none rounded-lg md:rounded-xl text-right font-bold text-slate-900 focus:ring-1 focus:ring-primary/20 w-24 md:w-32 text-sm md:text-base"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">Yrs</span>
+                  <span className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs md:text-base">Yrs</span>
                 </div>
               </div>
               <input 
@@ -246,9 +246,9 @@ const EMICalculator = () => {
                 step="1"
                 value={tenure}
                 onChange={(e) => setTenure(parseInt(e.target.value))}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-1 md:h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary"
               />
-              <div className="flex justify-between text-[10px] text-slate-400 font-bold tracking-tighter mt-2">
+              <div className="flex justify-between text-[9px] md:text-[10px] text-slate-400 font-bold tracking-tighter mt-1 md:mt-2">
                 <span>1 Yr</span>
                 <span>30 Yrs</span>
               </div>
@@ -259,53 +259,53 @@ const EMICalculator = () => {
         {/* 3. Results Section */}
         <div className="lg:col-span-5 relative group">
           <div className="absolute inset-0 bg-primary/5 blur-3xl rounded-full -z-10 group-hover:bg-primary/10 transition-all duration-700"></div>
-          <div className="h-full bg-white/80 backdrop-blur-2xl rounded-2xl p-8 border border-white/50 shadow-xl flex flex-col justify-between">
+          <div className="h-full bg-white/80 backdrop-blur-2xl rounded-2xl p-6 md:p-8 border border-white/50 shadow-xl flex flex-col justify-between">
             <div>
-              <p className="text-slate-400 font-bold text-[10px] tracking-widest uppercase mb-2">Monthly EMI</p>
-              <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-primary mb-8">
+              <p className="text-slate-400 font-bold text-[9px] md:text-[10px] tracking-widest uppercase mb-1 md:mb-2">Monthly EMI</p>
+              <h2 className="text-3xl md:text-6xl font-black tracking-tighter text-primary mb-6 md:mb-8 italic leading-none">
                 {formatCurrency(results.emi)}
               </h2>
               {(isCalculating || calcError) && (
-                <p className={`mb-6 text-xs font-semibold ${calcError ? 'text-red-600' : 'text-slate-500'}`}>
-                  {calcError || 'Fetching latest EMI from backend...'}
+                <p className={`mb-4 md:mb-6 text-[10px] md:text-xs font-semibold ${calcError ? 'text-red-600' : 'text-slate-500'}`}>
+                  {calcError || 'Fetching latest EMI...'}
                 </p>
               )}
               
-              <div className="space-y-6">
-                <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full bg-primary"></div>
-                    <span className="text-slate-500 text-sm font-medium">Principal Amount</span>
+              <div className="space-y-4 md:space-y-6">
+                <div className="flex justify-between items-center pb-3 md:pb-4 border-b border-slate-100">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                    <span className="text-slate-500 text-xs md:text-sm font-medium">Principal Amount</span>
                   </div>
-                  <span className="text-slate-900 font-bold">{formatCurrency(loanAmount)}</span>
+                  <span className="text-slate-900 font-bold text-sm md:text-base">{formatCurrency(loanAmount)}</span>
                 </div>
                 
-                <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full bg-secondary"></div>
-                    <span className="text-slate-500 text-sm font-medium">Total Interest</span>
+                <div className="flex justify-between items-center pb-3 md:pb-4 border-b border-slate-100">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="w-2.5 h-2.5 rounded-full bg-secondary"></div>
+                    <span className="text-slate-500 text-xs md:text-sm font-medium">Total Interest</span>
                   </div>
-                  <span className="text-slate-900 font-bold">{formatCurrency(results.totalInterest)}</span>
+                  <span className="text-slate-900 font-bold text-sm md:text-base">{formatCurrency(results.totalInterest)}</span>
                 </div>
                 
-                <div className="flex justify-between items-center pt-2">
-                  <span className="text-slate-500 text-sm font-bold uppercase tracking-widest text-[10px]">Total Payable</span>
-                  <span className="text-slate-900 text-2xl font-black">{formatCurrency(results.totalPayable)}</span>
+                <div className="flex justify-between items-center pt-1 md:pt-2">
+                  <span className="text-slate-500 font-bold uppercase tracking-widest text-[8px] md:text-[10px]">Total Payable</span>
+                  <span className="text-slate-900 text-lg md:text-2xl font-black">{formatCurrency(results.totalPayable)}</span>
                 </div>
               </div>
             </div>
 
             {/* Visual Chart */}
-            <div className="mt-12 flex justify-center scale-110">
-              <div className="relative w-40 h-40 rounded-full border-12 border-secondary flex items-center justify-center">
-                <svg className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)] -rotate-90">
+            <div className="mt-8 md:mt-12 flex justify-center scale-90 md:scale-110">
+              <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-10 md:border-12 border-secondary flex items-center justify-center">
+                <svg className="absolute -inset-2.5 md:-inset-3 w-[calc(100%+20px)] md:w-[calc(100%+24px)] h-[calc(100%+20px)] md:h-[calc(100%+24px)] -rotate-90">
                   <circle
                     cx="50%"
                     cy="50%"
-                    r="40"
+                    r="32 md:40"
                     fill="none"
                     stroke="#e61a61"
-                    strokeWidth="12"
+                    strokeWidth="10 md:12"
                     strokeDasharray={`${results.principalPercent} 100`}
                     pathLength="100"
                     strokeLinecap="round"
@@ -313,8 +313,8 @@ const EMICalculator = () => {
                   />
                 </svg>
                 <div className="text-center">
-                  <span className="block text-[8px] uppercase tracking-[0.2em] font-black text-slate-400 mb-1">Breakdown</span>
-                  <span className="text-sm font-black text-slate-900 leading-none">
+                  <span className="block text-[7px] md:text-[8px] uppercase tracking-[0.2em] font-black text-slate-400 mb-0.5 md:mb-1">Breakdown</span>
+                  <span className="text-[10px] md:text-sm font-black text-slate-900 leading-none">
                     {results.principalPercent}% / {results.interestPercent}%
                   </span>
                 </div>
@@ -325,37 +325,37 @@ const EMICalculator = () => {
       </div>
 
       {/* 4. Amortization Schedule */}
-      <section className="mt-24">
-        <div className="flex items-center justify-between mb-8">
+      <section className="mt-12 md:mt-24">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 md:mb-8 gap-4">
           <div>
-            <h3 className="text-2xl font-black tracking-tight text-slate-900">Amortization Schedule</h3>
-            <p className="text-slate-500 text-sm mt-1 font-medium">Yearly breakdown of your loan repayment.</p>
+            <h3 className="text-xl md:text-2xl font-black tracking-tight text-slate-900">Amortization Schedule</h3>
+            <p className="text-slate-500 text-[10px] md:text-sm mt-0.5 md:mt-1 font-medium italic">Yearly breakdown of your loan repayment journey.</p>
           </div>
-          <button className="text-primary text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:translate-x-1 transition-transform bg-primary/5 px-4 py-2 rounded-full">
+          <button className="text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:translate-x-1 transition-transform bg-primary/5 px-4 py-2 rounded-full leading-none">
             Download Report 
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="md:w-3.5 md:h-3.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           </button>
         </div>
 
-        <div className="overflow-x-auto rounded-3xl border border-slate-100 shadow-sm">
+        <div className="overflow-x-auto rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm no-scrollbar">
           <table className="w-full text-left border-collapse bg-white">
             <thead>
               <tr className="bg-slate-50">
-                <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em] uppercase text-slate-400">Year</th>
-                <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em] uppercase text-slate-400">Principal (A)</th>
-                <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em] uppercase text-slate-400">Interest (B)</th>
-                <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em] uppercase text-slate-400">Yearly Total</th>
-                <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em] uppercase text-slate-400 text-right">Balance</th>
+                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-slate-400">Year</th>
+                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-slate-400">Principal</th>
+                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-slate-400">Interest</th>
+                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-slate-400">Total</th>
+                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-slate-400 text-right">Balance</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {schedule.map((row) => (
                 <tr key={row.year} className="hover:bg-slate-50/50 transition-colors group">
-                  <td className="px-8 py-5 font-black text-slate-900">{row.year}</td>
-                  <td className="px-8 py-5 text-slate-500 font-medium">{formatCurrency(row.principal)}</td>
-                  <td className="px-8 py-5 text-slate-500 font-medium">{formatCurrency(row.interest)}</td>
-                  <td className="px-8 py-5 text-slate-900 font-bold">{formatCurrency(row.totalPayment)}</td>
-                  <td className="px-8 py-5 text-right font-black text-primary group-hover:scale-105 transition-transform origin-right">
+                  <td className="px-4 md:px-8 py-3 md:py-5 font-black text-slate-900 text-xs md:text-base">{row.year}</td>
+                  <td className="px-4 md:px-8 py-3 md:py-5 text-slate-500 font-medium text-[10px] md:text-sm whitespace-nowrap">{formatCurrency(row.principal)}</td>
+                  <td className="px-4 md:px-8 py-3 md:py-5 text-slate-500 font-medium text-[10px] md:text-sm whitespace-nowrap">{formatCurrency(row.interest)}</td>
+                  <td className="px-4 md:px-8 py-3 md:py-5 text-slate-900 font-bold text-[10px] md:text-sm whitespace-nowrap">{formatCurrency(row.totalPayment)}</td>
+                  <td className="px-4 md:px-8 py-3 md:py-5 text-right font-black text-primary group-hover:scale-105 transition-transform origin-right text-[10px] md:text-sm whitespace-nowrap">
                     {formatCurrency(row.balance)}
                   </td>
                 </tr>
@@ -366,21 +366,21 @@ const EMICalculator = () => {
       </section>
 
       {/* 5. CTA Section */}
-      <section className="mt-24 bg-slate-900 rounded-[3rem] p-12 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 blur-[100px] -translate-y-1/2 translate-x-1/2 rounded-full"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/10 blur-[80px] translate-y-1/2 -translate-x-1/2 rounded-full"></div>
+      <section className="mt-12 md:mt-24 bg-slate-900 rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
+        <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-primary/20 blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2 rounded-full"></div>
+        <div className="absolute bottom-0 left-0 w-48 md:w-64 h-48 md:h-64 bg-secondary/10 blur-[50px] md:blur-[80px] translate-y-1/2 -translate-x-1/2 rounded-full"></div>
         
         <div className="relative z-10 max-w-3xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-6">Ready to Lock in Your Rate?</h2>
-          <p className="text-slate-400 text-lg mb-12 font-medium">
+          <h2 className="text-2xl md:text-5xl font-black tracking-tighter mb-4 md:mb-6">Ready to Lock in Your Rate?</h2>
+          <p className="text-slate-400 text-sm md:text-lg mb-8 md:mb-12 font-medium">
             Get exclusive pre-approved home loan offers from our banking partners 
             at competitive rates specifically for Mumbai's premium properties.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="bg-primary hover:bg-primary/90 text-white px-10 py-5 rounded-full font-black text-lg shadow-xl shadow-primary/20 transition-all active:scale-95 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
+            <button className="bg-primary hover:bg-primary/90 text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-base md:text-lg shadow-xl shadow-primary/20 transition-all active:scale-95 w-full sm:w-auto leading-none">
               Get Pre-Approved
             </button>
-            <button className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-10 py-5 rounded-full font-black text-lg border border-white/10 transition-all w-full sm:w-auto">
+            <button className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-base md:text-lg border border-white/10 transition-all w-full sm:w-auto leading-none">
               Speak to Advisor
             </button>
           </div>
