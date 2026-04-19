@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { listBanners } from '@/services/bannerService';
+import { listBanners, updateBanner, uploadBannerImage } from '@/services/bannerService';
 import BannerSlotCard from '@/components/admin/banners/BannerSlotCard';
 
 export default function BannerManagementPage() {
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [uploadingBannerId, setUploadingBannerId] = useState('');
 
   useEffect(() => {
     fetchBanners();
@@ -24,9 +25,57 @@ export default function BannerManagementPage() {
     }
   };
 
-  const handleReplace = (id) => {
-    // In a real app, this would trigger a file upload modal
-    alert(`Asset update requested for slot ID: ${id}. Initializing secure upload tunnel...`);
+  const handleReplace = (banner) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+
+    input.onchange = async (event) => {
+      const file = event?.target?.files?.[0];
+      if (!file) return;
+
+      const bannerKey = String(banner?.id || banner?.position || 'home_hero');
+      setUploadingBannerId(bannerKey);
+
+      try {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const hasPersistedId = typeof banner?.id === 'string' && banner.id.length >= 20;
+
+        if (hasPersistedId) {
+          try {
+            await updateBanner(banner.id, formData);
+          } catch {
+            // If the referenced banner was removed/stale, recreate the slot by position.
+            const retryFormData = new FormData();
+            retryFormData.append('image', file);
+            const position = banner?.position || 'home_hero';
+            retryFormData.append('position', position);
+            retryFormData.append('title', banner?.title || 'Hero Banner');
+            retryFormData.append('isActive', 'true');
+            retryFormData.append('order', position === 'home_hero' ? '0' : '1');
+            await uploadBannerImage(retryFormData);
+          }
+        } else {
+          const position = banner?.position || 'home_hero';
+          formData.append('position', position);
+          formData.append('title', banner?.title || 'Hero Banner');
+          formData.append('isActive', 'true');
+          formData.append('order', position === 'home_hero' ? '0' : '1');
+          await uploadBannerImage(formData);
+        }
+
+        await fetchBanners();
+      } catch (error) {
+        console.error('Banner upload failed:', error);
+        alert('Failed to upload banner image. Please try again.');
+      } finally {
+        setUploadingBannerId('');
+      }
+    };
+
+    input.click();
   };
 
   return (
@@ -52,7 +101,8 @@ export default function BannerManagementPage() {
             <BannerSlotCard 
               key={banner.id} 
               banner={banner} 
-              onReplace={handleReplace} 
+              onReplace={handleReplace}
+              uploading={uploadingBannerId === String(banner.id || banner.position || '')}
             />
           ))}
         </div>

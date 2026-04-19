@@ -5,6 +5,7 @@ const FALLBACK_BANNERS = [
   {
     id: 1,
     title: 'Hero Banner',
+    position: 'home_hero',
     description: 'Primary homepage spotlight banner',
     status: 'Live',
     image:
@@ -15,6 +16,7 @@ const FALLBACK_BANNERS = [
   {
     id: 2,
     title: 'Home Banner 2',
+    position: 'home_secondary',
     description: 'Secondary promotion area (Mid-page)',
     status: 'Scheduled',
     image:
@@ -25,6 +27,7 @@ const FALLBACK_BANNERS = [
   {
     id: 3,
     title: 'Home Banner 3',
+    position: 'listing_sidebar',
     description: 'Footer call-to-action banner',
     status: 'Inactive',
     image:
@@ -52,6 +55,7 @@ const toLastUpdatedText = (timestamp) => {
 
 const mapBannerToAdminVM = (banner) => ({
   id: banner?._id,
+  position: banner?.position || '',
   title: banner?.title || POSITION_LABELS[banner?.position] || 'Banner',
   description: banner?.position ? `Placement: ${banner.position}` : 'Promotional banner slot',
   status: banner?.isActive ? 'Live' : 'Inactive',

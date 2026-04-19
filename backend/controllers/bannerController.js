@@ -47,10 +47,12 @@ const create = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updates = req.body;
+    const updates = { ...(req.body || {}) };
+
+    const existing = await Banner.findById(id).select('image');
+    if (!existing) throw new AppError('Banner not found', 404);
 
     if (req.file) {
-      const existing = await Banner.findById(id).select('image');
       if (existing?.image?.publicId) {
         deleteFile(existing.image.publicId, 'image').catch(() => {});
       }
@@ -58,8 +60,15 @@ const update = async (req, res, next) => {
       updates.image = { url: uploaded.url, publicId: uploaded.publicId };
     }
 
-    const banner = await Banner.findByIdAndUpdate(id, updates, { returnDocument: 'after' });
-    if (!banner) throw new AppError('Banner not found', 404);
+    if (Object.keys(updates).length === 0) {
+      return sendSuccess(res, 200, 'Banner updated', existing);
+    }
+
+    const banner = await Banner.findByIdAndUpdate(
+      id,
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
 
     return sendSuccess(res, 200, 'Banner updated', banner);
   } catch (err) {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const BannerSlotCard = ({ banner, onReplace }) => {
+const BannerSlotCard = ({ banner, onReplace, uploading = false }) => {
   const statusColors = {
     Live: 'bg-green-100 text-green-700 border-green-200',
     Scheduled: 'bg-primary/10 text-primary border-primary/20',
@@ -12,7 +12,7 @@ const BannerSlotCard = ({ banner, onReplace }) => {
   const isInactive = banner.status === 'Inactive';
 
   return (
-    <section className="bg-white rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden transition-all duration-500 group">
+    <section className="bg-white rounded-4xl shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden transition-all duration-500 group">
       <div className="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
         <div>
           <h3 className="text-2xl font-black text-slate-900 tracking-tighter">{banner.title}</h3>
@@ -33,7 +33,7 @@ const BannerSlotCard = ({ banner, onReplace }) => {
       <div className="p-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Banner Preview Area */}
         <div className="lg:col-span-8">
-          <div className={`relative group rounded-[2rem] overflow-hidden border border-slate-100 aspect-[1920/600] bg-slate-50 shadow-inner ${isInactive ? 'grayscale opacity-50' : ''}`}>
+          <div className={`relative group rounded-4xl overflow-hidden border border-slate-100 aspect-1920/600 bg-slate-50 shadow-inner ${isInactive ? 'grayscale opacity-50' : ''}`}>
             <img 
               alt={banner.title} 
               className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
@@ -89,12 +89,14 @@ const BannerSlotCard = ({ banner, onReplace }) => {
              )}
              
              <div className="flex gap-4">
-               <button 
-                  onClick={() => onReplace(banner.id)}
+               <button
+                  type="button"
+                  onClick={() => onReplace(banner)}
+                  disabled={uploading}
                   className="flex-1 flex items-center justify-center gap-3 bg-primary text-white font-black text-xs uppercase tracking-widest py-5 px-8 rounded-full hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 active:scale-95 leading-none"
                 >
                   <span className="material-symbols-outlined">cloud_upload</span>
-                  {isInactive ? 'Upload Asset' : 'Replace Image'}
+                  {uploading ? 'Uploading...' : isInactive ? 'Upload Asset' : 'Replace Image'}
                 </button>
                 {!isInactive && (
                   <button className="w-14 h-14 bg-white border-2 border-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary/20 transition-all active:scale-95">

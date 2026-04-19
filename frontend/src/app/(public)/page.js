@@ -7,6 +7,7 @@ import HeroSearch from '@/components/home/HeroSearch';
 import Link from 'next/link';
 import { listBlogs } from '@/services/blogService';
 import { listProperties } from '@/services/propertyService';
+import { listBanners } from '@/services/bannerService';
 
 const MOCK_BLOGS = [
   {
@@ -45,24 +46,33 @@ import { listBuilders } from '@/services/builderService';
 import { SkeletonCarousel } from '@/components/common/SkeletonCard';
 
 export default function HomePage() {
+  const DEFAULT_HERO_IMAGE = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDTt4k01Rv0EI75RlMBkam6QUCJiZxmg1pWElVfvID7rJzGZ0OvtAoOIdJrlB8otSwlYcMDK1aDPGzGHb70Ue2s_zCIpF7dgmcFEv9_ATI1Je_KgD_yyAVd5Xbx2dmJdP2AV03KZ3aZmBUBVKayjj31aeM1Ymyv1dCCl64XwHK2YfR5tRqT8xvPbZkcBourkgmbc4Mp0Jd8utO0w_T8VBhyUci1XElabmyXBbVzxZvtI0QlG1K55lIV-KnpVTV2SReMkfBGWCYL2-8';
   const [featuredProperties, setFeaturedProperties] = useState([]);
   const [featuredBuilders, setFeaturedBuilders] = useState([]);
   const [latestBlogs, setLatestBlogs] = useState(MOCK_BLOGS);
+  const [heroBannerImage, setHeroBannerImage] = useState(DEFAULT_HERO_IMAGE);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [propRes, buildRes, blogRes] = await Promise.all([
+        const [propRes, buildRes, blogRes, bannerRes] = await Promise.all([
           listProperties({ isFeatured: true, limit: 12 }),
           listBuilders({ isFeatured: true, limit: 12 }),
-          listBlogs({ limit: 3 })
+          listBlogs({ limit: 3 }),
+          listBanners(),
         ]);
 
         // Backend already enriches properties with isSaved flag via enrichPropertiesWithUserStatus
         setFeaturedProperties(propRes.items || []);
         setFeaturedBuilders(buildRes.items || []);
         if (blogRes.items?.length) setLatestBlogs(blogRes.items);
+        const homeHeroBanner = Array.isArray(bannerRes)
+          ? bannerRes.find((banner) => banner?.position === 'home_hero') || bannerRes[0]
+          : null;
+        if (homeHeroBanner?.image) {
+          setHeroBannerImage(homeHeroBanner.image);
+        }
       } catch (error) {
         console.error('Home Page Data Fetch Error:', error);
       } finally {
@@ -79,7 +89,7 @@ export default function HomePage() {
       <section className="relative min-h-140 md:min-h-160 flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 py-24 md:py-28">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTt4k01Rv0EI75RlMBkam6QUCJiZxmg1pWElVfvID7rJzGZ0OvtAoOIdJrlB8otSwlYcMDK1aDPGzGHb70Ue2s_zCIpF7dgmcFEv9_ATI1Je_KgD_yyAVd5Xbx2dmJdP2AV03KZ3aZmBUBVKayjj31aeM1Ymyv1dCCl64XwHK2YfR5tRqT8xvPbZkcBourkgmbc4Mp0Jd8utO0w_T8VBhyUci1XElabmyXBbVzxZvtI0QlG1K55lIV-KnpVTV2SReMkfBGWCYL2-8" 
+            src={heroBannerImage}
             alt="Mumbai Skyline" 
             className="w-full h-full object-cover"
           />
