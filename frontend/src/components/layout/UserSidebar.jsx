@@ -38,6 +38,7 @@ export default function UserSidebar() {
   const navLinks = [
     { name: 'My Dashboard', href: '/account', icon: 'dashboard' },
     { name: 'Saved Properties', href: '/account/saved', icon: 'bookmark' },
+    { name: 'Comparison', href: '/compare', icon: 'compare' },
     { name: 'My Enquiries', href: '/account/enquiries', icon: 'chat_bubble' },
     { name: 'My Profile', href: '/account/profile', icon: 'person' },
   ];

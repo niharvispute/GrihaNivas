@@ -10,6 +10,7 @@ import { submitContactForm } from '@/services/contactService';
 function ContactForm() {
   const searchParams = useSearchParams();
   const propertyTitle = searchParams.get('property');
+  const prefilledMessage = searchParams.get('message');
   
   const [form, setForm] = useState({
     name: '',
@@ -24,8 +25,13 @@ function ContactForm() {
         ...prev,
         message: `I'm interested in enquiring about "${propertyTitle}". Please provide more details.`
       }));
+    } else if (prefilledMessage) {
+      setForm(prev => ({
+        ...prev,
+        message: prefilledMessage
+      }));
     }
-  }, [propertyTitle]);
+  }, [propertyTitle, prefilledMessage]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 

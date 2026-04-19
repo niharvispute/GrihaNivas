@@ -69,7 +69,7 @@ const CompareGrid = ({ properties }) => {
   ];
 
   return (
-    <div className="mt-8 space-y-px overflow-hidden rounded-4xl border border-slate-100 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)]">
+    <div className="mt-4 md:mt-8 space-y-px overflow-hidden rounded-2xl md:rounded-4xl border border-slate-100 shadow-xl">
       {parameters.map((param, idx) => (
         <div 
           key={param.label} 
@@ -78,7 +78,7 @@ const CompareGrid = ({ properties }) => {
           }`}
         >
           {/* Label Column */}
-          <div className="px-8 py-6 font-black text-xs uppercase tracking-widest text-slate-400 border-r border-slate-50 h-full flex items-center">
+          <div className="px-2 md:px-8 py-3 md:py-6 font-black text-[9px] md:text-xs uppercase tracking-tight md:tracking-widest text-slate-400 border-r border-slate-50 h-full flex items-center bg-slate-50/50 md:bg-transparent">
             {param.label}
           </div>
 
@@ -97,40 +97,40 @@ const CompareGrid = ({ properties }) => {
             return (
               <div 
                 key={property.id} 
-                className={`px-8 py-6 text-sm font-bold ${
-                  isPriceValue ? 'text-primary text-xl' : 'text-slate-800'
-                } ${param.isBold ? 'font-black' : ''}`}
+                className={`px-2 md:px-8 py-3 md:py-6 text-[10px] md:text-sm font-bold ${
+                  isPriceValue ? 'text-primary text-xs md:text-xl' : 'text-slate-800'
+                } ${param.isBold ? 'font-black' : ''} text-center md:text-left`}
               >
                 {displayValue}
               </div>
             );
           })}
 
-          {/* Empty columns for alignment */}
+          {/* Empty columns */}
           {Array.from({ length: 3 - properties.length }).map((_, i) => (
-            <div key={`empty-cell-${i}`} className="px-8 py-6" />
+            <div key={`empty-cell-${i}`} className="px-2 md:px-8 py-3 md:py-6" />
           ))}
         </div>
       ))}
 
       {/* Action Row */}
-      <div className="grid grid-cols-4 items-center bg-white pt-8 pb-12">
-        <div className="px-8 py-6" />
+      <div className="grid grid-cols-4 items-center bg-white pt-4 md:pt-8 pb-6 md:pb-12">
+        <div className="px-2 md:px-8 py-2 md:py-6" />
         {properties.map((property) => (
-          <div key={`actions-${property.id}`} className="px-8 flex flex-col gap-3">
-            <button className="w-full py-4 bg-primary text-white rounded-full font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 leading-none">
-              Contact Builder
+          <div key={`actions-${property.id}`} className="px-1 md:px-8 flex flex-col gap-2 md:gap-3">
+            <button className="w-full py-2 md:py-4 bg-primary text-white rounded-full font-black text-[8px] md:text-xs uppercase tracking-tight md:tracking-widest shadow-lg hover:bg-primary/90 transition-all leading-none">
+              Contact
             </button>
             <Link
               href={getPropertyHref(property)}
-              className="w-full py-4 bg-white text-primary border-2 border-primary/10 rounded-full font-black text-xs uppercase tracking-widest hover:bg-primary/5 transition-all leading-none text-center"
+              className="w-full py-2 md:py-4 bg-white text-primary border border-primary/20 rounded-full font-black text-[8px] md:text-xs uppercase tracking-tight md:tracking-widest hover:bg-primary/5 transition-all leading-none text-center"
             >
-              View Details
+              Details
             </Link>
           </div>
         ))}
         {Array.from({ length: 3 - properties.length }).map((_, i) => (
-          <div key={`empty-actions-${i}`} className="px-8" />
+          <div key={`empty-actions-${i}`} className="px-2 md:px-8" />
         ))}
       </div>
     </div>
