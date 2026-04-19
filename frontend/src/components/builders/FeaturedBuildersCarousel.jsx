@@ -28,9 +28,13 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
   const activeBuilder = slides[activeIndex];
   const heroImage = activeBuilder?.heroImage?.trim() || null;
   const logo = activeBuilder?.logo?.trim() || null;
+  const shortDescription = Array.isArray(activeBuilder?.shortDescription)
+    ? activeBuilder.shortDescription[0]
+    : activeBuilder?.shortDescription || '';
   const description = Array.isArray(activeBuilder?.description)
     ? activeBuilder.description[0]
     : activeBuilder?.description || '';
+  const heroDescription = shortDescription || description;
 
   const goToPrevious = () => {
     setActiveIndex((current) => (current - 1 + slides.length) % slides.length);
@@ -72,8 +76,8 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
               {activeBuilder?.name}
             </h2>
           </div>
-          <p className="text-zinc-300 text-sm sm:text-base lg:text-lg mb-5 sm:mb-8 leading-relaxed font-body line-clamp-3 sm:line-clamp-none">
-            {activeBuilder?.tagline} {description}
+          <p className="text-zinc-300 text-sm sm:text-base lg:text-lg mb-5 sm:mb-8 leading-relaxed font-body line-clamp-3">
+            {activeBuilder?.tagline} {heroDescription}
           </p>
 
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-4 sm:gap-8 mb-6 sm:mb-10">

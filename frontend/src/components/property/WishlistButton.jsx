@@ -3,7 +3,87 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
-import { saveProperty, unsaveProperty } from '@/services/userService';
+import {
+  getSavedProperties,
+  saveProperty,
+  unsaveProperty,
+} from '@/services/userService';
+
+let wishlistCacheUserId = null;
+let wishlistIdCache = null;
+let wishlistFetchPromise = null;
+const wishlistListeners = new Set();
+
+const toPropertyIdSet = (properties = []) => {
+  const ids = new Set();
+  properties.forEach((property) => {
+    const id = property?._id || property?.id;
+    if (id) ids.add(String(id));
+  });
+  return ids;
+};
+
+const notifyWishlistListeners = () => {
+  const snapshot = new Set(wishlistIdCache || []);
+  wishlistListeners.forEach((listener) => {
+    listener(snapshot);
+  });
+};
+
+const subscribeWishlist = (listener) => {
+  wishlistListeners.add(listener);
+  return () => wishlistListeners.delete(listener);
+};
+
+const resetWishlistCache = () => {
+  wishlistCacheUserId = null;
+  wishlistIdCache = null;
+  wishlistFetchPromise = null;
+  notifyWishlistListeners();
+};
+
+const getWishlistIdSet = async (userId) => {
+  if (!userId) return new Set();
+
+  if (wishlistIdCache && wishlistCacheUserId === userId) {
+    return new Set(wishlistIdCache);
+  }
+
+  if (wishlistFetchPromise && wishlistCacheUserId === userId) {
+    return new Set(await wishlistFetchPromise);
+  }
+
+  wishlistCacheUserId = userId;
+  wishlistFetchPromise = getSavedProperties({ map: false })
+    .then((properties) => {
+      const ids = toPropertyIdSet(properties);
+      wishlistIdCache = ids;
+      notifyWishlistListeners();
+      return ids;
+    })
+    .catch((error) => {
+      resetWishlistCache();
+      throw error;
+    })
+    .finally(() => {
+      wishlistFetchPromise = null;
+    });
+
+  return new Set(await wishlistFetchPromise);
+};
+
+const patchWishlistCache = ({ userId, propertyId, add }) => {
+  if (!userId || !propertyId) return;
+  if (!wishlistIdCache || wishlistCacheUserId !== userId) return;
+
+  if (add) {
+    wishlistIdCache.add(String(propertyId));
+  } else {
+    wishlistIdCache.delete(String(propertyId));
+  }
+
+  notifyWishlistListeners();
+};
 
 /**
  * Heart button for saving / unsaving a property.
@@ -20,11 +100,53 @@ export default function WishlistButton({ propertyId, initialSaved = false, varia
   const { addToast } = useToast();
   const [saved, setSaved] = useState(initialSaved);
   const [loading, setLoading] = useState(false);
+  const userId = user?.id || user?._id || null;
+  const normalizedPropertyId = propertyId ? String(propertyId) : null;
 
-  // Sync state if initialSaved changes (e.g. after data fetch or refresh)
   useEffect(() => {
-    setSaved(initialSaved);
-  }, [initialSaved]);
+    let active = true;
+
+    if (!userId) {
+      setSaved(false);
+      resetWishlistCache();
+      return () => {
+        active = false;
+      };
+    }
+
+    if (!normalizedPropertyId) {
+      setSaved(false);
+      return () => {
+        active = false;
+      };
+    }
+
+    setSaved(Boolean(initialSaved));
+
+    getWishlistIdSet(userId)
+      .then((ids) => {
+        if (!active) return;
+        setSaved(ids.has(normalizedPropertyId));
+      })
+      .catch(() => {
+        if (!active) return;
+        setSaved(Boolean(initialSaved));
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [userId, normalizedPropertyId, initialSaved]);
+
+  useEffect(() => {
+    if (!userId || !normalizedPropertyId) return undefined;
+
+    const unsubscribe = subscribeWishlist((ids) => {
+      setSaved(ids.has(normalizedPropertyId));
+    });
+
+    return unsubscribe;
+  }, [userId, normalizedPropertyId]);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -36,15 +158,22 @@ export default function WishlistButton({ propertyId, initialSaved = false, varia
       return;
     }
 
+    if (!normalizedPropertyId) {
+      addToast('Property is unavailable for wishlist right now.', 'error');
+      return;
+    }
+
     setLoading(true);
     try {
       if (saved) {
-        await unsaveProperty(propertyId);
+        await unsaveProperty(normalizedPropertyId);
         setSaved(false);
+        patchWishlistCache({ userId, propertyId: normalizedPropertyId, add: false });
         addToast('Removed from your wishlist.', 'info');
       } else {
-        await saveProperty(propertyId);
+        await saveProperty(normalizedPropertyId);
         setSaved(true);
+        patchWishlistCache({ userId, propertyId: normalizedPropertyId, add: true });
         addToast('Added to your wishlist! View it in Saved Properties.', 'success');
       }
     } catch {
@@ -77,7 +206,7 @@ export default function WishlistButton({ propertyId, initialSaved = false, varia
       <button
         type="button"
         onClick={handleClick}
-        disabled={loading}
+        disabled={loading || !normalizedPropertyId}
         title={saved ? 'Remove from Wishlist' : 'Save to Wishlist'}
         aria-label={saved ? 'Remove from Wishlist' : 'Save to Wishlist'}
         className={`w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 disabled:opacity-50 ${
@@ -96,7 +225,7 @@ export default function WishlistButton({ propertyId, initialSaved = false, varia
     <button
       type="button"
       onClick={handleClick}
-      disabled={loading}
+      disabled={loading || !normalizedPropertyId}
       title={saved ? 'Remove from Wishlist' : 'Save to Wishlist'}
       aria-label={saved ? 'Remove from Wishlist' : 'Save to Wishlist'}
       className={`flex-1 flex items-center justify-center gap-2 py-3 border rounded-xl transition-colors disabled:opacity-50 ${
