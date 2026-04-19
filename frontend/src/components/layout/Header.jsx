@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { label: 'New Launch', href: '/new-launch' },
   { label: 'Builders', href: '/builders' },
   { label: 'Blogs', href: '/blogs' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 const SERVICE_LINKS = [
@@ -18,6 +19,7 @@ const SERVICE_LINKS = [
   { label: 'EMI Calculator', href: '/emi-calculator', icon: 'calculate' },
   { label: 'Stamp Duty', href: '/stamp-duty', icon: 'receipt_long' },
   { label: 'Rent Agreement', href: '/rent-agreement', icon: 'description' },
+  { label: 'Comparison', href: '/compare', icon: 'compare' },
 ];
 
 export default function Header() {

@@ -24,9 +24,12 @@ export default function HomeLoanPage() {
               Unlock the doors to Mumbai's finest addresses with bespoke home loan offers from India's premier banking institutions.
             </p>
             <div className="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4 pt-4">
-              <button className="bg-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-base md:text-lg shadow-2xl shadow-primary/30 hover:bg-primary/90 transition-all transition-all leading-none">
+              <Link 
+                href="#apply-form" 
+                className="bg-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-base md:text-lg shadow-2xl shadow-primary/30 hover:bg-primary/90 transition-all leading-none flex items-center justify-center text-center"
+              >
                 Apply Now
-              </button>
+              </Link>
               <Link 
                 href="/contact?message=I would like to request a callback regarding a home loan application. Please contact me with more information."
                 className="flex items-center gap-2 md:gap-3 px-6 md:px-8 py-4 md:py-5 text-slate-900 font-black text-base md:text-lg hover:bg-slate-50 rounded-full transition-all leading-none"
@@ -112,7 +115,7 @@ export default function HomeLoanPage() {
         </section>
 
         {/* 4. Main Application Form */}
-        <section className="py-16 md:py-32 bg-slate-50 relative overflow-hidden">
+        <section id="apply-form" className="py-16 md:py-32 bg-slate-50 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-10 md:h-20 bg-gradient-to-b from-white to-transparent"></div>
           <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
             <div className="space-y-6 md:space-y-10 text-center lg:text-left">

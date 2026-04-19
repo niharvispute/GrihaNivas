@@ -87,6 +87,7 @@ export default function Footer() {
             <li><Link href="/emi-calculator" className="hover:translate-x-1 hover:text-primary transition-all inline-block">EMI Calculator</Link></li>
             <li><Link href="/stamp-duty" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Stamp Duty</Link></li>
             <li><Link href="/rent-agreement" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Rent Agreement</Link></li>
+            <li><Link href="/compare" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Comparison</Link></li>
           </ul>
         </div>
 

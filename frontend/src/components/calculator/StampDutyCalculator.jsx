@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { getErrorMessage } from '@/lib/api/errors';
 import { calculateStampDuty } from '@/services/calculatorService';
 
@@ -203,12 +204,18 @@ const StampDutyCalculator = () => {
           </div>
 
           <div className="mt-10 md:mt-16 space-y-3 md:space-y-4">
-            <button className="w-full py-4 md:py-5 rounded-full bg-primary text-white font-black text-base md:text-lg shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all leading-none">
+            <Link 
+              href="/home-loan"
+              className="w-full py-4 md:py-5 rounded-full bg-primary text-white font-black text-center text-base md:text-lg shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all leading-none block"
+            >
               Apply for Home Loan
-            </button>
-            <button className="w-full py-4 md:py-5 rounded-full border-2 border-primary text-primary font-black text-base md:text-lg hover:bg-primary/5 transition-all leading-none">
+            </Link>
+            <Link 
+              href={`/contact?message=I would like to consult an expert regarding stamp duty and registration for a property valued at ₹${(propertyValue / 10000000).toFixed(2)} Cr.`}
+              className="w-full py-4 md:py-5 rounded-full border-2 border-primary text-primary font-black text-center text-base md:text-lg hover:bg-primary/5 transition-all leading-none block"
+            >
               Contact Expert
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -291,9 +298,12 @@ const StampDutyCalculator = () => {
             ensuring a seamless transition.
           </p>
           <div className="flex">
-            <button className="px-8 md:px-12 py-3.5 md:py-5 bg-primary text-white font-black text-sm md:text-lg rounded-full shadow-2xl shadow-primary/40 hover:bg-primary/90 transition-all leading-none">
+            <Link 
+              href={`/contact?message=I would like to request a professional consultation regarding property documentation and stamp duty for a ₹${(propertyValue / 10000000).toFixed(2)} Cr investment.`}
+              className="px-8 md:px-12 py-3.5 md:py-5 bg-primary text-white font-black text-sm md:text-lg rounded-full shadow-2xl shadow-primary/40 hover:bg-primary/90 transition-all leading-none text-center"
+            >
               Get Consultation
-            </button>
+            </Link>
           </div>
         </div>
       </section>
