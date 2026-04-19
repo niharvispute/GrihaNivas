@@ -186,10 +186,10 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-          <div className="relative">
-            <img 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgt1Gw7rG9pP1tt0OoFiHtg92YGnCx50E0UYIKwyzfT-abEQaBd7qSmUEHSzNtQJmXGEkdsPpCvEEkhvhXVl3D_FXvZQHIyfvcHxAowXPc2KTLNl5Dfwufzs0uIHJEik1SxSTmysoIc0mW4h19WYq74qMx9HKZqh2L0KvmHVgxccKA-3OLb-NzTdD6k5S9UIDFFY5vYdllGIRsoEOxf_q3CPb74iT8peU-Dq6dpA1eLcB7M4bPojwj1rDqDhAZFNlAt42ulP2JBCM" 
-              alt="Luxury Living" 
+          <div className="relative overflow-hidden">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgt1Gw7rG9pP1tt0OoFiHtg92YGnCx50E0UYIKwyzfT-abEQaBd7qSmUEHSzNtQJmXGEkdsPpCvEEkhvhXVl3D_FXvZQHIyfvcHxAowXPc2KTLNl5Dfwufzs0uIHJEik1SxSTmysoIc0mW4h19WYq74qMx9HKZqh2L0KvmHVgxccKA-3OLb-NzTdD6k5S9UIDFFY5vYdllGIRsoEOxf_q3CPb74iT8peU-Dq6dpA1eLcB7M4bPojwj1rDqDhAZFNlAt42ulP2JBCM"
+              alt="Luxury Living"
               className="rounded-3xl md:rounded-[3rem] shadow-2xl"
             />
             <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl z-[-1]"></div>

@@ -124,7 +124,7 @@ export default function HomeLoanForm({ title = "Apply for Home Loan" }) {
   };
 
   return (
-    <div className="bg-white p-10 rounded-[2.5rem] shadow-2xl relative border border-slate-50">
+    <div className="bg-white p-10 rounded-[2.5rem] shadow-2xl relative border border-slate-50 overflow-hidden">
       <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary rounded-full blur-3xl opacity-10"></div>
       <form className="space-y-6 relative" onSubmit={handleSubmit}>
         <h3 className="text-2xl font-black text-slate-900 mb-8 tracking-tighter">{title}</h3>

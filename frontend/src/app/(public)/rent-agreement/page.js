@@ -85,7 +85,7 @@ export default function RentAgreementPage() {
               </p>
             </div>
           </div>
-          <div className="relative">
+          <div className="relative overflow-hidden">
             <div className="absolute -top-20 -right-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px]"></div>
             <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px]"></div>
             <div className="relative rounded-[3.5rem] overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-all duration-1000 group">
