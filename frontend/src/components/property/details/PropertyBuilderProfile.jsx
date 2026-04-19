@@ -4,8 +4,8 @@ export default function PropertyBuilderProfile({ builder }) {
   if (!builder) return null;
 
   return (
-    <section className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
-      <div className="flex items-center gap-4 mb-6">
+    <section className="bg-white p-5 sm:p-8 rounded-2xl border border-slate-100 shadow-sm">
+      <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
         <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center p-2 shadow-inner border border-slate-100 overflow-hidden relative">
           {builder.logo ? (
             <Image
@@ -22,7 +22,7 @@ export default function PropertyBuilderProfile({ builder }) {
         </div>
         <div>
           <h4 className="font-heading font-extrabold text-lg text-slate-800">{builder.name}</h4>
-          <p className="text-xs text-slate-400 font-medium">Est. 1990 • {builder.projects} Projects Delivered</p>
+          <p className="text-[11px] sm:text-xs text-slate-400 font-medium">Est. 1990 • {builder.projects} Projects Delivered</p>
         </div>
       </div>
       
