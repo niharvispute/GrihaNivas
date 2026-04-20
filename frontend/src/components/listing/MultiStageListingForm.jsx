@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
@@ -20,8 +21,10 @@ const parseFeatureLines = (value) =>
 
 export default function MultiStageListingForm() {
   const { user, openModal } = useAuth();
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [queuedSubmit, setQueuedSubmit] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
@@ -216,6 +219,7 @@ export default function MultiStageListingForm() {
 
       await createPropertySubmission(payload);
 
+      setIsSuccessModalOpen(true);
       setFeedback({ type: 'success', message: 'Property submitted for review successfully!' });
       // Reset or Redirect logic here
     } catch (error) {
@@ -827,5 +831,50 @@ export default function MultiStageListingForm() {
         </div>
       </main>
     </div>
+
+    {/* ✨ Success Milestone Popup */}
+    {isSuccessModalOpen && (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        {/* Backdrop */}
+        <div 
+          className="absolute inset-0 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-500"
+          onClick={() => router.push('/')}
+        />
+        
+        {/* Modal Content */}
+        <div className="relative bg-white w-full max-w-lg rounded-[2.5rem] p-8 md:p-12 text-center shadow-2xl animate-in zoom-in-95 fade-in duration-500 border border-slate-100">
+          {/* Milestone Icon */}
+          <div className="mb-8 relative inline-block">
+            <div className="w-24 h-24 rounded-full bg-emerald-500/10 flex items-center justify-center animate-bounce duration-1000">
+              <span className="material-symbols-outlined text-5xl text-emerald-500" style={{ fontVariationSettings: "'FILL' 1" }}>
+                verified
+              </span>
+            </div>
+            <div className="absolute top-0 left-0 w-full h-full bg-emerald-500/20 rounded-full blur-2xl animate-pulse" />
+          </div>
+
+          {/* Text Content */}
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-4 italic">
+            Listing Received!
+          </h2>
+          <p className="text-slate-500 font-bold mb-10 leading-relaxed">
+            Your Mumbai estate is now in review. Our curation team will audit the details and notify you within 24 hours.
+          </p>
+
+          {/* CTA */}
+          <button 
+            onClick={() => router.push('/')}
+            className="w-full py-5 bg-primary text-white rounded-full font-black text-sm uppercase tracking-widest shadow-2xl shadow-primary/20 hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3"
+          >
+            Continue Exploring
+            <span className="material-symbols-outlined text-base">explore</span>
+          </button>
+          
+          <p className="mt-6 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">
+            Redirecting to home in 10s...
+          </p>
+        </div>
+      </div>
+    )}
   );
 }

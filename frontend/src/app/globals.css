@@ -40,6 +40,10 @@
   --spacing-normal: 1rem;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --background: var(--color-neutral);
   --foreground: #1A1A1A;

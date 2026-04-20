@@ -32,7 +32,7 @@ export default async function ExploreBuildersPage({ searchParams }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="pt-3 sm:pt-4 pb-16 sm:pb-20 max-w-screen-2xl mx-auto px-4 sm:px-6">
+      <main className="pt-1.5 sm:pt-4 pb-16 sm:pb-20 max-w-screen-2xl mx-auto px-4 sm:px-6">
         {/* Dynamic Search & Filter Bar */}
         <BuilderFilterBar 
           initialSearch={params?.search || ''} 
@@ -43,7 +43,7 @@ export default async function ExploreBuildersPage({ searchParams }) {
         <FeaturedBuildersCarousel builders={featuredBuilders} />
 
         {/* Builder Grid */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+        <section className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-6 lg:gap-8">
           {builders.map((builder) => (
             <BuilderCard key={builder.id} builder={builder} />
           ))}

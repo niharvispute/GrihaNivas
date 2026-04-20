@@ -60,19 +60,19 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
           <div className="absolute inset-0 bg-linear-to-r from-zinc-950 via-zinc-950/60 to-transparent"></div>
         </div>
 
-        <div className="relative z-10 px-5 sm:px-8 md:px-16 py-8 sm:py-10 max-w-3xl">
-          <span className="inline-block px-3 sm:px-4 py-1.5 rounded-full bg-primary/20 text-white border border-primary/30 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] sm:tracking-widest mb-4 sm:mb-6">
+        <div className="relative z-10 px-4 sm:px-8 md:px-16 py-6 sm:py-10 max-w-3xl">
+          <span className="inline-block px-2.5 sm:px-4 py-1 rounded-full bg-primary/20 text-white border border-primary/30 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-widest mb-3 sm:mb-6 italic">
             Featured Partner
           </span>
-          <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-xl p-2 flex items-center justify-center shadow-xl shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-4 mb-2 sm:mb-4">
+            <div className="w-10 h-10 sm:w-16 sm:h-16 bg-white rounded-lg sm:rounded-xl p-1.5 flex items-center justify-center shadow-xl shrink-0">
               {logo ? (
                 <img className="w-full h-full object-contain" src={logo} alt={activeBuilder?.name || 'Builder logo'} />
               ) : (
-                <span className="text-xl font-black text-primary">{activeBuilder?.name?.[0] || 'B'}</span>
+                <span className="text-lg font-black text-primary">{activeBuilder?.name?.[0] || 'B'}</span>
               )}
             </div>
-            <h2 className="text-[24px]! sm:text-4xl! md:text-6xl! font-headline font-extrabold text-white uppercase tracking-tighter leading-tight">
+            <h2 className="text-[20px]! sm:text-4xl! md:text-6xl! font-headline font-extrabold text-white uppercase tracking-tight leading-none italic">
               {activeBuilder?.name}
             </h2>
           </div>
@@ -80,31 +80,31 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
             {activeBuilder?.tagline} {heroDescription}
           </p>
 
-          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-4 sm:gap-8 mb-6 sm:mb-10">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-4 gap-y-3 sm:gap-8 mb-5 sm:mb-10">
             <div>
-              <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold font-label">Est. Year</p>
-              <p className="text-white text-base sm:text-xl font-bold">{activeBuilder?.establishedYear || 'N/A'}</p>
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label italic leading-none mb-0.5 sm:mb-1">Est. Year</p>
+              <p className="text-white text-sm sm:text-xl font-bold">{activeBuilder?.establishedYear || 'N/A'}</p>
             </div>
             <div>
-              <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold font-label">Total Projects</p>
-              <p className="text-white text-base sm:text-xl font-bold">{activeBuilder?.totalProjects || 'N/A'}</p>
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label italic leading-none mb-0.5 sm:mb-1">Total Projects</p>
+              <p className="text-white text-sm sm:text-xl font-bold">{activeBuilder?.totalProjects || 'N/A'}</p>
             </div>
-            <div>
-              <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold font-label">HQ Location</p>
-              <p className="text-white text-base sm:text-xl font-bold">{activeBuilder?.hqLocation || 'N/A'}</p>
+            <div className="col-span-2 sm:col-span-1">
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label italic leading-none mb-0.5 sm:mb-1">HQ Location</p>
+              <p className="text-white text-sm sm:text-xl font-bold">{activeBuilder?.hqLocation || 'N/A'}</p>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4">
             <Link
               href={`/builders/${activeBuilder?.slug}`}
-              className="bg-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-primary-container transition-all active:scale-95 text-xs sm:text-sm uppercase tracking-widest text-center"
+              className="bg-primary text-white px-5 sm:px-8 py-2.5 sm:py-4 rounded-lg sm:rounded-xl font-black hover:bg-primary-container transition-all active:scale-95 text-[10px] sm:text-sm uppercase tracking-widest text-center"
             >
               View Details
             </Link>
             <Link
               href={`/builders/${activeBuilder?.slug}#portfolio`}
-              className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-white/20 transition-all text-xs sm:text-sm uppercase tracking-widest text-center"
+              className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-5 sm:px-8 py-2.5 sm:py-4 rounded-lg sm:rounded-xl font-black hover:bg-white/20 transition-all text-[10px] sm:text-sm uppercase tracking-widest text-center"
             >
               View Portfolio
             </Link>

@@ -5,16 +5,30 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useSidebar } from '@/context/SidebarContext';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { listMyPropertySubmissions } from '@/services/propertySubmissionService';
 
 export default function UserSidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const { isMobileOpen, setIsMobileOpen } = useSidebar();
+  const [hasListings, setHasListings] = useState(false);
 
   useEffect(() => {
     setIsMobileOpen(false);
   }, [pathname, setIsMobileOpen]);
+
+  useEffect(() => {
+    if (user) {
+      listMyPropertySubmissions()
+        .then(({ items }) => {
+          if (items && items.length > 0) {
+            setHasListings(true);
+          }
+        })
+        .catch(() => setHasListings(false));
+    }
+  }, [user]);
 
   useEffect(() => {
     if (isMobileOpen) {
@@ -40,6 +54,7 @@ export default function UserSidebar() {
     { name: 'Saved Properties', href: '/account/saved', icon: 'bookmark' },
     { name: 'Comparison', href: '/compare', icon: 'compare' },
     { name: 'My Enquiries', href: '/account/enquiries', icon: 'chat_bubble' },
+    ...(hasListings ? [{ name: 'My Listings', href: '/account/listings', icon: 'domain' }] : []),
     { name: 'My Profile', href: '/account/profile', icon: 'person' },
   ];
 

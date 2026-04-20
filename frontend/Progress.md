@@ -33,13 +33,13 @@
 
 | Page | Route | Responsive | Status |
 |------|-------|-----------|--------|
-| Property Detail | `/property/[id]` | ⚠️ | Needs mobile optimization |
+| Property Detail | `/property/[id]` | ✅ | 2-col grid for highlights/neighborhood, compact paddings, dense density |
 | Compare Properties | `/compare` | ✅ | CompareGrid & CompareHeader responsive |
 | Contact Us | `/contact` | ✅ | Responsive form layout |
 | Blogs List | `/blogs` | ⚠️ | Needs mobile optimization |
 | Blog Detail | `/blogs/[slug]` | ⚠️ | Needs mobile optimization |
-| Builders List | `/builders` | ⚠️ | Needs mobile optimization |
-| Builder Detail | `/builders/[slug]` | ⚠️ | Needs mobile optimization |
+| Builders List | `/builders` | ✅ | High-density 2-col grid, compact Featured hero |
+| Builder Detail | `/builders/[slug]` | ✅ | Compact hero (60vh), 2-col stats/portfolio, micro-scaled property cards |
 
 ## Public Pages - Services & Info
 
@@ -69,11 +69,11 @@
 | Property Submissions | `/admin/property-submissions` | ❌ | Not responsive |
 
 ## Summary
-
-- **✅ Fully Responsive**: 9 pages
-- **⚠️ Partially Responsive / Needs Work**: 14 pages
+ 
+- **✅ Fully Responsive**: 15 pages
+- **⚠️ Partially Responsive / Needs Work**: 12 pages
 - **❌ Not Responsive**: 11 pages (Admin pages)
-- **Total Pages**: 34 pages
+- **Total Pages**: 38 pages
 
 ## Responsive Design Standards Applied
 
@@ -103,11 +103,9 @@ When implementing responsive design, follow these standards:
 - ✅ Modals/Overlays (proper z-index on mobile)
 
 ## Next Priority Pages for Responsive Updates
-
-1. `/property/[id]` - Property detail page
-2. `/` - Home page (needs full review)
-3. `/blogs` and `/blogs/[slug]` - Blog pages
-4. `/builders` and `/builders/[slug]` - Builder pages
-5. `/login` - Login page
-6. `/list-property` - Property listing form
-7. Other service pages (loan, agreement, etc.)
+ 
+1. `/` - Home page (needs full review)
+2. `/blogs` and `/blogs/[slug]` - Blog pages
+3. `/login` - Login page
+4. `/list-property` - Property listing form
+5. Other service pages (loan, agreement, etc.)

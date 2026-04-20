@@ -65,9 +65,9 @@ export default async function PropertyDetailPage({ params }) {
     : null;
 
   return (
-    <main className="pt-5 sm:pt-7 lg:pt-8 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main className="pt-2 sm:pt-7 lg:pt-8 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Breadcrumbs */}
-      <nav aria-label="Breadcrumb" className="flex text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-5 sm:mb-8 px-1 overflow-x-auto no-scrollbar">
+      <nav aria-label="Breadcrumb" className="flex text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-3 sm:mb-8 px-1 overflow-x-auto no-scrollbar">
         <ol className="inline-flex items-center space-x-2">
           <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
           <li className="flex items-center">
@@ -82,7 +82,7 @@ export default async function PropertyDetailPage({ params }) {
       </nav>
 
       {/* Hero Section */}
-      <section className="mb-12 sm:mb-16 lg:mb-20 space-y-5 sm:space-y-8">
+      <section className="mb-8 sm:mb-16 lg:mb-20 space-y-5 sm:space-y-8">
         <div className="max-w-4xl space-y-3">
           <h1 className="text-[24px]! sm:text-4xl! md:text-5xl! font-heading font-extrabold tracking-tight text-slate-900 leading-tight">
             {property.title}
@@ -101,7 +101,7 @@ export default async function PropertyDetailPage({ params }) {
 
       {/* Main Content Flow */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-        <div className="lg:col-span-8 space-y-12 sm:space-y-16 lg:space-y-20">
+        <div className="lg:col-span-8 space-y-8 sm:space-y-16 lg:space-y-20">
           <PropertyHighlights highlights={highlights} />
           <PropertyAbout description={property.longDescription || property.description} />
           <PropertyAmenities amenities={amenities} />
@@ -126,16 +126,16 @@ export default async function PropertyDetailPage({ params }) {
                 </div>
               )}
               {neighborhoodHighlights.length > 0 && (
-                <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6 bg-white/90 backdrop-blur-md p-3 sm:p-6 rounded-xl flex flex-wrap gap-4 sm:gap-8 border border-white shadow-xl">
+                <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6 bg-white/90 backdrop-blur-md p-3 sm:p-6 rounded-xl grid grid-cols-2 lg:flex lg:flex-wrap gap-4 sm:gap-8 border border-white shadow-xl">
                   {neighborhoodHighlights.map((nh, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-primary">{nh.icon}</span>
-                      <div>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{nh.label}</p>
-                        <p className="font-bold text-slate-700 text-sm">{nh.value}</p>
+                    <div key={idx} className="flex items-center gap-2 md:gap-3">
+                      <span className="material-symbols-outlined text-primary text-lg sm:text-xl">{nh.icon}</span>
+                      <div className="min-w-0">
+                        <p className="text-[8px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5 sm:mb-1">{nh.label}</p>
+                        <p className="font-bold text-slate-700 text-[11px] sm:text-sm truncate">{nh.value}</p>
                       </div>
                     </div>
-                 ))}
+                  ))}
                 </div>
               )}
             </div>

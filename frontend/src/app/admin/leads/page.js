@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { listLeads, updateLeadStatus, getLeadById, deleteLead } from '@/services/leadService';
+import { listLeads, updateLeadStatus, getLeadById, deleteLead, addLeadNote } from '@/services/leadService';
 
 const STATUS_STYLES = {
   new:       { bg: 'bg-blue-50 text-blue-700',    dot: 'bg-blue-600' },
@@ -10,6 +10,7 @@ const STATUS_STYLES = {
   closed:    { bg: 'bg-slate-100 text-slate-500', dot: 'bg-slate-400' },
 };
 const NEXT_STATUS = { new: 'contacted', contacted: 'qualified', qualified: 'closed' };
+const PREV_STATUS = { contacted: 'new', qualified: 'contacted', closed: 'qualified' };
 
 function getInitials(name = '') {
   return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
@@ -40,6 +41,9 @@ export default function LeadCRMPage() {
   const [viewingLead, setViewingLead] = useState(null);
   const [loadingLeadDetail, setLoadingLeadDetail] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [noteText, setNoteText] = useState('');
+  const [addingNote, setAddingNote] = useState(false);
+  const [revertingId, setRevertingId] = useState(null);
 
   const fetchLeads = useCallback(async () => {
     setLoading(true);
@@ -101,6 +105,37 @@ export default function LeadCRMPage() {
       alert('Failed to delete lead.');
     } finally {
       setDeletingId(null);
+    }
+  };
+
+  const handleAddNote = async () => {
+    if (!noteText.trim() || !viewingLead) return;
+    setAddingNote(true);
+    try {
+      const note = await addLeadNote(viewingLead._id, noteText.trim());
+      setViewingLead((prev) => ({ ...prev, notes: [...(prev.notes || []), note] }));
+      setNoteText('');
+    } catch {
+      alert('Failed to add note.');
+    } finally {
+      setAddingNote(false);
+    }
+  };
+
+  const handleRevertStatus = async (lead) => {
+    const prev = PREV_STATUS[lead.status];
+    if (!prev) return;
+    setRevertingId(lead._id);
+    try {
+      await updateLeadStatus(lead._id, prev);
+      setLeads((prevLeads) =>
+        prevLeads.map((l) => l._id === lead._id ? { ...l, status: prev } : l)
+      );
+      if (viewingLead?._id === lead._id) setViewingLead((v) => ({ ...v, status: prev }));
+    } catch {
+      alert('Failed to revert status.');
+    } finally {
+      setRevertingId(null);
     }
   };
 
@@ -231,6 +266,19 @@ export default function LeadCRMPage() {
                             </button>
                           )}
 
+                          {PREV_STATUS[lead.status] && (
+                            <button
+                              onClick={() => handleRevertStatus(lead)}
+                              disabled={busy || deleting || revertingId === lead._id}
+                              title={`Revert to ${PREV_STATUS[lead.status]}`}
+                              className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-100 text-slate-400 hover:text-amber-600 hover:bg-amber-50 hover:border-amber-100 transition-all disabled:opacity-50 flex items-center justify-center"
+                            >
+                              <span className="material-symbols-outlined text-lg">
+                                {revertingId === lead._id ? 'sync' : 'undo'}
+                              </span>
+                            </button>
+                          )}
+
                           <div className="relative">
                             <button
                               type="button"
@@ -310,6 +358,7 @@ export default function LeadCRMPage() {
                   {[1, 2, 3, 4].map((i) => <div key={i} className="h-12 bg-slate-100 rounded-xl" />)}
                 </div>
               ) : viewingLead ? (
+                <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {[
                     { label: 'Name', value: viewingLead.name },
@@ -342,6 +391,48 @@ export default function LeadCRMPage() {
                       <Info key={field.label} label={field.label} value={field.value} full={field.full} />
                     ))}
                 </div>
+
+                {/* Notes Section */}
+                <div className="mt-8 pt-6 border-t border-slate-100">
+                  <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4">
+                    Activity Notes ({(viewingLead.notes || []).length})
+                  </h4>
+
+                  {/* Existing notes */}
+                  {(viewingLead.notes || []).length > 0 ? (
+                    <div className="space-y-3 mb-5 max-h-48 overflow-y-auto pr-1">
+                      {viewingLead.notes.map((note, i) => (
+                        <div key={i} className="bg-amber-50 border border-amber-100 rounded-xl p-4">
+                          <p className="text-sm font-medium text-slate-700 leading-relaxed">{note.text}</p>
+                          <p className="text-[10px] font-bold text-amber-500 mt-2 uppercase tracking-widest">
+                            {note.addedAt ? formatDate(note.addedAt) : ''}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-400 italic mb-5">No notes yet.</p>
+                  )}
+
+                  {/* Add new note */}
+                  <div className="flex gap-3">
+                    <textarea
+                      rows={2}
+                      value={noteText}
+                      onChange={(e) => setNoteText(e.target.value)}
+                      placeholder="Add a note (call outcome, follow-up, etc.)"
+                      className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:ring-2 focus:ring-primary/20 resize-none placeholder:text-slate-400"
+                    />
+                    <button
+                      onClick={handleAddNote}
+                      disabled={addingNote || !noteText.trim()}
+                      className="px-5 rounded-xl bg-primary text-white text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed self-stretch"
+                    >
+                      {addingNote ? '…' : 'Add'}
+                    </button>
+                  </div>
+                </div>
+                </>
               ) : null}
             </div>
           </div>

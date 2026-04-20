@@ -137,42 +137,42 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
           {filteredPortfolio.map((prop) => (
-            <div key={prop.id || prop.slug} className="group bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-neutral-100 flex flex-col">
-              <div className="relative overflow-hidden h-60 sm:h-64 lg:h-72">
+            <div key={prop.id || prop.slug} className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-neutral-100 flex flex-col italic">
+              <div className="relative overflow-hidden h-32 sm:h-64 lg:h-72">
                 <img 
                   src={prop.image} 
                   alt={prop.title} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                 />
-                <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg uppercase tracking-wider">
+                <div className="absolute top-2.5 left-2.5 bg-primary text-white text-[8px] font-black px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-full shadow-lg uppercase tracking-tighter">
                   {prop.status}
                 </div>
               </div>
-              <div className="p-5 sm:p-6 lg:p-8 flex flex-col grow">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl sm:text-2xl font-bold text-zinc-900 font-headline tracking-tight leading-tight">{prop.title}</h3>
-                  <p className="text-primary font-bold text-base sm:text-lg font-body">{prop.price}</p>
+              <div className="p-3.5 sm:p-6 lg:p-8 flex flex-col grow">
+                <div className="flex flex-col mb-1.5">
+                  <h3 className="text-sm sm:text-2xl font-black text-zinc-900 font-headline tracking-tighter leading-tight truncate uppercase">{prop.title}</h3>
+                  <p className="text-primary font-black text-xs sm:text-lg font-body">{prop.price}</p>
                 </div>
-                <div className="flex items-center gap-2 text-zinc-500 mb-5 sm:mb-6 text-sm font-body">
-                  <span className="material-symbols-outlined text-sm">location_on</span> {prop.location}
+                <div className="flex items-center gap-1 text-zinc-400 mb-3 sm:mb-6 text-[10px] sm:text-sm font-bold truncate">
+                  <span className="material-symbols-outlined text-[12px] sm:text-sm">location_on</span> {prop.location}
                 </div>
-                <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
-                  <div className="bg-neutral-50 p-3 sm:p-4 rounded-xl">
-                    <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest font-label mb-1">Configurations</p>
-                    <p className="font-bold text-zinc-800 text-xs font-body">{prop.type}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 sm:mb-8">
+                  <div className="bg-neutral-50 p-2 sm:p-4 rounded-lg sm:rounded-xl">
+                    <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest font-label mb-0.5 sm:mb-1">Config</p>
+                    <p className="font-black text-zinc-800 text-[9px] sm:text-xs font-body leading-none">{prop.type}</p>
                   </div>
-                  <div className="bg-neutral-50 p-3 sm:p-4 rounded-xl">
-                    <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest font-label mb-1">Availability</p>
-                    <p className="font-bold text-zinc-800 text-xs font-body">{prop.availability}</p>
+                  <div className="bg-neutral-50 p-2 sm:p-4 rounded-lg sm:rounded-xl">
+                    <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest font-label mb-0.5 sm:mb-1">Ready</p>
+                    <p className="font-black text-zinc-800 text-[9px] sm:text-xs font-body leading-none">{prop.availability}</p>
                   </div>
                 </div>
                 <Link 
                   href={`/property/${prop.slug || prop.id}`}
-                  className="mt-auto w-full border-2 border-zinc-900 text-center text-zinc-900 py-3 rounded-xl font-bold hover:bg-zinc-900 hover:text-white transition-all text-xs sm:text-sm uppercase tracking-widest"
+                  className="mt-auto w-full border-2 border-zinc-900 text-center text-zinc-900 py-2 sm:py-3 rounded-lg sm:rounded-xl font-black hover:bg-zinc-900 hover:text-white transition-all text-[9px] sm:text-sm uppercase tracking-[0.1em]"
                 >
-                  View Property Details
+                  View Detail
                 </Link>
               </div>
             </div>

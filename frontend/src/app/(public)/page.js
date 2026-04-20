@@ -42,6 +42,7 @@ const MOCK_BLOGS = [
 import SectionCarousel from '@/components/home/SectionCarousel';
 import TrendingProjectCard from '@/components/home/TrendingProjectCard';
 import TrendingBuilderCard from '@/components/home/TrendingBuilderCard';
+import HomePageTestimonials from '@/components/home/HomePageTestimonials';
 import { listBuilders } from '@/services/builderService';
 import { SkeletonCarousel } from '@/components/common/SkeletonCard';
 
@@ -236,7 +237,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. Lead Capture */}
+      {/* 6. Testimonials */}
+      <HomePageTestimonials />
+
+      {/* 7. Lead Capture */}
       <section className="py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-screen-2xl mx-auto">
         <div className="bg-primary rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 lg:p-20 text-white flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-20 items-start lg:items-center shadow-2xl shadow-primary/40 relative overflow-hidden">
           <div className="absolute -top-20 -left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
@@ -260,7 +264,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. FAQ */}
+      {/* 8. FAQ */}
       <section className="py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-3xl mx-auto">
           <SectionHeader 

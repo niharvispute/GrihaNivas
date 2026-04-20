@@ -24,9 +24,12 @@ export default function HomeLoanPage() {
               Unlock the doors to Mumbai's finest addresses with bespoke home loan offers from India's premier banking institutions.
             </p>
             <div className="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4 pt-4">
-              <button className="bg-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-base md:text-lg shadow-2xl shadow-primary/30 hover:bg-primary/90 transition-all transition-all leading-none">
+              <Link 
+                href="#apply-form" 
+                className="bg-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-base md:text-lg shadow-2xl shadow-primary/30 hover:bg-primary/90 transition-all leading-none flex items-center justify-center text-center"
+              >
                 Apply Now
-              </button>
+              </Link>
               <Link 
                 href="/contact?message=I would like to request a callback regarding a home loan application. Please contact me with more information."
                 className="flex items-center gap-2 md:gap-3 px-6 md:px-8 py-4 md:py-5 text-slate-900 font-black text-base md:text-lg hover:bg-slate-50 rounded-full transition-all leading-none"
@@ -112,7 +115,7 @@ export default function HomeLoanPage() {
         </section>
 
         {/* 4. Main Application Form */}
-        <section className="py-16 md:py-32 bg-slate-50 relative overflow-hidden">
+        <section id="apply-form" className="py-16 md:py-32 bg-slate-50 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-10 md:h-20 bg-gradient-to-b from-white to-transparent"></div>
           <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
             <div className="space-y-6 md:space-y-10 text-center lg:text-left">
@@ -143,56 +146,7 @@ export default function HomeLoanPage() {
           </div>
         </section>
 
-        {/* 5. Process Steps */}
-        
-
-        {/* 6. Testimonials */}
-        {/* <section className="py-16 md:py-32 bg-slate-900 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
-          
-          <div className="max-w-7xl mx-auto px-6 md:px-8">
-            <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 md:mb-20 gap-6 md:gap-8 text-center md:text-left">
-              <div className="space-y-2 md:space-y-4">
-                <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">Public Verdict</span>
-                <h2 className="text-3xl md:text-5xl font-black tracking-tighter leading-tight">
-                  Join 5,000+ Precision<br className="hidden md:block"/> Powered Homeowners
-                </h2>
-              </div>
-              <div className="flex gap-3 md:gap-4 hidden md:flex">
-                Scroll buttons hidden on mobile to save space
-                <button className="w-10 h-10 md:w-14 md:h-14 rounded-full border-2 border-slate-800 flex items-center justify-center hover:bg-white hover:text-slate-900 hover:border-white transition-all scale-100 md:scale-110">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                </button>
-                <button className="w-10 h-10 md:w-14 md:h-14 rounded-full border-2 border-slate-800 flex items-center justify-center hover:bg-white hover:text-slate-900 hover:border-white transition-all scale-100 md:scale-110">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                </button>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
-              {[
-                { name: "Vikram Mehta", pos: "Worli Homeowner", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBsnAoQspniaKe-QMHTjyHUlvRV3T18Jd9NrvDO3HgE5Fk33HaIFWz9AfX6qmqPCjbYD6Hcb7iLI2YadPTfin90tfcjCDCI26GGMUV83VNI9wHCsOYhWPqHgu4SV_y_chPta3C1yGvjLY0OC-6tTx1plsCyKBiH-C9rinMphEe_Ffmu5mv8T3ww4uoKO0tPXONf1dV_7BCDzNqI5UF-5QgVlN7f5KQn2laObmumzYfie4QPkE9Oh6HFplc8dHILubd96FAfCpQZ7Ww", text: "Got a rate 0.5% lower than what my direct bank offered!" },
-                { name: "Ananya Kapoor", pos: "Pali Hill Resident", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAGnvJeZcQ7KHqCwFGWTQ1Gv86Gna23nACZfjd8htsJxGFW5ydk4nz4TUfOppp6ZP7WZGwnSb6ZK726jEl-zvn6Obds49bZctAhQJWnT7_uaopZkfoRBkAmOOBSCWScKeiP_8C9ihRTMqhtOsLRcleGNjQ2VuWsCVv5EzLkLoQu4hoEaT5z7shPeIO8bN-pVWvl64viTMtpC_AYwWItr5hb6KFK3PNlcnmSpH4KVHiY7DwWrYghhnf-dT1ORJwbWRoqaJE2NsLlrDk", text: "Handled the legal vetting and coordination with the bank perfectly." }
-              ].map((test, i) => (
-                <div key={i} className="p-6 md:p-10 bg-white/5 border border-white/10 rounded-[2rem] md:rounded-[2.5rem] space-y-4 md:space-y-8 hover:bg-white/10 transition-colors group">
-                  <div className="flex text-primary text-xs md:text-base">
-                    {[1,2,3,4,5].map(s => <span key={s}>★</span>)}
-                  </div>
-                  <p className="text-slate-300 italic leading-relaxed text-sm md:text-lg font-medium group-hover:text-white transition-colors">&ldquo;{test.text}&rdquo;</p>
-                  <div className="flex items-center gap-4 md:gap-5 pt-2 md:pt-4 scale-100 md:scale-110 origin-left">
-                    <img src={test.img} alt={test.name} className="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover ring-2 ring-primary/20" />
-                    <div>
-                      <p className="font-black text-white text-xs md:text-base tracking-tight">{test.name}</p>
-                      <p className="text-[8px] md:text-xs text-primary font-black uppercase tracking-widest">{test.pos}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section> */}
-
-        {/* 7. FAQ Section */}
+        {/* FAQ Section */}
         <section className="py-16 md:py-32 max-w-4xl mx-auto px-6 md:px-8">
           <div className="text-center mb-12 md:mb-20 space-y-2 md:space-y-4">
             <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">Knowledge Base</span>

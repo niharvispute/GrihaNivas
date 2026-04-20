@@ -132,6 +132,15 @@ const updateStatus = async (req, res, next) => {
       );
     }
 
+    // Allow backward transition only one step at a time
+    const diff = STATUS_ORDER[newStatus] - STATUS_ORDER[lead.status];
+    if (diff < -1) {
+      throw new AppError(
+        `Can only revert one stage at a time. Cannot jump from "${lead.status}" to "${newStatus}".`,
+        400
+      );
+    }
+
     lead.status = newStatus;
     if (newStatus === 'contacted') lead.lastContactedAt = new Date();
     await lead.save();
