@@ -1,17 +1,33 @@
 import { apiFetch } from '@/lib/api';
 import { authedApiFetch } from '@/lib/api/authedRequest';
+import { downloadAuthedFile } from '@/lib/api/downloadFile';
 import {
   mapPropertyListToCardVM,
   mapPropertyToDetailVM,
 } from '@/lib/mappers/propertyMapper';
 
+const isRateLimitError = (error) => Number(error?.status) === 429;
+
 export const listProperties = async (query = {}, { map = true } = {}) => {
-  const res = await apiFetch('/api/properties', { query, includeAuth: true });
-  return {
-    items: map ? mapPropertyListToCardVM(res.data || []) : res.data || [],
-    meta: res.meta,
-    message: res.message,
-  };
+  try {
+    const res = await apiFetch('/api/properties', { query, includeAuth: true });
+    return {
+      items: map ? mapPropertyListToCardVM(res.data || []) : res.data || [],
+      meta: res.meta,
+      message: res.message,
+      rateLimited: false,
+    };
+  } catch (error) {
+    if (isRateLimitError(error)) {
+      return {
+        items: [],
+        meta: null,
+        message: error?.message || 'Too many requests. Please try again later.',
+        rateLimited: true,
+      };
+    }
+    throw error;
+  }
 };
 
 export const getPropertyBySlug = async (slug, { map = true } = {}) => {
@@ -43,4 +59,11 @@ export const updateProperty = async (id, formData) => {
 export const deleteProperty = async (id) => {
   await authedApiFetch(`/api/properties/${id}`, { method: 'DELETE' });
   return true;
+};
+
+export const exportProperties = async (query = {}) => {
+  return downloadAuthedFile('/api/properties/export', {
+    query,
+    fallbackName: 'bricks_properties.xlsx',
+  });
 };

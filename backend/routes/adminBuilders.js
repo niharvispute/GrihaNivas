@@ -9,6 +9,7 @@ const { uploadLimiter } = require('../middleware/rateLimiter');
 router.use(protect, adminOnly);
 
 router.get('/', validate(schemas.builder.adminList, 'query'), builderController.listAdmin);
+router.get('/export', builderController.exportBuilders);
 router.get('/:id', validate(schemas.builder.idParams, 'params'), builderController.getAdminOne);
 router.post('/', uploadLimiter, builderUploadFields, validate(schemas.builder.create), builderController.create);
 router.patch('/:id/feature', validate(schemas.builder.idParams, 'params'), validate(schemas.builder.featureToggle), builderController.toggleFeatured);

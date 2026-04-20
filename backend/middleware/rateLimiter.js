@@ -11,7 +11,8 @@ const rateLimit = require('express-rate-limit');
  */
 
 const windowMs = parseInt(process.env.RATE_LIMIT_WINDOW_MS, 10) || 15 * 60 * 1000; // 15 min
-const maxRequests = parseInt(process.env.RATE_LIMIT_MAX, 10) || 100;
+const defaultMaxRequests = process.env.NODE_ENV === 'production' ? 300 : 1000;
+const maxRequests = parseInt(process.env.RATE_LIMIT_MAX, 10) || defaultMaxRequests;
 
 /**
  * Shared rate limit response handler.
@@ -26,7 +27,10 @@ const rateLimitHandler = (req, res) => {
 
 /**
  * Global limiter — applied to all /api routes.
- * 100 requests per 15 minutes per IP.
+ * Defaults:
+ *   - production: 300 requests / 15 minutes / IP
+ *   - development: 1000 requests / 15 minutes / IP
+ * Can be overridden by RATE_LIMIT_MAX.
  */
 const globalLimiter = rateLimit({
   windowMs,

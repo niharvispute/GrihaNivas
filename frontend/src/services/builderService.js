@@ -1,28 +1,76 @@
 import { apiFetch } from '@/lib/api';
 import { authedApiFetch } from '@/lib/api/authedRequest';
+import { downloadAuthedFile } from '@/lib/api/downloadFile';
 import {
   mapBuilderListToCardVM,
   mapBuilderToDetailVM,
 } from '@/lib/mappers/builderMapper';
 
+const BUILDER_CITIES_CACHE_TTL_MS = 5 * 60 * 1000;
+
+let cachedBuilderCities = null;
+let cachedBuilderCitiesAt = 0;
+let builderCitiesInFlight = null;
+
+const isRateLimitError = (error) => Number(error?.status) === 429;
+
 /**
  * Fetch builders with optional filtering.
  */
 export const listBuilders = async (query = {}, { map = true } = {}) => {
-  const res = await apiFetch('/api/builders', { query });
-  return {
-    items: map ? mapBuilderListToCardVM(res.data || []) : res.data || [],
-    meta: res.meta,
-    message: res.message,
-  };
+  try {
+    const res = await apiFetch('/api/builders', { query });
+    return {
+      items: map ? mapBuilderListToCardVM(res.data || []) : res.data || [],
+      meta: res.meta,
+      message: res.message,
+      rateLimited: false,
+    };
+  } catch (error) {
+    if (isRateLimitError(error)) {
+      return {
+        items: [],
+        meta: null,
+        message: error?.message || 'Too many requests. Please try again later.',
+        rateLimited: true,
+      };
+    }
+    throw error;
+  }
 };
 
 /**
  * Fetch unique cities across builders with active properties.
  */
 export const listBuilderCities = async () => {
-  const res = await apiFetch('/api/builders/cities');
-  return res.data || [];
+  const now = Date.now();
+
+  if (Array.isArray(cachedBuilderCities) && now - cachedBuilderCitiesAt < BUILDER_CITIES_CACHE_TTL_MS) {
+    return cachedBuilderCities;
+  }
+
+  if (builderCitiesInFlight) {
+    return builderCitiesInFlight;
+  }
+
+  builderCitiesInFlight = apiFetch('/api/builders/cities')
+    .then((res) => {
+      const cities = Array.isArray(res.data) ? res.data : [];
+      cachedBuilderCities = cities;
+      cachedBuilderCitiesAt = Date.now();
+      return cities;
+    })
+    .catch((error) => {
+      if (isRateLimitError(error)) {
+        return Array.isArray(cachedBuilderCities) ? cachedBuilderCities : [];
+      }
+      throw error;
+    })
+    .finally(() => {
+      builderCitiesInFlight = null;
+    });
+
+  return builderCitiesInFlight;
 };
 
 /**
@@ -90,4 +138,11 @@ export const deleteAdminBuilder = async (builderId) => {
     method: 'DELETE',
   });
   return res.data;
+};
+
+export const exportAdminBuilders = async (query = {}) => {
+  return downloadAuthedFile('/api/admin/builders/export', {
+    query,
+    fallbackName: 'bricks_builders.xlsx',
+  });
 };

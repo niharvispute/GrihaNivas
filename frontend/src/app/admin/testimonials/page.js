@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { listTestimonials, deleteTestimonial, createTestimonial, updateTestimonial } from '@/services/testimonialService';
+import { listTestimonials, deleteTestimonial, createTestimonial, updateTestimonial, exportTestimonials } from '@/services/testimonialService';
 import TestimonialStats from '@/components/admin/testimonials/TestimonialStats';
 import TestimonialCard from '@/components/admin/testimonials/TestimonialCard';
 import TestimonialForm from '@/components/admin/testimonials/TestimonialForm';
+import ExportButton from '@/components/admin/ExportButton';
 
 export default function TestimonialManagerPage() {
   const [testimonials, setTestimonials] = useState([]);
@@ -101,13 +102,16 @@ export default function TestimonialManagerPage() {
             Manage the narratives that build trust. Curate user experiences across your organizational ecosystem.
           </p>
         </div>
-        <button 
-          onClick={handleAddNew}
-          className="px-10 py-5 bg-primary text-white rounded-3xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-4 leading-none"
-        >
-          <span className="material-symbols-outlined font-black">add</span>
-          Add Sentiment
-        </button>
+        <div className="flex items-center gap-3 flex-wrap">
+          <ExportButton onExport={() => exportTestimonials()} />
+          <button
+            onClick={handleAddNew}
+            className="px-10 py-5 bg-primary text-white rounded-3xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-4 leading-none"
+          >
+            <span className="material-symbols-outlined font-black">add</span>
+            Add Sentiment
+          </button>
+        </div>
       </div>
 
       {/* Analytics Dashboard */}

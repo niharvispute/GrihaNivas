@@ -6,7 +6,9 @@ import {
   deleteAdminBuilder,
   listAdminBuilders,
   toggleAdminBuilderFeatured,
+  exportAdminBuilders,
 } from '@/services/builderService';
+import ExportButton from '@/components/admin/ExportButton';
 
 function formatDate(iso) {
   if (!iso) return '—';
@@ -142,6 +144,17 @@ export default function AdminBuildersPage() {
               {meta.total} builders
             </span>
           )}
+          <ExportButton
+            onExport={() => {
+              const query = {};
+              if (search.trim()) query.search = search.trim();
+              const featuredValue = FILTER_OPTIONS.featured[featuredFilter];
+              if (featuredValue) query.isFeatured = featuredValue;
+              const activeValue = FILTER_OPTIONS.active[activeFilter];
+              if (activeValue) query.isActive = activeValue;
+              return exportAdminBuilders(query);
+            }}
+          />
           <Link
             href="/admin/builders/new"
             className="inline-flex items-center gap-2 bg-primary text-white px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-[0.18em] hover:bg-primary/90 transition-all"

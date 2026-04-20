@@ -1,5 +1,6 @@
 const { uploadImage, deleteFile } = require('../services/cloudinaryService');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
+const { sendExcel, formatDate } = require('../utils/excelExport');
 const AppError = require('../utils/AppError');
 const Testimonial = require('../models/mongoose/Testimonial');
 
@@ -12,6 +13,58 @@ const list = async (req, res, next) => {
       .select('-__v');
 
     return sendSuccess(res, 200, 'Testimonials fetched', testimonials);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── GET /api/testimonials/export  [admin] ─────────────────────────────────────
+
+const exportTestimonials = async (req, res, next) => {
+  try {
+    const { isActive } = req.query;
+
+    const filter = {};
+    if (isActive === 'true') filter.isActive = true;
+    if (isActive === 'false') filter.isActive = false;
+
+    const testimonials = await Testimonial.find(filter)
+      .sort({ order: 1, createdAt: -1 })
+      .select('-__v -photo.publicId')
+      .lean();
+
+    const columns = [
+      { header: 'Name', key: 'name', width: 24 },
+      { header: 'Designation', key: 'designation', width: 22 },
+      { header: 'Company', key: 'company', width: 22 },
+      { header: 'Rating', key: 'rating', width: 10 },
+      { header: 'Testimonial', key: 'testimonial', width: 60 },
+      { header: 'Photo URL', key: 'photoUrl', width: 40 },
+      { header: 'Status', key: 'status', width: 10 },
+      { header: 'Display Order', key: 'order', width: 14 },
+      { header: 'Created At', key: 'createdAt', width: 22 },
+      { header: 'Updated At', key: 'updatedAt', width: 22 },
+    ];
+
+    const rows = testimonials.map((t) => ({
+      name: t.name || '',
+      designation: t.designation || '',
+      company: t.company || '',
+      rating: t.rating ?? '',
+      testimonial: t.testimonial || '',
+      photoUrl: t.photo?.url || '',
+      status: t.isActive ? 'Active' : 'Inactive',
+      order: t.order ?? 0,
+      createdAt: formatDate(t.createdAt),
+      updatedAt: formatDate(t.updatedAt),
+    }));
+
+    return sendExcel(res, {
+      filename: 'bricks_testimonials',
+      sheetName: 'Testimonials',
+      columns,
+      rows,
+    });
   } catch (err) {
     next(err);
   }
@@ -83,4 +136,4 @@ const remove = async (req, res, next) => {
   }
 };
 
-module.exports = { list, create, update, remove };
+module.exports = { list, exportTestimonials, create, update, remove };

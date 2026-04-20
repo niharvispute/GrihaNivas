@@ -1,5 +1,6 @@
 import { apiFetch } from '@/lib/api';
 import { authedApiFetch } from '@/lib/api/authedRequest';
+import { downloadAuthedFile } from '@/lib/api/downloadFile';
 
 const toDateText = (timestamp) => {
   if (!timestamp) return 'N/A';
@@ -68,4 +69,14 @@ export const deleteTestimonial = async (id) => {
     method: 'DELETE',
   });
   return res.data;
+};
+
+/**
+ * Download all testimonials as an .xlsx file.
+ */
+export const exportTestimonials = async (query = {}) => {
+  return downloadAuthedFile('/api/testimonials/export', {
+    query,
+    fallbackName: 'bricks_testimonials.xlsx',
+  });
 };

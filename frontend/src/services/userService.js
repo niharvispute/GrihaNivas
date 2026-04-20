@@ -1,4 +1,5 @@
 import { authedApiFetch } from '@/lib/api/authedRequest';
+import { downloadAuthedFile } from '@/lib/api/downloadFile';
 import {
   mapAdminUserListToVM,
   mapPropertyListToCardVM,
@@ -85,4 +86,11 @@ export const activateUser = async (userId) => {
     method: 'PUT',
   });
   return res.data;
+};
+
+export const exportUsers = async (query = {}) => {
+  return downloadAuthedFile('/api/users/export', {
+    query,
+    fallbackName: 'bricks_users.xlsx',
+  });
 };

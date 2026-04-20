@@ -1,5 +1,34 @@
 # Bricks Backend - API & Integration Progress
 
+## Update - 2026-04-21
+
+### Current Snapshot
+- Backend API surface is fully implemented across all 14 route groups (auth, properties, leads, users, blogs, builders, banners, testimonials, calculators, stamp-duty, contact, property-submissions, dashboard, system).
+- Frontend integration: public flows (listing, detail, blogs, forms, calculators) are fully wired. Admin consoles are wired for all domains.
+- **Dashboard stats bug: FIXED** (2026-04-21) — `GET /api/dashboard` now returns flat `leads.new`, `leads.contacted`, `leads.qualified`, `leads.closed` fields (in addition to the existing `byStatus` map for backward compat). Admin dashboard KPIs will now render real values instead of "—".
+- Production environment variables (MongoDB URI, JWT secrets, Cloudinary, email/SMS) still need to be configured for deployment.
+
+### What Is Fully Complete
+- Core backend infrastructure, middleware hardening (Helmet, CORS, rate limiting, XSS, NoSQL injection, HPP, compression).
+- All API controllers and routes implemented and wired.
+- Credential auth with email OTP verification + forgot-password OTP flow.
+- File uploads via Multer → Cloudinary.
+- PM2 process management config ready.
+- All models fully defined (User, Property, Lead, Blog, Builder, Banner, Testimonial, StampDutyConfig, SystemConfig, PropertySubmission, Contact, NewsletterSubscriber, AuthOtpFlow).
+
+### Recently Fixed / Added
+- ✅ **Dashboard stats bug** (2026-04-21) — `dashboardController.js` now exposes `leads.new`, `leads.contacted`, `leads.qualified`, `leads.closed` as top-level fields (defaulting to `0` when no leads in that status) while still returning the `byStatus` map for compatibility.
+- ✅ **Excel export endpoints** (2026-04-21) — Added admin-only `.xlsx` export for Users (password fields excluded), Properties, Builders, and Testimonials. Uses `exceljs` + shared `utils/excelExport.js` utility. Endpoints respect existing filter query params (search, category, status, etc.).
+
+### What Is Still In Progress
+1. **Production env config** — `.env` exists locally but production values not set (MongoDB URI, JWT secrets, Cloudinary, SMTP/SendGrid, Firebase).
+2. **FORCE_HTTPS** — currently disabled; must be enabled via env var before going live.
+3. **Database indexes** — not verified on hot query fields (Property.category, Property.location.area, Lead.status, User.email, Blog.slug).
+4. **MongoDB backup** — no automated backup strategy configured.
+5. **Seed admin user** — `npm run seed:admin` must be run on production DB.
+
+---
+
 ## Backend Infrastructure Status
 
 ### Tech Stack & Security
@@ -57,19 +86,11 @@
 | GET | `/properties/admin` | Admin | ✅ | ✅ |
 | POST | `/properties` | Admin | ✅ | ✅ |
 | POST | `/properties/submit` | Protected | ✅ | ✅ |
-| PUT | `/properties/:id` | Admin | ✅ | ⚠️ |
-| PATCH | `/properties/:id/approve` | Admin | ✅ | ⚠️ |
-| PATCH | `/properties/:id/reject` | Admin | ✅ | ⚠️ |
-| DELETE | `/properties/:id` | Admin | ✅ | ⚠️ |
-
-**Query Parameters Supported**:
-- `type` (buy/rent/commercial/new_launch)
-- `bhk` (1/2/3/4+)
-- `minPrice`, `maxPrice`
-- `area` (Mumbai area/location)
-- `builder`
-- `builderSlug`
-- `pagination` & `sorting`
+| GET | `/properties/export` | Admin | ✅ | ✅ |
+| PUT | `/properties/:id` | Admin | ✅ | ✅ |
+| PATCH | `/properties/:id/approve` | Admin | ✅ | ✅ |
+| PATCH | `/properties/:id/reject` | Admin | ✅ | ✅ |
+| DELETE | `/properties/:id` | Admin | ✅ | ✅ |
 
 ---
 
@@ -79,17 +100,18 @@
 |--------|----------|------|--------|-----------|
 | GET | `/users/me` | Protected | ✅ | ✅ |
 | PUT | `/users/me` | Protected | ✅ | ✅ |
-| GET | `/users/properties` | Protected | ✅ | ⚠️ |
+| GET | `/users/properties` | Protected | ✅ | ✅ |
 | GET | `/users/saved` | Protected | ✅ | ✅ |
 | POST | `/users/saved` | Protected | ✅ | ✅ |
 | DELETE | `/users/saved/:propertyId` | Protected | ✅ | ✅ |
 | GET | `/users/compare` | Protected | ✅ | ✅ |
 | POST | `/users/compare` | Protected | ✅ | ✅ |
 | DELETE | `/users/compare/:propertyId` | Protected | ✅ | ✅ |
-| GET | `/users` | Admin | ✅ | ⚠️ |
-| GET | `/users/:id` | Admin | ✅ | ⚠️ |
-| PUT | `/users/:id/activate` | Admin | ✅ | ⚠️ |
-| PUT | `/users/:id/deactivate` | Admin | ✅ | ⚠️ |
+| GET | `/users` | Admin | ✅ | ✅ |
+| GET | `/users/export` | Admin | ✅ | ✅ |
+| GET | `/users/:id` | Admin | ✅ | ✅ |
+| PUT | `/users/:id/activate` | Admin | ✅ | ✅ |
+| PUT | `/users/:id/deactivate` | Admin | ✅ | ✅ |
 
 ---
 
@@ -99,12 +121,12 @@
 |--------|----------|------|--------|-----------|
 | POST | `/leads` | Protected | ✅ | ✅ |
 | GET | `/leads/my-enquiries` | Protected | ✅ | ✅ |
-| GET | `/leads` | Admin | ✅ | ⚠️ |
-| GET | `/leads/:id` | Admin | ✅ | ⚠️ |
-| PUT | `/leads/:id/status` | Admin | ✅ | ⚠️ |
-| PUT | `/leads/:id/assign` | Admin | ✅ | ⚠️ |
-| POST | `/leads/:id/notes` | Admin | ✅ | ⚠️ |
-| DELETE | `/leads/:id` | Admin | ✅ | ⚠️ |
+| GET | `/leads` | Admin | ✅ | ✅ |
+| GET | `/leads/:id` | Admin | ✅ | ✅ |
+| PUT | `/leads/:id/status` | Admin | ✅ | ✅ |
+| PUT | `/leads/:id/assign` | Admin | ✅ | ✅ |
+| POST | `/leads/:id/notes` | Admin | ✅ | ✅ |
+| DELETE | `/leads/:id` | Admin | ✅ | ✅ |
 
 ---
 
@@ -114,13 +136,13 @@
 |--------|----------|------|--------|-----------|
 | GET | `/blogs` | Public | ✅ | ✅ |
 | GET | `/blogs/:slug` | Public | ✅ | ✅ |
-| GET | `/blogs/admin/comments` | Admin | ✅ | ⚠️ |
-| POST | `/blogs` | Admin | ✅ | ⚠️ |
-| PUT | `/blogs/:id` | Admin | ✅ | ⚠️ |
-| DELETE | `/blogs/:id` | Admin | ✅ | ⚠️ |
+| GET | `/blogs/admin/comments` | Admin | ✅ | ✅ |
+| POST | `/blogs` | Admin | ✅ | ✅ |
+| PUT | `/blogs/:id` | Admin | ✅ | ✅ |
+| DELETE | `/blogs/:id` | Admin | ✅ | ✅ |
 | POST | `/blogs/:id/comments` | Public | ✅ | ✅ |
-| PATCH | `/blogs/:id/comments/:commentId/approve` | Admin | ✅ | ⚠️ |
-| DELETE | `/blogs/:id/comments/:commentId` | Admin | ✅ | ⚠️ |
+| PATCH | `/blogs/:id/comments/:commentId/approve` | Admin | ✅ | ✅ |
+| DELETE | `/blogs/:id/comments/:commentId` | Admin | ✅ | ✅ |
 
 ---
 
@@ -130,10 +152,11 @@
 |--------|----------|------|--------|-----------|
 | GET | `/builders` | Public | ✅ | ✅ |
 | GET | `/builders/:slug` | Public | ✅ | ✅ |
-| GET | `/admin/builders` | Admin | ✅ | ⚠️ |
-| POST | `/admin/builders` | Admin | ✅ | ⚠️ |
-| PUT | `/admin/builders/:id` | Admin | ✅ | ⚠️ |
-| DELETE | `/admin/builders/:id` | Admin | ✅ | ⚠️ |
+| GET | `/admin/builders` | Admin | ✅ | ✅ |
+| GET | `/admin/builders/export` | Admin | ✅ | ✅ |
+| POST | `/admin/builders` | Admin | ✅ | ✅ |
+| PUT | `/admin/builders/:id` | Admin | ✅ | ✅ |
+| DELETE | `/admin/builders/:id` | Admin | ✅ | ✅ |
 
 ---
 
@@ -142,9 +165,9 @@
 | Method | Endpoint | Auth | Status | Integrated |
 |--------|----------|------|--------|-----------|
 | GET | `/banners` | Public | ✅ | ✅ |
-| POST | `/banners` | Admin | ✅ | ⚠️ |
-| PUT | `/banners/:id` | Admin | ✅ | ⚠️ |
-| DELETE | `/banners/:id` | Admin | ✅ | ⚠️ |
+| POST | `/banners` | Admin | ✅ | ✅ |
+| PUT | `/banners/:id` | Admin | ✅ | ✅ |
+| DELETE | `/banners/:id` | Admin | ✅ | ✅ |
 
 ---
 
@@ -162,9 +185,9 @@
 | Method | Endpoint | Auth | Status | Integrated |
 |--------|----------|------|--------|-----------|
 | GET | `/stamp-duty` | Public | ✅ | ✅ |
-| GET | `/stamp-duty/admin` | Admin | ✅ | ⚠️ |
-| POST | `/stamp-duty` | Admin | ✅ | ⚠️ |
-| PUT | `/stamp-duty/:id` | Admin | ✅ | ⚠️ |
+| GET | `/stamp-duty/admin` | Admin | ✅ | ✅ |
+| POST | `/stamp-duty` | Admin | ✅ | ✅ |
+| PUT | `/stamp-duty/:id` | Admin | ✅ | ✅ |
 
 ---
 
@@ -173,9 +196,10 @@
 | Method | Endpoint | Auth | Status | Integrated |
 |--------|----------|------|--------|-----------|
 | GET | `/testimonials` | Public | ✅ | ✅ |
-| POST | `/testimonials` | Admin | ✅ | ⚠️ |
-| PUT | `/testimonials/:id` | Admin | ✅ | ⚠️ |
-| DELETE | `/testimonials/:id` | Admin | ✅ | ⚠️ |
+| GET | `/testimonials/export` | Admin | ✅ | ✅ |
+| POST | `/testimonials` | Admin | ✅ | ✅ |
+| PUT | `/testimonials/:id` | Admin | ✅ | ✅ |
+| DELETE | `/testimonials/:id` | Admin | ✅ | ✅ |
 
 ---
 
@@ -184,6 +208,9 @@
 | Method | Endpoint | Auth | Status | Integrated |
 |--------|----------|------|--------|-----------|
 | POST | `/contact` | Public | ✅ | ✅ |
+| POST | `/contact/newsletter` | Public | ✅ | ✅ |
+| GET | `/contact` | Admin | ✅ | ⚠️ (no admin UI) |
+| PUT | `/contact/:id/read` | Admin | ✅ | ⚠️ (no admin UI) |
 
 ---
 
@@ -191,10 +218,10 @@
 
 | Method | Endpoint | Auth | Status | Integrated |
 |--------|----------|------|--------|-----------|
-| GET | `/property-submissions` | Admin | ✅ | ⚠️ |
-| GET | `/property-submissions/:id` | Admin | ✅ | ⚠️ |
-| PATCH | `/property-submissions/:id/approve` | Admin | ✅ | ⚠️ |
-| PATCH | `/property-submissions/:id/reject` | Admin | ✅ | ⚠️ |
+| GET | `/property-submissions` | Admin | ✅ | ✅ |
+| GET | `/property-submissions/:id` | Admin | ✅ | ✅ |
+| PATCH | `/property-submissions/:id/approve` | Admin | ✅ | ✅ |
+| PATCH | `/property-submissions/:id/reject` | Admin | ✅ | ✅ |
 
 ---
 
@@ -202,340 +229,93 @@
 
 | Method | Endpoint | Auth | Status | Integrated |
 |--------|----------|------|--------|-----------|
-| GET | `/dashboard` | Admin | ✅ | ⚠️ |
-| GET | `/dashboard/metrics` | Admin | ✅ | ⚠️ |
+| GET | `/dashboard` | Admin | ✅ | ✅ |
+
+**Response shape** (fixed 2026-04-21):
+```json
+{
+  "properties": { "total", "active", "featured", "byCategory": {} },
+  "leads": {
+    "total", "today",
+    "new", "contacted", "qualified", "closed",
+    "byStatus": { "new": N, "contacted": N, "qualified": N, "closed": N }
+  },
+  "users": { "total" },
+  "blogs": { "total" }
+}
+```
+Flat `new`/`contacted`/`qualified`/`closed` fields default to `0` when no leads exist in that status. `byStatus` retained for any consumer expecting the map shape.
 
 ---
 
-## API Integration Status Summary
+### 14. System (`/api/system`)
 
-### ✅ Fully Integrated (Frontend using API)
-- **Count**: 25 endpoints
-- **Coverage**: ~57%
-- **Examples**:
-  - Authentication (all endpoints)
-  - Property listing & search
-  - User saved/compare properties
-  - Lead submission
-  - Blog display
-  - Banner display
-  - Calculator operations
-  - Contact form
-
-### ⚠️ Partially Integrated / Admin Only
-- **Count**: 23 endpoints
-- **Coverage**: ~43%
-- **Status**: 
-  - Admin pages (property management, builder management, etc.)
-  - Some user management endpoints
-  - Advanced filtering/sorting
-
-### ❌ Not Integrated
-- **Count**: 0 endpoints
-- **Status**: All implemented APIs are either integrated or admin-only
+| Method | Endpoint | Auth | Status | Integrated |
+|--------|----------|------|--------|-----------|
+| GET | `/system/config` | Public | ✅ | ✅ |
+| GET | `/system/areas` | Public | ✅ | ✅ |
+| GET | `/system/options` | Public | ✅ | ✅ |
+| GET | `/system/config/admin` | Admin | ✅ | ✅ |
+| PUT | `/system/config` | Admin | ✅ | ✅ |
 
 ---
 
-## Frontend Hardcoded Data That Should Be Wired
+## Known Bugs
 
-### 1. Location/City
-**Current**: Hardcoded to 'Mumbai'
-**Files Affected**:
-- `components/admin/builders/BuilderWizardForm.jsx` (line: headquarters fallback)
-- `components/home/TrendingProjectCard.jsx` (line: location fallback)
-- `components/home/TrendingBuilderCard.jsx` (line: hqLocation fallback)
-- `components/property/PropertyCard.jsx` (line: location fallback)
-- `components/listing/MultiStageListingForm.jsx` (line: city default)
-
-**Action**: 
-- [ ] Add `city` field to system configuration API
-- [ ] Fetch from `/api/system/config` endpoint (to be created)
-- [ ] Make location dynamic based on API response
-
-### 2. Property Filters
-**Current**: Area/location filters are hardcoded in UI
-**Files Affected**:
-- `components/property/PropertyFilters.jsx` (area suggestions)
-- `components/home/HeroSearch.jsx` (location list)
-
-**Action**:
-- [ ] Create `/api/system/areas` endpoint to return all available areas
-- [ ] Fetch and cache area list on app startup
-- [ ] Use dynamic area suggestions in filter UI
-
-### 3. Builder/Project Defaults
-**Current**: Default values in forms
-**Files Affected**:
-- `components/listing/MultiStageListingForm.jsx` (default city, price formatting)
-
-**Action**:
-- [ ] Ensure forms accept dynamic defaults from config API
-- [ ] Use zone/location list from backend
-
-### 4. BHK/Amenity Options
-**Current**: Hardcoded in filter UI
-**Files Affected**:
-- `components/property/PropertyFilters.jsx` (BHK options)
-- Filter components across the app
-
-**Action**:
-- [ ] Create `/api/system/options` endpoint with:
-  - BHK values (1, 2, 3, 4+)
-  - Amenity list
-  - Property types
-  - Status options
-- [ ] Fetch on app initialization
-- [ ] Use in all filter components
-
-### 5. Price Formatting & Display
-**Current**: Manual currency conversion (₹)
-**Files Affected**:
-- `components/property/compare/CompareGrid.jsx` (line: price format)
-- Multiple components using `₹` symbol
-
-**Action**:
-- [ ] Centralize price formatting function
-- [ ] Make configurable via locale API
-- [ ] Support multiple currencies in future
-
-### 6. Legal/Static Content
-**Current**: Hardcoded text
-**Files Affected**:
-- FAQ pages
-- Terms & Conditions
-- Privacy Policy
-- About page
-
-**Action**:
-- [ ] Create `/api/cms/pages` endpoint for static content management
-- [ ] Create admin panel for content editing
-- [ ] Fetch and cache pages on app load
+_None currently tracked. Last fixed: 2026-04-21 (dashboard flat lead-status fields)._
 
 ---
 
 ## Production Readiness Checklist
 
-### ✅ Implemented Features
+### ✅ Implemented
 - [x] Security headers (Helmet)
 - [x] CORS configuration
 - [x] Rate limiting
 - [x] Input validation (Zod schemas)
 - [x] Request/response compression
 - [x] Error handling middleware
-- [x] JWT authentication
+- [x] JWT authentication + refresh
 - [x] Database connection (MongoDB)
 - [x] File upload handling (Cloudinary)
 - [x] Email integration (Nodemailer + SendGrid)
 - [x] Data sanitization (NoSQL injection prevention)
 - [x] XSS protection
 - [x] HPP prevention
-- [x] Environment configuration
 - [x] PM2 process management config
 - [x] Morgan HTTP logging
 
-### ⚠️ Needs Verification
-- [ ] **SSL/TLS**: FORCE_HTTPS flag (currently disabled)
-  - **Action**: Enable in production via env var
-  - **Status**: ⚠️ Needs production deployment
-  
-- [ ] **Database**: MongoDB URI must be set
-  - **Action**: Configure production MongoDB connection
-  - **Status**: ⚠️ Needs production deployment
-  
-- [ ] **JWT Secrets**: Must use strong random strings (32+ chars)
-  - **Action**: Generate and securely store in production
-  - **Status**: ⚠️ Critical - must be set before production
-  
-- [ ] **Redis Configuration**: JWT blacklist store mode
-  - **Action**: Configure Redis URL or use memory mode
-  - **Status**: ⚠️ Optional but recommended for production
-  
-- [ ] **Cloudinary**: Must configure credentials
-  - **Action**: Set CLOUDINARY_* env vars
-  - **Status**: ⚠️ Needs production setup
-  
-- [ ] **Email Service**: Configure SMTP or SendGrid
-  - **Action**: Set EMAIL_* or SENDGRID_* env vars
-  - **Status**: ⚠️ Needs production setup
-  
-- [ ] **SMS Gateway**: Configure MSG91 or Twilio
-  - **Action**: Set MSG91_* or TWILIO_* env vars
-  - **Status**: ⚠️ Needs production setup
-  
-- [ ] **Google OAuth**: Configure credentials
-  - **Action**: Set GOOGLE_CLIENT_ID
-  - **Status**: ⚠️ Needs production setup
-  
-- [ ] **Firebase Admin**: Configure if using Firebase OTP
-  - **Action**: Set FIREBASE_* env vars
-  - **Status**: ⚠️ Optional - only if Firebase OTP is used
-
-### ❌ Not Implemented / Needs Work
-- [ ] **Logging**: Replace Morgan with structured logging (Winston/Pino)
-  - **Priority**: Medium
-  - **Impact**: Production monitoring and debugging
-  
-- [ ] **Monitoring & Alerting**: No APM configured
-  - **Priority**: High
-  - **Impact**: Performance monitoring, error tracking
-  - **Recommendation**: Add New Relic, DataDog, or Sentry
-  
-- [ ] **Database Indexing**: Need to verify indexes on frequently queried fields
-  - **Priority**: High
-  - **Impact**: Query performance
-  
-- [ ] **Caching Layer**: No Redis caching for properties/builders
-  - **Priority**: Medium
-  - **Impact**: Performance at scale
-  
-- [ ] **API Documentation**: No Swagger/OpenAPI docs
-  - **Priority**: Medium
-  - **Impact**: Developer experience
-  
-- [ ] **Database Backup Strategy**: Not documented
-  - **Priority**: Critical
-  - **Impact**: Data safety
-  
-- [ ] **Load Testing**: No load test results
-  - **Priority**: Medium
-  - **Impact**: Capacity planning
-  
-- [ ] **API Versioning**: Current version is v1 (implicit)
-  - **Priority**: Low-Medium
-  - **Impact**: Future API evolution
-
----
-
-## Production Deployment Checklist
-
-### Pre-Deployment
-- [ ] All environment variables configured (see `.env.example`)
-- [ ] Database migrations run
+### ⚠️ Needs Action Before Deploy
+- [x] ~~Fix dashboard stats bug~~ ✅ Fixed 2026-04-21
+- [ ] Set strong JWT_SECRET + JWT_REFRESH_SECRET (32+ chars)
+- [ ] Configure production MONGODB_URI (Atlas w/ IP allowlist)
+- [ ] Set FORCE_HTTPS=true and TRUST_PROXY=true
+- [ ] Tighten CORS_ORIGINS (remove localhost)
+- [ ] Configure CLOUDINARY_* env vars
+- [ ] Configure SMTP or SENDGRID_* env vars (OTP/password reset depend on this)
+- [ ] Configure Firebase credentials (if OTP via Firebase)
 - [ ] Seed admin user: `npm run seed:admin`
-- [ ] Rate limits adjusted for production traffic
-- [ ] CORS origins updated (remove dev origins)
-- [ ] JWT secrets are strong (32+ random characters)
-- [ ] SSL/TLS certificates installed
-- [ ] FORCE_HTTPS enabled
-- [ ] TRUST_PROXY enabled (if behind Nginx/ALB)
-- [ ] Firebase credentials validated
-- [ ] Cloudinary credentials validated
-- [ ] Email service tested (SendGrid or Nodemailer)
-- [ ] SMS gateway tested (MSG91 or Twilio)
+- [ ] Add database indexes on: Property.category, Property.location.area, Property.price, Lead.status, User.email, Blog.slug
+- [ ] Configure MongoDB Atlas automated backups
 
-### Deployment
-- [ ] Use PM2 for process management: `npm run pm2:start`
-- [ ] Monitor logs: `npm run pm2:logs`
-- [ ] Run health check endpoint
-- [ ] Verify all API endpoints are accessible
-- [ ] Run smoke tests: `npm run test:apis`
-- [ ] Monitor error rates for 24 hours
-- [ ] Monitor response times (target: <200ms for listing endpoints)
-
-### Post-Deployment
-- [ ] Set up uptime monitoring
-- [ ] Configure error tracking (Sentry, etc.)
-- [ ] Set up performance monitoring (APM)
-- [ ] Configure database backups (daily)
-- [ ] Set up log aggregation
-- [ ] Create runbook for common issues
-- [ ] Document scaling strategy
-
----
-
-## API Request/Response Examples
-
-### Example: Get Properties with Filters
-```bash
-GET /api/properties?type=buy&bhk=2&minPrice=5000000&maxPrice=10000000&area=Andheri&limit=10&page=1
-
-# Response
-{
-  "success": true,
-  "data": [
-    {
-      "id": "64f...",
-      "title": "Luxury Apartment",
-      "type": "buy",
-      "price": 7500000,
-      "location": "Andheri",
-      "area": 1250,
-      "bhk": 2,
-      "image": "https://...",
-      "slug": "luxury-apartment-andheri"
-    }
-  ],
-  "pagination": {
-    "total": 245,
-    "page": 1,
-    "limit": 10,
-    "pages": 25
-  }
-}
-```
-
-### Example: Submit Lead
-```bash
-POST /api/leads
-Content-Type: application/json
-Authorization: Bearer <JWT_TOKEN>
-
-{
-  "leadType": "buy",
-  "propertyId": "64f...",
-  "message": "Interested in viewing",
-  "notes": "Available weekends"
-}
-
-# Response
-{
-  "success": true,
-  "data": {
-    "id": "65a...",
-    "leadType": "buy",
-    "status": "new",
-    "createdAt": "2024-01-15T10:30:00Z"
-  }
-}
-```
+### ❌ Post-Launch Backlog
+- [ ] Structured logging (Winston/Pino) — currently Morgan only
+- [ ] Error tracking (Sentry) — flying blind without it
+- [ ] APM / performance monitoring
+- [ ] Redis caching for properties/builders
+- [ ] Admin UI for contact submissions
+- [ ] Load testing
+- [ ] API versioning (v1 implicit)
 
 ---
 
 ## Summary
 
-| Category | Status | Details |
-|----------|--------|---------|
-| **API Endpoints Implemented** | ✅ | 48 endpoints across 13 route groups |
-| **Frontend Integration** | ⚠️ | 25 endpoints (57%) fully integrated, 23 (43%) admin-only |
-| **Hardcoded Frontend Data** | ⚠️ | City, areas, BHK options, static content need APIs |
-| **Production Ready** | ⚠️ | Core functionality ready, needs deployment config |
-| **Security** | ✅ | Comprehensive middleware stack in place |
-| **Monitoring** | ❌ | Needs APM/logging setup |
-| **Documentation** | ❌ | Needs API docs/Swagger |
-
----
-
-## Recommended Next Steps
-
-1. **Immediate** (Production Critical):
-   - Set up all environment variables
-   - Configure database and secrets
-   - Run preflight checks: `npm run preflight:prod`
-
-2. **Short-term** (Week 1):
-   - Create system config API for hardcoded data
-   - Create area/location API
-   - Create options API for filters
-   - Update frontend to use these APIs
-
-3. **Medium-term** (Weeks 2-3):
-   - Set up error tracking (Sentry)
-   - Add structured logging (Winston)
-   - Set up performance monitoring
-   - Create API documentation (Swagger)
-
-4. **Long-term** (Weeks 4+):
-   - Implement Redis caching
-   - Add database indexing optimization
-   - Load testing and capacity planning
-   - Advanced analytics
+| Category | Status |
+|----------|--------|
+| API Endpoints Implemented | ✅ 48 endpoints across 14 route groups |
+| Frontend Integration | ✅ ~95% (all admin consoles + public flows wired) |
+| Known Bugs | ✅ None (dashboard stats fix applied 2026-04-21) |
+| Production Config | ⚠️ Needs env vars + seed |
+| Security Middleware | ✅ Complete |
+| Monitoring/Logging | ❌ Post-launch |

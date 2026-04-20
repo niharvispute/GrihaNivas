@@ -3,6 +3,7 @@ const { uploadImage, deleteFile, deleteFiles } = require('../services/cloudinary
 const { generateSlug } = require('../utils/slugify');
 const { parsePagination } = require('../utils/pagination');
 const { sendSuccess, sendCreated } = require('../utils/apiResponse');
+const { sendExcel, formatDate, joinList } = require('../utils/excelExport');
 const AppError = require('../utils/AppError');
 const Builder = require('../models/mongoose/Builder');
 const Property = require('../models/mongoose/Property');
@@ -210,6 +211,96 @@ const listAdmin = async (req, res, next) => {
   }
 };
 
+// ── GET /api/admin/builders/export  [admin] ────────────────────────────────
+
+const exportBuilders = async (req, res, next) => {
+  try {
+    const { search, isActive, isFeatured } = req.query;
+
+    const filter = {};
+    const activeFlag = parseBoolean(isActive);
+    if (typeof activeFlag === 'boolean') filter.isActive = activeFlag;
+    const featuredFlag = parseBoolean(isFeatured);
+    if (typeof featuredFlag === 'boolean') filter.isFeatured = featuredFlag;
+
+    if (search) {
+      const regex = new RegExp(search, 'i');
+      filter.$or = [{ name: regex }, { headquarters: regex }, { slug: regex }];
+    }
+
+    const builders = await Builder.find(filter)
+      .sort({ createdAt: -1 })
+      .select('-__v -logo.publicId -coverImage.publicId')
+      .lean();
+
+    const builderIds = builders.map((b) => b._id);
+    let propertyCountMap = new Map();
+
+    if (builderIds.length > 0) {
+      const propertyCounts = await Property.aggregate([
+        { $match: { builder: { $in: builderIds } } },
+        { $group: { _id: '$builder', total: { $sum: 1 } } },
+      ]);
+      propertyCountMap = new Map(
+        propertyCounts.map((entry) => [String(entry._id), entry.total])
+      );
+    }
+
+    const columns = [
+      { header: 'Name', key: 'name', width: 26 },
+      { header: 'Slug', key: 'slug', width: 26 },
+      { header: 'Headquarters', key: 'headquarters', width: 22 },
+      { header: 'Established Year', key: 'establishedYear', width: 16 },
+      { header: 'Total Projects', key: 'totalProjects', width: 14 },
+      { header: 'Ongoing Projects', key: 'ongoingProjects', width: 16 },
+      { header: 'Completed Deliveries', key: 'completedDeliveries', width: 18 },
+      { header: 'Property Count', key: 'propertyCount', width: 14 },
+      { header: 'Featured', key: 'isFeatured', width: 10 },
+      { header: 'Active', key: 'isActive', width: 8 },
+      { header: 'Short Description', key: 'shortDescription', width: 40 },
+      { header: 'About Headline', key: 'aboutHeadline', width: 30 },
+      { header: 'Quality Standards', key: 'qualityStandards', width: 30 },
+      { header: 'Innovation', key: 'innovation', width: 30 },
+      { header: 'FAQ Count', key: 'faqCount', width: 10 },
+      { header: 'Testimonial Count', key: 'testimonialCount', width: 16 },
+      { header: 'SEO Keywords', key: 'seoKeywords', width: 30 },
+      { header: 'Created At', key: 'createdAt', width: 22 },
+      { header: 'Updated At', key: 'updatedAt', width: 22 },
+    ];
+
+    const rows = builders.map((b) => ({
+      name: b.name || '',
+      slug: b.slug || '',
+      headquarters: b.headquarters || '',
+      establishedYear: b.establishedYear || '',
+      totalProjects: b.totalProjects ?? 0,
+      ongoingProjects: b.ongoingProjects ?? '',
+      completedDeliveries: b.completedDeliveries ?? '',
+      propertyCount: propertyCountMap.get(String(b._id)) || 0,
+      isFeatured: b.isFeatured ? 'Yes' : 'No',
+      isActive: b.isActive ? 'Yes' : 'No',
+      shortDescription: b.shortDescription || '',
+      aboutHeadline: b.aboutHeadline || '',
+      qualityStandards: b.qualityStandards || '',
+      innovation: b.innovation || '',
+      faqCount: Array.isArray(b.faqs) ? b.faqs.length : 0,
+      testimonialCount: Array.isArray(b.testimonials) ? b.testimonials.length : 0,
+      seoKeywords: joinList(b.seo?.keywords),
+      createdAt: formatDate(b.createdAt),
+      updatedAt: formatDate(b.updatedAt),
+    }));
+
+    return sendExcel(res, {
+      filename: 'bricks_builders',
+      sheetName: 'Builders',
+      columns,
+      rows,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getAdminOne = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -399,6 +490,7 @@ module.exports = {
   getPublicBySlug,
   getPublicCities,
   listAdmin,
+  exportBuilders,
   getAdminOne,
   toggleFeatured,
   create,

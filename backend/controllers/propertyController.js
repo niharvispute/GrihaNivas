@@ -2,6 +2,7 @@ const { uploadPropertyMedia, deleteFiles } = require('../services/cloudinaryServ
 const { generateUniqueSlug } = require('../utils/slugify');
 const { parsePagination } = require('../utils/pagination');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
+const { sendExcel, formatDate, joinList } = require('../utils/excelExport');
 const AppError = require('../utils/AppError');
 const Property = require('../models/mongoose/Property');
 const Builder = require('../models/mongoose/Builder');
@@ -339,6 +340,119 @@ const adminList = async (req, res, next) => {
   }
 };
 
+// ── GET /api/properties/export  [admin] ────────────────────────────────────
+// Exports all properties (across all statuses) as .xlsx.
+
+const exportProperties = async (req, res, next) => {
+  try {
+    const { category, status, search } = req.query;
+
+    const filter = {};
+    if (category) filter.category = category;
+    if (status) filter.status = status;
+
+    if (search) {
+      const regex = new RegExp(search, 'i');
+      filter.$or = [
+        { title: regex },
+        { 'location.area': regex },
+        { 'location.city': regex },
+        { reraNumber: regex },
+      ];
+    }
+
+    const properties = await Property.find(filter)
+      .sort({ createdAt: -1 })
+      .populate('createdBy', 'name email phone')
+      .populate('builder', 'name slug')
+      .select('-__v -heroImage.publicId -gallery.publicId -floorPlans.publicId -brochure.publicId')
+      .lean();
+
+    const columns = [
+      { header: 'Title', key: 'title', width: 32 },
+      { header: 'Slug', key: 'slug', width: 28 },
+      { header: 'Category', key: 'category', width: 12 },
+      { header: 'Status', key: 'status', width: 12 },
+      { header: 'Active', key: 'isActive', width: 8 },
+      { header: 'Featured', key: 'isFeatured', width: 10 },
+      { header: 'Price', key: 'price', width: 14 },
+      { header: 'Price Unit', key: 'priceUnit', width: 12 },
+      { header: 'Negotiable', key: 'isNegotiable', width: 10 },
+      { header: 'BHK', key: 'bhk', width: 6 },
+      { header: 'Bathrooms', key: 'bathrooms', width: 10 },
+      { header: 'Area (Sqft)', key: 'areaSqft', width: 12 },
+      { header: 'Floor', key: 'floor', width: 8 },
+      { header: 'Total Floors', key: 'totalFloors', width: 12 },
+      { header: 'Parking', key: 'parking', width: 8 },
+      { header: 'Furnishing', key: 'furnishing', width: 14 },
+      { header: 'Facing', key: 'facing', width: 12 },
+      { header: 'Possession', key: 'possession', width: 18 },
+      { header: 'Age', key: 'age', width: 14 },
+      { header: 'Area', key: 'area', width: 20 },
+      { header: 'Address', key: 'address', width: 30 },
+      { header: 'City', key: 'city', width: 14 },
+      { header: 'Pincode', key: 'pincode', width: 10 },
+      { header: 'RERA Number', key: 'reraNumber', width: 20 },
+      { header: 'Builder', key: 'builder', width: 20 },
+      { header: 'Amenities', key: 'amenities', width: 40 },
+      { header: 'Highlights', key: 'highlights', width: 40 },
+      { header: 'Views', key: 'views', width: 8 },
+      { header: 'Saved Count', key: 'savedCount', width: 12 },
+      { header: 'Posted By', key: 'postedBy', width: 24 },
+      { header: 'Approved At', key: 'approvedAt', width: 22 },
+      { header: 'Rejected At', key: 'rejectedAt', width: 22 },
+      { header: 'Created At', key: 'createdAt', width: 22 },
+      { header: 'Updated At', key: 'updatedAt', width: 22 },
+    ];
+
+    const rows = properties.map((p) => ({
+      title: p.title || '',
+      slug: p.slug || '',
+      category: p.category || '',
+      status: p.status || '',
+      isActive: p.isActive ? 'Yes' : 'No',
+      isFeatured: p.isFeatured ? 'Yes' : 'No',
+      price: p.price ?? '',
+      priceUnit: p.priceUnit || '',
+      isNegotiable: p.isNegotiable ? 'Yes' : 'No',
+      bhk: p.bhk ?? '',
+      bathrooms: p.bathrooms ?? '',
+      areaSqft: p.areaSqft ?? '',
+      floor: p.floor ?? '',
+      totalFloors: p.totalFloors ?? '',
+      parking: p.parking ?? 0,
+      furnishing: p.furnishing || '',
+      facing: p.facing || '',
+      possession: p.possession || '',
+      age: p.age || '',
+      area: p.location?.area || '',
+      address: p.location?.address || '',
+      city: p.location?.city || '',
+      pincode: p.location?.pincode || '',
+      reraNumber: p.reraNumber || '',
+      builder: p.builder?.name || '',
+      amenities: joinList(p.amenities),
+      highlights: joinList(p.highlights),
+      views: p.views ?? 0,
+      savedCount: p.savedCount ?? 0,
+      postedBy: p.createdBy ? `${p.createdBy.name || ''} (${p.createdBy.email || p.createdBy.phone || ''})` : '',
+      approvedAt: formatDate(p.approvedAt),
+      rejectedAt: formatDate(p.rejectedAt),
+      createdAt: formatDate(p.createdAt),
+      updatedAt: formatDate(p.updatedAt),
+    }));
+
+    return sendExcel(res, {
+      filename: 'bricks_properties',
+      sheetName: 'Properties',
+      columns,
+      rows,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // ── PATCH /api/properties/:id/approve  [admin] ─────────────────────────────
 
 const approve = async (req, res, next) => {
@@ -451,6 +565,7 @@ module.exports = {
   create,
   submit,
   adminList,
+  exportProperties,
   approve,
   reject,
   update,

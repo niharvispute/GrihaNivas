@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import LeadForm from '@/components/forms/LeadForm';
 import SectionHeader from '@/components/common/SectionHeader';
 import HeroSearch from '@/components/home/HeroSearch';
@@ -53,8 +53,15 @@ export default function HomePage() {
   const [latestBlogs, setLatestBlogs] = useState(MOCK_BLOGS);
   const [heroBannerImage, setHeroBannerImage] = useState(DEFAULT_HERO_IMAGE);
   const [loading, setLoading] = useState(true);
+  const [isRateLimited, setIsRateLimited] = useState(false);
+  const hasFetchedRef = useRef(false);
+
+  const isRateLimitError = (error) => Number(error?.status) === 429;
 
   useEffect(() => {
+    if (hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
+
     const fetchData = async () => {
       try {
         const [propRes, buildRes, blogRes, bannerRes] = await Promise.all([
@@ -68,6 +75,10 @@ export default function HomePage() {
         setFeaturedProperties(propRes.items || []);
         setFeaturedBuilders(buildRes.items || []);
         if (blogRes.items?.length) setLatestBlogs(blogRes.items);
+        if (propRes?.rateLimited || buildRes?.rateLimited || blogRes?.rateLimited) {
+          setIsRateLimited(true);
+        }
+
         const homeHeroBanner = Array.isArray(bannerRes)
           ? bannerRes.find((banner) => banner?.position === 'home_hero') || bannerRes[0]
           : null;
@@ -75,7 +86,11 @@ export default function HomePage() {
           setHeroBannerImage(homeHeroBanner.image);
         }
       } catch (error) {
-        console.error('Home Page Data Fetch Error:', error);
+        if (isRateLimitError(error)) {
+          setIsRateLimited(true);
+        } else if (process.env.NODE_ENV === 'development') {
+          console.error('Home Page Data Fetch Error:', error);
+        }
       } finally {
         setLoading(false);
       }
@@ -106,6 +121,12 @@ export default function HomePage() {
           </p>
 
           <HeroSearch />
+
+          {isRateLimited && (
+            <p className="mt-4 text-xs sm:text-sm font-semibold text-amber-900 bg-amber-100/90 border border-amber-200 rounded-full px-4 py-2 inline-block">
+              High traffic right now. Some sections may load limited results for a moment.
+            </p>
+          )}
         </div>
       </section>
 

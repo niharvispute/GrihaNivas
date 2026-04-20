@@ -22,6 +22,7 @@ router.post(
 
 // Admin moderation routes
 router.get('/admin', protect, adminOnly, validate(schemas.property.adminList, 'query'), propertyController.adminList);
+router.get('/export', protect, adminOnly, propertyController.exportProperties);
 router.patch('/:id/approve', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.approve);
 router.patch('/:id/reject', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.reject);
 

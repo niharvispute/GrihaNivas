@@ -23,6 +23,7 @@ router.delete('/compare/:propertyId', userController.removeFromCompare);
 
 // Admin user management
 router.get('/',                 adminOnly, validate(schemas.user.adminList, 'query'), userController.listUsers);
+router.get('/export',           adminOnly, userController.exportUsers);
 router.get('/:id',              adminOnly, validate(schemas.user.userIdParam, 'params'), userController.getUserById);
 router.put('/:id/deactivate',   adminOnly, validate(schemas.user.userIdParam, 'params'), userController.deactivateUser);
 router.put('/:id/activate',     adminOnly, validate(schemas.user.userIdParam, 'params'), userController.activateUser);

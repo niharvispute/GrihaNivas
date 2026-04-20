@@ -39,6 +39,8 @@ const getStats = async (req, res, next) => {
       Blog.countDocuments({ isPublished: true }),
     ]);
 
+    const byStatus = Object.fromEntries(leadsByStatus.map(s => [s._id, s.count]));
+
     const stats = {
       properties: {
         total: totalProperties,
@@ -49,7 +51,11 @@ const getStats = async (req, res, next) => {
       leads: {
         total: totalLeads,
         today: todayLeads,
-        byStatus: Object.fromEntries(leadsByStatus.map(s => [s._id, s.count])),
+        new: byStatus.new ?? 0,
+        contacted: byStatus.contacted ?? 0,
+        qualified: byStatus.qualified ?? 0,
+        closed: byStatus.closed ?? 0,
+        byStatus,
       },
       users: { total: totalUsers },
       blogs: { total: totalBlogs },

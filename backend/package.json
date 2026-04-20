@@ -13,10 +13,10 @@
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
     "format": "prettier --write \"**/*.js\"",
-    "pm2:start": "pm2 start ecosystem.config.js --env production",
-    "pm2:stop": "pm2 stop bricks-backend",
-    "pm2:restart": "pm2 restart bricks-backend",
-    "pm2:logs": "pm2 logs bricks-backend",
+    "pm2:start": "npx pm2 start ecosystem.config.js --env production",
+    "pm2:stop": "npx pm2 stop bricks-backend",
+    "pm2:restart": "npx pm2 restart bricks-backend",
+    "pm2:logs": "npx pm2 logs bricks-backend",
     "seed:admin": "node scripts/seedAdmin.js",
     "seed:builders": "node scripts/seedBuilders.js",
     "test:apis": "node scripts/test-apis.js",
@@ -34,6 +34,7 @@
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0",
     "express": "^4.21.2",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.5.0",
@@ -55,6 +56,7 @@
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "nodemon": "^3.1.9",
+    "pm2": "^6.0.14",
     "prettier": "^3.4.2"
   }
 }

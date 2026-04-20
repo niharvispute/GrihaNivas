@@ -1,6 +1,7 @@
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
 const { uploadImage } = require('../services/cloudinaryService');
 const { parsePagination } = require('../utils/pagination');
+const { sendExcel, formatDate } = require('../utils/excelExport');
 const AppError = require('../utils/AppError');
 const User = require('../models/mongoose/User');
 const Property = require('../models/mongoose/Property');
@@ -47,6 +48,75 @@ const listUsers = async (req, res, next) => {
     ]);
 
     return sendSuccess(res, 200, 'Users fetched', users, buildMeta(total));
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── GET /api/users/export  [admin] ───────────────────────────────────────────
+// Exports the full user list as .xlsx. Passwords & internal auth fields are never included.
+
+const exportUsers = async (req, res, next) => {
+  try {
+    const { search, role, isActive } = req.query;
+
+    const filter = {};
+    if (role) filter.role = role;
+    if (typeof isActive === 'boolean') filter.isActive = isActive;
+    if (isActive === 'true') filter.isActive = true;
+    if (isActive === 'false') filter.isActive = false;
+
+    if (search) {
+      const searchRegex = new RegExp(search, 'i');
+      filter.$or = [
+        { name: searchRegex },
+        { phone: searchRegex },
+        { email: searchRegex },
+      ];
+    }
+
+    // Explicit field selection — NEVER include passwordHash or passwordChangedAt
+    const users = await User.find(filter)
+      .sort({ createdAt: -1 })
+      .select('name email phone role isVerified isActive emailVerifiedAt lastLogin savedProperties comparedProperties createdAt updatedAt')
+      .lean();
+
+    const columns = [
+      { header: 'Name', key: 'name', width: 24 },
+      { header: 'Email', key: 'email', width: 30 },
+      { header: 'Phone', key: 'phone', width: 18 },
+      { header: 'Role', key: 'role', width: 10 },
+      { header: 'Verified', key: 'isVerified', width: 10 },
+      { header: 'Status', key: 'status', width: 10 },
+      { header: 'Email Verified At', key: 'emailVerifiedAt', width: 22 },
+      { header: 'Last Login', key: 'lastLogin', width: 22 },
+      { header: 'Saved Properties', key: 'savedCount', width: 16 },
+      { header: 'Compared Properties', key: 'comparedCount', width: 18 },
+      { header: 'Joined On', key: 'createdAt', width: 22 },
+      { header: 'Last Updated', key: 'updatedAt', width: 22 },
+    ];
+
+    const rows = users.map((u) => ({
+      name: u.name || '',
+      email: u.email || '',
+      phone: u.phone || '',
+      role: u.role || 'user',
+      isVerified: u.isVerified ? 'Yes' : 'No',
+      status: u.isActive ? 'Active' : 'Inactive',
+      emailVerifiedAt: formatDate(u.emailVerifiedAt),
+      lastLogin: formatDate(u.lastLogin),
+      savedCount: Array.isArray(u.savedProperties) ? u.savedProperties.length : 0,
+      comparedCount: Array.isArray(u.comparedProperties) ? u.comparedProperties.length : 0,
+      createdAt: formatDate(u.createdAt),
+      updatedAt: formatDate(u.updatedAt),
+    }));
+
+    return sendExcel(res, {
+      filename: 'bricks_users',
+      sheetName: 'Users',
+      columns,
+      rows,
+    });
   } catch (err) {
     next(err);
   }
@@ -309,6 +379,7 @@ const removeFromCompare = async (req, res, next) => {
 
 module.exports = {
   listUsers,
+  exportUsers,
   getUserById,
   deactivateUser,
   activateUser,

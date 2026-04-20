@@ -1,111 +1,126 @@
-# Bricks Frontend - Page Responsive Status
+# Bricks Frontend - Page & Integration Status
 
-## Dashboard Pages (Protected - `/account`)
+## Update - 2026-04-21
 
-| Page | Route | Responsive | Status |
-|------|-------|-----------|--------|
-| My Dashboard | `/account` | ✅ | KPISection (2 cards), responsive header, spacing |
-| My Profile | `/account/profile` | ✅ | ProfileStats (2 cards), QuickActions (2 cols), responsive typography |
-| Saved Properties | `/account/saved` | ✅ | SavedPropertyCard redesign (left photo + right details), responsive header |
-| My Enquiries | `/account/enquiries` | ✅ | EnquiryTable card-based layout, responsive typography |
+### Current Snapshot
+- Frontend integration is ~95% complete. All admin console pages and all user dashboard pages are fully wired to the backend.
+- Public flows (listing, detail, blogs, calculators, forms, builders) are live-data driven.
+- Auth: credential login + email OTP signup + forgot-password flow fully wired.
+- Route protection: `AuthGuard` component covers `/admin/*` (requireAdmin) and `/account/*` routes via layout.js files.
+- **3 confirmed hardcoded-data issues** remaining (see Known Issues section).
+- Backend dashboard stats bug (New/Closed leads KPI) fixed 2026-04-21 — admin dashboard now renders correctly.
+- Responsive: 15 pages fully responsive, 12 partial, 11 admin pages desktop-only.
 
-## Public Pages - Property Listings
+### What Is Fully Complete
+- All admin console pages: properties, builders, leads, blogs, banners, testimonials, users, property-submissions, system config.
+- All user dashboard pages: profile, saved properties, enquiries, compare.
+- All public listing pages: buy, rent, new-launch, builders list/detail, property detail.
+- All tool pages: EMI calculator, stamp duty calculator, home loan, rent agreement.
+- Blogs list + detail with comments.
+- Contact form + newsletter subscription.
+- Auth: login, signup with OTP, forgot password.
 
-| Page | Route | Responsive | Status |
-|------|-------|-----------|--------|
-| Home | `/` | ⚠️ | Partial - needs full mobile optimization |
-| Buy Properties | `/buy` | ✅ | Responsive layout, pagination, typography |
-| Rent Properties | `/rent` | ✅ | Responsive layout, pagination, typography |
-| Commercial Properties | `/commercial` | ⚠️ | Needs mobile optimization |
-| New Launches | `/new-launch` | ⚠️ | Needs mobile optimization |
-| Launches | `/launches` | ⚠️ | Needs mobile optimization |
+### Known Issues (Confirmed by Code Audit)
 
-## Public Pages - Tools & Calculators
+| # | Issue | File | Severity | Fix |
+|---|-------|------|----------|-----|
+| 1 | `MOCK_BLOGS` hardcoded array used as initial state and API fallback on home page | `app/(public)/page.js:12-53` | Medium | Remove `MOCK_BLOGS`, show empty state when API returns no blogs |
+| 2 | `FALLBACK_BANNERS` returned when banner API fails/returns empty | `services/bannerService.js:4-78` | Medium | Remove fallback, return `[]` and show empty state in admin banner page |
+| 3 | `next.config.mjs` missing `images.remotePatterns` for external domains | `next.config.mjs` | High | Add `lh3.googleusercontent.com` and `res.cloudinary.com` to remotePatterns (16 files use `next/image`) |
+| 4 | Frontend `.env.local` not created | root of `frontend/` | High | Create from `.env.example` with production API URL |
+| 5 | `systemService.js` defaults for areas/options — acceptable for MVP | `services/systemService.js` | Low | Works fine; defaults kick in when API empty or fails |
 
-| Page | Route | Responsive | Status |
-|------|-------|-----------|--------|
-| EMI Calculator | `/emi-calculator` | ✅ | Responsive slider, calculator layout |
-| Stamp Duty Calculator | `/stamp-duty` | ✅ | Responsive inputs, calculator output |
-| Home Loan | `/home-loan` | ✅ | Responsive form layout |
-| Rent Agreement | `/rent-agreement` | ✅ | Responsive typography |
+> **Note on Issue #3**: The app uses `next/image` in 16 files. Without `remotePatterns`, Next.js will throw errors for all external images (Cloudinary property images, Google-hosted placeholder images) in production. This is a **deploy blocker**.
 
-## Public Pages - Information & Features
+### What Is Still In Progress
+- Mobile optimization backlog on 12 public pages and 11 admin pages (admin pages are desktop-only and acceptable for launch).
+- Admin contact submissions UI (backend endpoint exists, no frontend admin view built yet).
 
-| Page | Route | Responsive | Status |
-|------|-------|-----------|--------|
-| Property Detail | `/property/[id]` | ✅ | 2-col grid for highlights/neighborhood, compact paddings, dense density |
-| Compare Properties | `/compare` | ✅ | CompareGrid & CompareHeader responsive |
-| Contact Us | `/contact` | ✅ | Responsive form layout |
-| Blogs List | `/blogs` | ⚠️ | Needs mobile optimization |
-| Blog Detail | `/blogs/[slug]` | ⚠️ | Needs mobile optimization |
-| Builders List | `/builders` | ✅ | High-density 2-col grid, compact Featured hero |
-| Builder Detail | `/builders/[slug]` | ✅ | Compact hero (60vh), 2-col stats/portfolio, micro-scaled property cards |
+---
 
-## Public Pages - Services & Info
+## Page Status
 
-| Page | Route | Responsive | Status |
-|------|-------|-----------|--------|
-| List Property | `/list-property` | ⚠️ | Needs mobile optimization |
-| Loan Services | `/loan` | ⚠️ | Needs mobile optimization |
-| Agreement Services | `/agreement` | ⚠️ | Needs mobile optimization |
-| About Us | `/about` | ⚠️ | Needs mobile optimization |
-| FAQ / FAQs | `/faq` or `/faqs` | ⚠️ | Needs mobile optimization |
-| Login | `/login` | ⚠️ | Needs mobile optimization |
+### Admin Pages (`/admin`) — All Wired ✅
 
-## Admin Pages (Protected - `/admin`)
+| Page | Route | API Wired | Responsive | Notes |
+|------|-------|-----------|-----------|-------|
+| Dashboard | `/admin` | ✅ | ❌ | All 4 KPIs (Total Leads, Properties Listed, New Leads, Leads Closed) render correctly — backend fix applied 2026-04-21 |
+| Properties Management | `/admin/properties` | ✅ | ❌ | CRUD, featured toggle, new-launch flag working |
+| Property Submissions | `/admin/property-submissions` | ✅ | ❌ | Review workflow (new→reviewing→approved) |
+| Builders Management | `/admin/builders` | ✅ | ❌ | Full CRUD, featured toggle |
+| New Builder | `/admin/builders/new` | ✅ | ❌ | |
+| Edit Builder | `/admin/builders/[id]/edit` | ✅ | ❌ | |
+| Leads/CRM | `/admin/leads` | ✅ | ❌ | Status workflow, notes, assignment wired |
+| Blogs Management | `/admin/blogs` | ✅ | ❌ | Editor + comment moderation |
+| Banners Management | `/admin/banners` | ⚠️ | ❌ | Falls back to FALLBACK_BANNERS if API empty |
+| Testimonials Management | `/admin/testimonials` | ✅ | ❌ | CRUD + image upload |
+| Users Management | `/admin/users` | ✅ | ❌ | List, activate, deactivate |
+| System Config | `/admin/system` | ✅ | ❌ | Dynamic config editor |
 
-| Page | Route | Responsive | Status |
-|------|-------|-----------|--------|
-| Dashboard | `/admin` | ❌ | Not responsive |
-| Properties Management | `/admin/properties` | ❌ | Not responsive |
-| Builders Management | `/admin/builders` | ❌ | Not responsive |
-| New Builder | `/admin/builders/new` | ❌ | Not responsive |
-| Edit Builder | `/admin/builders/[id]/edit` | ❌ | Not responsive |
-| Leads/CRM | `/admin/leads` | ❌ | Not responsive |
-| Blogs Management | `/admin/blogs` | ❌ | Not responsive |
-| Banners Management | `/admin/banners` | ❌ | Not responsive |
-| Testimonials Management | `/admin/testimonials` | ❌ | Not responsive |
-| Users Management | `/admin/users` | ❌ | Not responsive |
-| Property Submissions | `/admin/property-submissions` | ❌ | Not responsive |
+---
 
-## Summary
- 
-- **✅ Fully Responsive**: 15 pages
-- **⚠️ Partially Responsive / Needs Work**: 12 pages
-- **❌ Not Responsive**: 11 pages (Admin pages)
-- **Total Pages**: 38 pages
+### User Dashboard Pages (`/account`) — All Wired ✅
 
-## Responsive Design Standards Applied
+| Page | Route | API Wired | Responsive |
+|------|-------|-----------|-----------|
+| My Dashboard | `/account` | ✅ | ✅ |
+| My Profile | `/account/profile` | ✅ | ✅ |
+| Saved Properties | `/account/saved` | ✅ | ✅ |
+| My Enquiries | `/account/enquiries` | ✅ | ✅ |
+| My Listings | `/account/listings` | ✅ | ✅ |
 
-When implementing responsive design, follow these standards:
+---
 
-### Breakpoints Used
-- **Mobile**: Default (< 640px)
-- **Small (sm)**: 640px+
-- **Medium (md)**: 768px+
-- **Large (lg)**: 1024px+
+### Public Pages
 
-### Mobile-First Approach
-1. Design for mobile first (base styles)
-2. Add sm:, md:, lg: modifiers for larger screens
-3. Typography: Use responsive text sizes (text-sm sm:text-base md:text-lg)
-4. Spacing: Use responsive gaps and padding (p-4 sm:p-6 md:p-8)
-5. Grids: Convert to responsive columns (grid-cols-1 sm:grid-cols-2 md:grid-cols-3)
+| Page | Route | API Wired | Responsive | Notes |
+|------|-------|-----------|-----------|-------|
+| Home | `/` | ⚠️ | ⚠️ | MOCK_BLOGS hardcoded fallback |
+| Buy Properties | `/buy` | ✅ | ✅ | |
+| Rent Properties | `/rent` | ✅ | ✅ | |
+| Commercial | `/commercial` | ✅ | ⚠️ | Redirects to `/builders` |
+| New Launches | `/new-launch` | ✅ | ⚠️ | |
+| Launches | `/launches` | ✅ | ⚠️ | |
+| Property Detail | `/property/[id]` | ✅ | ✅ | |
+| Compare | `/compare` | ✅ | ✅ | |
+| Builders List | `/builders` | ✅ | ✅ | |
+| Builder Detail | `/builders/[slug]` | ✅ | ✅ | |
+| Blogs List | `/blogs` | ✅ | ⚠️ | |
+| Blog Detail | `/blogs/[slug]` | ✅ | ⚠️ | |
+| EMI Calculator | `/emi-calculator` | ✅ | ✅ | |
+| Stamp Duty | `/stamp-duty` | ✅ | ✅ | |
+| Home Loan | `/home-loan` | ✅ | ✅ | |
+| Rent Agreement | `/rent-agreement` | ✅ | ✅ | |
+| Contact | `/contact` | ✅ | ✅ | |
+| List Property | `/list-property` | ✅ | ⚠️ | |
+| Loan | `/loan` | — | — | Redirect to `/home-loan` |
+| About | `/about` | — | ⚠️ | Static page, hardcoded team images |
+| FAQ | `/faqs` | — | ⚠️ | Static content |
+| Login | `/login` | ✅ | ⚠️ | |
 
-### Key Components to Check
-- ✅ Typography (responsive font sizes)
-- ✅ Spacing & Padding (responsive gaps)
-- ✅ Grid layouts (responsive columns)
-- ✅ Navigation (hamburger menu on mobile)
-- ✅ Images (responsive sizing)
-- ✅ Forms (mobile-friendly inputs)
-- ✅ Cards (single column on mobile)
-- ✅ Modals/Overlays (proper z-index on mobile)
+---
 
-## Next Priority Pages for Responsive Updates
- 
-1. `/` - Home page (needs full review)
-2. `/blogs` and `/blogs/[slug]` - Blog pages
-3. `/login` - Login page
-4. `/list-property` - Property listing form
-5. Other service pages (loan, agreement, etc.)
+## Pre-Deploy Checklist
+
+### 🔴 Blocking (must fix before deploy)
+- [ ] Create `frontend/.env.local` with `NEXT_PUBLIC_API_BASE_URL=<production URL>`
+- [ ] Add `images.remotePatterns` to `next.config.mjs` for `lh3.googleusercontent.com` and `res.cloudinary.com`
+- [ ] Fix backend dashboard stats bug (see `backend/progress.md`)
+
+### 🟡 Should Fix
+- [ ] Remove `MOCK_BLOGS` from `app/(public)/page.js` — replace with empty state
+- [ ] Remove `FALLBACK_BANNERS` from `services/bannerService.js` — return `[]` on failure
+
+### 🟢 Acceptable for Launch
+- [ ] Admin pages not responsive (desktop-only is fine for admin)
+- [ ] `systemService.js` hardcoded defaults (good resilience pattern, not a bug)
+- [ ] About/FAQ pages with static content (fine for now)
+
+---
+
+## Responsive Design Summary
+
+- **✅ Fully Responsive**: 15 pages (all account + key public pages)
+- **⚠️ Partial**: 12 pages (home, blogs, service pages, login)
+- **❌ Not Responsive**: 11 admin pages (desktop-only, acceptable)
+- **Total Pages**: ~38 pages

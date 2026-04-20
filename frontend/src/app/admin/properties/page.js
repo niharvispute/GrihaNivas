@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { listProperties, deleteProperty, getPropertyById, updateProperty } from '@/services/propertyService';
+import { listProperties, deleteProperty, getPropertyById, updateProperty, exportProperties } from '@/services/propertyService';
+import ExportButton from '@/components/admin/ExportButton';
 
 const CATEGORY_LABEL = { buy: 'Buy', rent: 'Rent', commercial: 'Commercial', new_launch: 'New Launch' };
 
@@ -32,6 +33,7 @@ export default function PropertyManagementPage() {
   const [viewingProperty, setViewingProperty] = useState(null);
   const [loadingPropertyDetail, setLoadingPropertyDetail] = useState(false);
   const [togglingFeatured, setTogglingFeatured] = useState(null);
+  const [togglingNewLaunch, setTogglingNewLaunch] = useState(null);
 
   const fetchProperties = useCallback(async () => {
     setLoading(true);
@@ -92,6 +94,21 @@ export default function PropertyManagementPage() {
     }
   };
 
+  const handleToggleNewLaunch = async (id, currentCategory) => {
+    const nextCategory = currentCategory === 'new_launch' ? 'buy' : 'new_launch';
+    setTogglingNewLaunch(id);
+    try {
+      await updateProperty(id, { category: nextCategory });
+      setProperties((prev) =>
+        prev.map((p) => (p._id === id ? { ...p, category: nextCategory } : p))
+      );
+    } catch {
+      alert('Failed to update property category.');
+    } finally {
+      setTogglingNewLaunch(null);
+    }
+  };
+
   return (
     <div className="space-y-10 pb-20">
       {/* Page Header */}
@@ -100,11 +117,21 @@ export default function PropertyManagementPage() {
           <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Properties</h1>
           <p className="text-slate-500 font-bold mt-2">Manage your active real estate listings and portfolio.</p>
         </div>
-        {meta && (
-          <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
-            {meta.total} total listings
-          </span>
-        )}
+        <div className="flex items-center gap-3">
+          {meta && (
+            <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
+              {meta.total} total listings
+            </span>
+          )}
+          <ExportButton
+            onExport={() => {
+              const query = {};
+              if (category) query.category = category;
+              if (search) query.search = search;
+              return exportProperties(query);
+            }}
+          />
+        </div>
       </div>
 
       {/* Filters */}
@@ -159,6 +186,7 @@ export default function PropertyManagementPage() {
                   <th className="px-6 py-5">BHK</th>
                   <th className="px-6 py-5">Price</th>
                   <th className="px-6 py-5">Status</th>
+                  <th className="px-6 py-5">New Launch</th>
                   <th className="px-6 py-5">Featured</th>
                   <th className="px-6 py-5 text-right">Actions</th>
                 </tr>
@@ -207,6 +235,23 @@ export default function PropertyManagementPage() {
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${prop.isActive !== false ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-400'}`}>
                           {prop.isActive !== false ? 'Active' : 'Inactive'}
                         </span>
+                      </td>
+                      <td className="px-6 py-5">
+                        <button
+                          onClick={() => handleToggleNewLaunch(prop._id, prop.category)}
+                          disabled={togglingNewLaunch === prop._id}
+                          className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all border ${prop.category === 'new_launch' ? 'bg-primary/10 text-primary border-primary/20 hover:bg-primary/15' : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-primary/30 hover:text-primary'} disabled:opacity-60`}
+                          title={prop.category === 'new_launch' ? 'Set category back to Buy' : 'Set category to New Launch'}
+                        >
+                          {togglingNewLaunch === prop._id ? (
+                            <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: prop.category === 'new_launch' ? "'FILL' 1" : "'FILL' 0" }}>
+                              rocket_launch
+                            </span>
+                          )}
+                          <span>{prop.category === 'new_launch' ? 'On' : 'Off'}</span>
+                        </button>
                       </td>
                       <td className="px-6 py-5">
                         <button

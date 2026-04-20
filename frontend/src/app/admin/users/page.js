@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { listUsers, deactivateUser, activateUser, getUserById } from '@/services/userService';
+import { listUsers, deactivateUser, activateUser, getUserById, exportUsers } from '@/services/userService';
+import ExportButton from '@/components/admin/ExportButton';
 
 function getInitials(name = '') {
   return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
@@ -80,11 +81,16 @@ export default function UserManagementPage() {
           <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Users</h1>
           <p className="text-slate-500 font-bold mt-2">Manage and monitor the Mumbai Editorial community.</p>
         </div>
-        {meta && (
-          <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
-            {meta.total} members
-          </span>
-        )}
+        <div className="flex items-center gap-3">
+          {meta && (
+            <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
+              {meta.total} members
+            </span>
+          )}
+          <ExportButton
+            onExport={() => exportUsers(search ? { search } : {})}
+          />
+        </div>
       </div>
 
       {/* Search */}

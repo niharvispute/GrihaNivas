@@ -2,13 +2,28 @@ import { apiFetch } from '@/lib/api';
 import { authedApiFetch } from '@/lib/api/authedRequest';
 import { mapBlogListToCardVM, mapBlogToDetailVM } from '@/lib/mappers/blogMapper';
 
+const isRateLimitError = (error) => Number(error?.status) === 429;
+
 export const listBlogs = async (query = {}, { map = true } = {}) => {
-  const res = await apiFetch('/api/blogs', { query });
-  return {
-    items: map ? mapBlogListToCardVM(res.data || []) : res.data || [],
-    meta: res.meta,
-    message: res.message,
-  };
+  try {
+    const res = await apiFetch('/api/blogs', { query });
+    return {
+      items: map ? mapBlogListToCardVM(res.data || []) : res.data || [],
+      meta: res.meta,
+      message: res.message,
+      rateLimited: false,
+    };
+  } catch (error) {
+    if (isRateLimitError(error)) {
+      return {
+        items: [],
+        meta: null,
+        message: error?.message || 'Too many requests. Please try again later.',
+        rateLimited: true,
+      };
+    }
+    throw error;
+  }
 };
 
 export const getBlogBySlug = async (slug, { map = true } = {}) => {

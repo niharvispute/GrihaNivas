@@ -29,6 +29,7 @@ export default async function ExploreBuildersPage({ searchParams }) {
 
   const builders = response?.items || [];
   const featuredBuilders = (featuredResponse?.items || []).slice(0, 4);
+  const hasRateLimit = Boolean(response?.rateLimited || featuredResponse?.rateLimited);
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,6 +40,12 @@ export default async function ExploreBuildersPage({ searchParams }) {
           initialIsFeatured={params?.isFeatured === 'true'} 
           initialCity={params?.city || ''}
         />
+
+        {hasRateLimit && (
+          <div className="mb-6 sm:mb-8 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs sm:text-sm font-semibold text-amber-800">
+            Too many requests were sent recently. Showing limited results for now. Please retry in a moment.
+          </div>
+        )}
 
         <FeaturedBuildersCarousel builders={featuredBuilders} />
 
