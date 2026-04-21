@@ -18,7 +18,7 @@
 
 ### Recently Fixed / Added
 - ✅ **Dashboard stats bug** (2026-04-21) — `dashboardController.js` now exposes `leads.new`, `leads.contacted`, `leads.qualified`, `leads.closed` as top-level fields (defaulting to `0` when no leads in that status) while still returning the `byStatus` map for compatibility.
-- ✅ **Excel export endpoints** (2026-04-21) — Added admin-only `.xlsx` export for Users (password fields excluded), Properties, Builders, and Testimonials. Uses `exceljs` + shared `utils/excelExport.js` utility. Endpoints respect existing filter query params (search, category, status, etc.).
+- ✅ **Excel export endpoints** (2026-04-21) — Added admin-only `.xlsx` export for Users (password fields excluded), Properties, Builders, Testimonials, and Leads. Uses `exceljs` + shared `utils/excelExport.js` utility. Endpoints respect existing filter query params (search, category, status, leadType, etc.).
 
 ### What Is Still In Progress
 1. **Production env config** — `.env` exists locally but production values not set (MongoDB URI, JWT secrets, Cloudinary, SMTP/SendGrid, Firebase).
@@ -122,6 +122,7 @@
 | POST | `/leads` | Protected | ✅ | ✅ |
 | GET | `/leads/my-enquiries` | Protected | ✅ | ✅ |
 | GET | `/leads` | Admin | ✅ | ✅ |
+| GET | `/leads/export` | Admin | ✅ | ✅ |
 | GET | `/leads/:id` | Admin | ✅ | ✅ |
 | PUT | `/leads/:id/status` | Admin | ✅ | ✅ |
 | PUT | `/leads/:id/assign` | Admin | ✅ | ✅ |

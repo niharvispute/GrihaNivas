@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { listLeads, updateLeadStatus, getLeadById, deleteLead, addLeadNote } from '@/services/leadService';
+import { listLeads, updateLeadStatus, getLeadById, deleteLead, addLeadNote, exportLeads } from '@/services/leadService';
+import ExportButton from '@/components/admin/ExportButton';
 
 const STATUS_STYLES = {
   new:       { bg: 'bg-blue-50 text-blue-700',    dot: 'bg-blue-600' },
@@ -147,11 +148,22 @@ export default function LeadCRMPage() {
           <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Lead CRM</h1>
           <p className="text-slate-500 font-bold mt-2">Centralized portal for lead tracking, segmentation, and conversion metrics.</p>
         </div>
-        {meta && (
-          <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
-            {meta.total} total leads
-          </span>
-        )}
+        <div className="flex items-center gap-3">
+          {meta && (
+            <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
+              {meta.total} total leads
+            </span>
+          )}
+          <ExportButton
+            onExport={() => {
+              const query = {};
+              if (search) query.search = search;
+              if (leadType) query.leadType = leadType;
+              if (status) query.status = status;
+              return exportLeads(query);
+            }}
+          />
+        </div>
       </div>
 
       {/* Filters */}

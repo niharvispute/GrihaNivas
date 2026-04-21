@@ -1,4 +1,5 @@
 import { authedApiFetch } from '@/lib/api/authedRequest';
+import { downloadAuthedFile } from '@/lib/api/downloadFile';
 import { mapLeadListToVM } from '@/lib/mappers/leadMapper';
 
 export const createLead = async (payload) => {
@@ -52,4 +53,11 @@ export const deleteLead = async (leadId) => {
     method: 'DELETE',
   });
   return res.data;
+};
+
+export const exportLeads = async (query = {}) => {
+  return downloadAuthedFile('/api/leads/export', {
+    query,
+    fallbackName: 'bricks_leads.xlsx',
+  });
 };
