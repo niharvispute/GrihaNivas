@@ -276,21 +276,7 @@ function ContactForm() {
         </div>
       </section>
 
-      {/* 📱 Floating Quick Actions */}
-      <div className="fixed bottom-6 right-6 md:bottom-10 md:right-10 flex flex-col gap-3 md:gap-5 z-50">
-        <button className="flex items-center gap-2 md:gap-4 bg-[#25D366] text-white p-4 md:px-8 md:py-4 rounded-full shadow-2xl hover:scale-110 transition-all">
-          <img 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8e9Jtjg617bja4_o5zZH83seL95RwHty4QVkxLjthnIfZ8R69xfdKHHPgljb-bg_JVXyd6gNYf5UU_o3Ix4Zk5bv6VjZzDIFEIzZzi10q_Dt60mEcnqEF4Sr1WhBKA5XlDf--c-QrmXR1LJaqZ-ZNwxQc72Jo6kPy3-EVmic4BySO2XS5ipOJvbMhho_fWu4BwTk69jCLwvG7WosjxfqVBWlrn20nMH662DhXDh0r91sZI1uwJKasz2NlG5wc-N5bFpfEIoSQLIk" 
-            alt="WhatsApp" 
-            className="w-5 h-5 md:w-6 md:h-6 invert brightness-0"
-          />
-          <span className="font-black text-sm uppercase tracking-widest hidden md:block">WhatsApp Chat</span>
-        </button>
-        <button className="flex items-center gap-2 md:gap-4 bg-primary text-white p-4 md:px-8 md:py-4 rounded-full shadow-2xl hover:scale-110 transition-all">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="md:w-6 md:h-6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span className="font-black text-sm uppercase tracking-widest hidden md:block">Call Now</span>
-        </button>
-      </div>
+      
     </div>
   );
 }

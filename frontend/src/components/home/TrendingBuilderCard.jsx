@@ -15,70 +15,85 @@ export default function TrendingBuilderCard({ builder }) {
   const tagline = builder?.tagline || 'Trusted real estate developer with active Mumbai projects.';
 
   return (
-    <article className="group rounded-2xl overflow-hidden">
-      <div className="relative h-44 rounded-2xl overflow-hidden mb-2.5">
-        <Link href={detailHref} className="block w-full h-full">
-          {bannerImage ? (
-            <Image
-              src={bannerImage}
-              alt={builderName}
-              fill
-              unoptimized
-              sizes="(max-width: 768px) 100vw, 300px"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-          ) : (
-            <div className="w-full h-full bg-slate-100" />
-          )}
-
-          <div className="absolute inset-0 bg-linear-to-t from-slate-900/30 via-slate-900/0 to-transparent" />
-
-          <div className="absolute left-2.5 bottom-2.5 bg-white text-slate-900 px-2.5 py-1.5 rounded-lg text-[12px] leading-none font-extrabold shadow-sm">
-            {projectCount} Projects
+    <article className="group relative bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
+      {/* Image Section */}
+      <div className="relative h-40 sm:h-48 md:h-56 overflow-hidden flex-none bg-gradient-to-br from-slate-100 to-slate-50">
+        {bannerImage ? (
+          <Image
+            src={bannerImage}
+            alt={builderName}
+            fill
+            unoptimized
+            sizes="(max-width: 1024px) 100vw, 33vw"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="text-center px-4">
+              <span className="material-symbols-outlined text-5xl text-slate-200">image_not_supported</span>
+              <p className="mt-2 text-[10px] font-bold uppercase tracking-wider text-slate-300">No image</p>
+            </div>
           </div>
-        </Link>
-      </div>
-
-      <div className="flex items-center gap-1.5 mb-2">
-        {builder?.isFeatured && (
-          <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-slate-700">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 12 2 2 4-4"/><path d="M21 12c.552 0 1.005.449.95.998a10 10 0 1 1-8.948-8.95A.954.954 0 0 1 14 5c0 .552-.449.998-.998 1.05a8 8 0 1 0 7.947 7.948A1 1 0 0 1 21 12z"/></svg>
-            Featured Builder
-          </span>
         )}
-        <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-[11px] font-semibold text-slate-700">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-          Trending
-        </span>
+
+        {/* Badges */}
+        <div className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 flex gap-2 flex-wrap">
+          {builder.isFeatured && (
+            <span className="bg-gradient-to-r from-primary to-primary/80 text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-bold tracking-wider uppercase flex items-center gap-1 shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Featured
+            </span>
+          )}
+          <span className="bg-white/95 backdrop-blur-sm px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-bold tracking-wider uppercase text-primary shadow-lg">Trending</span>
+        </div>
       </div>
 
-      <h3 className="text-xl leading-tight font-semibold text-slate-900 tracking-[-0.01em] mb-1 line-clamp-1">
-        {builderName}
-      </h3>
-      <p className="text-base text-slate-700 mb-0.5 line-clamp-1">
-        Est. {established}
-      </p>
-      <p className="text-base text-slate-800 font-medium mb-3.5 line-clamp-1">{headquarters}</p>
+      {/* Content Section */}
+      <div className="p-4 sm:p-5 md:p-6 flex flex-col grow gap-3 sm:gap-4">
+        {/* Header */}
+        <div>
+          <h3 className="text-sm sm:text-base md:text-lg font-black text-slate-900 leading-tight mb-1 line-clamp-2">
+            {builderName}
+          </h3>
+          <p className="text-slate-500 text-[11px] sm:text-xs flex items-center gap-1.5 truncate font-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <span className="truncate">{headquarters}</span>
+          </p>
+        </div>
 
-      <div className="space-y-2">
-        <Link
-          href={`${detailHref}#portfolio`}
-          className="w-full h-10 rounded-full border border-primary/30 text-primary text-sm font-medium flex items-center justify-center gap-1.5 hover:bg-primary/5 transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 20h20"/><path d="M5 20V8.2a.2.2 0 0 1 .2-.2h3.6a.2.2 0 0 1 .2.2V20"/><path d="M15 20V4.2a.2.2 0 0 1 .2-.2h3.6a.2.2 0 0 1 .2.2V20"/><path d="M10 20v-5.8a.2.2 0 0 1 .2-.2h3.6a.2.2 0 0 1 .2.2V20"/></svg>
-          View Portfolio
-        </Link>
+        {/* Stats Row */}
+        <div className="flex items-center justify-between gap-3 py-3 border-t border-slate-100">
+          <div>
+            <p className="text-[10px] sm:text-xs uppercase font-bold text-slate-400 tracking-wider mb-1">Est.</p>
+            <p className="text-sm sm:text-base font-black text-slate-900">{established}</p>
+          </div>
+          <div className="border-l border-slate-100 pl-3">
+            <p className="text-[10px] sm:text-xs uppercase font-bold text-slate-400 tracking-wider mb-1">Projects</p>
+            <p className="text-sm sm:text-base font-black text-primary">{projectCount}+</p>
+          </div>
+        </div>
 
-        <Link
-          href={detailHref}
-          className="w-full h-10 rounded-full bg-primary text-white text-sm font-semibold flex items-center justify-center gap-1.5 hover:bg-primary/90 transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>
-          Builder Details
-        </Link>
+        {/* Description */}
+        <p className="text-slate-600 text-[10px] sm:text-xs line-clamp-2 font-medium leading-relaxed flex-grow">
+          {tagline}
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex gap-2.5 mt-auto pt-2">
+          <Link
+            href={detailHref}
+            className="flex-1 bg-gradient-to-r from-primary to-primary/85 text-white py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-black tracking-tighter hover:shadow-lg hover:shadow-primary/40 transition-all text-center text-[10px] sm:text-xs uppercase text-nowrap"
+          >
+            Details
+          </Link>
+          <Link
+            href={`${detailHref}#portfolio`}
+            className="flex-1 border-2 border-slate-200 text-slate-700 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-black tracking-tighter hover:border-primary hover:text-primary hover:bg-primary/5 transition-all text-center text-[10px] sm:text-xs uppercase text-nowrap"
+          >
+            Portfolio
+          </Link>
+        </div>
       </div>
-
-      <p className="text-xs text-slate-500 mt-2.5 line-clamp-2">{tagline}</p>
     </article>
   );
 }

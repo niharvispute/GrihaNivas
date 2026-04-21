@@ -81,7 +81,9 @@
       "Bash(grep -n \"^const\\\\|^module.exports\\\\|^};$\" \"C:\\\\Users\\\\visha\\\\OneDrive\\\\Desktop\\\\Bricks\\\\backend\\\\controllers\\\\builderController.js\")",
       "Bash(node -e ' *)",
       "Bash(npx eslint *)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(taskkill *)",
+      "Bash(pkill -f \"next dev\")"
     ]
   }
 }

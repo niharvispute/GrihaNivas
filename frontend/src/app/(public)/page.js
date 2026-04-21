@@ -40,6 +40,7 @@ const MOCK_BLOGS = [
 ];
 
 import SectionCarousel from '@/components/home/SectionCarousel';
+import PropertyCard from '@/components/property/PropertyCard';
 import TrendingProjectCard from '@/components/home/TrendingProjectCard';
 import TrendingBuilderCard from '@/components/home/TrendingBuilderCard';
 import HomePageTestimonials from '@/components/home/HomePageTestimonials';
@@ -138,8 +139,8 @@ export default function HomePage() {
           title="Trending Projects in Mumbai"
           subtitle="Discover verified projects with best-value inventory and quick brochure access."
           items={featuredProperties}
-          itemClassName="w-full min-w-full max-w-full sm:w-[calc((100%-1.5rem)/2)] sm:min-w-[calc((100%-1.5rem)/2)] sm:max-w-[calc((100%-1.5rem)/2)] md:w-[calc((100%-4rem)/3)] md:min-w-[calc((100%-4rem)/3)] md:max-w-[calc((100%-4rem)/3)] lg:w-[calc((100%-6rem)/4)] lg:min-w-[calc((100%-6rem)/4)] lg:max-w-[calc((100%-6rem)/4)]"
-          renderItem={(prop) => <TrendingProjectCard property={prop} />}
+          itemClassName="w-full min-w-full sm:w-[calc(50%-0.75rem)] sm:min-w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] md:min-w-[calc(33.333%-1rem)] lg:w-[calc(33.333%-1rem)] lg:min-w-[calc(33.333%-1rem)]"
+          renderItem={(prop) => <PropertyCard property={prop} />}
         />
       ) : null}
 
@@ -151,7 +152,7 @@ export default function HomePage() {
           title="The Master Builders"
           subtitle="Discover the visionaries behind Mumbai's most iconic skylines and architectural marvels."
           items={featuredBuilders}
-          itemClassName="w-full min-w-full max-w-full sm:w-[calc((100%-1.5rem)/2)] sm:min-w-[calc((100%-1.5rem)/2)] sm:max-w-[calc((100%-1.5rem)/2)] md:w-[calc((100%-4rem)/3)] md:min-w-[calc((100%-4rem)/3)] md:max-w-[calc((100%-4rem)/3)] lg:w-[calc((100%-6rem)/4)] lg:min-w-[calc((100%-6rem)/4)] lg:max-w-[calc((100%-6rem)/4)]"
+          itemClassName="w-full min-w-full sm:w-[calc(50%-0.75rem)] sm:min-w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] md:min-w-[calc(33.333%-1rem)] lg:w-[calc(33.333%-1rem)] lg:min-w-[calc(33.333%-1rem)]"
           renderItem={(builder) => <TrendingBuilderCard builder={builder} />}
         />
       ) : null}

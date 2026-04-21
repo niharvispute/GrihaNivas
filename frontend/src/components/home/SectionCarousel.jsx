@@ -44,10 +44,10 @@ export default function SectionCarousel({
 
   const handleScroll = (direction) => {
     const step = stepSize > 0 ? stepSize : 320;
-    const newX = direction === 'left' 
-      ? Math.min(scrollX + step, 0) 
+    const newX = direction === 'left'
+      ? Math.min(scrollX + step, 0)
       : Math.max(scrollX - step, -maxScroll);
-    
+
     setScrollX(newX);
     controls.start({ x: newX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
   };
@@ -55,82 +55,91 @@ export default function SectionCarousel({
   if (!items || items.length === 0) return null;
 
   return (
-    <section className="py-14 md:py-18 lg:py-24 overflow-hidden">
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 md:mb-10 lg:mb-12 flex flex-col md:flex-row justify-between md:items-end gap-5 md:gap-6">
-        <div className="max-w-2xl">
-          <div className="flex items-center gap-3 mb-3 md:mb-4">
-            <span className="w-12 h-1 bg-primary rounded-full"></span>
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">Curated Selection</p>
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tighter leading-none mb-3 md:mb-4 italic">
-            {title}
-          </h2>
-          <p className="text-sm md:text-base text-slate-500 font-bold leading-relaxed">
-            {subtitle}
-          </p>
-        </div>
-
-        {/* Navigation Buttons */}
-        <div className="flex gap-2.5 md:gap-3 mb-1 md:mb-2 self-start md:self-auto">
-          <button
-            onClick={() => handleScroll('left')}
-            disabled={scrollX >= 0}
-            className={`w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl border-2 flex items-center justify-center transition-all shadow-xl hover:-translate-y-1 active:scale-95 ${
-              scrollX >= 0 
-                ? 'border-slate-100 text-slate-200 cursor-not-allowed' 
-                : 'border-slate-100 bg-white text-slate-500 hover:border-primary hover:text-primary'
-            }`}
-          >
-            <span className="material-symbols-outlined text-xl md:text-2xl">west</span>
-          </button>
-          <button
-            onClick={() => handleScroll('right')}
-            disabled={scrollX <= -maxScroll}
-            className={`w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl border-2 flex items-center justify-center transition-all shadow-xl hover:-translate-y-1 active:scale-95 ${
-              scrollX <= -maxScroll 
-                ? 'border-slate-100 text-slate-200 cursor-not-allowed' 
-                : 'border-slate-900 bg-slate-900 text-white hover:bg-primary hover:border-primary'
-            }`}
-          >
-            <span className="material-symbols-outlined text-xl md:text-2xl">east</span>
-          </button>
-        </div>
-      </div>
-
-      <div className="relative px-4 sm:px-6 lg:px-8" ref={containerRef}>
-        <motion.div
-          ref={trackRef}
-          drag="x"
-          dragConstraints={{ left: -maxScroll, right: 0 }}
-          animate={controls}
-          style={{ x: scrollX }}
-          onDragEnd={(_, info) => {
-            const proposedX = scrollX + info.offset.x;
-            const clampedX = Math.min(0, Math.max(proposedX, -maxScroll));
-            setScrollX(clampedX);
-            controls.start({ x: clampedX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
-          }}
-          className="flex gap-6 md:gap-8 cursor-grab active:cursor-grabbing"
-        >
-          {items.map((item, idx) => (
-            <div key={idx} className={`${itemClassName} shrink-0 transform transition-transform duration-500 hover:-translate-y-2`}>
-              {renderItem(item)}
+    <section className="py-16 md:py-20 lg:py-28 bg-gradient-to-b from-white via-slate-50/30 to-white">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-12 md:mb-16 lg:mb-20 max-w-screen-2xl">
+        <div className="flex flex-col md:flex-row justify-between md:items-end gap-6 md:gap-8">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3 mb-4 md:mb-5">
+              <span className="w-12 h-1.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></span>
+              <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/80">Curated Selection</p>
             </div>
-          ))}
-          <div className="w-4 sm:w-6 lg:w-8 shrink-0" aria-hidden="true" />
-        </motion.div>
-      </div>
+            <h2 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-4 md:mb-5">
+              {title}
+            </h2>
+            <p className="text-sm md:text-base text-slate-600 font-semibold leading-relaxed max-w-xl">
+              {subtitle}
+            </p>
+          </div>
 
-      {/* Progress Bar Indicators */}
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 md:mt-10 lg:mt-12">
-        <div className="h-1 bg-slate-100 rounded-full overflow-hidden w-40 md:w-48 mx-auto md:mx-0">
-          <motion.div 
-            initial={{ width: 0 }}
-            animate={{ width: `${(Math.abs(scrollX) / (maxScroll || 1)) * 100}%` }}
-            className="h-full bg-primary"
-          />
+          {/* Navigation Buttons */}
+          <div className="flex gap-3 md:gap-4 self-start md:self-auto">
+            <button
+              onClick={() => handleScroll('left')}
+              disabled={scrollX >= 0}
+              className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                scrollX >= 0
+                  ? 'border-slate-200 text-slate-300 cursor-not-allowed bg-slate-50'
+                  : 'border-primary/20 bg-white text-slate-700 hover:border-primary hover:text-primary hover:shadow-lg hover:shadow-primary/20'
+              }`}
+            >
+              <span className="material-symbols-outlined text-2xl">west</span>
+            </button>
+            <button
+              onClick={() => handleScroll('right')}
+              disabled={scrollX <= -maxScroll}
+              className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                scrollX <= -maxScroll
+                  ? 'border-slate-200 text-slate-300 cursor-not-allowed bg-slate-50'
+                  : 'border-primary bg-primary text-white hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30'
+              }`}
+            >
+              <span className="material-symbols-outlined text-2xl">east</span>
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Carousel Container - Full Width with overflow control */}
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-2xl">
+        <div className="relative overflow-hidden" ref={containerRef}>
+          <motion.div
+            ref={trackRef}
+            drag="x"
+            dragConstraints={{ left: -maxScroll, right: 0 }}
+            animate={controls}
+            style={{ x: scrollX }}
+            onDragEnd={(_, info) => {
+              const proposedX = scrollX + info.offset.x;
+              const clampedX = Math.min(0, Math.max(proposedX, -maxScroll));
+              setScrollX(clampedX);
+              controls.start({ x: clampedX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
+            }}
+            className="flex gap-5 sm:gap-6 md:gap-7 cursor-grab active:cursor-grabbing"
+          >
+            {items.map((item, idx) => (
+              <div key={idx} className={`${itemClassName} shrink-0 transition-all duration-300 hover:shadow-xl`}>
+                {renderItem(item)}
+              </div>
+            ))}
+            <div className="w-2 sm:w-4 shrink-0" aria-hidden="true" />
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Progress Indicator */}
+      {maxScroll > 0 && (
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 mt-10 md:mt-12 lg:mt-14 max-w-screen-2xl">
+          <div className="flex justify-center md:justify-start">
+            <div className="h-1 bg-slate-200 rounded-full overflow-hidden w-32 md:w-40">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${(Math.abs(scrollX) / (maxScroll || 1)) * 100}%` }}
+                className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

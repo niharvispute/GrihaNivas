@@ -226,16 +226,7 @@ export default async function PropertiesPage({ searchParams }) {
         </div>
       </div>
 
-      {/* Floating Contact CTA — hidden on mobile (WhatsApp button handles mobile) */}
-      <a
-        href="https://wa.me/919222456789?text=Hi!%20I%20found%20a%20listing%20on%20Mumbai%20Editorial%20and%20I%27d%20like%20to%20know%20more."
-        target="_blank"
-        rel="noreferrer noopener"
-        className="hidden md:flex fixed bottom-24 right-6 z-40 bg-primary text-white items-center gap-3 px-6 py-3.5 rounded-full shadow-2xl hover:scale-105 transition-all font-bold active:scale-95 group text-sm"
-      >
-        <svg className="group-hover:rotate-12 transition-transform" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Contact Expert
-      </a>
+      
     </main>
   );
 }

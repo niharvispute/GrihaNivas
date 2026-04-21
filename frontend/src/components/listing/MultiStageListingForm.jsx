@@ -251,6 +251,7 @@ export default function MultiStageListingForm() {
   const progress = (step / 5) * 100;
 
   return (
+    <>
     <div className="flex bg-slate-50 min-h-screen">
       {/* 🧭 Sidebar Navigation */}
       <aside className="hidden lg:flex flex-col w-80 bg-white border-r border-slate-200 sticky top-0 h-screen">
@@ -878,5 +879,6 @@ export default function MultiStageListingForm() {
         </div>
       </div>
     )}
+    </>
   );
 }
