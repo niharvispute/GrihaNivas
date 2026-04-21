@@ -9,6 +9,8 @@ function getInitials(name = '') {
     .join('');
 }
 
+import Image from 'next/image';
+
 export default function ProfileHero({ user, onUpdate }) {
   const name = user?.name || 'Your Profile';
   const isVerified = user?.isVerified ?? false;
@@ -22,11 +24,13 @@ export default function ProfileHero({ user, onUpdate }) {
     <section className="bg-white rounded-3xl sm:rounded-4xl shadow-sm border border-slate-100 p-6 sm:p-8 mb-6 sm:mb-8">
       <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-8">
         <div>
-          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-primary/5 bg-linear-to-br from-primary/10 via-white to-tertiary/60 flex items-center justify-center text-primary font-black text-xl sm:text-2xl flex-none">
+          <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-primary/5 bg-linear-to-br from-primary/10 via-white to-tertiary/60 flex items-center justify-center text-primary font-black text-xl sm:text-2xl flex-none">
             {avatarSrc ? (
-              <img
+              <Image
                 alt={name}
-                className="w-full h-full object-cover"
+                fill
+                sizes="128px"
+                className="object-cover"
                 src={avatarSrc}
               />
             ) : (

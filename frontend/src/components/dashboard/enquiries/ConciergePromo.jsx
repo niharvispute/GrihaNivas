@@ -1,10 +1,14 @@
+import Image from 'next/image';
+
 export default function ConciergePromo() {
   return (
     <div className="mt-10 relative overflow-hidden h-64 rounded-[2.5rem] group shadow-2xl shadow-primary/10">
-      <img 
-        alt="Office Workspace" 
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-        src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
+      <Image
+        alt="Office Workspace"
+        fill
+        sizes="(max-width: 768px) 100vw, 800px"
+        className="object-cover transition-transform duration-1000 group-hover:scale-105"
+        src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-transparent flex flex-col justify-center px-12 md:px-20 relative z-10">
         <span className="bg-primary/20 text-primary-fixed-dim text-[9px] font-black uppercase tracking-[0.2em] px-4 py-1 rounded-full w-fit mb-4 backdrop-blur-md border border-primary/20">

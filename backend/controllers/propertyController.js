@@ -3,6 +3,7 @@ const { generateUniqueSlug } = require('../utils/slugify');
 const { parsePagination } = require('../utils/pagination');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
 const { sendExcel, formatDate, joinList } = require('../utils/excelExport');
+const cache = require('../services/cacheService');
 const AppError = require('../utils/AppError');
 const Property = require('../models/mongoose/Property');
 const Builder = require('../models/mongoose/Builder');
@@ -176,6 +177,14 @@ const enrichPropertiesWithUserStatus = async (userId, properties) => {
 const list = async (req, res, next) => {
   try {
     const { limit, skip, buildMeta } = parsePagination(req.query);
+    const cacheKey = `props:list:${cache.queryKey(req.query)}`;
+
+    const cached = await cache.get(cacheKey);
+    if (cached) {
+      const enriched = await enrichPropertiesWithUserStatus(req.user?.id, cached.properties);
+      return sendSuccess(res, 200, 'Properties fetched', enriched, cached.meta);
+    }
+
     const filter = await buildMongoFilter(req.query);
     const sort   = buildMongoSort(req.query.sortBy);
 
@@ -185,13 +194,16 @@ const list = async (req, res, next) => {
         .skip(skip)
         .limit(limit)
         .select('-__v')
-        .populate('builder', 'name slug logo'),
+        .populate('builder', 'name slug logo')
+        .lean(),
       Property.countDocuments(filter),
     ]);
 
-    const enrichedProperties = await enrichPropertiesWithUserStatus(req.user?.id, properties);
+    const meta = buildMeta(total);
+    await cache.set(cacheKey, { properties, meta }, cache.TTL.LIST);
 
-    return sendSuccess(res, 200, 'Properties fetched', enrichedProperties, buildMeta(total));
+    const enrichedProperties = await enrichPropertiesWithUserStatus(req.user?.id, properties);
+    return sendSuccess(res, 200, 'Properties fetched', enrichedProperties, meta);
   } catch (err) {
     next(err);
   }
@@ -201,18 +213,23 @@ const list = async (req, res, next) => {
 
 const getOne = async (req, res, next) => {
   try {
-    const property = await Property.findOne({
-      _id: req.params.id,
-      isActive: true,
-      status: 'approved',
-    }).populate('builder', 'name slug logo');
-    if (!property) throw new AppError('Property not found', 404);
+    const cacheKey = `props:id:${req.params.id}`;
+    let property = await cache.get(cacheKey);
+
+    if (!property) {
+      property = await Property.findOne({
+        _id: req.params.id,
+        isActive: true,
+        status: 'approved',
+      }).populate('builder', 'name slug logo').lean();
+      if (!property) throw new AppError('Property not found', 404);
+      await cache.set(cacheKey, property, cache.TTL.DETAIL);
+    }
 
     // fire-and-forget view increment
     Property.findByIdAndUpdate(req.params.id, { $inc: { views: 1 } }).catch(() => {});
 
     const enrichedProperty = await enrichPropertiesWithUserStatus(req.user?.id, property);
-
     return sendSuccess(res, 200, 'Property fetched', enrichedProperty);
   } catch (err) {
     next(err);
@@ -223,17 +240,22 @@ const getOne = async (req, res, next) => {
 
 const getBySlug = async (req, res, next) => {
   try {
-    const property = await Property.findOne({
-      slug: req.params.slug,
-      isActive: true,
-      status: 'approved',
-    }).populate('builder', 'name slug logo');
-    if (!property) throw new AppError('Property not found', 404);
+    const cacheKey = `props:slug:${req.params.slug}`;
+    let property = await cache.get(cacheKey);
+
+    if (!property) {
+      property = await Property.findOne({
+        slug: req.params.slug,
+        isActive: true,
+        status: 'approved',
+      }).populate('builder', 'name slug logo').lean();
+      if (!property) throw new AppError('Property not found', 404);
+      await cache.set(cacheKey, property, cache.TTL.DETAIL);
+    }
 
     Property.findByIdAndUpdate(property._id, { $inc: { views: 1 } }).catch(() => {});
 
     const enrichedProperty = await enrichPropertiesWithUserStatus(req.user?.id, property);
-
     return sendSuccess(res, 200, 'Property fetched', enrichedProperty);
   } catch (err) {
     next(err);
@@ -269,6 +291,7 @@ const create = async (req, res, next) => {
       rejectedAt: null,
     });
 
+    await cache.delByPrefix('props:list:');
     return sendCreated(res, 'Property created', property);
   } catch (err) {
     next(err);
@@ -466,6 +489,10 @@ const approve = async (req, res, next) => {
     property.rejectedAt = null;
     await property.save();
 
+    await Promise.all([
+      cache.delByPrefix('props:list:'),
+      cache.delByPrefix(`props:id:${req.params.id}`),
+    ]);
     return sendSuccess(res, 200, 'Property approved', property);
   } catch (err) {
     next(err);
@@ -484,6 +511,10 @@ const reject = async (req, res, next) => {
     property.rejectedAt = new Date();
     await property.save();
 
+    await Promise.all([
+      cache.delByPrefix('props:list:'),
+      cache.delByPrefix(`props:id:${req.params.id}`),
+    ]);
     return sendSuccess(res, 200, 'Property rejected', property);
   } catch (err) {
     next(err);
@@ -523,6 +554,11 @@ const update = async (req, res, next) => {
     });
     if (!property) throw new AppError('Property not found', 404);
 
+    await Promise.all([
+      cache.delByPrefix('props:list:'),
+      cache.delByPrefix(`props:id:${id}`),
+      cache.delByPrefix(`props:slug:${property.slug}`),
+    ]);
     return sendSuccess(res, 200, 'Property updated', property);
   } catch (err) {
     next(err);
@@ -552,6 +588,11 @@ const remove = async (req, res, next) => {
     }
 
     await property.deleteOne();
+    await Promise.all([
+      cache.delByPrefix('props:list:'),
+      cache.delByPrefix(`props:id:${property._id}`),
+      cache.delByPrefix(`props:slug:${property.slug}`),
+    ]);
     return sendNoContent(res);
   } catch (err) {
     next(err);

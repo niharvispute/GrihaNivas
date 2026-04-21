@@ -1,14 +1,17 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const BuilderCard = ({ builder }) => {
   return (
     <div className="group bg-white rounded-[1.5rem] border border-zinc-200 overflow-hidden hover:shadow-2xl hover:border-primary/20 transition-all duration-300 flex flex-col h-full">
       <div className="relative h-48 overflow-hidden bg-zinc-100">
-        <img 
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-          src={builder.image} 
-          alt={builder.name} 
+        <Image
+          fill
+          sizes="(max-width: 768px) 100vw, 400px"
+          className="object-cover group-hover:scale-110 transition-transform duration-500"
+          src={builder.image}
+          alt={builder.name}
         />
         {builder.tier && (
           <div className="absolute top-4 left-4">
@@ -22,7 +25,7 @@ const BuilderCard = ({ builder }) => {
         <div className="flex items-start justify-between mb-4">
           <div className="w-12 h-12 bg-zinc-50 rounded-lg p-1.5 border border-zinc-100 shadow-sm flex items-center justify-center">
              {builder.logo ? (
-               <img src={builder.logo} alt={builder.name} className="w-full h-full object-contain" />
+               <Image src={builder.logo} alt={builder.name} width={48} height={48} className="object-contain" />
              ) : (
                <span className="material-symbols-outlined text-primary text-2xl">domain</span>
              )}

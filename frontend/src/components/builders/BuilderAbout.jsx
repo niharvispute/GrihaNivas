@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function BuilderAbout({ builder }) {
   const description = Array.isArray(builder?.description)
     ? builder.description
@@ -34,12 +36,9 @@ export default function BuilderAbout({ builder }) {
         {featuredImages.length > 0 && (
           <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
             {featuredImages.map((img, i) => (
-              <img 
-                key={i}
-                src={img} 
-                alt={`Architecture ${i + 1}`} 
-                className={`rounded-2xl h-56 sm:h-64 lg:h-80 w-full object-cover shadow-2xl ${i === 1 ? 'sm:mt-10 lg:mt-12' : ''}`} 
-              />
+              <div key={i} className={`relative rounded-2xl h-56 sm:h-64 lg:h-80 overflow-hidden shadow-2xl ${i === 1 ? 'sm:mt-10 lg:mt-12' : ''}`}>
+                <Image src={img} alt={`Architecture ${i + 1}`} fill sizes="(max-width: 640px) 100vw, 50vw" className="object-cover" />
+              </div>
             ))}
           </div>
         )}

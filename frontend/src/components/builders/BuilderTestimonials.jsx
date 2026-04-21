@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function BuilderTestimonials({ builder }) {
   const testimonials = Array.isArray(builder?.testimonials) ? builder.testimonials : [];
   if (testimonials.length === 0) return null;
@@ -10,10 +12,12 @@ export default function BuilderTestimonials({ builder }) {
         {testimonials.map((testi) => (
           <div key={testi.id} className="relative bg-white p-6 sm:p-8 lg:p-10 rounded-[1.75rem] sm:rounded-[2.5rem] shadow-xl border border-neutral-100 group hover:-translate-y-2 transition-all duration-300">
             <div className="absolute -top-6 left-6 sm:left-10">
-              <img 
-                src={testi.avatar} 
-                alt={testi.author} 
-                className="w-16 h-16 rounded-full border-4 border-white shadow-lg object-cover" 
+              <Image
+                src={testi.avatar}
+                alt={testi.author}
+                width={64}
+                height={64}
+                className="rounded-full border-4 border-white shadow-lg object-cover"
               />
             </div>
             <div className="pt-4">

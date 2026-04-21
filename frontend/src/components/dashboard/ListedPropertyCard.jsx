@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 const STATUS_STYLES = {
@@ -17,10 +18,12 @@ export default function ListedPropertyCard({ property }) {
         {/* Image Section */}
         <div className="relative w-full md:w-72 h-48 md:h-auto overflow-hidden shrink-0 bg-slate-100">
           {property.images?.[0] ? (
-            <img
+            <Image
               src={property.images[0]?.url || property.images[0]}
               alt={property.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              fill
+              sizes="(max-width: 768px) 100vw, 288px"
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-slate-300">

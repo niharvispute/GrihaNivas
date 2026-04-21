@@ -52,6 +52,7 @@ const myEnquiries = async (req, res, next) => {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
+        .select('name phone email leadType status message propertyId assignedTo createdAt lastContactedAt')
         .populate('assignedTo', 'name email')
         .populate('propertyId', 'title slug'),
       Lead.countDocuments(ownershipFilter),
@@ -86,6 +87,7 @@ const list = async (req, res, next) => {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
+        .select('name phone email leadType status message propertyId assignedTo createdAt lastContactedAt notesCount')
         .populate('assignedTo', 'name email')
         .populate('propertyId', 'title slug'),
       Lead.countDocuments(filter),

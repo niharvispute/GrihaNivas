@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 const BlogHero = ({ post }) => {
   if (!post) return null;
@@ -9,10 +10,12 @@ const BlogHero = ({ post }) => {
     <header className="relative pt-16 sm:pt-20 lg:pt-24 min-h-130 sm:min-h-140 lg:min-h-150 flex items-center overflow-hidden">
       {/* Background Image & Gradient */}
       <div className="absolute inset-0 z-0">
-        <img 
-          alt={post.title} 
-          className="w-full h-full object-cover" 
-          src={post.image || 'https://images.unsplash.com/photo-1600607687940-47a04f92bb1f?auto=format&fit=crop&q=80&w=1200'} 
+        <Image
+          alt={post.title}
+          fill
+          sizes="100vw"
+          className="object-cover"
+          src={post.image || 'https://images.unsplash.com/photo-1600607687940-47a04f92bb1f?auto=format&fit=crop&q=80&w=1200'}
         />
         <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
       </div>

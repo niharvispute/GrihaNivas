@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function ProfileStats({ user }) {
   const savedCount = user?.savedProperties?.length ?? 0;
   const compareCount = user?.comparedProperties?.length ?? 0;
@@ -41,8 +43,10 @@ export default function ProfileStats({ user }) {
               <div className="flex flex-col items-start gap-2">
                 <div className="flex -space-x-1 sm:-space-x-2">
                   {stat.agents.map((agent, i) => (
-                    <img
+                    <Image
                       key={i}
+                      width={32}
+                      height={32}
                       className="w-5 h-5 sm:w-8 sm:h-8 rounded-full border border-sm:border-2 border-white object-cover"
                       src={agent}
                       alt="Agent"

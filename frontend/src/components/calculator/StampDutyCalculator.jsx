@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getErrorMessage } from '@/lib/api/errors';
 import { calculateStampDuty } from '@/services/calculatorService';
@@ -282,10 +283,12 @@ const StampDutyCalculator = () => {
 
       {/* 6. Asymmetric CTA Section */}
       <section className="mt-16 md:mt-32 relative h-80 md:h-125 rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-2xl">
-        <img 
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtD4TRJ9ji6_8mlYVQ-HUIQTCtxeqIj8WZc69nGXstCaQ2QAG_0UPAdGy6w1JXE2Mf_DLkH_-ZRgR9MDsaDLqnJyNB-n428EosoVI3ALRF50RyUJLnIeF1EybYQJVl9zdga6j7S2GAbUtcCeUEuSeu8_o7HsgAZgj20oqOPjHsGqwf9R3YUwXFo6spqOucL0_GwoYQr9Gb6XOpTAvnTTQ13i_o87qa5rjyBQ-pkkN3zz209svQI3mmOA5iEqmZugu4U_4n4-mTzU4" 
-          alt="Mumbai Luxury Real Estate" 
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+        <Image
+          fill
+          sizes="(max-width: 768px) 100vw, 800px"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtD4TRJ9ji6_8mlYVQ-HUIQTCtxeqIj8WZc69nGXstCaQ2QAG_0UPAdGy6w1JXE2Mf_DLkH_-ZRgR9MDsaDLqnJyNB-n428EosoVI3ALRF50RyUJLnIeF1EybYQJVl9zdga6j7S2GAbUtcCeUEuSeu8_o7HsgAZgj20oqOPjHsGqwf9R3YUwXFo6spqOucL0_GwoYQr9Gb6XOpTAvnTTQ13i_o87qa5rjyBQ-pkkN3zz209svQI3mmOA5iEqmZugu4U_4n4-mTzU4"
+          alt="Mumbai Luxury Real Estate"
+          className="object-cover transition-transform duration-1000 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/40 to-transparent"></div>
         <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-24 md:max-w-3xl">

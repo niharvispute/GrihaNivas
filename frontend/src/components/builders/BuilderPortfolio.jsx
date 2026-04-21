@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function BuilderPortfolio({ builder, properties = [] }) {
@@ -141,10 +142,12 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
           {filteredPortfolio.map((prop) => (
             <div key={prop.id || prop.slug} className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-neutral-100 flex flex-col italic">
               <div className="relative overflow-hidden h-32 sm:h-64 lg:h-72">
-                <img 
-                  src={prop.image} 
-                  alt={prop.title} 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                <Image
+                  src={prop.image}
+                  alt={prop.title}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-2.5 left-2.5 bg-primary text-white text-[8px] font-black px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-full shadow-lg uppercase tracking-tighter">
                   {prop.status}

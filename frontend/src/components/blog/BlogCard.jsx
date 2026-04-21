@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function BlogCard({ post, blog }) {
@@ -7,10 +8,12 @@ export default function BlogCard({ post, blog }) {
   return (
     <article className="group flex flex-col h-full bg-white rounded-moderate overflow-hidden shadow-sm hover:shadow-lg transition-all">
       <div className="aspect-4/3 rounded-t-moderate overflow-hidden mb-0 relative">
-        <img 
-          src={item.image} 
-          alt={item.title} 
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+        <Image
+          src={item.image}
+          alt={item.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 400px"
+          className="object-cover group-hover:scale-110 transition-transform duration-500"
         />
         <div className="absolute top-4 left-4">
           <span className="bg-white/90 backdrop-blur-sm px-2.5 sm:px-3 py-1 rounded-full text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-primary">

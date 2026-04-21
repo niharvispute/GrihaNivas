@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 const BannerSlotCard = ({ banner, onReplace, uploading = false }) => {
   const statusColors = {
@@ -34,10 +35,12 @@ const BannerSlotCard = ({ banner, onReplace, uploading = false }) => {
         {/* Banner Preview Area */}
         <div className="lg:col-span-8">
           <div className={`relative group rounded-4xl overflow-hidden border border-slate-100 aspect-1920/600 bg-slate-50 shadow-inner ${isInactive ? 'grayscale opacity-50' : ''}`}>
-            <img 
-              alt={banner.title} 
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-              src={banner.image} 
+            <Image
+              alt={banner.title}
+              fill
+              sizes="(max-width: 1024px) 100vw, 66vw"
+              className="object-cover transition-transform duration-1000 group-hover:scale-105"
+              src={banner.image}
             />
             {isInactive ? (
               <div className="absolute inset-0 flex items-center justify-center">

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const FALLBACK_RELATED_IMAGE =
@@ -17,8 +18,8 @@ const BlogSidebar = ({ relatedPosts = [], trendingAssets = [] }) => {
         <div className="space-y-6 sm:space-y-8 lg:space-y-10">
           {relatedPosts.length > 0 ? relatedPosts.map((post) => (
             <Link key={post.slug || post.id} href={`/blogs/${post.slug}`} className="group flex gap-4 sm:gap-5 lg:gap-6">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl overflow-hidden shrink-0 shadow-lg border-4 border-white group-hover:rotate-3 transition-transform duration-500">
-                <img src={post.image || FALLBACK_RELATED_IMAGE} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-3xl overflow-hidden shrink-0 shadow-lg border-4 border-white group-hover:rotate-3 transition-transform duration-500">
+                <Image src={post.image || FALLBACK_RELATED_IMAGE} alt={post.title} fill sizes="96px" className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="flex flex-col justify-center">
                 <p className="text-[9px] font-black text-primary uppercase tracking-widest mb-1">{post.category || 'Insight'}</p>

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function SavedPropertyCard({ property, onUnsave }) {
@@ -7,9 +8,11 @@ export default function SavedPropertyCard({ property, onUnsave }) {
     <div className="group flex flex-col lg:flex-row bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
       {/* Image Section */}
       <div className="relative w-full sm:w-40 lg:w-80 h-40 sm:h-48 lg:h-auto overflow-hidden flex-shrink-0">
-        <img
+        <Image
           alt={property.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 160px, 320px"
+          className="object-cover group-hover:scale-105 transition-transform duration-700"
           src={property.image}
         />
         <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex gap-2">

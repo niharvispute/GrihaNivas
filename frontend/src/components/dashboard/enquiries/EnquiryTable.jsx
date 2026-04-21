@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { authedApiFetch } from '@/lib/api/authedRequest';
 
@@ -71,11 +72,11 @@ export default function EnquiryTable() {
           >
             {/* Header with thumbnail and title */}
             <div className="flex gap-4 sm:gap-6 mb-4 sm:mb-5">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 shadow-inner flex items-center justify-center flex-none">
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 shadow-inner flex items-center justify-center flex-none">
                 {isService ? (
                   <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">{icon}</span>
                 ) : item.propertyId?.heroImage?.url ? (
-                  <img alt={propertyTitle} className="w-full h-full object-cover" src={item.propertyId.heroImage.url} />
+                  <Image alt={propertyTitle} fill sizes="64px" className="object-cover" src={item.propertyId.heroImage.url} />
                 ) : (
                   <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">{icon}</span>
                 )}

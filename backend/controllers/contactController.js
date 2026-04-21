@@ -49,7 +49,9 @@ const list = async (req, res, next) => {
     const filter = {};
     if (req.query.isRead !== undefined) filter.isRead = req.query.isRead === 'true';
 
-    const contacts = await Contact.find(filter).sort({ createdAt: -1 });
+    const contacts = await Contact.find(filter)
+      .sort({ createdAt: -1 })
+      .select('name email phone message isRead createdAt');
     return sendSuccess(res, 200, 'Contact enquiries fetched', contacts);
   } catch (err) {
     next(err);

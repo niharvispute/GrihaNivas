@@ -17,7 +17,10 @@ const connectDB = async () => {
   // Mongoose 7+ doesn't need these options but they're safe to set for clarity
   mongoose.set('strictQuery', true);
 
-  await mongoose.connect(uri);
+  await mongoose.connect(uri, {
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 5000,
+  });
 
   console.info('✅ MongoDB connected:', mongoose.connection.host);
 

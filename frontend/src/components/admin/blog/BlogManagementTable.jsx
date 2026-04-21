@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 const BlogManagementTable = ({ blogs, onEdit, onDelete, onAddNew }) => {
   return (
@@ -39,10 +40,12 @@ const BlogManagementTable = ({ blogs, onEdit, onDelete, onAddNew }) => {
               <tr key={blog.id} className="hover:bg-slate-50/50 transition-all group">
                 <td className="px-10 py-6">
                   <div className="flex items-center gap-5">
-                    <div className="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-slate-100 border-2 border-white shadow-md group-hover:shadow-lg transition-all duration-500 flex items-center justify-center">
+                    <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-slate-100 border-2 border-white shadow-md group-hover:shadow-lg transition-all duration-500 flex items-center justify-center">
                       {blog.image ? (
-                        <img
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        <Image
+                          fill
+                          sizes="64px"
+                          className="object-cover group-hover:scale-110 transition-transform duration-700"
                           src={blog.image}
                           alt={blog.title}
                         />

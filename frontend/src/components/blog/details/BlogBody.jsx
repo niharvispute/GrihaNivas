@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 const BlogBody = ({ post }) => {
   if (!post) return null;
@@ -60,11 +61,13 @@ const BlogBody = ({ post }) => {
 
             {/* Figure with Caption */}
             <figure className="my-10 sm:my-14 lg:my-16 group">
-              <div className="rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200 group-hover:shadow-3xl transition-shadow duration-700">
-                <img 
-                  alt="Mumbai Skyline" 
-                  className="w-full h-64 sm:h-80 lg:h-125 object-cover transition-transform duration-1000 group-hover:scale-105" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKI5Aq7rPKSbLbJIiw1u5KvR9LCEn33XFlBYJt6HwAIU0PEgYO6U3XWqsjwqZ2URYOkqLPPRqgWTaGoul9hG94t96abix9glz9g3S2-1aiqX7BP5LWF7vaCpFUMnYOBaN4IM6rWw5kZb5_WAOu3ht0nv_wTfkSZDfHxtmshDN2fTRu3ft_lFRLPcI_cg8mNcYhr9NAyLcISj3E-ySVVKmK5YGdKPx5oD2hVSKam85NSiQw42pzoYUA5Ap144rVdvBjU0NvOn3L0P4" 
+              <div className="relative h-64 sm:h-80 lg:h-125 rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200 group-hover:shadow-3xl transition-shadow duration-700">
+                <Image
+                  alt="Mumbai Skyline"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKI5Aq7rPKSbLbJIiw1u5KvR9LCEn33XFlBYJt6HwAIU0PEgYO6U3XWqsjwqZ2URYOkqLPPRqgWTaGoul9hG94t96abix9glz9g3S2-1aiqX7BP5LWF7vaCpFUMnYOBaN4IM6rWw5kZb5_WAOu3ht0nv_wTfkSZDfHxtmshDN2fTRu3ft_lFRLPcI_cg8mNcYhr9NAyLcISj3E-ySVVKmK5YGdKPx5oD2hVSKam85NSiQw42pzoYUA5Ap144rVdvBjU0NvOn3L0P4"
                 />
               </div>
               <figcaption className="text-center text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-slate-400 mt-5 sm:mt-6 lg:mt-8 leading-relaxed">

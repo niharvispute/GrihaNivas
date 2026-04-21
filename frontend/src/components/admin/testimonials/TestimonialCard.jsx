@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 const TestimonialCard = ({ testimonial, onEdit, onDelete, deleting = false }) => {
   const initials = (testimonial.name || 'U')
@@ -16,11 +17,13 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete, deleting = false }) =>
         <div className="flex justify-between items-start mb-8">
           <div className="flex items-center gap-5">
             <div className="relative">
-              <div className="w-16 h-16 rounded-[1.25rem] object-cover shadow-xl border-4 border-white group-hover:rotate-3 transition-transform duration-500 bg-linear-to-br from-primary/10 via-white to-tertiary/70 text-primary flex items-center justify-center font-black text-sm overflow-hidden">
+              <div className="relative w-16 h-16 rounded-[1.25rem] shadow-xl border-4 border-white group-hover:rotate-3 transition-transform duration-500 bg-linear-to-br from-primary/10 via-white to-tertiary/70 text-primary flex items-center justify-center font-black text-sm overflow-hidden">
                 {testimonial.image ? (
-                  <img
+                  <Image
                     alt={testimonial.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="64px"
+                    className="object-cover"
                     src={testimonial.image}
                   />
                 ) : (

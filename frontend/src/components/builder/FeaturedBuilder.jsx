@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const FeaturedBuilder = ({ builder }) => {
@@ -6,10 +7,12 @@ const FeaturedBuilder = ({ builder }) => {
     <section className="mb-16">
       <div className="group relative overflow-hidden rounded-[2.5rem] bg-zinc-900 h-[500px] flex items-center shadow-2xl">
         <div className="absolute inset-0">
-          <img 
-            className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-[2000ms]" 
-            src={builder.image} 
-            alt="Featured architectural marvel" 
+          <Image
+            fill
+            sizes="100vw"
+            className="object-cover opacity-60 group-hover:scale-105 transition-transform duration-[2000ms]"
+            src={builder.image}
+            alt="Featured architectural marvel"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/70 to-transparent"></div>
         </div>
@@ -19,7 +22,7 @@ const FeaturedBuilder = ({ builder }) => {
           </span>
           <div className="flex items-center gap-6 mb-8">
             <div className="w-20 h-20 bg-white rounded-2xl p-3 flex items-center justify-center shadow-2xl ring-4 ring-white/10 animate-in zoom-in duration-700">
-              <img className="w-full h-full object-contain" src={builder.logo} alt={builder.name} />
+              <Image width={80} height={80} className="object-contain" src={builder.logo} alt={builder.name} />
             </div>
             <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none">
               {builder.name}

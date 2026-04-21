@@ -1,10 +1,14 @@
+import Image from 'next/image';
+
 export default function FeaturedGuideCard() {
   return (
     <div className="relative overflow-hidden rounded-[2rem] bg-slate-900 group aspect-[4/5] lg:aspect-square">
-      <img 
-        className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-1000" 
-        src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200" 
-        alt="Featured Guide" 
+      <Image
+        fill
+        sizes="(max-width: 1024px) 100vw, 400px"
+        className="object-cover opacity-60 group-hover:scale-110 transition-transform duration-1000"
+        src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200"
+        alt="Featured Guide"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent p-8 flex flex-col justify-end">
         <span className="bg-primary text-white text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full w-fit mb-3">

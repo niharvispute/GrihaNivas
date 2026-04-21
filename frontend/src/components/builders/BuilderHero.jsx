@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function BuilderHero({ builder }) {
   const heroImage =
     builder?.heroImage ||
@@ -7,10 +9,12 @@ export default function BuilderHero({ builder }) {
   return (
     <section className="relative min-h-[60vh] sm:min-h-[90vh] lg:min-h-153.5 flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img 
-          src={heroImage} 
-          alt={builder.name} 
-          className="w-full h-full object-cover brightness-50" 
+        <Image
+          src={heroImage}
+          alt={builder.name}
+          fill
+          sizes="100vw"
+          className="object-cover brightness-50"
         />
         <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-black/20"></div>
       </div>
@@ -19,10 +23,12 @@ export default function BuilderHero({ builder }) {
         <div className="max-w-4xl">
           <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 lg:p-7 rounded-2xl sm:rounded-3xl border border-white/20 inline-block mb-5 sm:mb-8 italic">
             {hasLogo ? (
-              <img 
-                src={builder.logo} 
-                alt={`${builder.name} Logo`} 
-                className="w-14 h-14 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain bg-white rounded-lg shadow-xl mb-3 sm:mb-6 p-2.5 sm:p-4" 
+              <Image
+                src={builder.logo}
+                alt={`${builder.name} Logo`}
+                width={128}
+                height={128}
+                className="w-14 h-14 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain bg-white rounded-lg shadow-xl mb-3 sm:mb-6 p-2.5 sm:p-4"
               />
             ) : (
               <div className="w-14 h-14 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 bg-white rounded-lg shadow-xl mb-3 sm:mb-6 p-2.5 sm:p-4 flex items-center justify-center">

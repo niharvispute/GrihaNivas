@@ -15,8 +15,8 @@ const User = require('../models/mongoose/User');
 
 const ADMIN_CONFIG = {
   phone: process.env.ADMIN_PHONE || '+919876543210',
-  email: process.env.ADMIN_EMAIL || 'admin@bricks.com',
-  password: process.env.ADMIN_PASSWORD || 'Admin@123',
+  email: process.env.ADMIN_EMAIL || 'bricks.dev@gmail.com',
+  password: process.env.ADMIN_PASSWORD || 'Admin@1234',
   name:  'Super Admin',
   role:  'admin',
   isVerified: true,

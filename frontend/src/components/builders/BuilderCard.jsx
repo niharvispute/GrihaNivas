@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function BuilderCard({ builder }) {
@@ -9,10 +10,12 @@ export default function BuilderCard({ builder }) {
     <div className="group bg-white rounded-3xl border border-zinc-200 overflow-hidden hover:shadow-2xl hover:border-primary/20 transition-all duration-300 flex flex-col">
       <div className="relative h-32 sm:h-48 overflow-hidden bg-zinc-100">
         {thumbnail ? (
-          <img
+          <Image
+            fill
+            sizes="(max-width: 640px) 100vw, 400px"
             src={thumbnail}
             alt={builder.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            className="object-cover group-hover:scale-110 transition-transform duration-500"
           />
         ) : (
           <div className="w-full h-full bg-linear-to-br from-zinc-100 via-zinc-50 to-white flex items-center justify-center">
@@ -34,7 +37,7 @@ export default function BuilderCard({ builder }) {
             {builder.isIconLogo ? (
               <span className="material-symbols-outlined text-primary text-xl sm:text-3xl">{logo}</span>
             ) : hasLogo ? (
-              <img src={logo} alt={builder.name} className="w-full h-full object-contain" />
+              <Image src={logo} alt={builder.name} width={48} height={48} className="object-contain" />
             ) : (
               <span className="material-symbols-outlined text-primary text-xl sm:text-3xl">domain</span>
             )}

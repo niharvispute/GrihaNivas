@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { listTestimonials } from '@/services/testimonialService';
 import Link from 'next/link';
 
@@ -67,12 +68,14 @@ export default function HomePageTestimonials() {
 
               {/* Author */}
               <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-primary font-black text-sm border-2 border-primary/10 flex-shrink-0">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-primary font-black text-sm border-2 border-primary/10 flex-shrink-0">
                   {testimonial.image ? (
-                    <img
+                    <Image
                       src={testimonial.image}
                       alt={testimonial.name}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="48px"
+                      className="object-cover"
                     />
                   ) : (
                     <span>

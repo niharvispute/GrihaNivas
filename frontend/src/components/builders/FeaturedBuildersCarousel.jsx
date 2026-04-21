@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function FeaturedBuildersCarousel({ builders = [] }) {
@@ -49,8 +50,10 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
       <div className="group relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] bg-zinc-900 min-h-96 lg:h-125 flex items-center shadow-2xl">
         <div className="absolute inset-0">
           {heroImage ? (
-            <img
-              className="w-full h-full object-cover opacity-60 transition-transform duration-700"
+            <Image
+              fill
+              sizes="100vw"
+              className="object-cover opacity-60 transition-transform duration-700"
               src={heroImage}
               alt={activeBuilder?.name || 'Featured builder'}
             />
@@ -67,7 +70,7 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
           <div className="flex items-center gap-2.5 sm:gap-4 mb-2 sm:mb-4">
             <div className="w-10 h-10 sm:w-16 sm:h-16 bg-white rounded-lg sm:rounded-xl p-1.5 flex items-center justify-center shadow-xl shrink-0">
               {logo ? (
-                <img className="w-full h-full object-contain" src={logo} alt={activeBuilder?.name || 'Builder logo'} />
+                <Image width={64} height={64} className="object-contain" src={logo} alt={activeBuilder?.name || 'Builder logo'} />
               ) : (
                 <span className="text-lg font-black text-primary">{activeBuilder?.name?.[0] || 'B'}</span>
               )}

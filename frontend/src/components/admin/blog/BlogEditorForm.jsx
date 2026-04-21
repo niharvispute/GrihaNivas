@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 const CATEGORIES = [
   { value: 'market_trends', label: 'Market Trends' },
@@ -134,11 +135,15 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
                 This image is used as the blog banner and card thumbnail.
               </p>
               {!form.featuredImageFile && initialData?.image && (
-                <img
-                  src={initialData.image}
-                  alt={form.title || 'Current blog banner'}
-                  className="w-full max-w-sm h-36 object-cover rounded-2xl border border-slate-100 shadow-sm"
-                />
+                <div className="relative w-full max-w-sm h-36">
+                  <Image
+                    src={initialData.image}
+                    alt={form.title || 'Current blog banner'}
+                    fill
+                    sizes="384px"
+                    className="object-cover rounded-2xl border border-slate-100 shadow-sm"
+                  />
+                </div>
               )}
             </div>
           </div>
