@@ -39,15 +39,15 @@ const isLocalDevOrigin = (origin) => {
     const { protocol, hostname } = new URL(origin);
     if (protocol !== 'http:' && protocol !== 'https:') return false;
 
-    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' || hostname === '192.168.1.5') {
       return true;
     }
 
     // Allow LAN/private IPv4 hosts during local development.
-    if (/^192\.168\.\d{1,3}\.\d{1,3,5}$/.test(hostname)) return true;
-    if (/^10\.\d{1,3}\.\d{1,3}\.\d{1,3,5}$/.test(hostname)) return true;
-    if (/^172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3,5}$/.test(hostname)) return true;
-
+    if (/^192\.168\.\d{1,3}\.\d{1,3}$/.test(hostname)) return true;
+    if (/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(hostname)) return true;
+    if (/^172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}$/.test(hostname)) return true;
+    if (/^192\.168\.\d{1,3}\.\d{1,5}$/.test(hostname)) return true;
     return false;
   } catch {
     return false;
