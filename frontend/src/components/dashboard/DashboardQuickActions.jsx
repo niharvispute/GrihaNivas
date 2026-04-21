@@ -1,6 +1,16 @@
 import Link from 'next/link';
 
-export default function DashboardQuickActions() {
+const STATUS_STYLES = {
+  new: { label: 'Under Review', badge: 'bg-blue-50 text-blue-700' },
+  reviewing: { label: 'In Review', badge: 'bg-amber-50 text-amber-700' },
+  approved: { label: 'Published', badge: 'bg-emerald-50 text-emerald-700' },
+  rejected: { label: 'Rejected', badge: 'bg-rose-50 text-rose-700' },
+  closed: { label: 'Closed', badge: 'bg-slate-100 text-slate-600' },
+};
+
+export default function DashboardQuickActions({ hasListings = false, latestListing = null, listingsCount = 0 }) {
+  const listingStatus = STATUS_STYLES[latestListing?.status] || STATUS_STYLES.new;
+
   const actions = [
     {
       title: "Browse Properties",
@@ -9,6 +19,18 @@ export default function DashboardQuickActions() {
       href: "/buy",
       primary: true
     },
+    ...(hasListings
+      ? [
+          {
+            title: 'My Property Status',
+            desc: `${listingStatus.label} • ${listingsCount} ${listingsCount === 1 ? 'listing' : 'listings'}`,
+            icon: 'domain',
+            href: '/account/listings',
+            primary: false,
+            statusBadge: listingStatus,
+          },
+        ]
+      : []),
     {
       title: "EMI Calculator",
       desc: "Plan your finances",
@@ -49,6 +71,11 @@ export default function DashboardQuickActions() {
               <p className={`text-[11px] font-medium ${action.primary ? 'text-white/70' : 'text-slate-400'}`}>{action.desc}</p>
             </div>
           </div>
+          {action.statusBadge && (
+            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${action.statusBadge.badge}`}>
+              {action.statusBadge.label}
+            </span>
+          )}
           <span className={`material-symbols-outlined transition-transform group-hover:translate-x-1 ${
             action.primary ? 'text-white/50' : 'text-slate-300'
           }`}>chevron_right</span>

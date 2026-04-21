@@ -1,0 +1,22 @@
+{
+  "name": "bricks-mern-tests",
+  "version": "1.0.0",
+  "description": "Post-deployment test suite for Bricks Real Estate Platform",
+  "main": "run-all.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node run-all.js",
+    "smoke": "node run-all.js --phase smoke",
+    "security": "node run-all.js --phase security",
+    "perf": "node run-all.js --phase perf",
+    "install:browsers": "npx playwright install chromium firefox webkit --with-deps"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "chalk": "^4.1.2",
+    "dayjs": "^1.11.10",
+    "fs-extra": "^11.2.0",
+    "ora": "^5.4.1",
+    "playwright": "^1.40.0"
+  }
+}

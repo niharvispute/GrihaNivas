@@ -80,7 +80,8 @@
       "Bash(grep -n \"^const\\\\|^module.exports\\\\|^};$\" \"C:\\\\Users\\\\visha\\\\OneDrive\\\\Desktop\\\\Bricks\\\\backend\\\\controllers\\\\propertyController.js\")",
       "Bash(grep -n \"^const\\\\|^module.exports\\\\|^};$\" \"C:\\\\Users\\\\visha\\\\OneDrive\\\\Desktop\\\\Bricks\\\\backend\\\\controllers\\\\builderController.js\")",
       "Bash(node -e ' *)",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "Bash(node *)"
     ]
   }
 }

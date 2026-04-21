@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
+import { invalidateMyListingsSummary } from '@/hooks/useMyListingsSummary';
 import { createPropertySubmission } from '@/services/propertySubmissionService';
 
 const MIN_PROPERTY_IMAGES = 5;
@@ -218,6 +219,7 @@ export default function MultiStageListingForm() {
       }
 
       await createPropertySubmission(payload);
+      invalidateMyListingsSummary(user);
 
       setIsSuccessModalOpen(true);
       setFeedback({ type: 'success', message: 'Property submitted for review successfully!' });
@@ -834,7 +836,7 @@ export default function MultiStageListingForm() {
 
     {/* ✨ Success Milestone Popup */}
     {isSuccessModalOpen && (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
         {/* Backdrop */}
         <div 
           className="absolute inset-0 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-500"

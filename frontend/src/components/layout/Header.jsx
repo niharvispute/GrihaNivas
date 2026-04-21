@@ -11,8 +11,9 @@ const NAV_LINKS = [
   { label: 'New Launch', href: '/new-launch' },
   { label: 'Builders', href: '/builders' },
   { label: 'Blogs', href: '/blogs' },
-  { label: 'Contact', href: '/contact' },
 ];
+
+const CONTACT_LINK = { label: 'Contact', href: '/contact' };
 
 const SERVICE_LINKS = [
   { label: 'Home Loan', href: '/home-loan', icon: 'account_balance' },
@@ -185,6 +186,17 @@ export default function Header() {
                 </div>
               </div>
             </div>
+
+            <Link
+              href={CONTACT_LINK.href}
+              className={`py-2 border-b-2 transition-colors ${
+                isActive(CONTACT_LINK.href)
+                  ? 'text-primary border-primary'
+                  : 'border-transparent hover:text-primary'
+              }`}
+            >
+              {CONTACT_LINK.label}
+            </Link>
           </nav>
 
           {/* Desktop Actions */}
@@ -413,6 +425,17 @@ export default function Header() {
                 </div>
               </div>
             </div>
+
+            <Link
+              href={CONTACT_LINK.href}
+              className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all ${
+                isActive(CONTACT_LINK.href)
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+              }`}
+            >
+              {CONTACT_LINK.label}
+            </Link>
           </nav>
 
           {/* Panel Footer */}

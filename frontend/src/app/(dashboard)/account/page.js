@@ -5,9 +5,13 @@ import ActivityTimeline from '@/components/dashboard/ActivityTimeline';
 import DashboardQuickActions from '@/components/dashboard/DashboardQuickActions';
 import FeaturedGuideCard from '@/components/dashboard/FeaturedGuideCard';
 import { useAuth } from '@/context/AuthContext';
+import { useMyListingsSummary } from '@/hooks/useMyListingsSummary';
 
 export default function UserDashboardPage() {
   const { user } = useAuth();
+  const { hasListings, latestListing, listingsCount } = useMyListingsSummary(user, {
+    enabled: Boolean(user),
+  });
 
   const firstName = user?.name?.split(' ')[0] || 'There';
 
@@ -57,7 +61,11 @@ export default function UserDashboardPage() {
 
         {/* Right: Quick Actions & Featured Guide */}
         <div className="lg:col-span-4 space-y-6 sm:space-y-8 md:space-y-10">
-          <DashboardQuickActions />
+          <DashboardQuickActions
+            hasListings={hasListings}
+            latestListing={latestListing}
+            listingsCount={listingsCount}
+          />
           <FeaturedGuideCard />
         </div>
       </div>

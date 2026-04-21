@@ -12,8 +12,8 @@ const mongoose = require('mongoose');
  *   loan         — home loan enquiry
  *   agreement    — rent/sale agreement service
  *
- * Status flow (enforced in controller — no backward transitions allowed):
- *   new → contacted → qualified → closed
+ * Status flow (enforced in controller — one-step moves only):
+ *   new ↔ contacted ↔ qualified ↔ closed
  *
  * Notes array acts as a lightweight CRM activity log.
  */

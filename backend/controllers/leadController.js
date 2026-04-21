@@ -8,8 +8,8 @@ const Lead = require('../models/mongoose/Lead');
 /**
  * Lead Controller — CRM
  *
- * Status transitions (enforced — no backwards movement):
- *   new → contacted → qualified → closed
+ * Status transitions (one-step moves only):
+ *   new ↔ contacted ↔ qualified ↔ closed
  */
 
 const STATUS_ORDER = { new: 0, contacted: 1, qualified: 2, closed: 3 };
@@ -211,19 +211,10 @@ const updateStatus = async (req, res, next) => {
     const lead = await Lead.findById(id);
     if (!lead) throw new AppError('Lead not found', 404);
 
-    // Enforce no backward transitions
-    if (STATUS_ORDER[newStatus] < STATUS_ORDER[lead.status]) {
-      throw new AppError(
-        `Cannot move lead from "${lead.status}" back to "${newStatus}". Status can only move forward.`,
-        400
-      );
-    }
-
-    // Allow backward transition only one step at a time
     const diff = STATUS_ORDER[newStatus] - STATUS_ORDER[lead.status];
-    if (diff < -1) {
+    if (Math.abs(diff) > 1) {
       throw new AppError(
-        `Can only revert one stage at a time. Cannot jump from "${lead.status}" to "${newStatus}".`,
+        `Can only move one stage at a time. Cannot jump from "${lead.status}" to "${newStatus}".`,
         400
       );
     }

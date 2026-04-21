@@ -3,6 +3,30 @@ import { authedApiFetch } from '@/lib/api/authedRequest';
 import { mapBlogListToCardVM, mapBlogToDetailVM } from '@/lib/mappers/blogMapper';
 
 const isRateLimitError = (error) => Number(error?.status) === 429;
+const hasFile = (value) => typeof File !== 'undefined' && value instanceof File;
+
+const buildBlogRequestBody = (payload = {}) => {
+  const { featuredImageFile, ...rest } = payload;
+  if (!hasFile(featuredImageFile)) {
+    return rest;
+  }
+
+  const formData = new FormData();
+  Object.entries(rest).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === '') return;
+    if (Array.isArray(value)) {
+      value.forEach((entry) => {
+        if (entry !== undefined && entry !== null && entry !== '') {
+          formData.append(key, String(entry));
+        }
+      });
+      return;
+    }
+    formData.append(key, String(value));
+  });
+  formData.append('featuredImage', featuredImageFile);
+  return formData;
+};
 
 export const listBlogs = async (query = {}, { map = true } = {}) => {
   try {
@@ -42,7 +66,7 @@ export const addBlogComment = async (blogId, payload) => {
 export const createBlog = async (payload) => {
   const res = await authedApiFetch('/api/blogs', {
     method: 'POST',
-    body: payload,
+    body: buildBlogRequestBody(payload),
   });
   return res.data;
 };
@@ -50,7 +74,7 @@ export const createBlog = async (payload) => {
 export const updateBlog = async (id, payload) => {
   const res = await authedApiFetch(`/api/blogs/${id}`, {
     method: 'PUT',
-    body: payload,
+    body: buildBlogRequestBody(payload),
   });
   return res.data;
 };

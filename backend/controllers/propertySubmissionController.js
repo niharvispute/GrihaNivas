@@ -8,12 +8,12 @@ const {
   syncPublishedPropertyVisibility,
 } = require('../services/propertySubmissionPublishingService');
 
-const STATUS_ORDER = {
-  new: 0,
-  reviewing: 1,
-  approved: 2,
-  rejected: 3,
-  closed: 4,
+const ALLOWED_STATUS_TRANSITIONS = {
+  new: ['reviewing'],
+  reviewing: ['new', 'approved', 'rejected'],
+  approved: ['reviewing', 'closed'],
+  rejected: ['reviewing', 'closed'],
+  closed: ['approved', 'rejected'],
 };
 
 const listSearchFilter = (search) => {
@@ -152,9 +152,9 @@ const updateStatus = async (req, res, next) => {
     const submission = await PropertySubmission.findById(id);
     if (!submission) throw new AppError('Property submission not found', 404);
 
-    if (STATUS_ORDER[status] < STATUS_ORDER[submission.status]) {
+    if (status !== submission.status && !ALLOWED_STATUS_TRANSITIONS[submission.status]?.includes(status)) {
       throw new AppError(
-        `Cannot move submission from "${submission.status}" back to "${status}". Status can only move forward.`,
+        `Invalid transition from "${submission.status}" to "${status}".`,
         400
       );
     }
@@ -163,9 +163,7 @@ const updateStatus = async (req, res, next) => {
 
     if (status === 'approved') {
       await ensureSubmissionPublished(submission);
-    }
-
-    if (status === 'rejected' || status === 'closed') {
+    } else {
       await syncPublishedPropertyVisibility(submission, status);
     }
 

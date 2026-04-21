@@ -36,18 +36,18 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
     keyword: initialData.keyword || initialData?.raw?.keywords?.[0] || '',
     excerpt: initialData.excerpt || initialData?.raw?.seoDescription || '',
     content: initialData.content || '',
+    featuredImageFile: null,
   });
 
   const set = (field) => (event) => setForm((prev) => ({ ...prev, [field]: event.target.value }));
 
   const buildPayload = (isPublished) => ({
-    ...initialData,
     title: form.title.trim(),
     category: normalizeCategory(form.category),
     content: form.content,
     seoDescription: form.excerpt?.trim() || undefined,
-    keywords: form.keyword?.trim() ? [form.keyword.trim()] : undefined,
     isPublished,
+    featuredImageFile: form.featuredImageFile || undefined,
   });
 
   const handlePublish = () => {
@@ -115,6 +115,31 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
                 value={form.keyword}
                 onChange={set('keyword')}
               />
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">
+                Banner Image
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) => {
+                  const file = event.target.files?.[0] || null;
+                  setForm((prev) => ({ ...prev, featuredImageFile: file }));
+                }}
+                className="w-full px-6 py-4 rounded-[1.25rem] bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-xs file:font-black file:uppercase file:tracking-widest file:text-primary hover:file:bg-primary/20"
+              />
+              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">
+                This image is used as the blog banner and card thumbnail.
+              </p>
+              {!form.featuredImageFile && initialData?.image && (
+                <img
+                  src={initialData.image}
+                  alt={form.title || 'Current blog banner'}
+                  className="w-full max-w-sm h-36 object-cover rounded-2xl border border-slate-100 shadow-sm"
+                />
+              )}
             </div>
           </div>
 

@@ -141,6 +141,14 @@ const EMICalculator = () => {
     }).format(val);
   };
 
+  const principalShare = Math.max(0, Math.min(100, Number(results.principalPercent) || 0));
+  const interestShare = Math.max(0, Math.min(100, Number(results.interestPercent) || 0));
+
+  const chartRadius = 56;
+  const chartCircumference = 2 * Math.PI * chartRadius;
+  const principalArc = (principalShare / 100) * chartCircumference;
+  const interestArc = (interestShare / 100) * chartCircumference;
+
   return (
     <div className="w-full max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-12 font-sans">
       {/* 1. Header */}
@@ -297,27 +305,62 @@ const EMICalculator = () => {
             </div>
 
             {/* Visual Chart */}
-            <div className="mt-8 md:mt-12 flex justify-center scale-90 md:scale-110">
-              <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-10 md:border-12 border-secondary flex items-center justify-center">
-                <svg className="absolute -inset-2.5 md:-inset-3 w-[calc(100%+20px)] md:w-[calc(100%+24px)] h-[calc(100%+20px)] md:h-[calc(100%+24px)] -rotate-90">
+            <div className="mt-8 md:mt-10 flex items-center justify-center">
+              <div className="relative w-44 h-44 md:w-48 md:h-48">
+                <div className="absolute inset-4 rounded-full bg-primary/10 blur-2xl" />
+                <svg viewBox="0 0 160 160" className="relative w-full h-full -rotate-90">
+                  <defs>
+                    <linearGradient id="emiPrincipalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#2F6FED" />
+                      <stop offset="100%" stopColor="#5DA8FF" />
+                    </linearGradient>
+                    <linearGradient id="emiInterestGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#FF7A1A" />
+                      <stop offset="100%" stopColor="#FFC266" />
+                    </linearGradient>
+                  </defs>
+
                   <circle
-                    cx="50%"
-                    cy="50%"
-                    r="32 md:40"
+                    cx="80"
+                    cy="80"
+                    r={chartRadius}
                     fill="none"
-                    stroke="#e61a61"
-                    strokeWidth="10 md:12"
-                    strokeDasharray={`${results.principalPercent} 100`}
-                    pathLength="100"
+                    stroke="#EEF2FF"
+                    strokeWidth="14"
+                  />
+
+                  <circle
+                    cx="80"
+                    cy="80"
+                    r={chartRadius}
+                    fill="none"
+                    stroke="url(#emiPrincipalGradient)"
+                    strokeWidth="14"
                     strokeLinecap="round"
-                    className="transition-all duration-1000 ease-out"
+                    strokeDasharray={`${principalArc} ${chartCircumference}`}
+                    strokeDashoffset="0"
+                    className="transition-all duration-700 ease-out"
+                  />
+
+                  <circle
+                    cx="80"
+                    cy="80"
+                    r={chartRadius}
+                    fill="none"
+                    stroke="url(#emiInterestGradient)"
+                    strokeWidth="14"
+                    strokeLinecap="round"
+                    strokeDasharray={`${interestArc} ${chartCircumference}`}
+                    strokeDashoffset={-principalArc}
+                    className="transition-all duration-700 ease-out"
                   />
                 </svg>
-                <div className="text-center">
-                  <span className="block text-[7px] md:text-[8px] uppercase tracking-[0.2em] font-black text-slate-400 mb-0.5 md:mb-1">Breakdown</span>
-                  <span className="text-[10px] md:text-sm font-black text-slate-900 leading-none">
-                    {results.principalPercent}% / {results.interestPercent}%
-                  </span>
+
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center bg-white/90 backdrop-blur-sm rounded-full w-24 h-24 md:w-28 md:h-28 flex flex-col items-center justify-center border border-slate-100 shadow-lg">
+                    <span className="text-[8px] md:text-[9px] uppercase tracking-[0.2em] font-black text-slate-400">Interest</span>
+                    <span className="text-xl md:text-2xl font-black tracking-tighter text-secondary leading-none">{interestShare}%</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -342,11 +385,11 @@ const EMICalculator = () => {
           <table className="w-full text-left border-collapse bg-white">
             <thead>
               <tr className="bg-slate-50">
-                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-slate-400">Year</th>
-                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-slate-400">Principal</th>
-                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-slate-400">Interest</th>
-                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-slate-400">Total</th>
-                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-[0.1em] md:tracking-[0.2em] uppercase text-slate-400 text-right">Balance</th>
+                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-widest uppercase text-slate-400">Year</th>
+                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-widest uppercase text-slate-400">Principal</th>
+                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-widest uppercase text-slate-400">Interest</th>
+                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-widest uppercase text-slate-400">Total</th>
+                <th className="px-4 md:px-8 py-3 md:py-5 text-[9px] md:text-[10px] font-black tracking-widest uppercase text-slate-400 text-right">Balance</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
@@ -367,7 +410,7 @@ const EMICalculator = () => {
       </section>
 
       {/* 5. CTA Section */}
-      <section className="mt-12 md:mt-24 bg-slate-900 rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
+      <section className="mt-12 md:mt-24 bg-slate-900 rounded-4xl md:rounded-[3rem] p-8 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
         <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-primary/20 blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2 rounded-full"></div>
         <div className="absolute bottom-0 left-0 w-48 md:w-64 h-48 md:h-64 bg-secondary/10 blur-[50px] md:blur-[80px] translate-y-1/2 -translate-x-1/2 rounded-full"></div>
         

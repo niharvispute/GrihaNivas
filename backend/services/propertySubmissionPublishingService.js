@@ -219,6 +219,13 @@ const syncPublishedPropertyVisibility = async (submission, submissionStatus, opt
     return property;
   }
 
+  if (submissionStatus === 'new' || submissionStatus === 'reviewing') {
+    property.status = 'pending';
+    property.isActive = false;
+    await property.save();
+    return property;
+  }
+
   if (submissionStatus === 'closed') {
     property.isActive = false;
     await property.save();

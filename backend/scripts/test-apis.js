@@ -388,10 +388,15 @@ const testLeads = async () => {
       { status: 'contacted' }, adminAccessToken);
     assert('PUT /leads/:id/status contacted → 200', r6.status === 200, r6.body);
 
-    // Try backward transition
+    // One-step backward transition should be allowed
     const r7 = await request('PUT', `${BASE}/leads/${leadIdForUpdate}/status`,
       { status: 'new' }, adminAccessToken);
-    assert('PUT /leads backward status → 400', r7.status === 400, r7.body);
+    assert('PUT /leads backward status → 200', r7.status === 200, r7.body);
+
+    // Jump transitions should still be blocked
+    const r7a = await request('PUT', `${BASE}/leads/${leadIdForUpdate}/status`,
+      { status: 'closed' }, adminAccessToken);
+    assert('PUT /leads jump status → 400', r7a.status === 400, r7a.body);
 
     // Add note
     const r8 = await request('POST', `${BASE}/leads/${leadIdForUpdate}/notes`,

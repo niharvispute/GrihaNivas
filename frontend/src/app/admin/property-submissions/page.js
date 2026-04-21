@@ -16,11 +16,12 @@ const STATUS_STYLES = {
   closed: { bg: 'bg-slate-100 text-slate-500', dot: 'bg-slate-400' },
 };
 
-const NEXT_STATUS = {
-  new: 'reviewing',
-  reviewing: 'approved',
-  approved: 'closed',
-  rejected: 'closed',
+const STATUS_TRANSITIONS = {
+  new: ['reviewing'],
+  reviewing: ['new', 'approved', 'rejected'],
+  approved: ['reviewing', 'closed'],
+  rejected: ['reviewing', 'closed'],
+  closed: ['approved', 'rejected'],
 };
 
 function formatDate(iso) {
@@ -107,15 +108,13 @@ export default function PropertySubmissionsPage() {
     }
   };
 
-  const handleAdvanceStatus = async (item) => {
-    const nextStatus = NEXT_STATUS[item.status];
-    if (!nextStatus) return;
-
+  const handleStatusChange = async (item, nextStatus) => {
+    if (!nextStatus || nextStatus === item.status) return;
     if (
       nextStatus === 'closed' &&
       (item.status === 'approved' || item.status === 'rejected')
     ) {
-      setCloseWarningItem(item);
+      setCloseWarningItem({ item, nextStatus });
       return;
     }
 
@@ -124,9 +123,9 @@ export default function PropertySubmissionsPage() {
 
   const handleCloseWarningApprove = async () => {
     if (!closeWarningItem) return;
-    const item = closeWarningItem;
+    const { item, nextStatus } = closeWarningItem;
     setCloseWarningItem(null);
-    await performStatusUpdate(item, 'closed');
+    await performStatusUpdate(item, nextStatus);
   };
 
   const handleView = async (id) => {
@@ -248,7 +247,7 @@ export default function PropertySubmissionsPage() {
               <tbody>
                 {items.map((item) => {
                   const style = STATUS_STYLES[item.status] || STATUS_STYLES.new;
-                  const nextStatus = NEXT_STATUS[item.status];
+                  const transitionOptions = STATUS_TRANSITIONS[item.status] || [];
                   const busy = updatingId === item._id;
                   const deleting = deletingId === item._id;
 
@@ -294,14 +293,27 @@ export default function PropertySubmissionsPage() {
                       </td>
                       <td className="px-6 py-5 text-right rounded-r-3xl">
                         <div className="flex items-center justify-end gap-2">
-                          {nextStatus && (
-                            <button
-                              onClick={() => handleAdvanceStatus(item)}
+                          {transitionOptions.length > 0 && (
+                            <select
+                              key={`${item._id}-${item.status}`}
+                              defaultValue=""
+                              onChange={(event) => {
+                                const nextStatus = event.target.value;
+                                event.target.value = '';
+                                if (nextStatus) {
+                                  handleStatusChange(item, nextStatus);
+                                }
+                              }}
                               disabled={busy || deleting}
-                              className="text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl bg-primary/5 text-primary hover:bg-primary hover:text-white transition-all disabled:opacity-50"
+                              className="bg-primary/5 text-primary border border-primary/10 rounded-xl px-3 py-2 text-[10px] font-black uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
                             >
-                              {busy ? '…' : `→ ${nextStatus}`}
-                            </button>
+                              <option value="">Move to…</option>
+                              {transitionOptions.map((option) => (
+                                <option key={option} value={option}>
+                                  {option}
+                                </option>
+                              ))}
+                            </select>
                           )}
 
                           <div className="relative">
