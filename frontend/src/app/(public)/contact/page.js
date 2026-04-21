@@ -126,23 +126,22 @@ function ContactForm() {
       {/* 📬 Communication Grid */}
       <section className="px-3 md:px-8 max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-12 mb-12 md:mb-24">
         {/* Info Column */}
-        <div className="lg:col-span-5 space-y-4 md:space-y-8">
-          <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 md:gap-6">
+        <div className="lg:col-span-5 flex flex-col gap-5 md:gap-8">
+          <div className="flex flex-col gap-4 md:gap-8">
             {contactInfo.map((info, i) => (
               <div 
                 key={i} 
-                className={`bg-white p-4 md:p-10 rounded-[1.2rem] md:rounded-[2.5rem] shadow-sm border border-slate-50 hover:shadow-xl transition-all group ${i === 0 ? 'col-span-2' : 'col-span-1'}`}
+                className="bg-white p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm border border-slate-50 hover:shadow-xl transition-all group"
               >
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-6 text-left">
-                  <div className="p-2.5 md:p-4 rounded-lg md:rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all transform group-hover:rotate-6 shrink-0">
-                    {/* Scale down icons for mobile */}
-                    <div className="scale-75 md:scale-100">
+                <div className="flex items-start md:items-center gap-4 md:gap-6 text-left">
+                  <div className="p-3 md:p-4 rounded-xl md:rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all transform group-hover:rotate-6 shrink-0">
+                    <div className="scale-90 md:scale-100">
                       {info.icon}
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-sm md:text-xl font-black text-slate-900 mb-1 md:mb-2 tracking-tight">{info.title}</h3>
-                    <p className="text-slate-500 text-[10px] md:text-base font-medium leading-tight md:leading-relaxed line-clamp-2 md:line-clamp-none">
+                  <div className="min-w-0">
+                    <h3 className="text-base md:text-xl font-black text-slate-900 mb-1 md:mb-2 tracking-tight uppercase italic">{info.title}</h3>
+                    <p className="text-slate-500 text-xs md:text-base font-bold leading-relaxed italic">
                       {info.desc}
                     </p>
                   </div>
@@ -151,21 +150,21 @@ function ContactForm() {
             ))}
             
             {/* Working Hours */}
-            <div className="col-span-2 lg:col-span-1 bg-slate-900 text-white p-5 md:p-10 rounded-[1.2rem] md:rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
+            <div className="bg-slate-900 text-white p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/40 transition-all"></div>
-              <h3 className="text-sm md:text-xl font-black mb-4 md:mb-8 flex items-center gap-2 md:gap-3 tracking-tight leading-none italic">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary md:w-6 md:h-6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Hours
+              <h3 className="text-base md:text-xl font-black mb-6 md:mb-8 flex items-center gap-3 tracking-tight leading-none italic uppercase">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary md:w-6 md:h-6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Operations Hours
               </h3>
-              <div className="space-y-3 md:space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 {[
-                  { day: "Mon - Fri", time: "09:00 - 19:00" },
-                  { day: "Sat", time: "10:00 - 17:00" },
-                  { day: "Sun", time: "Appointment", special: true }
+                  { day: "Mon - Fri", time: "09:00 AM - 07:00 PM" },
+                  { day: "Saturday", time: "10:00 AM - 05:00 PM" },
+                  { day: "Sunday", time: "By Appointment", special: true }
                 ].map((row, i) => (
-                  <div key={i} className="flex justify-between items-center border-b border-white/10 pb-2 md:pb-4">
-                    <span className="text-white/60 text-[9px] md:text-sm font-black uppercase tracking-widest">{row.day}</span>
-                    <span className={`font-black text-[9px] md:text-sm ${row.special ? 'text-primary' : 'text-white'}`}>{row.time}</span>
+                  <div key={i} className="flex justify-between items-center border-b border-white/10 pb-3 md:pb-4">
+                    <span className="text-white/50 text-[10px] md:text-sm font-black uppercase tracking-widest italic">{row.day}</span>
+                    <span className={`font-black text-[11px] md:text-sm ${row.special ? 'text-primary' : 'text-white'} italic`}>{row.time}</span>
                   </div>
                 ))}
               </div>
