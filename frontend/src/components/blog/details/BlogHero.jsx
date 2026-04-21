@@ -25,20 +25,10 @@ const BlogHero = ({ post }) => {
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tighter mb-6 sm:mb-8 lg:mb-10 drop-shadow-2xl">
             {post.title}
           </h1>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 text-white/80 font-medium">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl">
-              <img 
-                alt="Author" 
-                className="w-full h-full object-cover" 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw5aYWyBGdKKh4dyvOnrSUdWaL9ebJJ-Vfgw6hOXR9PAb6R640fkbOC5au0X3APBGreRjsJbz_WVd_3nTAz8x__iL_rBIGGAf7mmtt7urYKkcPUJTmqnq44F_5Eo3EtaQkPQvgMVyS8pfoX2oOk44TxFqmGIDlGbw_VA_N3UNop3N7TEtpBO2hKMK8GVrK5Tiawe9zIzKAoFmGVLxP1AV0s1s93xHZbMa2z3AGH2IorWr3WIx-I-YaFVcPOTQIbemKjmNCy0_j3CA" 
-              />
-            </div>
-            <div className="space-y-1">
-              <p className="text-white font-black tracking-tight text-base sm:text-lg">Vikram Oberoi</p>
-              <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-60">
-                {post.date} • {post.readTime}
-              </p>
-            </div>
+          <div className="text-white/80 font-medium">
+            <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-60">
+              {post.date} • {post.readTime}
+            </p>
           </div>
         </div>
       </div>

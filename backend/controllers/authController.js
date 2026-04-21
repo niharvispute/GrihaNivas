@@ -475,72 +475,6 @@ const forgotPasswordReset = async (req, res, next) => {
   }
 };
 
-// ── Google OAuth ─────────────────────────────────────────────────────────────
-
-const googleAuth = async (req, res, next) => {
-  try {
-    const { token } = req.body;
-
-    // Verify token with Google and fetch profile
-    const googleRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!googleRes.ok) {
-      throw new AppError('Invalid Google token. Please try signing in again.', 401);
-    }
-
-    const profile = await googleRes.json();
-    const { sub: googleId, email, name, picture } = profile;
-
-    if (!email) {
-      throw new AppError('Google account does not have an email address.', 400);
-    }
-
-    // Find existing account by googleId or email
-    let user = await User.findOne({ $or: [{ googleId }, { email }] });
-
-    if (user) {
-      if (!user.isActive) {
-        throw new AppError('Account is deactivated. Please contact support.', 403);
-      }
-      // Link Google ID to existing account if not already linked
-      if (!user.googleId) user.googleId = googleId;
-      // Backfill profile picture if missing
-      if (picture && !user.profilePicture?.url) {
-        user.profilePicture = { url: picture, publicId: null };
-      }
-      // Backfill name if missing
-      if (!user.name && name) user.name = name;
-      user.isEmailVerified = true;
-      user.isVerified = true;
-      user.lastLogin = new Date();
-      await user.save();
-    } else {
-      // Create new account via Google — phone will be null (sparse index allows this)
-      user = await User.create({
-        googleId,
-        email,
-        name: name || null,
-        profilePicture: { url: picture || null, publicId: null },
-        isEmailVerified: true,
-        isVerified: true,
-        lastLogin: new Date(),
-      });
-    }
-
-    const { accessToken, refreshToken } = generateTokenPair(getTokenPayload(user));
-
-    return sendSuccess(res, 200, 'Google authentication successful.', {
-      accessToken,
-      refreshToken,
-      user: user.toSafeObject(),
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
 // ── Session Endpoints ────────────────────────────────────────────────────────
 
 const refresh = async (req, res, next) => {
@@ -599,7 +533,6 @@ module.exports = {
   signupVerifyEmail,
   signupResendOtp,
   login,
-  googleAuth,
   forgotPasswordRequest,
   forgotPasswordVerify,
   forgotPasswordReset,

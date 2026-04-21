@@ -99,6 +99,14 @@ export default function PropertyFilters({ basePath, currentQuery }) {
 
   const activeChips = buildActiveFilterChips(currentQuery, basePath, areaOptions);
 
+  const handleFormSubmit = (e) => {
+    if (minPrice > maxPrice) {
+      e.preventDefault();
+      // Toast will be shown by BudgetRangeSlider
+      return false;
+    }
+  };
+
   // Sync state with props if they change
   useEffect(() => {
     if (currentQuery?.minPrice) setMinPrice(Number(currentQuery.minPrice));
@@ -157,7 +165,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
   };
 
   const FilterContent = ({ isMobile = false }) => (
-    <form className="space-y-6 text-sm" method="GET" action={basePath}>
+    <form className="space-y-6 text-sm" method="GET" action={basePath} onSubmit={handleFormSubmit}>
       {category !== 'buy' ? <input type="hidden" name="category" value={category} /> : null}
       <input type="hidden" name="sortBy" value={sortBy} />
 

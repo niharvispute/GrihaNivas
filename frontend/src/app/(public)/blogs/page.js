@@ -243,25 +243,24 @@ export default async function BlogsPage({ searchParams }) {
           <aside className="lg:w-1/3">
             <div className="lg:sticky lg:top-32 space-y-8 sm:space-y-10 lg:space-y-12">
               {/* Trending Now */}
-              <div className="px-0 sm:px-2">
-                <h4 className="text-lg sm:text-xl font-black text-slate-900 mb-5 sm:mb-7 tracking-tighter italic">Trending <span className="text-primary tracking-normal">Now</span></h4>
-                <div className="space-y-5 sm:space-y-7 lg:space-y-8">
-                  {[
-                    { title: "Navigating the Resale Market in South Mumbai", time: "10 min read", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDrnjcGoKcEUn24VJmBmhIpFaAXEC0YetjJ9SZzLs2gp_mE464NrUBXscX50mymvG6PXL9wO-jEYtzxWFzI8JbdFHq8xJyG1LbOlu5oseUByt4uuI3rnAuCnPRvL54G5pxdafaunXnxjAMIJ8S3IfP7L7IBXdqBcehHR2pd_Iw301FcAd9p8DUoACKUZKvP7bt2s5I4vu7V3qW51vLTvHaacdy_Dq4xGIY8ggzDLDjzHuESn8-gkwp6hH_YExvoTHSZIzGhxCThZCg" },
-                    { title: "How Metro Line 3 is Reshaping Property Values", time: "7 min read", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuC_3Lytpw_NSLWittm05OLvrFTV1lkwAnkTXP-iE-hXzqYb9Xvl3YyypuvyQ4GdbOHZx77dZ4Knuhrma8UjIoQ0s7khhGmNkvI2GhB1sIYj6VvOm3NDh__afskWk1J0Knj2hDMEpAI4RXbgBoj7YRZ-9uVZ85Rj3xg7NNIsciCDNmcmI5CsBbsh2xlUM41pWCu4CmEyUWUtrm2-t9WV8KIcdaPZ6GHxsqTn-i12FFTfdlcx93fUVBq8PT1f1JewFTse7XqHkc1c6Yo" }
-                  ].map((trend, i) => (
-                    <div key={i} className="flex gap-3 sm:gap-4 group cursor-pointer">
-                      <div className="w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 shrink-0 rounded-2xl overflow-hidden shadow-md border-2 border-white group-hover:rotate-3 transition-all duration-500">
-                        <img src={trend.img} alt={trend.title} className="w-full h-full object-cover" />
-                      </div>
-                      <div className="flex flex-col justify-center">
-                        <h5 className="font-black text-[11px] sm:text-xs text-slate-900 leading-snug group-hover:text-primary transition-colors line-clamp-2 tracking-tight">{trend.title}</h5>
-                        <span className="text-[9px] text-slate-400 uppercase font-black tracking-widest mt-1.5">{trend.time}</span>
-                      </div>
-                    </div>
-                  ))}
+              {regularPosts.length > 0 && (
+                <div className="px-0 sm:px-2">
+                  <h4 className="text-lg sm:text-xl font-black text-slate-900 mb-5 sm:mb-7 tracking-tighter italic">Trending <span className="text-primary tracking-normal">Now</span></h4>
+                  <div className="space-y-5 sm:space-y-7 lg:space-y-8">
+                    {regularPosts.slice(0, 2).map((trend, i) => (
+                      <Link key={i} href={`/blogs/${trend.slug}`} className="flex gap-3 sm:gap-4 group cursor-pointer">
+                        <div className="w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 shrink-0 rounded-2xl overflow-hidden shadow-md border-2 border-white group-hover:rotate-3 transition-all duration-500">
+                          <img src={trend.image} alt={trend.title} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex flex-col justify-center">
+                          <h5 className="font-black text-[11px] sm:text-xs text-slate-900 leading-snug group-hover:text-primary transition-colors line-clamp-2 tracking-tight">{trend.title}</h5>
+                          <span className="text-[9px] text-slate-400 uppercase font-black tracking-widest mt-1.5">{trend.readTime}</span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Newsletter */}
               <NewsletterSubscribeCard />

@@ -34,25 +34,8 @@ export default async function BlogDetailPage({ params }) {
     console.error('Error fetching blog post:', error);
   }
 
-  // Fallback for demo if API fails or post not found
-  // Usually we would notFound() but for this specific implementation task
-  // I'll ensure we have a fallback if slug is a specific one or generic
-  if (!post && slug === 'luxury-penthouses-south-mumbai-2024') {
-    post = {
-      id: 'mock-1',
-      slug: 'luxury-penthouses-south-mumbai-2024',
-      title: 'The Rise of Luxury Penthouses in South Mumbai: 2024 Outlook',
-      category: 'Market Trends',
-      date: 'Jan 24, 2024',
-      readTime: '8 min read',
-      excerpt: 'As we move further into 2024, the South Mumbai real estate landscape is witnessing a seismic shift. No longer are "standard" luxury apartments enough for the city\'s elite.',
-      content: '', // Let BlogBody handle the demo content if content is empty
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDZBx1JA6Y8yMSFNOiyTMLQ35WdthsRgD3jPKwnTp197dCb-09I0uEEVzU0_n74I5rdlT35F31nl6O1kTmRCAw2MlgxKInVDTKoXJLVvBb63rJyRgZR0yMPbFUm8Lzgdo1emEp000tuP8Nr2UL647CiOdn9sJ7CNG3x1WKpOtCjcYPET3l_FVtfMRfSI_6xVyOtADO3q1t1vRzWmJJ8U-7SzJnYu3K2uenVzHGmXEXdnc5T0XtwbU7ehlSWmjxc4oFL1vxD-LnGKC0',
-    };
-  }
-
   if (!post) {
-     return notFound();
+    return notFound();
   }
 
   let relatedPosts = [];

@@ -191,10 +191,6 @@ const schemas = {
       password: z.string().min(1, 'Password is required'),
     }),
 
-    googleAuth: z.object({
-      token: z.string().min(1, 'Google access token is required'),
-    }),
-
     forgotPasswordRequest: z.object({
       identifier: identifierSchema,
     }),

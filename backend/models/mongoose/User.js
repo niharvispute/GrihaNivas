@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
  * User Model
  *
  * Handles both regular users (role: 'user') and admin accounts (role: 'admin').
- * Authentication is phone-OTP based — no password stored.
+ * Authentication: email/phone + password or OTP-based verification.
  *
  * savedProperties and comparedProperties store references to the Property model.
  * Maximum 3 compared properties — enforced in the controller, not the schema.
@@ -65,13 +65,6 @@ const userSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
-    },
-    googleId: {
-      type: String,
-      unique: true,
-      sparse: true,
-      // Keep undefined so sparse unique index skips non-Google users.
-      default: undefined,
     },
     firebaseUid: {
       type: String,

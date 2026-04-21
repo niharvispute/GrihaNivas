@@ -43,16 +43,16 @@ export default function PropertySortBar({ basePath, currentQuery }) {
   const activeView = currentQuery?.view || 'grid';
 
   return (
-    <div className="flex flex-col gap-3 sm:gap-4 mb-6 sm:mb-8 bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-100">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between sm:gap-4 mb-6 sm:mb-8 bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-100">
       {/* Sort Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-        <span className="text-slate-500 text-xs sm:text-sm font-medium uppercase tracking-wide">Sort by:</span>
-        <div className="flex gap-2 overflow-x-auto no-scrollbar">
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        <span className="text-slate-500 text-xs sm:text-sm font-medium uppercase tracking-wide whitespace-nowrap">Sort by:</span>
+        <div className="flex gap-2 overflow-x-auto no-scrollbar flex-1">
           {SORT_OPTIONS.map((option) => (
             <Link
               key={option.value}
               href={buildSortHref(basePath, currentQuery, option.value)}
-              className={`flex-none px-3 sm:px-5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition-all border whitespace-nowrap ${activeSort === option.value ? 'bg-primary text-white shadow-md shadow-primary/20 border-primary' : 'bg-white text-slate-500 hover:bg-slate-100 border-slate-200'}`}
+              className={`flex-none px-3 sm:px-4 py-1.5 rounded-full text-[9px] sm:text-xs font-bold transition-all border whitespace-nowrap ${activeSort === option.value ? 'bg-primary text-white shadow-md shadow-primary/20 border-primary' : 'bg-white text-slate-500 hover:bg-slate-100 border-slate-200'}`}
             >
               {option.label}
             </Link>
@@ -60,19 +60,19 @@ export default function PropertySortBar({ basePath, currentQuery }) {
         </div>
       </div>
 
-      {/* View Toggle - Only on Large Screens */}
-      <div className="hidden lg:flex items-center justify-end">
-        <div className="flex items-center gap-2 bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
+      {/* View Toggle */}
+      <div className="flex items-center justify-end mt-3 sm:mt-0">
+        <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
           <Link
             href={buildViewHref(basePath, currentQuery, 'grid')}
-            className={`p-1.5 sm:p-2 rounded-lg transition-all ${activeView === 'grid' ? 'bg-slate-100 text-primary shadow-inner' : 'text-slate-400 hover:bg-slate-50'}`}
+            className={`p-1.5 rounded-lg transition-all ${activeView === 'grid' ? 'bg-slate-100 text-primary shadow-inner' : 'text-slate-400 hover:bg-slate-50'}`}
             title="Grid View"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
           </Link>
           <Link
             href={buildViewHref(basePath, currentQuery, 'list')}
-            className={`p-1.5 sm:p-2 rounded-lg transition-all ${activeView === 'list' ? 'bg-slate-100 text-primary shadow-inner' : 'text-slate-400 hover:bg-slate-50'}`}
+            className={`p-1.5 rounded-lg transition-all ${activeView === 'list' ? 'bg-slate-100 text-primary shadow-inner' : 'text-slate-400 hover:bg-slate-50'}`}
             title="List View"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>

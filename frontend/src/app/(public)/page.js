@@ -103,7 +103,7 @@ export default function HomePage() {
   return (
     <div className="w-full">
       {/* 1. Hero Section */}
-      <section className="relative min-h-140 md:min-h-160 flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 py-24 md:py-28">
+      <section className="relative min-h-[500px] md:min-h-160 flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 py-12 md:py-28">
         <div className="absolute inset-0 z-0">
           <img 
             src={heroBannerImage}
@@ -113,11 +113,11 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-linear-to-b from-slate-900/40 via-slate-900/20 to-white"></div>
         </div>
         
-        <div className="relative z-10 text-center w-full max-w-5xl pt-8 md:pt-16">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter text-slate-900 mb-4 md:mb-6 leading-[1.1]">
+        <div className="relative z-10 text-center w-full max-w-5xl pt-4 md:pt-16">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter text-slate-900 mb-3 md:mb-6 leading-[1.1] uppercase italic">
             Find Your Dream <span className="text-secondary underline decoration-primary/30 underline-offset-8">Property</span> in Mumbai
           </h1>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-700 mb-7 md:mb-10 font-medium max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-base md:text-lg lg:text-xl text-slate-700 mb-6 md:mb-10 font-bold max-w-3xl mx-auto leading-relaxed italic">
             Curating Mumbai's most exclusive real estate listings from SoBo luxury to suburban sanctuaries.
           </p>
 
@@ -139,6 +139,7 @@ export default function HomePage() {
           title="Trending Projects in Mumbai"
           subtitle="Discover verified projects with best-value inventory and quick brochure access."
           items={featuredProperties}
+          gridOnMobile={true}
           itemClassName="w-full min-w-full sm:w-[calc(50%-0.75rem)] sm:min-w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] md:min-w-[calc(33.333%-1rem)] lg:w-[calc(33.333%-1rem)] lg:min-w-[calc(33.333%-1rem)]"
           renderItem={(prop) => <PropertyCard property={prop} />}
         />
@@ -152,34 +153,35 @@ export default function HomePage() {
           title="The Master Builders"
           subtitle="Discover the visionaries behind Mumbai's most iconic skylines and architectural marvels."
           items={featuredBuilders}
+          gridOnMobile={true}
           itemClassName="w-full min-w-full sm:w-[calc(50%-0.75rem)] sm:min-w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] md:min-w-[calc(33.333%-1rem)] lg:w-[calc(33.333%-1rem)] lg:min-w-[calc(33.333%-1rem)]"
           renderItem={(builder) => <TrendingBuilderCard builder={builder} />}
         />
       ) : null}
 
       {/* 3. Categories */}
-      <section className="py-16 md:py-20 lg:py-24 bg-slate-50 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 md:py-20 lg:py-24 bg-slate-50 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-2xl mx-auto">
           <SectionHeader 
             title="Discovery Path" 
             subtitle="Explore properties by your specific needs."
             align="center"
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {[
               { title: "Buy", desc: "Permanent Residencies", href: "/buy", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDtrP7J1G4WhTfOYemMEfQdOGNosX21kxNtOuO7NwHYCiXkLpDNAOl29r0R11-WorVdi8UdnB0cJGAJP-5qWr6V4sdQ-iSAyUPycFbbP08uSNeP6vzGSWtnpMUOWmcv5cujMW1_eXIH6myhWnV-lHp-b6LkbPOmn_Dan6bax3RktDgx61YuqoLQyruWVI4BwE8PxdNuSgDuWfv2jkdKN2_y303DEHnptYvMF2UzFUxjxz4nJcuf5_T2Bh57y1UPNcHlF0H07_WxZpg" },
               { title: "Rent", desc: "Curated Luxury Stays", href: "/rent", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD0_-GLExTLnnHHswJYutJ0WAmNz4HI89AWs9t6IN9-Pqcv6nHN8M0P-9Oe7AwCvZsIcbyqmuDpRatKEhePTlbj842dsve0MjcTqpxrRXdkzehYTUUd_wGb_Wg2NWXC5RzQ9NrBN7_tXveDhNIA2v8BYrQ86pM8qeiPtBC-wJ5O03h_RFRMj13w6hKBH2grM_7DFwwuU5qYDrXJy7WueQXUpFQ5pP5hZJrzDbislpiWGvaiUbgnHM7iIp-UnVit9eoNXbKNFKAQhbs" },
               { title: "Builders", desc: "Crafting Mumbai's Skyline", href: "/builders", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZFILInTcBoIKclQhYU_2ZcT5VhjD5dPVp-BLTSjIMId6a4p8hlyJvfM9rCB02NnM4aEsZt7xZgnn4aHvxhSipMLnbS7mJ7WYj2QrCEOIajVtB_1km5f3u7Mi4fgaUXxPjS1t0tNw7-gZkE8riGNAPwFfXKpB3pBJHbWQg-Ondx4q3Jn4-56lNXdnXIluPZQJs6ImQjyUHjYWa2DRJ64YAgzGStITyjpS4jEiqfPshklxvq3n6Xlc7wgmkxY1MvuIY_hhUn1L8JLs" },
               { title: "New Launch", desc: "Investment Opportunities", href: "/new-launch", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBNTx25QeH5OPXLzM40sHriQNtaNHjXe5TSk3kPZNuN6hI8HMqMUxkWvTqlZs_mmFuSe8O12Wt4Qgraf6p6G0_Bi1wmS0dbj5vhIXkfKG7vXB7A3yyfkPP3BPUGQut9zn1giIeqYuM3qKwfqwYRDBpEj2xAz8FjiyvZ9HKurADOgk4X-ZOE1nhP1ohd-X0GRuWwrvrerw7DPesDig7_3bQJxOk03B_wwJGiVw6H2LDUFQWP61kaGcywudiZgUP0bakt0OJVlwOdFB0" }
             ].map((cat, i) => (
-              <Link key={i} href={cat.href} className="group relative h-72 sm:h-80 lg:h-96 rounded-moderate overflow-hidden cursor-pointer block">
+              <Link key={i} href={cat.href} className="group relative h-44 sm:h-80 lg:h-96 rounded-xl sm:rounded-moderate overflow-hidden cursor-pointer block italic">
                 <img src={cat.img} alt={cat.title} className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-linear-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
-                <div className="absolute bottom-5 sm:bottom-6 left-5 sm:left-6 right-5 sm:right-6">
-                  <h3 className="text-xl sm:text-2xl font-black text-white mb-1 tracking-tight">{cat.title}</h3>
-                  <p className="text-slate-300 text-sm mb-4 font-medium">{cat.desc}</p>
-                  <span className="text-white text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 group-hover:translate-x-2 transition-transform">
-                    Explore <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <div className="absolute inset-0 bg-linear-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
+                <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6">
+                  <h3 className="text-base sm:text-2xl font-black text-white mb-0.5 tracking-tight uppercase leading-tight">{cat.title}</h3>
+                  <p className="text-slate-300 text-[10px] sm:text-sm mb-2 sm:mb-4 font-bold line-clamp-1">{cat.desc}</p>
+                  <span className="text-white text-[9px] sm:text-xs font-black uppercase tracking-[0.2em] flex items-center gap-1 sm:gap-2 group-hover:translate-x-2 transition-transform">
+                    Explore <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                   </span>
                 </div>
               </Link>
@@ -242,17 +244,23 @@ export default function HomePage() {
               Read All Articles
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 lg:gap-10">
             {latestBlogs.map((blog, i) => (
-              <Link key={i} href={`/blogs/${blog.slug}`} className="group cursor-pointer">
-                <div className="aspect-16/10 overflow-hidden rounded-2xl mb-4 md:mb-6 relative">
+              <Link key={i} href={`/blogs/${blog.slug}`} className="group cursor-pointer block italic">
+                <div className="aspect-11/8 sm:aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-6 relative">
                   <img src={blog.image} alt={blog.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-primary text-white text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">{blog.category}</span>
+                  <div className="absolute top-2 sm:top-4 left-2 sm:left-4">
+                    <span className="bg-primary text-white text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-tighter">
+                      {blog.category}
+                    </span>
                   </div>
                 </div>
-                <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 group-hover:text-primary transition-colors leading-snug">{blog.title}</h3>
-                <p className="text-slate-400 text-sm line-clamp-2 font-medium leading-relaxed">{blog.excerpt}</p>
+                <h3 className="text-sm sm:text-lg md:text-xl font-black mb-1.5 sm:mb-3 group-hover:text-primary transition-colors leading-tight line-clamp-2 uppercase">
+                  {blog.title}
+                </h3>
+                <p className="text-slate-400 text-[10px] sm:text-sm line-clamp-1 sm:line-clamp-2 font-bold leading-relaxed">
+                  {blog.excerpt}
+                </p>
               </Link>
             ))}
           </div>
