@@ -15,11 +15,25 @@ export async function generateMetadata({ params }) {
     const post = await getBlogBySlug(slug, { map: true });
     if (!post) return { title: 'Post Not Found' };
 
+    const image = post.coverImage?.url || post.coverImage || null;
     return {
-      title: `${post.title} | Mumbai Luxe Editorial`,
+      title: post.title,
       description: post.excerpt,
+      openGraph: {
+        title: `${post.title} | Bricks Mumbai`,
+        description: post.excerpt,
+        type: 'article',
+        publishedTime: post.createdAt,
+        ...(image && { images: [{ url: image, width: 1200, height: 630, alt: post.title }] }),
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: post.title,
+        description: post.excerpt,
+        ...(image && { images: [image] }),
+      },
     };
-  } catch (error) {
+  } catch {
     return { title: 'Blog Post' };
   }
 }
@@ -73,9 +87,31 @@ export default async function BlogDetailPage({ params }) {
     trendingAssets = [];
   }
 
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://bricksmumbai.com';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    url: `${SITE_URL}/blogs/${post.slug}`,
+    image: post.coverImage?.url || post.coverImage || undefined,
+    datePublished: post.createdAt,
+    dateModified: post.updatedAt || post.createdAt,
+    author: { '@type': 'Organization', name: 'Bricks Mumbai' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Bricks Mumbai',
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
+    },
+  };
+
   return (
     <div className="bg-white min-h-screen">
-      {/* 🚀 Hero Section */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {/* Hero Section */}
       <BlogHero post={post} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-16">

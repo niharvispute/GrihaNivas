@@ -16,6 +16,36 @@ import {
   listProperties,
 } from '@/services/propertyService';
 
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  try {
+    const property = await getPropertyBySlug(id).catch(() => getPropertyById(id));
+    if (!property) return { title: 'Property Not Found' };
+
+    const title = property.title || 'Property in Mumbai';
+    const area = property.raw?.location?.area || 'Mumbai';
+    const price = property.priceFormatted || '';
+    const image = property.raw?.heroImage?.url || property.raw?.heroImage || null;
+
+    return {
+      title: `${title} in ${area}`,
+      description: `${title} — ${area}, Mumbai. ${price ? `Starting at ${price}.` : ''} View details, photos, floor plans and more.`.trim(),
+      openGraph: {
+        title: `${title} | Bricks Mumbai`,
+        description: `${title} in ${area}, Mumbai. ${price ? `Price: ${price}.` : ''}`,
+        ...(image && { images: [{ url: image, width: 1200, height: 630, alt: title }] }),
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${title} | Bricks Mumbai`,
+        ...(image && { images: [image] }),
+      },
+    };
+  } catch {
+    return { title: 'Property Details' };
+  }
+}
+
 export default async function PropertyDetailPage({ params }) {
   const { id } = await params;
 
@@ -64,8 +94,32 @@ export default async function PropertyDetailPage({ params }) {
     ? `https://www.google.com/maps?q=${encodeURIComponent(locationQuery)}&output=embed`
     : null;
 
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://bricksmumbai.com';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: property.title,
+    description: property.description || property.longDescription,
+    url: `${SITE_URL}/property/${property.slug || property.id}`,
+    image: property.raw?.heroImage?.url || property.raw?.heroImage || undefined,
+    offers: property.raw?.price
+      ? { '@type': 'Offer', price: property.raw.price, priceCurrency: 'INR' }
+      : undefined,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: property.raw?.location?.area,
+      streetAddress: property.raw?.location?.address,
+      addressRegion: 'Maharashtra',
+      addressCountry: 'IN',
+    },
+  };
+
   return (
     <main className="pt-2 sm:pt-7 lg:pt-8 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Breadcrumbs */}
       <nav aria-label="Breadcrumb" className="flex text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-3 sm:mb-8 px-1 overflow-x-auto no-scrollbar">
         <ol className="inline-flex items-center space-x-2">

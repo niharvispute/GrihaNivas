@@ -5,6 +5,15 @@ import PropertySortBar from '@/components/property/PropertySortBar';
 import Link from 'next/link';
 import { listProperties } from '@/services/propertyService';
 
+export const metadata = {
+  title: 'Rent Property in Mumbai',
+  description: 'Find furnished and unfurnished flats, apartments, and homes for rent across Mumbai. Filter by BHK, area, budget and more.',
+  openGraph: {
+    title: 'Rent Property in Mumbai | Bricks',
+    description: 'Explore rental properties across Mumbai — 1, 2, 3 BHK flats, furnished apartments, and more.',
+  },
+};
+
 const PAGE_SIZE = 12;
 const BASE_PATH = '/rent';
 const ALLOWED_SORT = new Set(['newest', 'price_asc', 'price_desc']);

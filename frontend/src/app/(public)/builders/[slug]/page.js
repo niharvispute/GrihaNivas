@@ -15,12 +15,23 @@ export async function generateMetadata({ params }) {
 
   try {
     const { builder } = await getBuilderBySlug(slug, { limit: 1 });
+    const image = builder.logo?.url || builder.logo || null;
     return {
-      title: `${builder.name} | Bricks - Mumbai Editorial`,
-      description: builder.tagline,
+      title: `${builder.name} — Mumbai Properties`,
+      description: builder.tagline || `Explore properties by ${builder.name} in Mumbai. View portfolio, testimonials, and enquire today.`,
+      openGraph: {
+        title: `${builder.name} | Bricks Mumbai`,
+        description: builder.tagline || `Properties by ${builder.name} in Mumbai.`,
+        ...(image && { images: [{ url: image, width: 1200, height: 630, alt: builder.name }] }),
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${builder.name} | Bricks Mumbai`,
+        ...(image && { images: [image] }),
+      },
     };
   } catch {
-    return { title: 'Builder Not Found' };
+    return { title: 'Builder Profile' };
   }
 }
 

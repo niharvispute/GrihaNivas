@@ -5,6 +5,15 @@ import PropertySortBar from '@/components/property/PropertySortBar';
 import Link from 'next/link';
 import { listProperties } from '@/services/propertyService';
 
+export const metadata = {
+  title: 'Buy Property in Mumbai',
+  description: 'Browse flats, apartments, villas, and new launches available for sale across Mumbai. Filter by BHK, area, price and more.',
+  openGraph: {
+    title: 'Buy Property in Mumbai | Bricks',
+    description: 'Explore thousands of properties for sale in Mumbai — from affordable flats to luxury villas.',
+  },
+};
+
 const PAGE_SIZE = 12;
 const BASE_PATH = '/buy';
 const ALLOWED_CATEGORY = new Set(['buy', 'new_launch']);
