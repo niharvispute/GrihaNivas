@@ -70,7 +70,7 @@ export default function Footer() {
 
         {/* Column 2: Properties */}
         <div>
-          <h4 className="font-bold text-slate-900 mb-6">Properties</h4>
+          <h3 className="font-bold text-slate-900 mb-6">Properties</h3>
           <ul className="space-y-4">
             <li><Link href="/buy" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Buy</Link></li>
             <li><Link href="/rent" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Rent</Link></li>
@@ -81,7 +81,7 @@ export default function Footer() {
 
         {/* Column 3: Services */}
         <div>
-          <h4 className="font-bold text-slate-900 mb-6">Services</h4>
+          <h3 className="font-bold text-slate-900 mb-6">Services</h3>
           <ul className="space-y-4">
             <li><Link href="/home-loan" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Home Loan</Link></li>
             <li><Link href="/emi-calculator" className="hover:translate-x-1 hover:text-primary transition-all inline-block">EMI Calculator</Link></li>
@@ -93,7 +93,7 @@ export default function Footer() {
 
         {/* Column 4: Resources */}
         <div>
-          <h4 className="font-bold text-slate-900 mb-6">Resources</h4>
+          <h3 className="font-bold text-slate-900 mb-6">Resources</h3>
           <ul className="space-y-4">
             <li><Link href="/blogs" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Blogs</Link></li>
             <li><Link href="/faqs" className="hover:translate-x-1 hover:text-primary transition-all inline-block">FAQs</Link></li>
@@ -104,7 +104,7 @@ export default function Footer() {
 
         {/* Column 5: Contact Info */}
         <div className="col-span-2 md:col-span-1">
-          <h4 className="font-bold text-slate-900 mb-6">Contact</h4>
+          <h3 className="font-bold text-slate-900 mb-6">Contact</h3>
           <ul className="space-y-4 text-slate-500">
             <li className="flex items-start gap-3">
               <svg className="mt-1 text-primary shrink-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -124,7 +124,7 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-200 py-8 px-8 max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="text-slate-400 text-xs">© {currentYear} Mumbai Editorial Real Estate. All rights reserved.</div>
+        <div className="text-slate-600 text-xs">© {currentYear} Mumbai Editorial Real Estate. All rights reserved.</div>
         <div className="flex gap-6 text-xs font-semibold text-slate-500">
           <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-primary transition-colors">Terms of Use</Link>

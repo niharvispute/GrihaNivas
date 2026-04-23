@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useId, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
@@ -13,6 +13,11 @@ export default function LeadForm({
   leadType = 'buy',
   propertyId,
 }) {
+  const baseId = useId();
+  const nameInputId = `${baseId}-name`;
+  const emailInputId = `${baseId}-email`;
+  const phoneInputId = `${baseId}-phone`;
+  const messageInputId = `${baseId}-message`;
   const { user, openModal } = useAuth();
   const [form, setForm] = useState({
     name: '',
@@ -123,47 +128,62 @@ export default function LeadForm({
       <h3 className="text-xl font-bold text-slate-900 mb-6 tracking-tight">{title}</h3>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Full Name</label>
+          <label htmlFor={nameInputId} className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Full Name</label>
           <input
+            id={nameInputId}
+            name="name"
             type="text"
             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-slate-400"
             placeholder="John Doe"
             value={form.name}
             onChange={handleChange('name')}
             required
+            autoComplete="name"
+            suppressHydrationWarning
           />
         </div>
         <div>
-          <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Email Address</label>
+          <label htmlFor={emailInputId} className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Email Address</label>
           <input
+            id={emailInputId}
+            name="email"
             type="email"
             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-slate-400"
             placeholder="john@example.com"
             value={form.email}
             onChange={handleChange('email')}
+            autoComplete="email"
+            suppressHydrationWarning
           />
         </div>
         <div>
-          <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">
+          <label htmlFor={phoneInputId} className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">
             Phone Number <span className="text-primary normal-case font-semibold tracking-normal">*</span>
           </label>
           <input
+            id={phoneInputId}
+            name="phone"
             type="tel"
             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-slate-400"
             placeholder="98765 43210"
             value={form.phone}
             onChange={handleChange('phone')}
             required
+            autoComplete="tel"
+            suppressHydrationWarning
           />
         </div>
         <div>
-          <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Message</label>
+          <label htmlFor={messageInputId} className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Message</label>
           <textarea
+            id={messageInputId}
+            name="message"
             rows="4"
             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none placeholder:text-slate-400"
             placeholder="I am interested in this property..."
             value={form.message}
             onChange={handleChange('message')}
+            suppressHydrationWarning
           />
         </div>
 
@@ -196,11 +216,11 @@ export default function LeadForm({
           {isSubmitting ? 'Sending...' : 'Send Inquiry'}
         </button>
 
-        <p className="text-[11px] text-center text-slate-400 leading-relaxed">
+        <p className="text-[11px] text-center text-slate-600 leading-relaxed">
           By submitting, you agree to our{' '}
-          <a href="/terms" className="underline hover:text-primary transition-colors">Terms</a>{' '}
+          <a href="/terms" className="underline text-slate-700 hover:text-primary transition-colors">Terms</a>{' '}
           and{' '}
-          <a href="/privacy" className="underline hover:text-primary transition-colors">Privacy Policy</a>.
+          <a href="/privacy" className="underline text-slate-700 hover:text-primary transition-colors">Privacy Policy</a>.
         </p>
       </form>
     </div>

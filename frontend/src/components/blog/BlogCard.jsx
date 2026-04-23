@@ -23,7 +23,7 @@ export default function BlogCard({ post, blog }) {
       </div>
       
       <div className="p-4 sm:p-5 lg:p-6 flex flex-col grow">
-        <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+        <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2 text-slate-700 text-[10px] font-bold uppercase tracking-widest">
           <span>{item.date}</span>
           <span className="w-1 h-1 bg-primary rounded-full"></span>
           <span>{item.readTime}</span>
