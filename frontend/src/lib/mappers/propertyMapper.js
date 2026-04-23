@@ -1,4 +1,4 @@
-import { formatCurrencyINR } from '@/lib/mappers/formatters';
+import { formatPriceShort } from '@/lib/mappers/formatters';
 
 const compactMultiplier = {
   cr: 10000000,
@@ -119,11 +119,7 @@ const getPriceSuffix = (priceUnit) => {
   return '';
 };
 
-const getFormattedPriceValue = (value) =>
-  formatCurrencyINR(value)
-    .replace(/^INR\s?/i, '')
-    .replace(/^₹\s?/, '')
-    .trim();
+const getFormattedPriceValue = (value) => formatPriceShort(value);
 
 const deriveBhkDisplay = (property) => {
   const bhkCandidates = [

@@ -9,8 +9,8 @@ const CATEGORY_LABEL = { buy: 'Buy', rent: 'Rent', commercial: 'Commercial', new
 
 function formatPrice(price) {
   if (!price) return '—';
-  if (price >= 10000000) return `${(price / 10000000).toFixed(2)} Cr`;
-  if (price >= 100000) return `${(price / 100000).toFixed(2)} L`;
+  if (price >= 10000000) return `${parseFloat((price / 10000000).toFixed(2))} Cr`;
+  if (price >= 100000) return `${parseFloat((price / 100000).toFixed(2))} Lac`;
   return price.toLocaleString('en-IN');
 }
 

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { formatPriceShort } from '@/lib/mappers/formatters';
 
 const STATUS_STYLES = {
   new: { bg: 'bg-blue-50 text-blue-700', label: 'Under Review' },
@@ -52,7 +53,7 @@ export default function ListedPropertyCard({ property }) {
               </div>
               <div className="text-right">
                 <div className="text-xl md:text-2xl font-black text-primary tracking-tighter italic">
-                  ₹{property.price}
+                  ₹{formatPriceShort(property.price)}
                 </div>
                 <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                   {property.listingType}

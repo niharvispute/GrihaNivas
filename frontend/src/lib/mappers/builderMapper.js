@@ -1,4 +1,4 @@
-import { formatCurrencyINR } from '@/lib/mappers/formatters';
+import { formatPriceShort } from '@/lib/mappers/formatters';
 
 const FALLBACK_COVER =
   'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80';
@@ -109,7 +109,7 @@ export const mapBuilderListToCardVM = (builders = []) =>
 
 export const mapBuilderPropertyToPortfolioVM = (property = {}) => {
   const priceValue = Number(property?.price || 0);
-  const price = priceValue > 0 ? formatCurrencyINR(priceValue).replace('INR', '').trim() : 'Price on request';
+  const price = priceValue > 0 ? `₹${formatPriceShort(priceValue)}` : 'Price on request';
   const bhk = property?.bhk ? `${property.bhk} BHK` : 'Configuration on request';
 
   return {

@@ -110,7 +110,7 @@ export default function PropertyGallery({ images, property }) {
     }
 
     if (numeric >= 100000) {
-      return `${toFixedTrimmed(numeric / 100000)} Lakh`;
+      return `${toFixedTrimmed(numeric / 100000)} Lac`;
     }
 
     return numeric.toLocaleString('en-IN');

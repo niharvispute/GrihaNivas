@@ -1,3 +1,14 @@
+// Compact display formatter: 5,60,00,000 → "5.6 Cr", 85,00,000 → "85 Lac", 50,000 → "50 K"
+export const formatPriceShort = (value) => {
+  const amount = Number(value || 0);
+  if (!Number.isFinite(amount) || amount <= 0) return '0';
+  const trim = (n, d) => parseFloat(n.toFixed(d)).toString();
+  if (amount >= 10000000) return `${trim(amount / 10000000, 2)} Cr`;
+  if (amount >= 100000) return `${trim(amount / 100000, 2)} Lac`;
+  if (amount >= 1000) return `${trim(amount / 1000, 1)} K`;
+  return String(Math.round(amount));
+};
+
 export const formatCurrencyINR = (value) => {
   const amount = Number(value || 0);
   return new Intl.NumberFormat('en-IN', {
