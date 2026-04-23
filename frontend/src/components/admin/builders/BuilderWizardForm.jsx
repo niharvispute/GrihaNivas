@@ -565,7 +565,15 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => patchForm({ logoFile: e.target.files?.[0] || null })}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        if (file && file.size > 2 * 1024 * 1024) {
+                          alert('Image must be smaller than 2 MB.');
+                          e.target.value = '';
+                          return;
+                        }
+                        patchForm({ logoFile: file });
+                      }}
                       className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-4 py-3 text-sm font-bold"
                     />
                     {existingMedia.logoUrl && !form.logoFile && (
@@ -577,7 +585,15 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => patchForm({ coverImageFile: e.target.files?.[0] || null })}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        if (file && file.size > 2 * 1024 * 1024) {
+                          alert('Image must be smaller than 2 MB.');
+                          e.target.value = '';
+                          return;
+                        }
+                        patchForm({ coverImageFile: file });
+                      }}
                       className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-4 py-3 text-sm font-bold"
                     />
                     {existingMedia.coverImageUrl && !form.coverImageFile && (

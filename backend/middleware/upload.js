@@ -15,7 +15,7 @@ const multer = require('multer');
  *  - uploadMixed   : Images + PDF together (property creation)
  */
 
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024;  // 5 MB
+const MAX_IMAGE_SIZE = 2 * 1024 * 1024;  // 2 MB
 const MAX_PDF_SIZE   = 10 * 1024 * 1024; // 10 MB
 const MAX_VIDEO_SIZE = 50 * 1024 * 1024; // 50 MB
 const MAX_GALLERY    = 10;

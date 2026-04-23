@@ -33,6 +33,10 @@ export default function BannerManagementPage() {
     input.onchange = async (event) => {
       const file = event?.target?.files?.[0];
       if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Image must be smaller than 2 MB.');
+        return;
+      }
 
       const bannerKey = String(banner?.id || banner?.position || 'home_hero');
       setUploadingBannerId(bannerKey);

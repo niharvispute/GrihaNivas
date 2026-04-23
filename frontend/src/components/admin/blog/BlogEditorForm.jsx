@@ -127,6 +127,11 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
                 accept="image/*"
                 onChange={(event) => {
                   const file = event.target.files?.[0] || null;
+                  if (file && file.size > 2 * 1024 * 1024) {
+                    alert('Image must be smaller than 2 MB.');
+                    event.target.value = '';
+                    return;
+                  }
                   setForm((prev) => ({ ...prev, featuredImageFile: file }));
                 }}
                 className="w-full px-6 py-4 rounded-[1.25rem] bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-xs file:font-black file:uppercase file:tracking-widest file:text-primary hover:file:bg-primary/20"

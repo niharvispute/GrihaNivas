@@ -142,7 +142,15 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
                 type="file"
                 accept="image/*"
                 className="hidden"
-                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                onChange={(e) => {
+                  const file = e.target.files?.[0] || null;
+                  if (file && file.size > 2 * 1024 * 1024) {
+                    alert('Image must be smaller than 2 MB.');
+                    e.target.value = '';
+                    return;
+                  }
+                  setImageFile(file);
+                }}
               />
             </label>
           </div>
