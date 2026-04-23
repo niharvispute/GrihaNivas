@@ -306,7 +306,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
             className="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
           />
           <div
-            className="absolute bottom-0 left-0 right-0 max-h-[90vh] bg-white rounded-t-[3rem] shadow-2xl p-6 sm:p-8 flex flex-col gap-6 overflow-y-auto"
+            className="absolute inset-0 bg-white rounded-t-2xl shadow-2xl p-6 sm:p-8 flex flex-col gap-6 overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
           <div className="flex items-center justify-between mb-2">

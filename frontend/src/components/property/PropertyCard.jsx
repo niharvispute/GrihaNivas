@@ -29,7 +29,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
   const locationLabel = property?.location || SYSTEM_DEFAULT_CITY;
 
   return (
-    <article className={`group relative bg-white rounded-xl md:rounded-3xl overflow-hidden shadow-sm md:shadow-md hover:shadow-2xl transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full italic'}`}>
+    <article className={`group relative bg-white rounded-xl md:rounded-3xl overflow-hidden shadow-sm md:shadow-md hover:shadow-2xl transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full italic w-[300px] mx-auto md:w-full'}`}>
       <div className={`relative ${isHorizontal ? 'w-full lg:w-1/2 h-60 sm:h-72 lg:h-auto' : 'h-32 sm:h-48 md:h-56 flex-none'} overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50`}>
         {property.image ? (
           <Image
