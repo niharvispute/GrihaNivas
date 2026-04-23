@@ -3,60 +3,59 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getErrorMessage } from '@/lib/api/errors';
-import { calculateStampDuty } from '@/services/calculatorService';
+import { apiFetch } from '@/lib/api';
 
-const getLocalStampResult = (propertyValue, buyerType) => {
-  const stampDutyRate = buyerType === 'female' ? 0.05 : 0.06;
-  const stampDuty = propertyValue * stampDutyRate;
-  const registrationCharges = Math.min(propertyValue * 0.01, 30000);
+const DEFAULT_RATES = {
+  maleRate: 6,
+  femaleRate: 5,
+  jointRate: 5,
+  registrationCharge: 30000,
+};
+
+const computeResult = (propertyValue, buyerType, rates) => {
+  const rateMap = {
+    male: rates.maleRate,
+    female: rates.femaleRate,
+    joint: rates.jointRate,
+  };
+  const ratePercent = rateMap[buyerType] ?? rates.maleRate;
+  const stampDuty = Math.round(propertyValue * (ratePercent / 100));
+  const registrationCharges = rates.registrationCharge;
   const totalPayable = stampDuty + registrationCharges;
 
   return {
-    stampDutyRateLabel: `${Math.round(stampDutyRate * 100)}%`,
-    stampDuty: Math.round(stampDuty),
-    registrationCharges: Math.round(registrationCharges),
-    totalPayable: Math.round(totalPayable),
+    stampDutyRateLabel: `${ratePercent}%`,
+    stampDuty,
+    registrationCharges,
+    totalPayable,
   };
 };
 
 const StampDutyCalculator = () => {
   const [propertyValue, setPropertyValue] = useState(50000000);
-  const [buyerType, setBuyerType] = useState('male'); // male, female, joint
+  const [buyerType, setBuyerType] = useState('male');
   const [propertyType, setPropertyType] = useState('residential');
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [calcError, setCalcError] = useState('');
-  const [results, setResults] = useState(() =>
-    getLocalStampResult(50000000, 'male')
-  );
+  const [rates, setRates] = useState(DEFAULT_RATES);
+  const [results, setResults] = useState(() => computeResult(50000000, 'male', DEFAULT_RATES));
 
   useEffect(() => {
-    const timeoutId = setTimeout(async () => {
-      setIsCalculating(true);
-      setCalcError('');
+    apiFetch('/api/stamp-duty')
+      .then((res) => {
+        const fetched = {
+          maleRate: res.data?.maleRate ?? DEFAULT_RATES.maleRate,
+          femaleRate: res.data?.femaleRate ?? DEFAULT_RATES.femaleRate,
+          jointRate: res.data?.jointRate ?? DEFAULT_RATES.jointRate,
+          registrationCharge: res.data?.registrationCharge ?? DEFAULT_RATES.registrationCharge,
+        };
+        setRates(fetched);
+        setResults(computeResult(propertyValue, buyerType, fetched));
+      })
+      .catch(() => {});
+  }, []);
 
-      try {
-        const response = await calculateStampDuty({
-          propertyValue,
-          ownershipType: buyerType,
-        });
-
-        setResults({
-          stampDutyRateLabel: response?.stampDutyRate || '0%',
-          stampDuty: Number(response?.stampDuty || 0),
-          registrationCharges: Number(response?.registrationCharge || 0),
-          totalPayable: Number(response?.totalCharges || 0),
-        });
-      } catch (error) {
-        setCalcError(getErrorMessage(error, 'Unable to fetch stamp duty from backend.'));
-        setResults(getLocalStampResult(propertyValue, buyerType));
-      } finally {
-        setIsCalculating(false);
-      }
-    }, 250);
-
-    return () => clearTimeout(timeoutId);
-  }, [propertyValue, buyerType]);
+  useEffect(() => {
+    setResults(computeResult(propertyValue, buyerType, rates));
+  }, [propertyValue, buyerType, rates]);
 
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('en-IN', {
@@ -104,8 +103,8 @@ const StampDutyCalculator = () => {
               </label>
               <div className="relative group">
                 <span className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 text-lg md:text-2xl font-bold text-slate-400 group-focus-within:text-primary transition-colors">₹</span>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={propertyValue.toLocaleString('en-IN')}
                   onChange={(e) => {
                     const val = parseInt(e.target.value.replace(/,/g, '')) || 0;
@@ -132,8 +131,8 @@ const StampDutyCalculator = () => {
                     key={type.id}
                     onClick={() => setBuyerType(type.id)}
                     className={`py-3 md:p-5 rounded-xl md:rounded-2xl border-2 font-bold text-sm md:text-lg transition-all active:scale-95 ${
-                      buyerType === type.id 
-                      ? 'border-primary bg-primary/5 text-primary shadow-md md:shadow-lg shadow-primary/10' 
+                      buyerType === type.id
+                      ? 'border-primary bg-primary/5 text-primary shadow-md md:shadow-lg shadow-primary/10'
                       : 'border-slate-100 text-slate-500 hover:border-slate-200'
                     }`}
                   >
@@ -149,7 +148,7 @@ const StampDutyCalculator = () => {
                 Property Type
               </label>
               <div className="relative">
-                <select 
+                <select
                   value={propertyType}
                   onChange={(e) => setPropertyType(e.target.value)}
                   className="w-full bg-slate-50 border-none rounded-xl md:rounded-2xl py-4 md:py-5 px-5 md:px-6 font-bold text-base md:text-lg text-slate-900 focus:ring-1 focus:ring-primary/20 appearance-none cursor-pointer"
@@ -162,20 +161,35 @@ const StampDutyCalculator = () => {
                 </div>
               </div>
             </div>
+
+            {/* Current Rates Info */}
+            <div className="bg-slate-50 rounded-2xl p-4 md:p-6">
+              <p className="text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase text-slate-400 mb-3">Current Rates</p>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { label: 'Male', value: `${rates.maleRate}%` },
+                  { label: 'Female', value: `${rates.femaleRate}%` },
+                  { label: 'Joint', value: `${rates.jointRate}%` },
+                ].map((r) => (
+                  <div key={r.label} className="text-center">
+                    <p className="text-xs font-bold text-slate-500">{r.label}</p>
+                    <p className="text-lg font-black text-primary">{r.value}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-3">
+                Registration charge: {formatCurrency(rates.registrationCharge)} flat
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Right: Results Summary */}
         <div className="lg:col-span-5 bg-slate-50/50 p-6 md:p-12 flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 w-48 md:w-64 h-48 md:h-64 bg-primary/5 blur-3xl -z-10 rounded-full"></div>
-          
+
           <div>
             <h3 className="text-lg md:text-xl font-black text-slate-900 mb-6 md:mb-10 tracking-tight">Summary of Charges</h3>
-            {(isCalculating || calcError) && (
-              <p className={`mb-4 md:mb-6 text-[10px] md:text-xs font-semibold ${calcError ? 'text-red-600' : 'text-slate-500'}`}>
-                {calcError || 'Calculating latest rates...'}
-              </p>
-            )}
             <div className="space-y-6 md:space-y-8">
               <div className="flex justify-between items-end">
                 <div className="space-y-0.5 md:space-y-1">
@@ -188,7 +202,7 @@ const StampDutyCalculator = () => {
               <div className="flex justify-between items-end">
                 <div className="space-y-0.5 md:space-y-1">
                   <span className="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest block leading-none">Registration</span>
-                  <span className="text-slate-600 text-xs md:text-base font-medium">Standard Govt. Cap</span>
+                  <span className="text-slate-600 text-xs md:text-base font-medium">Flat Charge</span>
                 </div>
                 <span className="text-lg md:text-xl font-black text-slate-900">{formatCurrency(results.registrationCharges)}</span>
               </div>
@@ -205,13 +219,13 @@ const StampDutyCalculator = () => {
           </div>
 
           <div className="mt-10 md:mt-16 space-y-3 md:space-y-4">
-            <Link 
+            <Link
               href="/home-loan"
               className="w-full py-4 md:py-5 rounded-full bg-primary text-white font-black text-center text-base md:text-lg shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all leading-none block"
             >
               Apply for Home Loan
             </Link>
-            <Link 
+            <Link
               href={`/contact?message=I would like to consult an expert regarding stamp duty and registration for a property valued at ₹${(propertyValue / 10000000).toFixed(2)} Cr.`}
               className="w-full py-4 md:py-5 rounded-full border-2 border-primary text-primary font-black text-center text-base md:text-lg hover:bg-primary/5 transition-all leading-none block"
             >
@@ -232,11 +246,11 @@ const StampDutyCalculator = () => {
           <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-4 md:mb-8 tracking-tighter">Understanding Stamp Duty</h2>
           <div className="space-y-4 md:space-y-6 text-slate-500 leading-relaxed font-medium text-sm md:text-lg">
             <p>
-              Stamp duty is a mandatory legal tax paid for asset acquisition. 
+              Stamp duty is a mandatory legal tax paid for asset acquisition.
               In Mumbai, these are set by the State Government of Maharashtra.
             </p>
             <p>
-              Calculations are based on the higher value between the transaction price and the 
+              Calculations are based on the higher value between the transaction price and the
               <span className="text-primary italic font-bold"> Ready Reckoner Rate</span>.
             </p>
           </div>
@@ -297,11 +311,11 @@ const StampDutyCalculator = () => {
             Complexity, <br/>Simplified.
           </h2>
           <p className="text-slate-300 text-sm md:text-xl mb-6 md:mb-12 font-medium leading-relaxed max-w-sm md:max-w-none">
-            Our experts manage the intricacies of Mumbai real estate documentation, 
+            Our experts manage the intricacies of Mumbai real estate documentation,
             ensuring a seamless transition.
           </p>
           <div className="flex">
-            <Link 
+            <Link
               href={`/contact?message=I would like to request a professional consultation regarding property documentation and stamp duty for a ₹${(propertyValue / 10000000).toFixed(2)} Cr investment.`}
               className="px-8 md:px-12 py-3.5 md:py-5 bg-primary text-white font-black text-sm md:text-lg rounded-full shadow-2xl shadow-primary/40 hover:bg-primary/90 transition-all leading-none text-center"
             >

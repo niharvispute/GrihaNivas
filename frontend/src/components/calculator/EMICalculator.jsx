@@ -1,9 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { getErrorMessage } from '@/lib/api/errors';
-import { calculateEmi } from '@/services/calculatorService';
 
 const getLocalEmiResult = (principal, annualInterestRate, tenureYears) => {
   const P = principal;
@@ -48,50 +46,11 @@ const EMICalculator = () => {
   const [loanAmount, setLoanAmount] = useState(7500000);
   const [interestRate, setInterestRate] = useState(8.5);
   const [tenure, setTenure] = useState(20);
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [calcError, setCalcError] = useState('');
-  const [results, setResults] = useState(() =>
-    getLocalEmiResult(7500000, 8.5, 20)
+
+  const results = useMemo(
+    () => getLocalEmiResult(loanAmount, interestRate, tenure),
+    [loanAmount, interestRate, tenure]
   );
-
-  useEffect(() => {
-    const timeoutId = setTimeout(async () => {
-      setIsCalculating(true);
-      setCalcError('');
-
-      try {
-        const response = await calculateEmi({
-          principal: loanAmount,
-          annualInterestRate: interestRate,
-          tenureMonths: tenure * 12,
-        });
-
-        const totalPayable = Number(response?.totalPayable || 0);
-        const principalValue = Number(response?.principal || loanAmount);
-        const totalInterest = Number(response?.totalInterest || 0);
-
-        const principalPercent =
-          totalPayable > 0 ? Math.round((principalValue / totalPayable) * 100) : 0;
-        const interestPercent =
-          totalPayable > 0 ? Math.round((totalInterest / totalPayable) * 100) : 0;
-
-        setResults({
-          emi: Number(response?.emi || 0),
-          totalInterest,
-          totalPayable,
-          principalPercent,
-          interestPercent,
-        });
-      } catch (error) {
-        setCalcError(getErrorMessage(error, 'Unable to fetch EMI calculation right now.'));
-        setResults(getLocalEmiResult(loanAmount, interestRate, tenure));
-      } finally {
-        setIsCalculating(false);
-      }
-    }, 250);
-
-    return () => clearTimeout(timeoutId);
-  }, [loanAmount, interestRate, tenure]);
 
   // Amortization Schedule (Yearly)
   const schedule = useMemo(() => {
@@ -274,11 +233,6 @@ const EMICalculator = () => {
               <h2 className="text-3xl md:text-6xl font-black tracking-tighter text-primary mb-6 md:mb-8 italic leading-none">
                 {formatCurrency(results.emi)}
               </h2>
-              {(isCalculating || calcError) && (
-                <p className={`mb-4 md:mb-6 text-[10px] md:text-xs font-semibold ${calcError ? 'text-red-600' : 'text-slate-500'}`}>
-                  {calcError || 'Fetching latest EMI...'}
-                </p>
-              )}
               
               <div className="space-y-4 md:space-y-6">
                 <div className="flex justify-between items-center pb-3 md:pb-4 border-b border-slate-100">

@@ -33,6 +33,7 @@ export default function AdminSidebar() {
     { name: 'Banners', icon: 'view_carousel', href: '/admin/banners' },
     { name: 'Testimonials', icon: 'reviews', href: '/admin/testimonials' },
     { name: 'Users', icon: 'group', href: '/admin/users' },
+    { name: 'Stamp Duty Rates', icon: 'receipt_long', href: '/admin/stamp-duty' },
     { name: 'System Settings', icon: 'tune', href: '/admin/system' }
   ];
 
