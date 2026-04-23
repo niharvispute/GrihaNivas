@@ -2,8 +2,8 @@
 
 @theme {
   /* Colors */
-  --color-primary: #e61a61;
-  --color-secondary: #B80049;
+  --color-primary: #B80049;
+  --color-secondary: #e61a61;
   --color-tertiary: #008c47;
   --color-neutral: #F6F3F2;
 
@@ -45,7 +45,7 @@ html {
 }
 
 :root {
-  --background: var(--color-neutral);
+  --background: #ffffff;
   --foreground: #1A1A1A;
 }
 

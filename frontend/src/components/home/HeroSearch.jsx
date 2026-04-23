@@ -16,6 +16,8 @@ const POPULAR_AREA_FALLBACK = ['Bandra West', 'Worli', 'South Mumbai', 'Powai'];
 
 export default function HeroSearch() {
   const router = useRouter();
+  const locationInputId = 'hero-search-location';
+  const bhkSelectId = 'hero-search-bhk';
   const [intent, setIntent] = useState('buy');
   const [location, setLocation] = useState('');
   const [bhk, setBhk] = useState('');
@@ -94,12 +96,17 @@ export default function HeroSearch() {
         <div className="flex flex-col md:flex-row gap-2 md:gap-1">
           {/* Location */}
           <div className="flex flex-col items-start px-4 sm:px-5 py-3 text-left flex-1">
-            <span className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">Location</span>
+            <label htmlFor={locationInputId} className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">
+              Location
+            </label>
             <input
+              id={locationInputId}
+              name="location"
               className="w-full bg-transparent border-none p-0 text-slate-900 focus:ring-0 font-bold placeholder:text-slate-400 text-sm"
               placeholder={`${defaultCity} area or locality...`}
               value={location}
               onChange={(e) => setLocation(e.target.value)}
+              suppressHydrationWarning
             />
           </div>
 
@@ -108,11 +115,16 @@ export default function HeroSearch() {
 
           {/* BHK Dropdown */}
           <div className="flex flex-col items-start px-4 sm:px-5 py-3 text-left md:min-w-45">
-            <span className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">BHK Type</span>
+            <label htmlFor={bhkSelectId} className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">
+              BHK Type
+            </label>
             <select
+              id={bhkSelectId}
+              name="bhk"
               value={bhk}
               onChange={(e) => setBhk(e.target.value)}
               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 h-11 text-sm font-bold text-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20"
+              suppressHydrationWarning
             >
               <option value="">Any</option>
               {bhkOptions.map((b) => (

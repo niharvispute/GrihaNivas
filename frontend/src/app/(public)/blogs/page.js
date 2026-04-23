@@ -84,6 +84,7 @@ export default async function BlogsPage({ searchParams }) {
   return (
     <div className="w-full h-full pt-8 sm:pt-10 lg:pt-12 pb-16 sm:pb-20 lg:pb-24">
       <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="sr-only">Mumbai Real Estate Blogs</h1>
         {/* 🔍 Category & Search Console */}
         <section className="mb-10 sm:mb-14 lg:mb-16 flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8 lg:gap-10">
           <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -100,8 +101,10 @@ export default async function BlogsPage({ searchParams }) {
           <form action="/blogs" method="GET" className="w-full lg:max-w-md group flex flex-col sm:flex-row items-stretch gap-2 sm:gap-3">
             {currentCategory ? <input type="hidden" name="category" value={currentCategory} /> : null}
             <div className="relative flex-1">
+              <label htmlFor="blogs-search-input" className="sr-only">Search blogs by keyword</label>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               <input
+                id="blogs-search-input"
                 className="w-full pl-14 pr-5 py-3.5 sm:py-4 bg-white border-none rounded-full shadow-xl sm:shadow-2xl shadow-slate-200/50 focus:ring-2 focus:ring-primary/20 placeholder:text-slate-400 text-sm sm:text-base font-bold transition-all"
                 placeholder="Search blogs by keyword"
                 type="text"
@@ -151,7 +154,7 @@ export default async function BlogsPage({ searchParams }) {
                 </div>
               </div>
               <div className="lg:w-2/5 p-6 sm:p-8 lg:p-12 xl:p-16 flex flex-col justify-center bg-slate-50/30">
-                <div className="mb-4 sm:mb-5 lg:mb-6 flex flex-wrap items-center gap-3 text-slate-400 text-[10px] sm:text-xs font-black uppercase tracking-widest">
+                <div className="mb-4 sm:mb-5 lg:mb-6 flex flex-wrap items-center gap-3 text-slate-700 text-[10px] sm:text-xs font-black uppercase tracking-widest">
                   <span>{featured.date}</span>
                   <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
                   <span>{featured.readTime}</span>
@@ -198,7 +201,7 @@ export default async function BlogsPage({ searchParams }) {
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                 </Link>
               ) : (
-                <span className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center text-slate-300 bg-slate-50 cursor-not-allowed">
+                <span className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center text-slate-600 bg-slate-50 cursor-not-allowed">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                 </span>
               )}
@@ -232,7 +235,7 @@ export default async function BlogsPage({ searchParams }) {
                   Next <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
                 </Link>
               ) : (
-                <span className="px-6 sm:px-8 lg:px-10 h-10 sm:h-12 lg:h-14 rounded-full flex items-center justify-center gap-2 sm:gap-3 text-slate-300 bg-slate-50 border border-slate-100 text-sm sm:text-base font-black tracking-tight cursor-not-allowed">
+                <span className="px-6 sm:px-8 lg:px-10 h-10 sm:h-12 lg:h-14 rounded-full flex items-center justify-center gap-2 sm:gap-3 text-slate-600 bg-slate-50 border border-slate-100 text-sm sm:text-base font-black tracking-tight cursor-not-allowed">
                   Next <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                 </span>
               )}
@@ -254,7 +257,7 @@ export default async function BlogsPage({ searchParams }) {
                         </div>
                         <div className="flex flex-col justify-center">
                           <h5 className="font-black text-[11px] sm:text-xs text-slate-900 leading-snug group-hover:text-primary transition-colors line-clamp-2 tracking-tight">{trend.title}</h5>
-                          <span className="text-[9px] text-slate-400 uppercase font-black tracking-widest mt-1.5">{trend.readTime}</span>
+                          <span className="text-[9px] text-slate-700 uppercase font-black tracking-widest mt-1.5">{trend.readTime}</span>
                         </div>
                       </Link>
                     ))}
