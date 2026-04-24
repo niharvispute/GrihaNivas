@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useSidebar } from '@/context/SidebarContext';
 
@@ -22,8 +23,8 @@ export default function DashboardHeader() {
 
   return (
     <header className="flex justify-between items-center h-16 sm:h-20 px-4 sm:px-6 md:px-8 sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-100 shadow-sm">
-      {/* Hamburger - Mobile Only */}
-      <div className="md:hidden">
+      {/* Hamburger + Back to Home - Mobile */}
+      <div className="md:hidden flex items-center gap-2">
         <button
           onClick={() => setIsMobileOpen(true)}
           className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
@@ -31,10 +32,25 @@ export default function DashboardHeader() {
         >
           <span className="material-symbols-outlined text-2xl text-slate-900">menu</span>
         </button>
+        <Link
+          href="/"
+          className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-primary transition-colors px-2 py-1.5 rounded-lg hover:bg-slate-100"
+        >
+          <span className="material-symbols-outlined text-base">home</span>
+          <span className="hidden sm:inline">Home</span>
+        </Link>
       </div>
 
-      {/* Spacer for desktop */}
-      <div className="hidden md:block flex-1"></div>
+      {/* Back to Home — desktop */}
+      <div className="hidden md:flex flex-1 items-center">
+        <Link
+          href="/"
+          className="flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-primary transition-colors group"
+        >
+          <span className="material-symbols-outlined text-base group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+          Back to Home
+        </Link>
+      </div>
 
       <div className="flex items-center gap-3 sm:gap-6">
         <div className="hidden sm:block h-8 w-px bg-slate-100"></div>

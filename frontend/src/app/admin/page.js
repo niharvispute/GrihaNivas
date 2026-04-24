@@ -94,7 +94,7 @@ export default function AdminDashboardPage() {
       {/* Welcome Header */}
       <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-4">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Admin <span className="text-primary italic">Console</span></h1>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Admin <span className="text-primary ">Console</span></h1>
           <p className="text-slate-500 font-bold mt-2 uppercase tracking-[0.2em] text-[10px]">Mumbai Editorial Management Dashboard</p>
         </div>
       </div>

@@ -140,8 +140,8 @@ function ContactForm() {
                     </div>
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-base md:text-xl font-black text-slate-900 mb-1 md:mb-2 tracking-tight uppercase italic">{info.title}</h3>
-                    <p className="text-slate-500 text-xs md:text-base font-bold leading-relaxed italic">
+                    <h3 className="text-base md:text-xl font-black text-slate-900 mb-1 md:mb-2 tracking-tight uppercase ">{info.title}</h3>
+                    <p className="text-slate-500 text-xs md:text-base font-bold leading-relaxed ">
                       {info.desc}
                     </p>
                   </div>
@@ -152,7 +152,7 @@ function ContactForm() {
             {/* Working Hours */}
             <div className="bg-slate-900 text-white p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/40 transition-all"></div>
-              <h3 className="text-base md:text-xl font-black mb-6 md:mb-8 flex items-center gap-3 tracking-tight leading-none italic uppercase">
+              <h3 className="text-base md:text-xl font-black mb-6 md:mb-8 flex items-center gap-3 tracking-tight leading-none  uppercase">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary md:w-6 md:h-6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 Operations Hours
               </h3>
@@ -163,8 +163,8 @@ function ContactForm() {
                   { day: "Sunday", time: "By Appointment", special: true }
                 ].map((row, i) => (
                   <div key={i} className="flex justify-between items-center border-b border-white/10 pb-3 md:pb-4">
-                    <span className="text-white/50 text-[10px] md:text-sm font-black uppercase tracking-widest italic">{row.day}</span>
-                    <span className={`font-black text-[11px] md:text-sm ${row.special ? 'text-primary' : 'text-white'} italic`}>{row.time}</span>
+                    <span className="text-white/50 text-[10px] md:text-sm font-black uppercase tracking-widest ">{row.day}</span>
+                    <span className={`font-black text-[11px] md:text-sm ${row.special ? 'text-primary' : 'text-white'} `}>{row.time}</span>
                   </div>
                 ))}
               </div>
@@ -175,7 +175,7 @@ function ContactForm() {
         {/* Form Column */}
         <div className="lg:col-span-7 bg-white p-8 md:p-16 rounded-[2rem] md:rounded-[3.5rem] shadow-2xl border border-slate-50 relative overflow-hidden">
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
-          <h2 className="text-2xl md:text-4xl font-black text-slate-900 mb-6 md:mb-10 tracking-tighter italic">Send us a message</h2>
+          <h2 className="text-2xl md:text-4xl font-black text-slate-900 mb-6 md:mb-10 tracking-tighter ">Send us a message</h2>
           <form className="space-y-6 md:space-y-8" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               <div className="space-y-2 md:space-y-3">

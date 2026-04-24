@@ -209,7 +209,7 @@ export default function PropertyGallery({ images, property }) {
             <div className="leading-none text-left">
               <div className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-emerald-600 text-[11px]">verified</span>
-                <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest text-emerald-700 italic">RERA</span>
+                <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-widest text-emerald-700 ">RERA</span>
               </div>
               <p className="text-[8px] font-bold text-emerald-700/80 uppercase">View QR</p>
             </div>
@@ -253,7 +253,7 @@ export default function PropertyGallery({ images, property }) {
             <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[1px] flex flex-col items-center justify-center text-white text-center px-4">
               {remainingCount > 0 ? (
                 <>
-                  <span className="text-3xl sm:text-4xl md:text-5xl font-heading font-black italic tracking-tighter">+{remainingCount}</span>
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-heading font-black  tracking-tighter">+{remainingCount}</span>
                   <span className="mt-1 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.25em] opacity-85">
                     Remaining Images
                   </span>

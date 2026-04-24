@@ -35,7 +35,7 @@ export default function MyListingsPage() {
       <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-slate-100 pb-10">
         <div>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter">
-            My <span className="text-primary italic">Listings</span>
+            My <span className="text-primary ">Listings</span>
           </h1>
           <p className="text-slate-400 mt-2 font-black uppercase tracking-[0.25em] text-[10px]">
             {listings.length} {listings.length === 1 ? 'property' : 'properties'} submitted for review

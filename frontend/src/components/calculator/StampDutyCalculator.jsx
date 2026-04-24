@@ -210,7 +210,7 @@ const StampDutyCalculator = () => {
               <div className="pt-6 md:pt-10 border-t border-slate-200">
                 <div className="flex justify-between items-end">
                   <span className="font-black text-[9px] md:text-xs uppercase tracking-[0.1em] md:tracking-[0.2em] text-slate-400">Total Payable</span>
-                  <span className="text-2xl md:text-4xl font-black text-slate-900 border-b-2 md:border-b-4 border-primary/20 pb-0.5 md:pb-1 italic">
+                  <span className="text-2xl md:text-4xl font-black text-slate-900 border-b-2 md:border-b-4 border-primary/20 pb-0.5 md:pb-1 ">
                     {formatCurrency(results.totalPayable)}
                   </span>
                 </div>
@@ -236,7 +236,7 @@ const StampDutyCalculator = () => {
       </section>
 
       {/* 3. Disclaimer */}
-      <p className="mt-6 md:mt-8 text-center text-slate-400 text-[10px] md:text-xs font-medium italic px-4">
+      <p className="mt-6 md:mt-8 text-center text-slate-400 text-[10px] md:text-xs font-medium  px-4">
         * Estimates based on current Mumbai municipal rates. Ready Reckoner Rates may apply.
       </p>
 
@@ -251,7 +251,7 @@ const StampDutyCalculator = () => {
             </p>
             <p>
               Calculations are based on the higher value between the transaction price and the
-              <span className="text-primary italic font-bold"> Ready Reckoner Rate</span>.
+              <span className="text-primary  font-bold"> Ready Reckoner Rate</span>.
             </p>
           </div>
         </div>

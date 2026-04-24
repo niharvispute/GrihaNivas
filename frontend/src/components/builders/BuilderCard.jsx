@@ -24,7 +24,7 @@ export default function BuilderCard({ builder }) {
         )}
         {builder.tier && (
           <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4">
-            <span className="bg-white/90 backdrop-blur px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-black text-primary uppercase border border-primary/20 italic">
+            <span className="bg-white/90 backdrop-blur px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-black text-primary uppercase border border-primary/20">
               {builder.tier}
             </span>
           </div>
@@ -42,12 +42,12 @@ export default function BuilderCard({ builder }) {
               <span className="material-symbols-outlined text-primary text-xl sm:text-3xl">domain</span>
             )}
           </div>
-          <span className="bg-primary/10 text-primary px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-black uppercase italic tracking-tighter">
+          <span className="bg-primary/10 text-primary px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-black uppercase tracking-tighter">
             {builder.projectCount || builder.totalProjects} Projects
           </span>
         </div>
         
-        <h3 className="font-headline text-sm sm:text-xl font-black text-on-background mb-1 sm:mb-2 group-hover:text-primary transition-colors italic leading-tight truncate">
+        <h3 className="font-headline text-sm sm:text-xl font-black text-on-background mb-1 sm:mb-2 group-hover:text-primary transition-colors leading-tight truncate">
           {builder.name}
         </h3>
         

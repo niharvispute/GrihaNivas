@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 
 function getInitials(name = '') {
@@ -33,6 +34,13 @@ export default function AdminHeader() {
       </div>
       <div className="flex items-center gap-8">
         <div className="flex items-center gap-4">
+          <Link
+            href="/"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-50 text-slate-500 hover:text-primary hover:bg-white hover:shadow-xl transition-all text-xs font-bold group"
+          >
+            <span className="material-symbols-outlined text-base group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+            Back to Home
+          </Link>
           <button className="relative w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-500 hover:text-primary hover:bg-white hover:shadow-xl transition-all group">
             <span className="material-symbols-outlined transition-transform group-hover:rotate-12">notifications</span>
             <span className="absolute top-3.5 right-3.5 w-2 h-2 bg-primary rounded-full border-2 border-slate-50"></span>

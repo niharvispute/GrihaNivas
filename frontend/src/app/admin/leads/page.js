@@ -423,7 +423,7 @@ export default function LeadCRMPage() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-slate-400 italic mb-5">No notes yet.</p>
+                    <p className="text-sm text-slate-400  mb-5">No notes yet.</p>
                   )}
 
                   {/* Add new note */}

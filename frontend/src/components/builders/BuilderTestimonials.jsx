@@ -26,7 +26,7 @@ export default function BuilderTestimonials({ builder }) {
                   <span key={i} className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                 ))}
               </div>
-              <p className="text-zinc-600 italic mb-6 font-body text-sm sm:text-base leading-relaxed">&quot;{testi.content}&quot;</p>
+              <p className="text-zinc-600 mb-6 font-body text-sm sm:text-base leading-relaxed">&quot;{testi.content}&quot;</p>
               <div>
                 <p className="font-bold text-zinc-900 font-headline uppercase tracking-tight">{testi.author}</p>
                 <p className="text-sm text-zinc-400 font-label">{testi.role}</p>

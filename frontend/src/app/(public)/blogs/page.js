@@ -248,7 +248,7 @@ export default async function BlogsPage({ searchParams }) {
               {/* Trending Now */}
               {regularPosts.length > 0 && (
                 <div className="px-0 sm:px-2">
-                  <h4 className="text-lg sm:text-xl font-black text-slate-900 mb-5 sm:mb-7 tracking-tighter italic">Trending <span className="text-primary tracking-normal">Now</span></h4>
+                  <h4 className="text-lg sm:text-xl font-black text-slate-900 mb-5 sm:mb-7 tracking-tighter ">Trending <span className="text-primary tracking-normal">Now</span></h4>
                   <div className="space-y-5 sm:space-y-7 lg:space-y-8">
                     {regularPosts.slice(0, 2).map((trend, i) => (
                       <Link key={i} href={`/blogs/${trend.slug}`} className="flex gap-3 sm:gap-4 group cursor-pointer">

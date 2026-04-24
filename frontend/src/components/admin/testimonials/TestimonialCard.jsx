@@ -58,7 +58,7 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete, deleting = false }) =>
           </div>
         </div>
         
-        <p className="text-slate-500 font-medium leading-[1.7] italic text-lg line-clamp-4">
+        <p className="text-slate-500 font-medium leading-[1.7]  text-lg line-clamp-4">
           {testimonial.content}
         </p>
       </div>

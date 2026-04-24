@@ -39,7 +39,7 @@ const TestimonialStats = ({ testimonials = [] }) => {
         <div className="relative z-10">
           <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">Rating Distribution</p>
           <h3 className="text-3xl font-black text-white mt-6 tracking-tighter leading-none">
-            <span className="italic">{fiveStarPct}%</span> of reviews are 5-star
+            <span className="">{fiveStarPct}%</span> of reviews are 5-star
           </h3>
         </div>
         <div className="mt-8 z-10">

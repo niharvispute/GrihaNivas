@@ -141,7 +141,7 @@ export default async function BlogDetailPage({ params }) {
       <section className="mt-16 sm:mt-20 lg:mt-32 py-14 sm:py-16 lg:py-24 bg-slate-50 border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 sm:gap-10 lg:gap-12">
            <div className="max-w-xl">
-              <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter mb-4 leading-tight">Subscribe to <br/><span className="text-primary italic">Mumbai Insights</span></h3>
+              <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter mb-4 leading-tight">Subscribe to <br/><span className="text-primary ">Mumbai Insights</span></h3>
               <p className="text-slate-500 font-medium text-sm sm:text-base lg:text-lg leading-relaxed">Get the latest market analysis and exclusive penthouse listings delivered to your inbox weekly.</p>
            </div>
            <form className="flex flex-col sm:flex-row w-full md:w-auto gap-3 sm:gap-4">

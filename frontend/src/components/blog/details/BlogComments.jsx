@@ -73,7 +73,7 @@ const BlogComments = ({ blogId, comments = [] }) => {
       <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
         <div className="lg:w-2/3">
           <h3 className="text-3xl sm:text-4xl font-black text-slate-900 mb-8 sm:mb-10 lg:mb-12 tracking-tighter">
-            Discussions <span className="text-primary italic">({normalizedComments.length})</span>
+            Discussions <span className="text-primary ">({normalizedComments.length})</span>
           </h3>
           
           <div className="space-y-8 sm:space-y-10 lg:space-y-16 mb-12 sm:mb-16 lg:mb-20">

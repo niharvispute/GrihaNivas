@@ -54,7 +54,7 @@ export default function PropertyStickyInfo({ property }) {
           <div className="leading-none">
              <div className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-emerald-600 text-[12px]">verified</span>
-                <span className="text-[9px] font-black uppercase tracking-widest text-emerald-700 italic">RERA</span>
+                <span className="text-[9px] font-black uppercase tracking-widest text-emerald-700 ">RERA</span>
              </div>
              <p className="text-[8px] font-bold text-emerald-600/60 uppercase">Verify</p>
           </div>

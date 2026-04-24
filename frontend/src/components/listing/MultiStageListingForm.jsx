@@ -339,7 +339,7 @@ export default function MultiStageListingForm() {
         {/* 🆕 Sticky Mobile Header & Progress Bar */}
         <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-100 lg:hidden h-14 flex items-center px-6">
           <div className="absolute top-0 left-0 h-1 bg-primary transition-all duration-500" style={{ width: `${progress}%` }}></div>
-          <span className="text-lg font-black text-slate-900 tracking-tighter italic">Bricks</span>
+          <span className="text-lg font-black text-slate-900 tracking-tighter ">Bricks</span>
           <div className="ml-auto flex items-center gap-3">
              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded-full border border-slate-100">Step {step}/5</span>
              <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center">
@@ -353,7 +353,7 @@ export default function MultiStageListingForm() {
           {step === 1 && (
             <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div>
-                <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 italic">Basic Information</h1>
+                <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 ">Basic Information</h1>
                 <p className="text-slate-500 text-sm md:text-base font-bold">Start with the fundamental details of your Mumbai estate.</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
@@ -418,7 +418,7 @@ export default function MultiStageListingForm() {
           {step === 2 && (
             <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div>
-                <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 italic">Location & Config</h1>
+                <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 ">Location & Config</h1>
                 <p className="text-slate-500 text-sm md:text-base font-bold">Specify the locality and fundamental property configurations.</p>
               </div>
 
@@ -433,7 +433,7 @@ export default function MultiStageListingForm() {
                     <div className="w-12 h-12 rounded-full bg-white shadow-xl flex items-center justify-center text-primary mb-3 group-hover:scale-110 transition-transform">
                       <span className="material-symbols-outlined text-2xl">map</span>
                     </div>
-                    <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest italic mb-1">Interactive Map Focus</span>
+                    <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest  mb-1">Interactive Map Focus</span>
                     <p className="text-[9px] text-slate-400 font-bold max-w-xs text-center">Pin precisely for higher visibility. Mumbai Island & Suburbs Coverage.</p>
                  </div>
               </div>
@@ -490,7 +490,7 @@ export default function MultiStageListingForm() {
           {step === 3 && (
             <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div>
-                <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 italic">Visual Identity</h1>
+                <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 ">Visual Identity</h1>
                 <p className="text-slate-500 text-sm md:text-base font-bold">High-quality visuals significantly increase listing performance.</p>
               </div>
               
@@ -502,7 +502,7 @@ export default function MultiStageListingForm() {
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-50 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
                   <span className="material-symbols-outlined text-3xl md:text-4xl text-slate-300 group-hover:text-primary transition-colors">cloud_upload</span>
                 </div>
-                <h3 className="text-lg md:text-xl font-black text-slate-900 italic tracking-tight">Upload Gallery</h3>
+                <h3 className="text-lg md:text-xl font-black text-slate-900  tracking-tight">Upload Gallery</h3>
                 <p className="text-slate-400 font-bold text-[10px] md:text-sm mt-2 max-w-xs mx-auto">Min 5, Max 10 photos. PNG, JPG up to 10MB.</p>
                 {form.images.length > 0 && (
                   <p className={`font-black text-[10px] mt-4 uppercase tracking-widest ${form.images.length >= MIN_PROPERTY_IMAGES ? 'text-emerald-600' : 'text-primary'}`}>
@@ -528,7 +528,7 @@ export default function MultiStageListingForm() {
                   <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
                     <span className="material-symbols-outlined text-2xl text-slate-300 group-hover:text-primary transition-colors">videocam</span>
                   </div>
-                  <h4 className="text-[10px] font-black text-slate-900 italic tracking-tight uppercase truncate max-w-xs">{form.videoFile ? form.videoFile.name : 'Click to upload video'}</h4>
+                  <h4 className="text-[10px] font-black text-slate-900  tracking-tight uppercase truncate max-w-xs">{form.videoFile ? form.videoFile.name : 'Click to upload video'}</h4>
                 </div>
               </div>
             </div>
@@ -538,7 +538,7 @@ export default function MultiStageListingForm() {
           {step === 4 && (
             <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div>
-                <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 italic">Valuation & Assets</h1>
+                <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 ">Valuation & Assets</h1>
                 <p className="text-slate-500 text-sm md:text-base font-bold">Define the market value and premium amenities.</p>
               </div>
 
@@ -585,7 +585,7 @@ export default function MultiStageListingForm() {
           {step === 5 && (
             <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div>
-                <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 italic">Final Review</h1>
+                <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 ">Final Review</h1>
                 <p className="text-slate-500 text-sm md:text-base font-bold">Review and confirm your Mumbai Editorial feature.</p>
               </div>
 
@@ -628,7 +628,7 @@ export default function MultiStageListingForm() {
                         <span className="material-symbols-outlined text-white text-xs scale-0 peer-checked:scale-100 transition-transform">check</span>
                       </div>
                     </div>
-                    <span className="text-[10px] md:text-xs font-black text-slate-600 group-hover:text-slate-900 transition-colors italic leading-relaxed uppercase tracking-tight">I confirm that all provided property details are accurate for review.</span>
+                    <span className="text-[10px] md:text-xs font-black text-slate-600 group-hover:text-slate-900 transition-colors  leading-relaxed uppercase tracking-tight">I confirm that all provided property details are accurate for review.</span>
                   </label>
               </div>
             </div>
@@ -693,7 +693,7 @@ export default function MultiStageListingForm() {
               <span className="material-symbols-outlined text-5xl text-emerald-500" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
             </div>
           </div>
-          <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-4 italic">Listing Received!</h2>
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-4 ">Listing Received!</h2>
           <p className="text-slate-500 font-bold mb-10 leading-relaxed text-sm md:text-base">Your Mumbai estate is now in review. We&apos;ll notify you within 24 hours.</p>
           <button onClick={() => router.push('/')} className="w-full py-5 bg-primary text-white rounded-full font-black text-sm uppercase tracking-widest shadow-2xl">
             Continue Exploring

@@ -4,6 +4,9 @@ const { parsePagination } = require('../utils/pagination');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
 const AppError = require('../utils/AppError');
 const Blog = require('../models/mongoose/Blog');
+const cache = require('../services/cacheService');
+
+const BLOG_CACHE_PREFIX = 'blogs:';
 
 const BLOG_CATEGORY_ALIASES = {
   market_trends: 'market_trends',
@@ -53,11 +56,20 @@ const normalizeBlogPayload = (payload = {}) => {
 
 // ── GET /api/blogs ────────────────────────────────────────────────────────────
 
+const blogQueryKey = (q) => {
+  const { category, tag, search, page, limit } = q;
+  return JSON.stringify({ category: category || '', tag: tag || '', search: search || '', page: page || '1', limit: limit || '10' });
+};
+
 const list = async (req, res, next) => {
   try {
     const { limit, skip, buildMeta } = parsePagination(req.query);
     const { category, tag, search } = req.query;
     const normalizedCategory = normalizeBlogCategory(category);
+
+    const cacheKey = `${BLOG_CACHE_PREFIX}list:${blogQueryKey(req.query)}`;
+    const cached = await cache.get(cacheKey);
+    if (cached) return sendSuccess(res, 200, 'Blogs fetched', cached.blogs, cached.meta);
 
     const filter = { isPublished: true };
     if (normalizedCategory) filter.category = normalizedCategory;
@@ -74,11 +86,15 @@ const list = async (req, res, next) => {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .select('-content -comments -__v'),
+        .select('-content -comments -__v')
+        .lean(),
       Blog.countDocuments(filter),
     ]);
 
-    return sendSuccess(res, 200, 'Blogs fetched', blogs, buildMeta(total));
+    const meta = buildMeta(total);
+    await cache.set(cacheKey, { blogs, meta }, cache.TTL.LIST);
+
+    return sendSuccess(res, 200, 'Blogs fetched', blogs, meta);
   } catch (err) {
     next(err);
   }
@@ -121,6 +137,8 @@ const create = async (req, res, next) => {
       featuredImage,
       author: req.user.id,
     });
+
+    await cache.delByPrefix(BLOG_CACHE_PREFIX);
 
     return sendCreated(res, 'Blog created', blog);
   } catch (err) {
@@ -166,6 +184,8 @@ const update = async (req, res, next) => {
       runValidators: true,
     });
 
+    await cache.delByPrefix(BLOG_CACHE_PREFIX);
+
     return sendSuccess(res, 200, 'Blog updated', blog);
   } catch (err) {
     next(err);
@@ -191,6 +211,8 @@ const remove = async (req, res, next) => {
     }
 
     await blog.deleteOne();
+
+    await cache.delByPrefix(BLOG_CACHE_PREFIX);
 
     return sendNoContent(res);
   } catch (err) {

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatPriceShort } from '@/lib/mappers/formatters';
+import { resolveFirstImageSrc, resolveImageAlt } from '@/lib/system/media';
 
 const STATUS_STYLES = {
   new: { bg: 'bg-blue-50 text-blue-700', label: 'Under Review' },
@@ -12,16 +13,18 @@ const STATUS_STYLES = {
 
 export default function ListedPropertyCard({ property }) {
   const status = STATUS_STYLES[property.status] || STATUS_STYLES.new;
+  const imageSrc = resolveFirstImageSrc(property?.images);
+  const imageAlt = resolveImageAlt(property?.title, 'Listed property image');
 
   return (
     <div className="group bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-500">
       <div className="flex flex-col md:flex-row">
         {/* Image Section */}
         <div className="relative w-full md:w-72 h-48 md:h-auto overflow-hidden shrink-0 bg-slate-100">
-          {property.images?.[0] ? (
+          {imageSrc ? (
             <Image
-              src={property.images[0]?.url || property.images[0]}
-              alt={property.title}
+              src={imageSrc}
+              alt={imageAlt}
               fill
               sizes="(max-width: 768px) 100vw, 288px"
               className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -52,7 +55,7 @@ export default function ListedPropertyCard({ property }) {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-xl md:text-2xl font-black text-primary tracking-tighter italic">
+                <div className="text-xl md:text-2xl font-black text-primary tracking-tighter ">
                   ₹{formatPriceShort(property.price)}
                 </div>
                 <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">

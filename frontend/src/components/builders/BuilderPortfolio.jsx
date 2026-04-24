@@ -140,7 +140,7 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
         
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
           {filteredPortfolio.map((prop) => (
-            <div key={prop.id || prop.slug} className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-neutral-100 flex flex-col italic">
+            <div key={prop.id || prop.slug} className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-neutral-100 flex flex-col">
               <div className="relative overflow-hidden h-32 sm:h-64 lg:h-72">
                 <Image
                   src={prop.image}

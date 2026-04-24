@@ -230,7 +230,7 @@ const EMICalculator = () => {
           <div className="h-full bg-white/80 backdrop-blur-2xl rounded-2xl p-6 md:p-8 border border-white/50 shadow-xl flex flex-col justify-between">
             <div>
               <p className="text-slate-400 font-bold text-[9px] md:text-[10px] tracking-widest uppercase mb-1 md:mb-2">Monthly EMI</p>
-              <h2 className="text-3xl md:text-6xl font-black tracking-tighter text-primary mb-6 md:mb-8 italic leading-none">
+              <h2 className="text-3xl md:text-6xl font-black tracking-tighter text-primary mb-6 md:mb-8  leading-none">
                 {formatCurrency(results.emi)}
               </h2>
               
@@ -327,7 +327,7 @@ const EMICalculator = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 md:mb-8 gap-4">
           <div>
             <h3 className="text-xl md:text-2xl font-black tracking-tight text-slate-900">Amortization Schedule</h3>
-            <p className="text-slate-500 text-[10px] md:text-sm mt-0.5 md:mt-1 font-medium italic">Yearly breakdown of your loan repayment journey.</p>
+            <p className="text-slate-500 text-[10px] md:text-sm mt-0.5 md:mt-1 font-medium ">Yearly breakdown of your loan repayment journey.</p>
           </div>
           <button className="text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:translate-x-1 transition-transform bg-primary/5 px-4 py-2 rounded-full leading-none">
             Download Report 

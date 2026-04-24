@@ -87,7 +87,7 @@ export default function BannerManagementPage() {
       {/* Header Section */}
       <div className="mb-16">
         <h1 className="text-5xl font-black tracking-tighter text-slate-900 lg:text-7xl">
-          Visual <span className="text-primary italic">Identity</span>
+          Visual <span className="text-primary ">Identity</span>
         </h1>
         <p className="text-slate-500 font-medium text-xl mt-6 max-w-2xl leading-relaxed">
           Manage and optimize the high-impact visual banners on your platform's main entrance. Every pixel defines the "Bricks" experience.

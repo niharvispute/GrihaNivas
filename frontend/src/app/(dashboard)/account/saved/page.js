@@ -42,7 +42,7 @@ export default function SavedPropertiesPage() {
       <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-slate-100 pb-6 sm:pb-8 md:pb-10">
         <div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-black text-slate-900 tracking-tight">
-            Saved <span className="text-primary italic">Collection</span>
+            Saved <span className="text-primary ">Collection</span>
           </h1>
           <p className="text-slate-400 mt-2 font-bold uppercase tracking-[0.2em] text-[8px] sm:text-[10px]">
             {savedProperties.length} {savedProperties.length === 1 ? 'property' : 'properties'} curated for your consideration

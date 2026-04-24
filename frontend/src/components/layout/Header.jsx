@@ -122,7 +122,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 font-semibold tracking-tight text-sm text-slate-600">
+          <nav className="hidden nav:flex items-center gap-8 font-semibold tracking-tight text-sm text-slate-600">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -200,7 +200,7 @@ export default function Header() {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden nav:flex items-center gap-6">
             <div className="flex shrink-0 items-center gap-3 sm:gap-4">
               {loadingUser ? (
                 <div className="w-24 h-8 rounded-full bg-slate-100 animate-pulse" />
@@ -299,7 +299,7 @@ export default function Header() {
           </div>
 
           {/* Mobile: Login + Hamburger */}
-          <div className="flex md:hidden items-center gap-3">
+          <div className="flex nav:hidden items-center gap-3">
             {!loadingUser && !user && (
               <button
                 type="button"
@@ -335,7 +335,7 @@ export default function Header() {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-all duration-300 ${isMobileMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
+        className={`fixed inset-0 z-40 nav:hidden transition-all duration-300 ${isMobileMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
       >
         {/* Backdrop */}
         <div

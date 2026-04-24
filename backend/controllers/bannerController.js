@@ -2,19 +2,29 @@ const { uploadImage, deleteFile } = require('../services/cloudinaryService');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
 const AppError = require('../utils/AppError');
 const Banner = require('../models/mongoose/Banner');
+const cache = require('../services/cacheService');
+
+const BANNER_CACHE_PREFIX = 'banners:';
 
 // ── GET /api/banners ──────────────────────────────────────────────────────────
 
 const list = async (req, res, next) => {
   try {
     const { position } = req.query;
+    const cacheKey = `${BANNER_CACHE_PREFIX}list:${position || 'all'}`;
+
+    const cached = await cache.get(cacheKey);
+    if (cached) return sendSuccess(res, 200, 'Banners fetched', cached);
 
     const filter = { isActive: true };
     if (position) filter.position = position;
 
     const banners = await Banner.find(filter)
       .sort({ order: 1 })
-      .select('-__v');
+      .select('-__v')
+      .lean();
+
+    await cache.set(cacheKey, banners, cache.TTL.LIST);
 
     return sendSuccess(res, 200, 'Banners fetched', banners);
   } catch (err) {
@@ -35,6 +45,8 @@ const create = async (req, res, next) => {
       image: { url: uploaded.url, publicId: uploaded.publicId },
       isActive: true,
     });
+
+    await cache.delByPrefix(BANNER_CACHE_PREFIX);
 
     return sendCreated(res, 'Banner created', banner);
   } catch (err) {
@@ -70,6 +82,8 @@ const update = async (req, res, next) => {
       { new: true, runValidators: true }
     );
 
+    await cache.delByPrefix(BANNER_CACHE_PREFIX);
+
     return sendSuccess(res, 200, 'Banner updated', banner);
   } catch (err) {
     next(err);
@@ -90,6 +104,8 @@ const remove = async (req, res, next) => {
     }
 
     await banner.deleteOne();
+
+    await cache.delByPrefix(BANNER_CACHE_PREFIX);
 
     return sendNoContent(res);
   } catch (err) {

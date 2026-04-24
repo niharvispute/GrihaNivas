@@ -83,7 +83,9 @@
       "Bash(npx eslint *)",
       "Bash(node *)",
       "Bash(taskkill *)",
-      "Bash(pkill -f \"next dev\")"
+      "Bash(pkill -f \"next dev\")",
+      "WebFetch(domain:www.magicbricks.com)",
+      "WebFetch(domain:magicbricks.com)"
     ]
   }
 }

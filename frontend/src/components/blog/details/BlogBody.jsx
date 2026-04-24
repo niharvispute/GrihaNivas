@@ -14,7 +14,7 @@ const BlogBody = ({ post }) => {
           Navigating the New Standard of Mumbai Opulence
         </h2>
         
-        <p className="text-lg sm:text-xl lg:text-2xl mb-8 sm:mb-12 leading-[1.6] font-light text-slate-500 italic border-l-4 border-primary/20 pl-4 sm:pl-6 lg:pl-8">
+        <p className="text-lg sm:text-xl lg:text-2xl mb-8 sm:mb-12 leading-[1.6] font-light text-slate-500  border-l-4 border-primary/20 pl-4 sm:pl-6 lg:pl-8">
           {post.excerpt || "As we move further into 2024, the South Mumbai real estate landscape is witnessing a seismic shift. No longer are \"standard\" luxury apartments enough for the city's elite."}
         </p>
 

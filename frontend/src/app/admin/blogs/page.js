@@ -147,7 +147,7 @@ export default function AdminBlogCMS() {
            <div className="flex justify-between items-end mb-12">
               <div>
                 <h1 className="text-5xl font-black tracking-tighter text-slate-900 lg:text-6xl">
-                  Content <span className="text-primary italic">Engine</span>
+                  Content <span className="text-primary ">Engine</span>
                 </h1>
                 <p className="text-slate-500 font-medium text-lg mt-4 max-w-xl">
                   Curate the digital face of Mumbai Luxe. Manage your editorial pipeline with precision and scale.

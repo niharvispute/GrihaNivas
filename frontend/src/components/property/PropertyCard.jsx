@@ -29,7 +29,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
   const locationLabel = property?.location || SYSTEM_DEFAULT_CITY;
 
   return (
-    <article className={`group relative bg-white rounded-xl md:rounded-3xl overflow-hidden shadow-sm md:shadow-md hover:shadow-2xl transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full italic w-[300px] mx-auto md:w-full'}`}>
+    <article className={`group relative bg-white rounded-xl md:rounded-3xl overflow-hidden shadow-sm md:shadow-md hover:shadow-2xl transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full w-[300px] mx-auto md:w-full'}`}>
       <div className={`relative ${isHorizontal ? 'w-full lg:w-1/2 h-60 sm:h-72 lg:h-auto' : 'h-32 sm:h-48 md:h-56 flex-none'} overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50`}>
         {property.image ? (
           <Image
@@ -68,11 +68,11 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
           <h3 className={`${isHorizontal ? 'text-2xl sm:text-3xl font-extrabold' : 'text-[13px] sm:text-base md:text-lg font-black'} text-slate-900 leading-tight mb-0.5 line-clamp-1 sm:line-clamp-2 uppercase`}>
             {property.title}
           </h3>
-          <p className="text-slate-500 text-[10px] sm:text-xs flex items-center gap-1 truncate font-bold italic">
+          <p className="text-slate-500 text-[10px] sm:text-xs flex items-center gap-1 truncate font-bold">
             <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
             <span className="truncate">{locationLabel}</span>
           </p>
-          <p className="text-primary font-black text-[14px] sm:text-lg md:text-xl mt-1.5 tracking-tighter italic">
+          <p className="text-primary font-black text-[14px] sm:text-lg md:text-xl mt-1.5 tracking-tighter">
             {displayPrice}
           </p>
         </div>

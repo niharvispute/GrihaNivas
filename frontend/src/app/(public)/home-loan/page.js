@@ -18,7 +18,7 @@ export default function HomeLoanPage() {
             <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">Mortgage Solutions</span>
             <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-tight text-slate-900">
               Low Interest. <br className="hidden md:block"/>
-              High <span className="text-primary italic">Precision.</span>
+              High <span className="text-primary ">Precision.</span>
             </h1>
             <p className="text-base md:text-xl text-slate-500 font-medium leading-relaxed max-w-lg mx-auto md:mx-0">
               Unlock the doors to Mumbai's finest addresses with bespoke home loan offers from India's premier banking institutions.
@@ -58,7 +58,7 @@ export default function HomeLoanPage() {
                 <span className="font-black text-slate-900 text-xs md:text-base tracking-tight">EMI Estimate</span>
               </div>
               <p className="text-[8px] md:text-xs text-slate-400 font-bold uppercase tracking-widest mb-1 md:mb-2">Starts from</p>
-              <div className="text-lg md:text-3xl font-black text-primary mb-3 md:mb-4 tracking-tighter italic">₹ 42,450 <span className="text-[10px] md:text-sm font-bold text-slate-400">/mo</span></div>
+              <div className="text-lg md:text-3xl font-black text-primary mb-3 md:mb-4 tracking-tighter ">₹ 42,450 <span className="text-[10px] md:text-sm font-bold text-slate-400">/mo</span></div>
               <Link href="/emi-calculator" className="text-primary text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-2 h-auto">
                 Calulate yours <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </Link>

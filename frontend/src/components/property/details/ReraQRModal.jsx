@@ -40,7 +40,7 @@ export default function ReraQRModal({ isOpen, onClose, reraId, reraUrl, property
               <span className="material-symbols-outlined text-white/80">verified</span>
               <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.22em] sm:tracking-[0.3em] opacity-80">Official Verification</p>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-heading font-black tracking-tight italic">RERA Certified</h2>
+            <h2 className="text-2xl sm:text-3xl font-heading font-black tracking-tight ">RERA Certified</h2>
           </div>
 
           {/* Body */}
@@ -56,7 +56,7 @@ export default function ReraQRModal({ isOpen, onClose, reraId, reraUrl, property
                   className="w-32 h-32 sm:w-44 sm:h-44 block"
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-                  <span className="text-primary font-black text-2xl tracking-tighter italic">BRICKS</span>
+                  <span className="text-primary font-black text-2xl tracking-tighter ">BRICKS</span>
                 </div>
               </div>
             </div>
@@ -69,7 +69,7 @@ export default function ReraQRModal({ isOpen, onClose, reraId, reraUrl, property
               
               <div className="flex flex-col items-center">
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">RERA Registration ID</p>
-                <span className="px-4 sm:px-6 py-2 bg-primary/5 text-primary text-xs sm:text-sm font-black rounded-full border border-primary/10 italic break-all">
+                <span className="px-4 sm:px-6 py-2 bg-primary/5 text-primary text-xs sm:text-sm font-black rounded-full border border-primary/10  break-all">
                   {reraId || 'Not Provided'}
                 </span>
               </div>

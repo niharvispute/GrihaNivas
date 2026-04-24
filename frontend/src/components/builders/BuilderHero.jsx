@@ -21,7 +21,7 @@ export default function BuilderHero({ builder }) {
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10 py-8 sm:py-16 lg:py-20">
         <div className="max-w-4xl">
-          <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 lg:p-7 rounded-2xl sm:rounded-3xl border border-white/20 inline-block mb-5 sm:mb-8 italic">
+          <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 lg:p-7 rounded-2xl sm:rounded-3xl border border-white/20 inline-block mb-5 sm:mb-8">
             {hasLogo ? (
               <Image
                 src={builder.logo}

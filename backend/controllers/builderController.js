@@ -7,6 +7,9 @@ const { sendExcel, formatDate, joinList } = require('../utils/excelExport');
 const AppError = require('../utils/AppError');
 const Builder = require('../models/mongoose/Builder');
 const Property = require('../models/mongoose/Property');
+const cache = require('../services/cacheService');
+
+const BUILDER_CACHE_PREFIX = 'builders:';
 
 const ensureUniqueSlug = async (baseSlug, excludeId = null) => {
   let candidate = baseSlug;
@@ -62,10 +65,19 @@ const normalizeBuilderPayload = (payload) => {
   return normalized;
 };
 
+const builderQueryKey = (q) => {
+  const { search, isFeatured, city, page, limit } = q;
+  return JSON.stringify({ search: search || '', isFeatured: isFeatured || '', city: city || '', page: page || '1', limit: limit || '10' });
+};
+
 const listPublic = async (req, res, next) => {
   try {
     const { limit, skip, buildMeta } = parsePagination(req.query);
     const { search, isFeatured, city } = req.query;
+
+    const cacheKey = `${BUILDER_CACHE_PREFIX}list:${builderQueryKey(req.query)}`;
+    const cached = await cache.get(cacheKey);
+    if (cached) return sendSuccess(res, 200, 'Builders fetched', cached.builders, cached.meta);
 
     const filter = { isActive: true };
     const featured = parseBoolean(isFeatured);
@@ -94,11 +106,15 @@ const listPublic = async (req, res, next) => {
         .limit(limit)
         .select(
           'name slug shortDescription description logo coverImage establishedYear totalProjects ongoingProjects completedDeliveries headquarters isFeatured isActive aboutHeadline qualityStandards innovation'
-        ),
+        )
+        .lean(),
       Builder.countDocuments(filter),
     ]);
 
-    return sendSuccess(res, 200, 'Builders fetched', builders, buildMeta(total));
+    const meta = buildMeta(total);
+    await cache.set(cacheKey, { builders, meta }, cache.TTL.LIST);
+
+    return sendSuccess(res, 200, 'Builders fetched', builders, meta);
   } catch (err) {
     next(err);
   }
@@ -337,6 +353,8 @@ const toggleFeatured = async (req, res, next) => {
 
     if (!builder) throw new AppError('Builder not found', 404);
 
+    await cache.delByPrefix(BUILDER_CACHE_PREFIX);
+
     return sendSuccess(
       res,
       200,
@@ -365,6 +383,7 @@ const create = async (req, res, next) => {
     }
 
     const builder = await Builder.create(payload);
+    await cache.delByPrefix(BUILDER_CACHE_PREFIX);
     return sendCreated(res, 'Builder created', builder);
   } catch (err) {
     next(err);
@@ -404,6 +423,8 @@ const update = async (req, res, next) => {
       returnDocument: 'after',
       runValidators: true,
     });
+
+    await cache.delByPrefix(BUILDER_CACHE_PREFIX);
 
     return sendSuccess(res, 200, 'Builder updated', builder);
   } catch (err) {
@@ -457,6 +478,8 @@ const remove = async (req, res, next) => {
     builderMediaPublicIds.forEach((publicId) => {
       deleteFile(publicId, 'image').catch(() => {});
     });
+
+    await cache.delByPrefix(BUILDER_CACHE_PREFIX);
 
     return sendSuccess(res, 200, 'Builder and linked properties deleted', {
       builderId: id,

@@ -1,20 +1,29 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { resolveImageAlt, resolveImageSrc } from '@/lib/system/media';
 
 export default function SavedPropertyCard({ property, onUnsave }) {
   const detailHref = `/property/${property.slug || property.id}`;
+  const imageSrc = resolveImageSrc(property?.image);
+  const imageAlt = resolveImageAlt(property?.title, 'Saved property image');
 
   return (
     <div className="group flex flex-col lg:flex-row bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
       {/* Image Section */}
       <div className="relative w-full sm:w-40 lg:w-80 h-40 sm:h-48 lg:h-auto overflow-hidden flex-shrink-0">
-        <Image
-          alt={property.title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 160px, 320px"
-          className="object-cover group-hover:scale-105 transition-transform duration-700"
-          src={property.image}
-        />
+        {imageSrc ? (
+          <Image
+            alt={imageAlt}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 160px, 320px"
+            className="object-cover group-hover:scale-105 transition-transform duration-700"
+            src={imageSrc}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-slate-300 bg-slate-100">
+            <span className="material-symbols-outlined text-4xl">image</span>
+          </div>
+        )}
         <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex gap-2">
           <span className="bg-primary text-white text-[8px] sm:text-[10px] font-black px-2 sm:px-3 py-1 rounded-full tracking-widest uppercase shadow-lg shadow-primary/20">
             {property.type || 'BUY'}

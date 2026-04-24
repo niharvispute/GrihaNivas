@@ -64,7 +64,7 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
         </div>
 
         <div className="relative z-10 px-4 sm:px-8 md:px-16 py-6 sm:py-10 max-w-3xl">
-          <span className="inline-block px-2.5 sm:px-4 py-1 rounded-full bg-primary/20 text-white border border-primary/30 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-widest mb-3 sm:mb-6 italic">
+          <span className="inline-block px-2.5 sm:px-4 py-1 rounded-full bg-primary/20 text-white border border-primary/30 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-widest mb-3 sm:mb-6">
             Featured Partner
           </span>
           <div className="flex items-center gap-2.5 sm:gap-4 mb-2 sm:mb-4">
@@ -75,7 +75,7 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
                 <span className="text-lg font-black text-primary">{activeBuilder?.name?.[0] || 'B'}</span>
               )}
             </div>
-            <h2 className="text-[20px]! sm:text-4xl! md:text-6xl! font-headline font-extrabold text-white uppercase tracking-tight leading-none italic">
+            <h2 className="text-[20px]! sm:text-4xl! md:text-6xl! font-headline font-extrabold text-white uppercase tracking-tight leading-none">
               {activeBuilder?.name}
             </h2>
           </div>
@@ -85,15 +85,15 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
 
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-4 gap-y-3 sm:gap-8 mb-5 sm:mb-10">
             <div>
-              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label italic leading-none mb-0.5 sm:mb-1">Est. Year</p>
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">Est. Year</p>
               <p className="text-white text-sm sm:text-xl font-bold">{activeBuilder?.establishedYear || 'N/A'}</p>
             </div>
             <div>
-              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label italic leading-none mb-0.5 sm:mb-1">Total Projects</p>
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">Total Projects</p>
               <p className="text-white text-sm sm:text-xl font-bold">{activeBuilder?.totalProjects || 'N/A'}</p>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label italic leading-none mb-0.5 sm:mb-1">HQ Location</p>
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">HQ Location</p>
               <p className="text-white text-sm sm:text-xl font-bold">{activeBuilder?.hqLocation || 'N/A'}</p>
             </div>
           </div>

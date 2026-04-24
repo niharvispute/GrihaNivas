@@ -39,25 +39,13 @@ export default function HeroSearch() {
           ? bootstrap.areas.map((value) => String(value))
           : [];
 
-        if (dynamicBhk.length > 0) {
-          setBhkOptions(dynamicBhk);
-        }
-
-        if (dynamicAreas.length > 0) {
-          setPopularAreas(dynamicAreas.slice(0, 4));
-        }
-
-        if (bootstrap?.config?.city) {
-          setDefaultCity(String(bootstrap.config.city));
-        }
+        if (dynamicBhk.length > 0) setBhkOptions(dynamicBhk);
+        if (dynamicAreas.length > 0) setPopularAreas(dynamicAreas.slice(0, 4));
+        if (bootstrap?.config?.city) setDefaultCity(String(bootstrap.config.city));
       })
-      .catch(() => {
-        // Fallback state is already set for resilient UX.
-      });
+      .catch(() => {});
 
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, []);
 
   const handleSearch = (event) => {
@@ -72,50 +60,59 @@ export default function HeroSearch() {
   };
 
   return (
-    <form onSubmit={handleSearch} className="w-full max-w-4xl mx-auto">
-      {/* Intent Toggle Tabs */}
-      <div className="flex items-center flex-wrap justify-center gap-1 mb-3 md:mb-4 bg-white/20 backdrop-blur-sm rounded-full p-1.5 w-fit mx-auto border border-white/30">
-        {INTENT_OPTIONS.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            onClick={() => setIntent(option.value)}
-            className={`px-4 sm:px-5 py-2.5 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-widest transition-all ${
-              intent === option.value
-                ? 'bg-white text-primary shadow-md'
-                : 'text-white/80 hover:text-white hover:bg-white/10'
-            }`}
-          >
-            {option.label}
-          </button>
-        ))}
+    <form onSubmit={handleSearch} className="w-full max-w-3xl mx-auto">
+
+      {/* ── Intent Tabs ── */}
+      <div className="flex items-center justify-center mb-5">
+        <div className="inline-flex bg-white/80 backdrop-blur-md rounded-full p-1 shadow-xl shadow-black/10 border border-white/60 gap-0.5">
+          {INTENT_OPTIONS.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => setIntent(option.value)}
+              className={`px-5 sm:px-7 py-2.5 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-widest transition-all duration-200 ${
+                intent === option.value
+                  ? 'bg-primary text-white shadow-lg shadow-primary/40'
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-white/60'
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="bg-white/95 backdrop-blur-3xl p-2 sm:p-2.5 rounded-3xl md:rounded-4xl shadow-2xl border border-white/40 ring-1 ring-slate-900/5">
-        <div className="flex flex-col md:flex-row gap-2 md:gap-1">
-          {/* Location */}
-          <div className="flex flex-col items-start px-4 sm:px-5 py-3 text-left flex-1">
-            <label htmlFor={locationInputId} className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">
+      {/* ── Search Bar ── */}
+      <div className="flex flex-col sm:flex-row bg-white rounded-2xl sm:rounded-full shadow-2xl shadow-black/20 overflow-hidden border border-slate-100">
+
+        {/* Location */}
+        <div className="flex items-center gap-3 px-5 sm:px-6 py-4 sm:py-3 flex-1 border-b sm:border-b-0 sm:border-r border-slate-100">
+          <div className="shrink-0 w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+            <span className="material-symbols-outlined text-primary text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>location_on</span>
+          </div>
+          <div className="flex flex-col text-left flex-1 min-w-0">
+            <label htmlFor={locationInputId} className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-0.5">
               Location
             </label>
             <input
               id={locationInputId}
               name="location"
-              className="w-full bg-transparent border-none p-0 text-slate-900 focus:ring-0 font-bold placeholder:text-slate-400 text-sm"
-              placeholder={`${defaultCity} area or locality...`}
+              className="bg-transparent border-none p-0 text-slate-900 text-sm font-bold focus:ring-0 placeholder:text-slate-300 w-full"
+              placeholder={`${defaultCity} — area or locality`}
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               suppressHydrationWarning
             />
           </div>
+        </div>
 
-          {/* Divider */}
-          <div className="hidden md:block w-px bg-slate-100 my-2" />
-
-          {/* BHK Dropdown */}
-          <div className="flex flex-col items-start px-4 sm:px-5 py-3 text-left md:min-w-45">
-            <label htmlFor={bhkSelectId} className="text-[9px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">
+        {/* BHK Dropdown */}
+        <div className="flex items-center gap-3 px-5 sm:px-6 py-4 sm:py-3 sm:w-48 border-b sm:border-b-0 sm:border-r border-slate-100">
+          <div className="shrink-0 w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+            <span className="material-symbols-outlined text-primary text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>apartment</span>
+          </div>
+          <div className="flex flex-col text-left flex-1">
+            <label htmlFor={bhkSelectId} className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-0.5">
               BHK Type
             </label>
             <select
@@ -123,38 +120,40 @@ export default function HeroSearch() {
               name="bhk"
               value={bhk}
               onChange={(e) => setBhk(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 h-11 text-sm font-bold text-slate-700 focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="bg-transparent border-none p-0 text-slate-900 text-sm font-bold focus:ring-0 appearance-none cursor-pointer w-full"
               suppressHydrationWarning
             >
               <option value="">Any</option>
               {bhkOptions.map((b) => (
-                <option key={b} value={b}>
-                  {b} BHK
-                </option>
+                <option key={b} value={b}>{b} BHK</option>
               ))}
             </select>
           </div>
+        </div>
 
-          {/* Search Button */}
+        {/* Search CTA */}
+        <div className="p-2.5">
           <button
             type="submit"
-            className="bg-primary text-white h-12 md:h-auto py-3.5 md:py-4 px-6 md:px-7 rounded-2xl font-black flex items-center justify-center gap-2 hover:bg-secondary transition-all active:scale-95 shadow-md shadow-primary/20 text-xs uppercase tracking-widest self-stretch"
+            className="w-full h-full min-h-[52px] bg-primary hover:bg-primary/90 active:scale-95 text-white font-black text-xs uppercase tracking-widest rounded-xl sm:rounded-full flex items-center justify-center gap-2.5 px-7 shadow-lg shadow-primary/30 transition-all duration-200"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
             Search
           </button>
         </div>
       </div>
 
-      {/* Popular Searches */}
-      <div className="mt-4 md:mt-5 flex items-center gap-2 justify-center flex-wrap px-2">
-        <span className="text-white/70 text-xs font-semibold">Popular:</span>
+      {/* ── Popular Areas ── */}
+      <div className="mt-4 flex items-center gap-2 justify-center flex-wrap px-2">
+        <span className="text-slate-500 text-[10px] font-black uppercase tracking-widest">Popular:</span>
         {popularAreas.map((area) => (
           <button
             key={area}
             type="button"
-            onClick={() => { setLocation(area); }}
-            className="text-white/85 text-xs font-bold hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full border border-white/20 transition-all"
+            onClick={() => setLocation(area)}
+            className="text-slate-600 hover:text-primary text-xs font-bold bg-white/70 hover:bg-white backdrop-blur-sm border border-white/80 hover:border-primary/20 px-4 py-1.5 rounded-full shadow-sm transition-all duration-200"
           >
             {area}
           </button>

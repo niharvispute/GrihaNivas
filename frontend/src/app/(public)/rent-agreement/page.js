@@ -39,7 +39,7 @@ export default function RentAgreementPage() {
               PREMIUM LEGAL SERVICE
             </span>
             <h1 className="text-6xl lg:text-[5.5rem] font-black tracking-tight text-slate-900 mb-10 leading-none">
-              Rent Agreement & <br /> <span className="text-primary italic">E-Registration</span>
+              Rent Agreement & <br /> <span className="text-primary ">E-Registration</span>
             </h1>
             <p className="text-xl text-slate-500 max-w-xl mb-12 font-medium leading-relaxed">
               Secure your tenancy legally from the comfort of your home. We handle the biometric verification and registration with the Mumbai sub-registrar office.
@@ -158,7 +158,7 @@ export default function RentAgreementPage() {
                 </div>
                 <div>
                   <span className="inline-block px-4 py-1.5 bg-green-50 text-green-600 font-black text-[10px] rounded-full mb-3 uppercase tracking-widest">BEST VALUE</span>
-                  <p className="text-5xl font-black text-slate-900 tracking-tighter italic">₹999 <span className="text-lg font-black text-slate-400 not-italic uppercase tracking-widest ml-3">+ Stamp Duty</span></p>
+                  <p className="text-5xl font-black text-slate-900 tracking-tighter ">₹999 <span className="text-lg font-black text-slate-400  uppercase tracking-widest ml-3">+ Stamp Duty</span></p>
                   <p className="text-sm text-slate-400 mt-2 font-bold tracking-tight uppercase">Starting service fee for E-Registration</p>
                 </div>
               </div>

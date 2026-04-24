@@ -125,7 +125,7 @@ export default function ComparePage() {
                   <p className="text-[8px] md:text-xs font-bold uppercase tracking-widest text-slate-500">RERA Compliance</p>
                 </div>
                 <div className="p-6 md:p-8 bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl backdrop-blur-sm col-span-2">
-                  <p className="text-slate-300 text-xs md:text-base font-medium italic">&ldquo;The side-by-side comparison saved us weeks of site visits.&rdquo;</p>
+                  <p className="text-slate-300 text-xs md:text-base font-medium ">&ldquo;The side-by-side comparison saved us weeks of site visits.&rdquo;</p>
                   <p className="mt-3 md:mt-4 text-[8px] md:text-xs font-black uppercase tracking-widest text-primary">— Mumbai Resident</p>
                 </div>
               </div>

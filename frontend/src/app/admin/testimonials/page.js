@@ -96,7 +96,7 @@ export default function TestimonialManagerPage() {
       <div className="flex flex-col md:flex-row justify-between items-end gap-10">
         <div>
           <h1 className="text-5xl font-black tracking-tighter text-slate-900 lg:text-7xl">
-            Social <span className="text-primary italic">Proof</span>
+            Social <span className="text-primary ">Proof</span>
           </h1>
           <p className="text-slate-500 font-medium text-xl mt-6 max-w-xl leading-relaxed">
             Manage the narratives that build trust. Curate user experiences across your organizational ecosystem.
