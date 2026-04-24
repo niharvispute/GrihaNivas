@@ -15,7 +15,7 @@ const api = buildClient(cfg.BACKEND_URL);
 async function adminLogin() {
   if (!cfg.TEST_ADMIN_PASSWORD) return null;
   const r = await api.post('/api/auth/login', {
-    body: { email: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
+    body: { identifier: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
   });
   return r.data?.data?.accessToken || r.data?.token || null;
 }
@@ -73,7 +73,7 @@ async function run() {
       tests.push(makeResult('Auth response shape check skipped — no password', true, { severity: 'INFO' }));
     } else {
       const r = await api.post('/api/auth/login', {
-        body: { email: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
+        body: { identifier: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
       });
       const token = r.data?.data?.accessToken || r.data?.token;
       const user  = r.data?.data?.user || r.data?.user || r.data?.data;
@@ -157,7 +157,7 @@ async function run() {
   {
     // Known-answer test: P=1,000,000 @ 10% for 12 months ≈ EMI 87,916
     const r = await api.post('/api/calculators/emi', {
-      body: { principal: 1000000, annualRate: 10, tenureMonths: 12 },
+      body: { principal: 1000000, annualInterestRate: 10, tenureMonths: 12 },
     });
     const emi = r.data?.data?.emi;
     const expected = 87916;

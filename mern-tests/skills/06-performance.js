@@ -72,7 +72,7 @@ async function run() {
   {
     const stats = await concurrentBatch(
       () => api.post('/api/calculators/emi', {
-        body: { principal: 5000000, annualRate: 8.5, tenureMonths: 240 },
+        body: { principal: 5000000, annualInterestRate: 8.5, tenureMonths: 240 },
       }),
       20
     );

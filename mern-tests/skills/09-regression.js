@@ -15,7 +15,7 @@ const api = buildClient(cfg.BACKEND_URL);
 async function adminLogin() {
   if (!cfg.TEST_ADMIN_PASSWORD) return null;
   const r = await api.post('/api/auth/login', {
-    body: { email: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
+    body: { identifier: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
   });
   return r.data?.data?.accessToken || r.data?.token || null;
 }
@@ -77,7 +77,7 @@ async function run() {
   // ── R4. EMI calculator functional ────────────────────────────────────
   {
     const r = await api.post('/api/calculators/emi', {
-      body: { principal: 5000000, annualRate: 8.5, tenureMonths: 240 },
+      body: { principal: 5000000, annualInterestRate: 8.5, tenureMonths: 240 },
     });
     tests.push(makeResult(
       'R4: EMI calculator returns valid EMI',
@@ -129,7 +129,7 @@ async function run() {
       tests.push(makeResult('R7: Admin login skipped — no password set', true, { severity: 'INFO' }));
     } else {
       const r = await api.post('/api/auth/login', {
-        body: { email: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
+        body: { identifier: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
       });
       const token = r.data?.data?.accessToken || r.data?.token;
       tests.push(makeResult(
@@ -149,7 +149,7 @@ async function run() {
   // ── R8. XSS not reflected ─────────────────────────────────────────────
   {
     const r = await api.post('/api/calculators/emi', {
-      body: { principal: '<script>alert(1)</script>', annualRate: 8.5, tenureMonths: 240 },
+      body: { principal: '<script>alert(1)</script>', annualInterestRate: 8.5, tenureMonths: 240 },
     });
     const reflected = JSON.stringify(r.data || '').includes('<script>');
     tests.push(makeResult(

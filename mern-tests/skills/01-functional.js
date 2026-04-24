@@ -21,7 +21,7 @@ let createdBlogId = null;
 async function adminLogin() {
   if (!cfg.TEST_ADMIN_PASSWORD) return null;
   const r = await api.post('/api/auth/login', {
-    body: { email: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
+    body: { identifier: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
   });
   return r.data?.data?.accessToken || r.data?.token || null;
 }
@@ -37,7 +37,7 @@ async function run() {
   // ── 1. Calculator — EMI ───────────────────────────────────────────────
   {
     const r = await api.post('/api/calculators/emi', {
-      body: { principal: 5000000, annualRate: 8.5, tenureMonths: 240 },
+      body: { principal: 5000000, annualInterestRate: 8.5, tenureMonths: 240 },
     });
     tests.push(makeResult(
       'POST /api/calculators/emi returns monthly EMI',
@@ -54,7 +54,7 @@ async function run() {
   // ── 2. Calculator — EMI validation ───────────────────────────────────
   {
     const r = await api.post('/api/calculators/emi', {
-      body: { principal: -1, annualRate: 0, tenureMonths: 0 },
+      body: { principal: -1, annualInterestRate: 0, tenureMonths: 0 },
     });
     tests.push(makeResult(
       'POST /api/calculators/emi rejects invalid inputs with 400',
@@ -71,7 +71,7 @@ async function run() {
   // ── 3. Calculator — Stamp Duty ────────────────────────────────────────
   {
     const r = await api.post('/api/calculators/stamp-duty', {
-      body: { propertyValue: 10000000, ownerType: 'male', propertyType: 'residential' },
+      body: { propertyValue: 10000000, ownershipType: 'male' },
     });
     tests.push(makeResult(
       'POST /api/calculators/stamp-duty returns stamp duty amount',
@@ -255,7 +255,7 @@ async function run() {
   // ── 15. Auth — signup with invalid email ─────────────────────────────
   {
     const r = await api.post('/api/auth/signup/request', {
-      body: { email: 'not-an-email', password: 'short' },
+      body: { name: 'Test User', email: 'not-an-email', phone: '+919000000000', password: 'short' },
     });
     tests.push(makeResult(
       'POST /api/auth/signup/request with invalid email returns 400',
@@ -272,7 +272,7 @@ async function run() {
   // ── 16. Auth — login with wrong password ──────────────────────────────
   {
     const r = await api.post('/api/auth/login', {
-      body: { email: cfg.TEST_ADMIN_EMAIL, password: 'definitly-wrong-password-xyz' },
+      body: { identifier: cfg.TEST_ADMIN_EMAIL, password: 'definitly-wrong-password-xyz' },
     });
     tests.push(makeResult(
       'POST /api/auth/login with wrong password returns 401',
@@ -323,10 +323,10 @@ async function run() {
   if (adminToken) {
     const createR = await api.post('/api/blogs', {
       body: {
-        title:    'Test Blog Post __AUTO_TEST__',
-        content:  'This is a test blog post created by the automated test suite.',
-        category: 'market-trends',
-        status:   'draft',
+        title:       'Test Blog Post __AUTO_TEST__',
+        content:     'This is a test blog post created by the automated test suite.',
+        category:    'market_trends',
+        isPublished: false,
       },
       headers: authHeader(adminToken),
     });

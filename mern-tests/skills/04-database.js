@@ -16,7 +16,7 @@ const api = buildClient(cfg.BACKEND_URL);
 async function adminLogin() {
   if (!cfg.TEST_ADMIN_PASSWORD) return null;
   const r = await api.post('/api/auth/login', {
-    body: { email: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
+    body: { identifier: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
   });
   return r.data?.data?.accessToken || r.data?.token || null;
 }
@@ -32,7 +32,7 @@ async function run() {
   // ── 1. Required field: title missing from blog → 400/422 ─────────────
   if (adminToken) {
     const r = await api.post('/api/blogs', {
-      body: { content: 'Content without a title', category: 'market-trends' },
+      body: { content: 'Content without a title', category: 'market_trends' },
       headers: authHeader(adminToken),
     });
     tests.push(makeResult(
@@ -107,7 +107,7 @@ async function run() {
   // ── 4. EMI calculator — type coercion (string instead of number) ──────
   {
     const r = await api.post('/api/calculators/emi', {
-      body: { principal: 'not-a-number', annualRate: 8.5, tenureMonths: 240 },
+      body: { principal: 'not-a-number', annualInterestRate: 8.5, tenureMonths: 240 },
     });
     tests.push(makeResult(
       'EMI calc: string principal rejected with 400/422',
@@ -175,7 +175,7 @@ async function run() {
   {
     // First attempt with dummy email (will likely fail with OTP required, but should not 500)
     const r = await api.post('/api/auth/signup/request', {
-      body: { email: cfg.TEST_ADMIN_EMAIL, password: 'Password123!' },
+      body: { name: 'Test User', email: cfg.TEST_ADMIN_EMAIL, phone: '+919876543210', password: 'Password123!' },
     });
     tests.push(makeResult(
       'Signup with existing email returns 400/409 (not 500)',

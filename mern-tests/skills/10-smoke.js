@@ -74,7 +74,7 @@ async function run() {
       ));
     } else {
       const r = await api.post('/api/auth/login', {
-        body: { email: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
+        body: { identifier: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
       });
       accessToken = r.data?.data?.accessToken || r.data?.token || null;
       tests.push(makeResult(

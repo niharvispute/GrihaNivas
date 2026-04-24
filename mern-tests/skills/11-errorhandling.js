@@ -170,7 +170,7 @@ if (process.env.NODE_ENV === 'production') {
   // ── 8. Empty string fields vs null ───────────────────────────────────
   {
     const r = await api.post('/api/auth/login', {
-      body: { email: '', password: '' },
+      body: { identifier: '', password: '' },
     });
     tests.push(makeResult(
       'Login with empty string credentials returns 400 (not 500)',

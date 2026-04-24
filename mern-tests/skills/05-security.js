@@ -15,7 +15,7 @@ const api = buildClient(cfg.BACKEND_URL);
 async function adminLogin() {
   if (!cfg.TEST_ADMIN_PASSWORD) return null;
   const r = await api.post('/api/auth/login', {
-    body: { email: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
+    body: { identifier: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
   });
   return r.data?.data?.accessToken || r.data?.token || null;
 }
@@ -34,7 +34,7 @@ async function run() {
     const xssPayload = '<script>alert("xss")</script>';
 
     const r = await api.post('/api/calculators/emi', {
-      body: { principal: xssPayload, annualRate: 8.5, tenureMonths: 240 },
+      body: { principal: xssPayload, annualInterestRate: 8.5, tenureMonths: 240 },
     });
 
     // Either: 400 (rejected as non-number) or 200 but script tag is NOT in response
@@ -86,7 +86,7 @@ async function run() {
   // express-mongo-sanitize strips $ and . from keys
   {
     const r = await api.post('/api/auth/login', {
-      body: { email: { '$gt': '' }, password: { '$gt': '' } },
+      body: { identifier: { '$gt': '' }, password: { '$gt': '' } },
     });
     // Should get 400 (validation error) not 200 (logged in!)
     tests.push(makeResult(
@@ -261,7 +261,7 @@ async function run() {
     let hit429 = false;
     for (let i = 0; i < 20; i++) {
       const r = await api.post('/api/auth/login', {
-        body: { email: 'ratelimit-test@test.com', password: 'wrongpassword' },
+        body: { identifier: 'ratelimit-test@test.com', password: 'wrongpassword' },
       });
       if (r.status === 429) { hit429 = true; break; }
     }

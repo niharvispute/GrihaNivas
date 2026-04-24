@@ -15,7 +15,7 @@ const api = buildClient(cfg.BACKEND_URL);
 async function adminLogin() {
   if (!cfg.TEST_ADMIN_PASSWORD) return null;
   const r = await api.post('/api/auth/login', {
-    body: { email: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
+    body: { identifier: cfg.TEST_ADMIN_EMAIL, password: cfg.TEST_ADMIN_PASSWORD },
   });
   return r.data?.data?.accessToken || r.data?.token || null;
 }
@@ -180,11 +180,11 @@ async function run() {
   {
     const r = await api.post('/api/calculators/emi', {
       body: {
-        principal:    5000000,
-        annualRate:   8.5,
-        tenureMonths: 240,
-        hackField:    'injected',
-        __proto__:    { polluted: true },
+        principal:          5000000,
+        annualInterestRate: 8.5,
+        tenureMonths:       240,
+        hackField:          'injected',
+        __proto__:          { polluted: true },
       },
     });
     tests.push(makeResult(
