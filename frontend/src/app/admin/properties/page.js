@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { listProperties, deleteProperty, getPropertyById, updateProperty, exportProperties } from '@/services/propertyService';
+import { listProperties, deleteProperty, getPropertyById, updateProperty, exportProperties, updatePropertyActiveStatus } from '@/services/propertyService';
 import ExportButton from '@/components/admin/ExportButton';
 
 const CATEGORY_LABEL = { buy: 'Buy', rent: 'Rent', commercial: 'Commercial', new_launch: 'New Launch' };
@@ -34,6 +34,7 @@ export default function PropertyManagementPage() {
   const [loadingPropertyDetail, setLoadingPropertyDetail] = useState(false);
   const [togglingFeatured, setTogglingFeatured] = useState(null);
   const [togglingNewLaunch, setTogglingNewLaunch] = useState(null);
+  const [togglingActive, setTogglingActive] = useState(null);
 
   const fetchProperties = useCallback(async () => {
     setLoading(true);
@@ -106,6 +107,21 @@ export default function PropertyManagementPage() {
       alert('Failed to update property category.');
     } finally {
       setTogglingNewLaunch(null);
+    }
+  };
+
+  const handleToggleActive = async (id, currentStatus) => {
+    setOpenActionFor(null);
+    setTogglingActive(id);
+    try {
+      await updatePropertyActiveStatus(id, !currentStatus);
+      setProperties((prev) =>
+        prev.map((p) => (p._id === id ? { ...p, isActive: !currentStatus } : p))
+      );
+    } catch {
+      alert('Failed to update active status.');
+    } finally {
+      setTogglingActive(null);
     }
   };
 
@@ -298,6 +314,17 @@ export default function PropertyManagementPage() {
                                   <span className="material-symbols-outlined text-lg text-primary">open_in_new</span>
                                   <span>Open Public</span>
                                 </Link>
+                                <button
+                                  type="button"
+                                  onClick={() => handleToggleActive(prop._id, prop.isActive)}
+                                  disabled={togglingActive === prop._id}
+                                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all disabled:opacity-40"
+                                >
+                                  <span className={`material-symbols-outlined text-lg ${prop.isActive ? 'text-amber-500' : 'text-emerald-500'}`}>
+                                    {prop.isActive ? 'block' : 'check_circle'}
+                                  </span>
+                                  <span>{togglingActive === prop._id ? 'Updating…' : (prop.isActive ? 'Deactivate' : 'Activate')}</span>
+                                </button>
                                 <button
                                   type="button"
                                   onClick={() => handleDelete(prop._id, prop.title)}

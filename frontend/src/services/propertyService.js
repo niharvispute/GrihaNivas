@@ -61,6 +61,24 @@ export const deleteProperty = async (id) => {
   return true;
 };
 
+export const approveProperty = async (id) => {
+  const res = await authedApiFetch(`/api/properties/${id}/approve`, { method: 'PATCH' });
+  return res.data;
+};
+
+export const rejectProperty = async (id) => {
+  const res = await authedApiFetch(`/api/properties/${id}/reject`, { method: 'PATCH' });
+  return res.data;
+};
+
+export const updatePropertyActiveStatus = async (id, isActive) => {
+  const res = await authedApiFetch(`/api/properties/${id}/active`, {
+    method: 'PATCH',
+    body: { isActive },
+  });
+  return res.data;
+};
+
 export const exportProperties = async (query = {}) => {
   return downloadAuthedFile('/api/properties/export', {
     query,

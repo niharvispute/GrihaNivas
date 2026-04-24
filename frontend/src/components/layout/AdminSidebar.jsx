@@ -46,7 +46,7 @@ export default function AdminSidebar() {
         <p className="text-primary font-black text-[9px] uppercase tracking-[0.3em] opacity-80">Admin Console</p>
       </div>
 
-      <nav className="flex-1 px-4 space-y-2">
+      <nav className="flex-1 px-4 space-y-2 overflow-y-auto custom-scrollbar py-4">
         {menuItems.map((item) => {
           const isActive =
             item.href === '/admin'

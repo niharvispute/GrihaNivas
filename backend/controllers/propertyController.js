@@ -611,4 +611,29 @@ module.exports = {
   reject,
   update,
   remove,
+  toggleActive,
 };
+
+async function toggleActive(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { isActive } = req.body;
+
+    const property = await Property.findById(id);
+    if (!property) throw new AppError('Property not found', 404);
+
+    property.isActive = Boolean(isActive);
+    await property.save();
+
+    // Invalidate caches
+    await Promise.all([
+      cache.delByPrefix('props:list:'),
+      cache.delByPrefix(`props:id:${id}`),
+      cache.delByPrefix(`props:slug:${property.slug}`),
+    ]);
+
+    return sendSuccess(res, 200, `Property ${property.isActive ? 'activated' : 'deactivated'}`, property);
+  } catch (err) {
+    next(err);
+  }
+}

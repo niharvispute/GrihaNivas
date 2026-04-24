@@ -25,6 +25,7 @@ router.get('/admin', protect, adminOnly, validate(schemas.property.adminList, 'q
 router.get('/export', protect, adminOnly, propertyController.exportProperties);
 router.patch('/:id/approve', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.approve);
 router.patch('/:id/reject', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.reject);
+router.patch('/:id/active', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.toggleActive);
 
 // Public detail routes
 router.get('/:id', optionalAuth, validate(schemas.property.moderationParams, 'params'), propertyController.getOne);
