@@ -26,6 +26,7 @@ router.get('/export', protect, adminOnly, propertyController.exportProperties);
 router.patch('/:id/approve', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.approve);
 router.patch('/:id/reject', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.reject);
 router.patch('/:id/active', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), propertyController.toggleActive);
+router.patch('/:id/hero-image', protect, adminOnly, validate(schemas.property.moderationParams, 'params'), validate(schemas.property.heroImage), propertyController.setHeroImage);
 
 // Public detail routes
 router.get('/:id', optionalAuth, validate(schemas.property.moderationParams, 'params'), propertyController.getOne);

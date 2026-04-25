@@ -508,6 +508,52 @@ const getPublicCities = async (req, res, next) => {
   }
 };
 
+const linkProperty = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { propertyId, action } = req.body;
+
+    const builder = await Builder.findById(id).select('_id name isActive');
+    if (!builder) throw new AppError('Builder not found', 404);
+
+    const property = await Property.findById(propertyId).select('_id title builder status');
+    if (!property) throw new AppError('Property not found', 404);
+    if (property.status !== 'approved') throw new AppError('Only approved properties can be linked to builders', 400);
+
+    if (action === 'link') {
+      if (property.builder && property.builder.toString() !== id) {
+        throw new AppError('This property is already linked to another builder', 400);
+      }
+      property.builder = builder._id;
+      await property.save();
+      await cache.delByPrefix('properties:');
+      return sendSuccess(res, 200, `Property linked to ${builder.name}`, {
+        _id: property._id,
+        title: property.title,
+        builder: property.builder,
+      });
+    }
+
+    if (action === 'unlink') {
+      if (!property.builder || property.builder.toString() !== id) {
+        throw new AppError('This property is not linked to this builder', 400);
+      }
+      property.builder = null;
+      await property.save();
+      await cache.delByPrefix('properties:');
+      return sendSuccess(res, 200, 'Property unlinked from builder', {
+        _id: property._id,
+        title: property.title,
+        builder: null,
+      });
+    }
+
+    throw new AppError('Invalid action', 400);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   listPublic,
   getPublicBySlug,
@@ -519,4 +565,5 @@ module.exports = {
   create,
   update,
   remove,
+  linkProperty,
 };

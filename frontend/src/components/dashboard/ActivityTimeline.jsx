@@ -43,27 +43,27 @@ export default function ActivityTimeline() {
   };
 
   return (
-    <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
-      <div className="p-8 border-b border-slate-50 flex justify-between items-center">
-        <h2 className="text-xl font-heading font-black text-slate-900">Account Overview</h2>
-        <Link href="/account/enquiries" className="text-primary text-xs font-bold uppercase tracking-widest hover:underline">
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div className="p-5 border-b border-slate-50 flex justify-between items-center">
+        <h2 className="text-base font-heading font-black text-slate-900">Account Overview</h2>
+        <Link href="/account/enquiries" className="text-primary text-[10px] font-bold uppercase tracking-widest hover:underline">
           View Enquiries
         </Link>
       </div>
       <div className="divide-y divide-slate-50">
         {items.map((item, idx) => (
-          <Link key={item.id} href={item.href} className="p-8 flex gap-6 items-start hover:bg-slate-50/50 transition-colors group block">
-            <div className="relative mt-1">
-              <div className={`w-12 h-12 rounded-full ${themeClasses[item.theme]} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                <span className="material-symbols-outlined text-2xl">{item.icon}</span>
+          <Link key={item.id} href={item.href} className="p-5 flex gap-4 items-start hover:bg-slate-50/50 transition-colors group block">
+            <div className="relative mt-0.5">
+              <div className={`w-9 h-9 rounded-full ${themeClasses[item.theme]} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                <span className="material-symbols-outlined text-xl">{item.icon}</span>
               </div>
               {idx !== items.length - 1 && (
-                <div className="absolute top-14 left-1/2 -translate-x-1/2 w-px h-16 bg-slate-100" />
+                <div className="absolute top-11 left-1/2 -translate-x-1/2 w-px h-12 bg-slate-100" />
               )}
             </div>
             <div className="flex-1">
-              <p className="font-heading font-bold text-slate-900 text-base mb-1">{item.title}</p>
-              <span className="text-xs text-slate-400 font-medium">{item.meta}</span>
+              <p className="font-heading font-bold text-slate-900 text-sm mb-0.5">{item.title}</p>
+              <span className="text-[11px] text-slate-400 font-medium">{item.meta}</span>
             </div>
           </Link>
         ))}

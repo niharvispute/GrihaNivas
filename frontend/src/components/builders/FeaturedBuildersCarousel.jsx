@@ -47,7 +47,7 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
 
   return (
     <section className="mb-10 sm:mb-16 animate-in fade-in duration-1000">
-      <div className="group relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] bg-zinc-900 min-h-96 lg:h-125 flex items-center shadow-2xl">
+      <div className="group relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] bg-zinc-900 min-h-96 lg:h-125 flex items-center shadow-2xl pb-10">
         <div className="absolute inset-0">
           {heroImage ? (
             <Image

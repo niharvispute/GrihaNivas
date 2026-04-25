@@ -11,27 +11,28 @@ export default function HomePageTestimonials() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
-    const fetch = async () => {
+    let mounted = true;
+    const load = async () => {
       try {
         const data = await listTestimonials();
-        setTestimonials(data.slice(0, 6));
+        if (mounted) setTestimonials(data.slice(0, 6));
       } catch {
-        setTestimonials([]);
+        if (mounted) setTestimonials([]);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
-    fetch();
+    load();
+    return () => { mounted = false; };
   }, []);
 
   if (loading) return null;
-  if (!testimonials.length) return null;
 
   const prev = () => setCurrentSlide((i) => (i === 0 ? testimonials.length - 1 : i - 1));
   const next = () => setCurrentSlide((i) => (i === testimonials.length - 1 ? 0 : i + 1));
 
   return (
-    <section className="py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-white">
+    <section className="py-6 md:py-10 lg:py-14 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-screen-2xl mx-auto">
         <div className="text-center mb-12 md:mb-16 space-y-4">
           <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">Social Proof</span>
@@ -43,60 +44,72 @@ export default function HomePageTestimonials() {
           </p>
         </div>
 
+        {/* Empty state */}
+        {!testimonials.length && (
+          <div className="flex flex-col items-center justify-center py-16 md:py-20 rounded-2xl border-2 border-dashed border-slate-200 bg-white">
+            <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">rate_review</span>
+            <p className="text-slate-500 font-bold text-sm md:text-base">No testimonials yet — client reviews coming soon.</p>
+          </div>
+        )}
+
         {/* Mobile slider — single card with prev/next */}
-        <div className="md:hidden">
-          <div className="relative">
-            <div className="overflow-hidden">
-              <div
-                className="flex transition-transform duration-300 ease-in-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {testimonials.map((testimonial) => (
-                  <div key={testimonial.id} className="min-w-full">
-                    <TestimonialCard testimonial={testimonial} />
-                  </div>
-                ))}
+        {testimonials.length > 0 && (
+          <div className="md:hidden">
+            <div className="relative">
+              <div className="overflow-hidden">
+                <div
+                  className="flex transition-transform duration-300 ease-in-out"
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                >
+                  {testimonials.map((testimonial) => (
+                    <div key={testimonial.id} className="min-w-full">
+                      <TestimonialCard testimonial={testimonial} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Nav buttons + dot indicators */}
-          <div className="flex items-center justify-center gap-4 mt-6">
-            <button
-              onClick={prev}
-              aria-label="Previous"
-              className="w-9 h-9 rounded-full border-2 border-primary/20 bg-white flex items-center justify-center text-slate-600 hover:border-primary hover:text-primary transition-all"
-            >
-              <span className="material-symbols-outlined text-base">west</span>
-            </button>
-            <div className="flex gap-2">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentSlide(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    i === currentSlide ? 'w-6 bg-primary' : 'w-1.5 bg-slate-300'
-                  }`}
-                />
-              ))}
+            {/* Nav buttons + dot indicators */}
+            <div className="flex items-center justify-center gap-4 mt-6">
+              <button
+                onClick={prev}
+                aria-label="Previous"
+                className="w-9 h-9 rounded-full border-2 border-primary/20 bg-white flex items-center justify-center text-slate-600 hover:border-primary hover:text-primary transition-all"
+              >
+                <span className="material-symbols-outlined text-base">west</span>
+              </button>
+              <div className="flex gap-2">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentSlide(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      i === currentSlide ? 'w-6 bg-primary' : 'w-1.5 bg-slate-300'
+                    }`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={next}
+                aria-label="Next"
+                className="w-9 h-9 rounded-full border-2 border-primary bg-primary flex items-center justify-center text-white hover:bg-primary/90 transition-all"
+              >
+                <span className="material-symbols-outlined text-base">east</span>
+              </button>
             </div>
-            <button
-              onClick={next}
-              aria-label="Next"
-              className="w-9 h-9 rounded-full border-2 border-primary bg-primary flex items-center justify-center text-white hover:bg-primary/90 transition-all"
-            >
-              <span className="material-symbols-outlined text-base">east</span>
-            </button>
           </div>
-        </div>
+        )}
 
         {/* Desktop grid */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
-          {testimonials.map((testimonial) => (
-            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-          ))}
-        </div>
+        {testimonials.length > 0 && (
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+            {testimonials.map((testimonial) => (
+              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+            ))}
+          </div>
+        )}
 
         {/* CTA */}
         <div className="mt-12 md:mt-16 text-center">
@@ -116,7 +129,7 @@ export default function HomePageTestimonials() {
 
 function TestimonialCard({ testimonial }) {
   return (
-    <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:border-primary/10 transition-all duration-300 p-6 md:p-8 flex flex-col justify-between group">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary/20 transition-all duration-300 p-6 md:p-8 flex flex-col justify-between group">
       <div className="flex gap-1 mb-4">
         {[...Array(5)].map((_, i) => (
           <span

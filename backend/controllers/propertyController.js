@@ -130,7 +130,7 @@ const buildMongoSort = (sortBy) => {
 };
 
 const buildAdminFilter = (query) => {
-  const { status, search } = query;
+  const { status, search, builder, noBuilder } = query;
   const filter = {
     status: status || 'pending',
   };
@@ -144,6 +144,9 @@ const buildAdminFilter = (query) => {
       { reraNumber: regex },
     ];
   }
+
+  if (builder) filter.builder = builder;
+  if (noBuilder) filter.builder = null;
 
   return filter;
 };
@@ -599,6 +602,33 @@ const remove = async (req, res, next) => {
   }
 };
 
+const setHeroImage = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { url, publicId } = req.body;
+
+    const property = await Property.findById(id).select('_id title slug heroImage gallery');
+    if (!property) throw new AppError('Property not found', 404);
+
+    const allImages = [property.heroImage, ...(property.gallery || [])].filter(Boolean);
+    const imageExists = allImages.some((img) => img.publicId === publicId && img.url === url);
+    if (!imageExists) throw new AppError('Image does not belong to this property', 400);
+
+    property.heroImage = { url, publicId };
+    await property.save();
+
+    await Promise.all([
+      cache.delByPrefix('props:list:'),
+      cache.delByPrefix(`props:id:${id}`),
+      cache.delByPrefix(`props:slug:${property.slug}`),
+    ]);
+
+    return sendSuccess(res, 200, 'Main image updated', { heroImage: property.heroImage });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   list,
   getOne,
@@ -612,6 +642,7 @@ module.exports = {
   update,
   remove,
   toggleActive,
+  setHeroImage,
 };
 
 async function toggleActive(req, res, next) {

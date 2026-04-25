@@ -78,7 +78,7 @@ export default async function HomePage() {
   return (
     <div className="w-full">
       {/* 1. Hero Section */}
-      <section className="relative min-h-[500px] md:min-h-160 flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 py-12 md:py-28">
+      <section className="relative min-h-[340px] md:min-h-[440px] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 md:py-16">
         <div className="absolute inset-0 z-0">
           <img
             src={heroBannerImage}
@@ -90,14 +90,14 @@ export default async function HomePage() {
         </div>
 
         <div className="relative z-10 text-center w-full max-w-5xl pt-4 md:pt-16">
-          <h1 className="type-large-title-32 text-slate-900 mb-3 md:mb-6 uppercase md:text-6xl lg:text-7xl">
+          <h1 className="type-large-title-32 text-slate-900 mb-2 md:mb-4 uppercase md:text-4xl lg:text-5xl">
             Find Your Dream{' '}
             <span className="text-secondary underline decoration-primary/30 underline-offset-8">
               Property
             </span>{' '}
             in Mumbai
           </h1>
-          <p className="type-body-16 text-slate-700 mb-6 md:mb-10 max-w-3xl mx-auto sm:text-base md:text-lg lg:text-xl">
+          <p className="type-body-16 font-bold text-slate-700 mb-4 md:mb-6 max-w-2xl mx-auto sm:text-sm md:text-base">
             Curating Mumbai&apos;s most exclusive real estate listings from SoBo luxury to suburban
             sanctuaries.
           </p>
@@ -113,8 +113,8 @@ export default async function HomePage() {
       <BuildersCarousel builders={builders} />
 
       {/* 4. Categories */}
-      <section className="py-12 md:py-20 lg:py-24 bg-slate-50 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-screen-2xl mx-auto">
+      <section className="py-6 md:py-10 lg:py-14 bg-white px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <SectionHeader
             title="Discovery Path"
             subtitle="Explore properties by your specific needs."
@@ -150,7 +150,7 @@ export default async function HomePage() {
               <Link
                 key={i}
                 href={cat.href}
-                className="group relative h-44 sm:h-80 lg:h-96 rounded-xl sm:rounded-moderate overflow-hidden cursor-pointer block"
+                className="group relative h-32 sm:h-52 lg:h-60 rounded-xl sm:rounded-moderate overflow-hidden cursor-pointer block ring-1 ring-slate-200/60"
               >
                 <img
                   src={cat.img}
@@ -190,8 +190,9 @@ export default async function HomePage() {
       </section>
 
       {/* 5. Value Proposition */}
-      <section className="py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-screen-2xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-center">
+      <section className="py-6 md:py-10 lg:py-14 px-4 sm:px-6 lg:px-8 bg-[#f8f7f5]">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-center">
           <div>
             <span className="type-small-10 text-primary mb-4 block tracking-[0.3em]">
               The Bricks Philosophy
@@ -260,13 +261,14 @@ export default async function HomePage() {
             />
             <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl z-[-1]"></div>
           </div>
+          </div>
         </div>
       </section>
 
       {/* 6. Blogs */}
-      {latestBlogs.length > 0 && <section className="py-16 md:py-20 lg:py-24 bg-slate-900 text-white px-4 sm:px-6 lg:px-8">
-        <div className="max-w-screen-2xl mx-auto">
-          <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-5 mb-10 md:mb-14 lg:mb-16">
+      <section className="py-6 md:py-10 lg:py-14 bg-slate-900 text-white px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-5 mb-10 md:mb-12 lg:mb-14">
             <div className="max-w-xl">
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter mb-3 md:mb-4">
                 Inside Mumbai Real Estate
@@ -282,78 +284,87 @@ export default async function HomePage() {
               Read All Articles
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 lg:gap-10">
-            {latestBlogs.map((blog, i) => (
-              <Link
-                key={i}
-                href={`/blogs/${blog.slug}`}
-                className="group cursor-pointer block"
-              >
-                <div className="aspect-11/8 sm:aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-6 relative">
-                  <img
-                    src={blog.image}
-                    alt={blog.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"
-                  />
-                  <div className="absolute top-2 sm:top-4 left-2 sm:left-4">
-                    <span className="bg-primary text-white text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-tighter">
-                      {blog.category}
-                    </span>
+          {latestBlogs.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 lg:gap-10">
+              {latestBlogs.map((blog, i) => (
+                <Link
+                  key={i}
+                  href={`/blogs/${blog.slug}`}
+                  className="group cursor-pointer block"
+                >
+                  <div className="aspect-11/8 sm:aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-6 relative">
+                    <img
+                      src={blog.image}
+                      alt={blog.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"
+                    />
+                    <div className="absolute top-2 sm:top-4 left-2 sm:left-4">
+                      <span className="bg-primary text-white text-[8px] sm:text-[9px] font-black px-2 sm:px-3 py-0.5 sm:py-1 rounded-full uppercase tracking-tighter">
+                        {blog.category}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <h3 className="text-sm sm:text-lg md:text-xl font-black mb-1.5 sm:mb-3 group-hover:text-primary transition-colors leading-tight line-clamp-2 uppercase">
-                  {blog.title}
-                </h3>
-                <p className="text-slate-400 text-[10px] sm:text-sm line-clamp-1 sm:line-clamp-2 font-bold leading-relaxed">
-                  {blog.excerpt}
-                </p>
-              </Link>
-            ))}
-          </div>
+                  <h3 className="text-sm sm:text-lg md:text-xl font-black mb-1.5 sm:mb-3 group-hover:text-primary transition-colors leading-tight line-clamp-2 uppercase">
+                    {blog.title}
+                  </h3>
+                  <p className="text-slate-400 text-[10px] sm:text-sm line-clamp-1 sm:line-clamp-2 font-bold leading-relaxed">
+                    {blog.excerpt}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-16 md:py-20 rounded-2xl border-2 border-dashed border-white/10 bg-white/5">
+              <span className="material-symbols-outlined text-5xl text-white/20 mb-4">article</span>
+              <p className="text-white/40 font-bold text-sm md:text-base">No articles published yet — editorial content coming soon.</p>
+            </div>
+          )}
         </div>
-      </section>}
+      </section>
 
       {/* 7. Testimonials */}
       <HomePageTestimonials />
 
       {/* 8. Lead Capture */}
-      <section className="py-16 md:py-20 lg:py-24 px-4 sm:px-0 lg:px-8 max-w-screen-2xl mx-auto">
-        <div className="bg-primary rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 lg:p-20 text-white flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-20 items-start lg:items-center shadow-2xl shadow-primary/40 relative overflow-hidden">
-          <div className="absolute -top-20 -left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="relative z-10 lg:w-1/2">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 md:mb-6 leading-tight tracking-tighter">
-              Your Mumbai Journey
-              <br />
-              Starts Here.
-            </h2>
-            <p className="text-sm sm:text-base lg:text-lg text-white/80 mb-6 md:mb-10 leading-relaxed font-medium">
-              Schedule a private consultation with our area experts. We&apos;ll help you navigate
-              the market with data-driven insights.
-            </p>
-            <div className="flex items-center gap-6">
-              <div className="flex -space-x-3">
-                {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="w-12 h-12 rounded-full border-2 border-primary bg-slate-200 flex items-center justify-center text-primary font-black text-xs ring-2 ring-white/20"
-                  >
-                    AD
-                  </div>
-                ))}
+      <section className="py-6 md:py-10 lg:py-14 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-primary rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 lg:p-20 text-white flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-20 items-start lg:items-center shadow-2xl shadow-primary/40 relative overflow-hidden">
+            <div className="absolute -top-20 -left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="relative z-10 lg:w-1/2">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 md:mb-6 leading-tight tracking-tighter">
+                Your Mumbai Journey
+                <br />
+                Starts Here.
+              </h2>
+              <p className="text-sm sm:text-base lg:text-lg text-white/80 mb-6 md:mb-10 leading-relaxed font-medium">
+                Schedule a private consultation with our area experts. We&apos;ll help you navigate
+                the market with data-driven insights.
+              </p>
+              <div className="flex items-center gap-6">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="w-12 h-12 rounded-full border-2 border-primary bg-slate-200 flex items-center justify-center text-primary font-black text-xs ring-2 ring-white/20"
+                    >
+                      AD
+                    </div>
+                  ))}
+                </div>
+                <span className="text-xs sm:text-sm font-bold tracking-tight">
+                  + 8 experts online now
+                </span>
               </div>
-              <span className="text-xs sm:text-sm font-bold tracking-tight">
-                + 8 experts online now
-              </span>
             </div>
-          </div>
-          <div className="relative z-10 lg:w-1/2 w-full">
-            <LeadForm title="Get Free Consultation" />
+            <div className="relative z-10 lg:w-1/2 w-full">
+              <LeadForm title="Get Free Consultation" />
+            </div>
           </div>
         </div>
       </section>
 
       {/* 9. FAQ */}
-      <section className="py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-6 md:py-10 lg:py-14 px-4 sm:px-6 lg:px-8 bg-[#f8f7f5]">
         <div className="max-w-3xl mx-auto">
           <SectionHeader
             title="FAQs"
@@ -377,7 +388,7 @@ export default async function HomePage() {
             ].map((faq, i) => (
               <details
                 key={i}
-                className="group bg-slate-50 rounded-2xl p-4 sm:p-5 md:p-6 cursor-pointer border border-slate-100 transition-all"
+                className="group bg-white rounded-2xl p-4 sm:p-5 md:p-6 cursor-pointer border border-slate-200 open:border-primary/25 transition-all"
               >
                 <summary className="flex justify-between items-center gap-3 font-bold text-base md:text-lg list-none text-slate-900 group-open:text-primary transition-colors">
                   {faq.q}

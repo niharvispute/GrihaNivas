@@ -15,9 +15,9 @@ export default function TrendingBuilderCard({ builder }) {
   const tagline = builder?.tagline || 'Trusted real estate developer with active Mumbai projects.';
 
   return (
-    <article className="group relative bg-white rounded-xl md:rounded-3xl overflow-hidden shadow-sm md:shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
+    <article className="group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500 flex flex-col h-full">
       {/* Image Section */}
-      <div className={`relative ${'h-32 sm:h-48 md:h-56'} overflow-hidden flex-none bg-gradient-to-br from-slate-100 to-slate-50`}>
+      <div className={`relative ${'h-36 sm:h-44 md:h-48'} overflow-hidden flex-none bg-gradient-to-br from-slate-100 to-slate-50`}>
         {bannerImage ? (
           <CloudinaryImage
             src={bannerImage}
@@ -48,10 +48,10 @@ export default function TrendingBuilderCard({ builder }) {
       </div>
 
       {/* Content Section */}
-      <div className="p-3 sm:p-5 md:p-6 flex flex-col grow gap-2 sm:gap-4">
+      <div className="p-3 sm:p-4 md:p-5 flex flex-col grow gap-2 sm:gap-3">
         {/* Header */}
         <div>
-          <h3 className="text-[13px] sm:text-base md:text-lg font-black text-slate-900 leading-tight mb-0.5 line-clamp-1 uppercase">
+          <h3 className="text-xs sm:text-sm font-black text-slate-900 leading-tight mb-0.5 line-clamp-1 uppercase">
             {builderName}
           </h3>
           <p className="text-slate-500 text-[10px] sm:text-xs flex items-center gap-1 truncate font-bold">
@@ -61,14 +61,14 @@ export default function TrendingBuilderCard({ builder }) {
         </div>
 
         {/* Stats Row */}
-        <div className="flex items-center justify-between gap-2 py-2 sm:py-3 border-t border-slate-100 mt-1">
+        <div className="flex items-center justify-between gap-2 py-2 sm:py-3 border-t border-slate-100">
           <div>
-            <p className="text-[8px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">Est.</p>
-            <p className="text-xs sm:text-base font-black text-slate-900">{established}</p>
+            <p className="text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">Est.</p>
+            <p className="text-xs sm:text-sm font-black text-slate-900">{established}</p>
           </div>
           <div className="border-l border-slate-100 pl-2 sm:pl-3">
-            <p className="text-[8px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">Projects</p>
-            <p className="text-xs sm:text-base font-black text-primary">{projectCount}+</p>
+            <p className="text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">Projects</p>
+            <p className="text-xs sm:text-sm font-black text-primary">{projectCount}+</p>
           </div>
         </div>
 
@@ -78,16 +78,16 @@ export default function TrendingBuilderCard({ builder }) {
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex gap-2.5 mt-auto pt-1">
+        <div className="flex gap-2 mt-auto pt-1">
           <Link
             href={detailHref}
-            className="flex-1 bg-gradient-to-r from-primary to-primary/85 text-white py-2 sm:py-3 rounded-lg sm:rounded-xl font-black tracking-tighter hover:shadow-lg hover:shadow-primary/40 transition-all text-center text-[9px] sm:text-xs uppercase text-nowrap h-9 sm:h-11 flex items-center justify-center"
+            className="flex-1 bg-gradient-to-r from-primary to-primary/85 text-white rounded-lg font-black tracking-tighter hover:shadow-lg hover:shadow-primary/40 transition-all text-center text-[10px] sm:text-xs uppercase text-nowrap h-9 sm:h-10 flex items-center justify-center"
           >
             Details
           </Link>
           <Link
             href={`${detailHref}#portfolio`}
-            className="flex-1 border-2 border-slate-200 text-slate-700 py-2 sm:py-3 rounded-lg sm:rounded-xl font-black tracking-tighter hover:border-primary hover:text-primary hover:bg-primary/5 transition-all text-center text-[9px] sm:text-xs uppercase text-nowrap h-9 sm:h-11 flex items-center justify-center hidden sm:flex"
+            className="flex-1 border-2 border-slate-200 text-slate-700 rounded-lg font-black tracking-tighter hover:border-primary hover:text-primary hover:bg-primary/5 transition-all text-center text-[10px] sm:text-xs uppercase text-nowrap h-9 sm:h-10 flex items-center justify-center hidden sm:flex"
           >
             Portfolio
           </Link>

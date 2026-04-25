@@ -34,27 +34,37 @@ const BannerSlotCard = ({ banner, onReplace, uploading = false }) => {
       <div className="p-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Banner Preview Area */}
         <div className="lg:col-span-8">
-          <div className={`relative group rounded-4xl overflow-hidden border border-slate-100 aspect-1920/600 bg-slate-50 shadow-inner ${isInactive ? 'grayscale opacity-50' : ''}`}>
-            <Image
-              alt={banner.title}
-              fill
-              sizes="(max-width: 1024px) 100vw, 66vw"
-              className="object-cover transition-transform duration-1000 group-hover:scale-105"
-              src={banner.image}
-            />
-            {isInactive ? (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-white/90 backdrop-blur-md px-8 py-3 rounded-full text-slate-400 font-bold flex items-center gap-3 shadow-2xl">
-                  <span className="material-symbols-outlined font-black">block</span>
-                  <span className="text-xs uppercase tracking-widest">Inactive Slot</span>
-                </div>
-              </div>
+          <div className={`relative group rounded-4xl overflow-hidden border border-slate-100 aspect-1920/600 bg-slate-50 shadow-inner ${isInactive && banner.image ? 'grayscale opacity-50' : ''}`}>
+            {banner.image ? (
+              <>
+                <Image
+                  alt={banner.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 66vw"
+                  className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                  src={banner.image}
+                />
+                {isInactive ? (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-white/90 backdrop-blur-md px-8 py-3 rounded-full text-slate-400 font-bold flex items-center gap-3 shadow-2xl">
+                      <span className="material-symbols-outlined font-black">block</span>
+                      <span className="text-xs uppercase tracking-widest">Inactive Slot</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <button className="flex items-center gap-3 bg-white text-slate-900 px-8 py-3 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-110 transition-transform">
+                      <span className="material-symbols-outlined text-lg">zoom_in</span>
+                      Preview Full
+                    </button>
+                  </div>
+                )}
+              </>
             ) : (
-              <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <button className="flex items-center gap-3 bg-white text-slate-900 px-8 py-3 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-110 transition-transform">
-                  <span className="material-symbols-outlined text-lg">zoom_in</span>
-                  Preview Full
-                </button>
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-slate-300">
+                <span className="material-symbols-outlined text-6xl">image</span>
+                <p className="text-xs font-black uppercase tracking-widest">No Image Uploaded</p>
+                <p className="text-[10px] font-medium text-slate-400">{banner.recommendedSize}</p>
               </div>
             )}
           </div>

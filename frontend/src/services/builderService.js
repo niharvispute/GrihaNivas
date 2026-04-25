@@ -140,6 +140,14 @@ export const deleteAdminBuilder = async (builderId) => {
   return res.data;
 };
 
+export const linkBuilderProperty = async (builderId, propertyId, action) => {
+  const res = await authedApiFetch(`/api/admin/builders/${builderId}/link-property`, {
+    method: 'PATCH',
+    body: { propertyId, action },
+  });
+  return res.data;
+};
+
 export const exportAdminBuilders = async (query = {}) => {
   return downloadAuthedFile('/api/admin/builders/export', {
     query,

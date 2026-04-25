@@ -318,12 +318,12 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
           avatar: item.avatar.trim(),
         }))
         .filter((item) => item.author && item.content)
-        .map((item) => ({
-          ...item,
-          rating: Number.isFinite(item.rating) ? item.rating : 5,
-          ...(item.role ? { role: item.role } : {}),
-          ...(item.avatar ? { avatar: item.avatar } : {}),
-        }));
+        .map(({ avatar, role, rating, ...rest }) => {
+          const t = { ...rest, rating: Number.isFinite(rating) ? rating : 5 };
+          if (role) t.role = role;
+          if (avatar) t.avatar = avatar;
+          return t;
+        });
       payload.append('testimonials', JSON.stringify(testimonials));
 
       const seoKeywords = parseCsv(form.seoKeywordsText);
@@ -344,9 +344,14 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
 
       router.push('/admin/builders');
     } catch (error) {
+      const firstFieldError = error?.details?.[0];
+      const fieldLabel = firstFieldError?.field ? ` (${firstFieldError.field})` : '';
+      const fieldMsg = firstFieldError?.message
+        ? `${firstFieldError.message}${fieldLabel}`
+        : null;
       setFeedback({
         type: 'error',
-        message: getErrorMessage(
+        message: fieldMsg || getErrorMessage(
           error,
           isEditMode ? 'Unable to update builder profile.' : 'Unable to create builder profile.'
         ),

@@ -85,7 +85,14 @@
       "Bash(taskkill *)",
       "Bash(pkill -f \"next dev\")",
       "WebFetch(domain:www.magicbricks.com)",
-      "WebFetch(domain:magicbricks.com)"
+      "WebFetch(domain:magicbricks.com)",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_navigate",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_resize",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_take_screenshot",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_run_code",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_evaluate",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_press_key",
+      "Bash(git checkout *)"
     ]
   }
 }

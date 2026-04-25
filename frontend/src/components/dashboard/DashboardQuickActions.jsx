@@ -48,40 +48,40 @@ export default function DashboardQuickActions({ hasListings = false, latestListi
   ];
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-heading font-black text-slate-900 mb-6">Quick Actions</h2>
+    <div className="space-y-3">
+      <h2 className="text-base font-heading font-black text-slate-900 mb-4">Quick Actions</h2>
       {actions.map((action, idx) => (
         <Link
           key={idx}
           href={action.href}
-          className={`w-full flex items-center justify-between p-5 rounded-[1.25rem] transition-all active:scale-[0.98] group relative overflow-hidden ${
-            action.primary 
-              ? 'bg-primary text-white shadow-xl shadow-primary/20 hover:shadow-primary/30' 
-              : 'bg-white text-slate-900 border border-slate-100 hover:border-primary/30 hover:shadow-lg'
+          className={`w-full flex items-center justify-between p-4 rounded-xl transition-all active:scale-[0.98] group relative overflow-hidden ${
+            action.primary
+              ? 'bg-primary text-white shadow-lg shadow-primary/20 hover:shadow-primary/30'
+              : 'bg-white text-slate-900 border border-slate-100 hover:border-primary/30 hover:shadow-md'
           }`}
         >
-          <div className="flex items-center gap-4 relative z-10">
-            <div className={`p-3 rounded-xl group-hover:scale-110 transition-transform ${
+          <div className="flex items-center gap-3 relative z-10">
+            <div className={`p-2 rounded-lg group-hover:scale-110 transition-transform ${
               action.primary ? 'bg-white/20' : 'bg-slate-50 text-primary'
             }`}>
-              <span className="material-symbols-outlined text-2xl">{action.icon}</span>
+              <span className="material-symbols-outlined text-xl">{action.icon}</span>
             </div>
             <div className="text-left">
-              <p className="font-heading font-bold text-sm">{action.title}</p>
-              <p className={`text-[11px] font-medium ${action.primary ? 'text-white/70' : 'text-slate-400'}`}>{action.desc}</p>
+              <p className="font-heading font-bold text-xs">{action.title}</p>
+              <p className={`text-[10px] font-medium ${action.primary ? 'text-white/70' : 'text-slate-400'}`}>{action.desc}</p>
             </div>
           </div>
           {action.statusBadge && (
-            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${action.statusBadge.badge}`}>
+            <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${action.statusBadge.badge}`}>
               {action.statusBadge.label}
             </span>
           )}
           <span className={`material-symbols-outlined transition-transform group-hover:translate-x-1 ${
             action.primary ? 'text-white/50' : 'text-slate-300'
           }`}>chevron_right</span>
-          
+
           {action.primary && (
-            <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-2xl"></div>
+            <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-white/5 rounded-full blur-2xl"></div>
           )}
         </Link>
       ))}

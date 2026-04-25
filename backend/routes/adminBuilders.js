@@ -13,6 +13,7 @@ router.get('/export', builderController.exportBuilders);
 router.get('/:id', validate(schemas.builder.idParams, 'params'), builderController.getAdminOne);
 router.post('/', uploadLimiter, builderUploadFields, validate(schemas.builder.create), builderController.create);
 router.patch('/:id/feature', validate(schemas.builder.idParams, 'params'), validate(schemas.builder.featureToggle), builderController.toggleFeatured);
+router.patch('/:id/link-property', validate(schemas.builder.idParams, 'params'), validate(schemas.builder.linkProperty), builderController.linkProperty);
 router.put('/:id', uploadLimiter, builderUploadFields, validate(schemas.builder.idParams, 'params'), validate(schemas.builder.update), builderController.update);
 router.delete('/:id', validate(schemas.builder.idParams, 'params'), builderController.remove);
 

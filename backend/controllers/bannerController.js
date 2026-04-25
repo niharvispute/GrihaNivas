@@ -32,6 +32,20 @@ const list = async (req, res, next) => {
   }
 };
 
+// ── GET /api/banners/admin  [admin] ──────────────────────────────────────────
+
+const listAdmin = async (req, res, next) => {
+  try {
+    const banners = await Banner.find({})
+      .sort({ position: 1, order: 1 })
+      .select('-__v')
+      .lean();
+    return sendSuccess(res, 200, 'All banners fetched', banners);
+  } catch (err) {
+    next(err);
+  }
+};
+
 // ── POST /api/banners  [admin] ────────────────────────────────────────────────
 
 const create = async (req, res, next) => {
@@ -113,4 +127,4 @@ const remove = async (req, res, next) => {
   }
 };
 
-module.exports = { list, create, update, remove };
+module.exports = { list, listAdmin, create, update, remove };

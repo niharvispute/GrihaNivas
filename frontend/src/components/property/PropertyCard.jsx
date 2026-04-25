@@ -29,8 +29,8 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
   const locationLabel = property?.location || SYSTEM_DEFAULT_CITY;
 
   return (
-    <article className={`group relative bg-white rounded-xl md:rounded-3xl overflow-hidden shadow-sm md:shadow-md hover:shadow-2xl transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full w-[300px] mx-auto md:w-full'}`}>
-      <div className={`relative ${isHorizontal ? 'w-full lg:w-1/2 h-60 sm:h-72 lg:h-auto' : 'h-32 sm:h-48 md:h-56 flex-none'} overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50`}>
+    <article className={`group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full w-[300px] mx-auto md:w-full'}`}>
+      <div className={`relative ${isHorizontal ? 'w-full lg:w-1/2 h-52 sm:h-64 lg:h-auto' : 'h-36 sm:h-44 md:h-48 flex-none'} overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50`}>
         {property.image ? (
           <CloudinaryImage
             src={property.image}
@@ -62,16 +62,18 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
         />
       </div>
 
-      <div className={`p-3 sm:p-5 md:p-6 flex flex-col grow gap-2 sm:gap-3 ${isHorizontal ? 'lg:p-8 lg:justify-center' : ''}`}>
-        <div>
-          <h3 className={`${isHorizontal ? 'text-2xl sm:text-3xl font-extrabold' : 'text-[13px] sm:text-base md:text-lg font-black'} text-slate-900 leading-tight mb-0.5 line-clamp-1 sm:line-clamp-2 uppercase`}>
-            {property.title}
-          </h3>
-          <p className="text-slate-500 text-[10px] sm:text-xs flex items-center gap-1 truncate font-bold">
-            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-            <span className="truncate">{locationLabel}</span>
-          </p>
-          <p className="text-primary font-black text-[14px] sm:text-lg md:text-xl mt-1.5 tracking-tighter">
+      <div className={`p-3 sm:p-4 md:p-5 flex flex-col grow gap-2 sm:gap-3 ${isHorizontal ? 'lg:p-6 lg:justify-center' : ''}`}>
+        <div className={isHorizontal ? '' : 'flex flex-row items-start justify-between gap-2'}>
+          <div className="min-w-0 flex-1">
+            <h3 className={`${isHorizontal ? 'text-xl sm:text-2xl font-extrabold mb-0.5' : 'text-xs sm:text-sm font-black mb-0.5'} text-slate-900 leading-tight line-clamp-1 uppercase`}>
+              {property.title}
+            </h3>
+            <p className="text-slate-500 text-[10px] sm:text-xs flex items-center gap-1 truncate font-bold">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              <span className="truncate">{locationLabel}</span>
+            </p>
+          </div>
+          <p className={`text-primary font-black tracking-tighter shrink-0 ${isHorizontal ? 'text-sm sm:text-base md:text-lg mt-1' : 'text-xs sm:text-sm'}`}>
             {displayPrice}
           </p>
         </div>
@@ -82,48 +84,53 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
           </p>
         )}
 
-        <div className={`grid ${isHorizontal ? 'grid-cols-3' : 'grid-cols-2'} gap-2 sm:gap-4 py-2 sm:py-4 border-t border-slate-100 flex-grow mt-1`}>
+        <div className={`grid ${isHorizontal ? 'grid-cols-3' : 'grid-cols-2'} gap-2 sm:gap-3 py-2 sm:py-3 border-t border-slate-100 flex-grow`}>
           <div>
             <p className="text-[8px] sm:text-xs uppercase font-bold text-slate-400 tracking-wider mb-0.5">Config</p>
             <div className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-primary text-sm sm:text-lg">apartment</span>
-              <span className={`font-black truncate text-slate-900 text-[11px] sm:text-sm ${isHorizontal ? 'text-lg' : ''}`}>{configurationLabel}</span>
+              <span className="material-symbols-outlined text-primary text-sm sm:text-base">apartment</span>
+              <span className={`font-black truncate text-slate-900 text-xs sm:text-sm ${isHorizontal ? 'sm:text-base' : ''}`}>{configurationLabel}</span>
             </div>
           </div>
           <div>
-            <p className="text-[8px] sm:text-xs uppercase font-bold text-slate-400 tracking-wider mb-0.5">Area</p>
+            <p className="text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-0.5">Area</p>
             <div className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-primary text-sm sm:text-lg">square_foot</span>
-              <span className={`font-black truncate text-slate-900 text-[11px] sm:text-sm ${isHorizontal ? 'text-lg' : ''}`}>{areaLabel}</span>
+              <span className="material-symbols-outlined text-primary text-sm sm:text-base">square_foot</span>
+              <span className={`font-black truncate text-slate-900 text-xs sm:text-sm ${isHorizontal ? 'sm:text-base' : ''}`}>{areaLabel}</span>
             </div>
           </div>
         </div>
 
-        <div className={`flex gap-2 mt-auto pt-1 ${isHorizontal ? 'flex-row' : 'flex-row'}`}>
-          {!isHorizontal && (
-            <div className="w-[25%] sm:w-[30%]">
-              <AddToCompareButton
-                propertyId={property.id || property._id}
-                variant="icon"
-                className="rounded-lg h-9 sm:h-11"
-              />
-            </div>
-          )}
-          <Link
-            href={detailHref}
-            className={`bg-gradient-to-r from-primary to-primary/85 text-white py-2 sm:py-3 rounded-lg sm:rounded-xl font-black tracking-tighter hover:shadow-lg hover:shadow-primary/40 transition-all text-center text-[9px] sm:text-xs uppercase text-nowrap ${isHorizontal ? 'flex-1 px-10' : 'w-[75%] sm:w-[70%] h-9 sm:h-11 flex items-center justify-center'}`}
-          >
-            {isHorizontal ? 'Inquire Now' : 'Details'}
-          </Link>
-          {isHorizontal ? (
+        {isHorizontal ? (
+          <div className="flex gap-2 mt-auto pt-1">
+            <Link
+              href={detailHref}
+              className="flex-1 px-10 bg-gradient-to-r from-primary to-primary/85 text-white py-2 sm:py-3 rounded-lg sm:rounded-xl font-black tracking-tighter hover:shadow-lg hover:shadow-primary/40 transition-all text-center text-[9px] sm:text-xs uppercase text-nowrap"
+            >
+              Inquire Now
+            </Link>
             <Link
               href={`${detailHref}#lead-form`}
               className="flex-1 px-6 sm:px-8 border-2 border-primary text-primary py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm tracking-tighter hover:bg-primary/5 transition-all whitespace-nowrap"
             >
               Schedule Tour
             </Link>
-          ) : null}
-        </div>
+          </div>
+        ) : (
+          <div className="flex flex-col w-full gap-2 mt-auto pt-1">
+            <Link
+              href={detailHref}
+              className="w-full h-9 sm:h-10 flex items-center justify-center bg-gradient-to-r from-primary to-primary/85 text-white rounded-lg font-black tracking-tighter hover:shadow-lg hover:shadow-primary/40 transition-all text-[10px] sm:text-xs uppercase"
+            >
+              View Property
+            </Link>
+            <AddToCompareButton
+              propertyId={property.id || property._id}
+              variant="row"
+              className="w-full h-9 sm:h-10 rounded-lg text-[10px] sm:text-xs font-black tracking-tighter uppercase"
+            />
+          </div>
+        )}
       </div>
     </article>
   );

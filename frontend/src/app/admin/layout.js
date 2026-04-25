@@ -9,7 +9,7 @@ export default function AdminLayout({ children }) {
         <AdminSidebar />
         <div className="ml-64 flex flex-col min-h-screen">
           <AdminHeader />
-          <main className="pt-24 px-8 pb-12 overflow-y-auto">
+          <main className="pt-20 px-6 pb-8 overflow-y-auto">
             {children}
           </main>
         </div>

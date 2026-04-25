@@ -1,0 +1,83 @@
+ Your Redis is already 100% built and integrated. You just need to run it. Here's the complete picture:
+
+  ---
+  What's Already Done in Your Code
+
+  - config/redis.js — connects to Redis, handles fallback to memory if Redis is down
+  - cacheService.js — full Redis caching for all property/builder/banner queries
+  - JWT blacklist stored in Redis
+  - Graceful fallback — if Redis is unavailable, app still works (slower)
+
+  You only need to set one env variable and run the Docker container.
+
+  ---
+  Complete Setup on KVM 2
+
+  Step 1 — Install Docker
+  curl -fsSL https://get.docker.com | sh
+  sudo usermod -aG docker $USER
+
+  Step 2 — Create docker-compose.yml
+  version: '3.8'
+  services:
+    redis:
+      image: redis:7-alpine
+      container_name: bricks-redis
+      restart: always
+      ports:
+        - "127.0.0.1:6379:6379"
+      volumes:
+        - redis-data:/data
+      command: >
+        redis-server
+        --maxmemory 256mb
+        --maxmemory-policy allkeys-lru
+        --appendonly yes
+        --requirepass your_strong_password
+
+  volumes:
+    redis-data:
+
+  Step 3 — Start Redis
+  docker compose up -d
+
+  Step 4 — Add to backend .env
+  REDIS_URL=redis://:your_strong_password@127.0.0.1:6379
+  JWT_BLACKLIST_STORE=redis
+
+  That's it. Restart PM2 and Redis is live:
+  pm2 restart all
+  pm2 logs   # should see: "JWT blacklist store: redis"
+
+  ---
+  What Redis Gives Your App
+
+  ┌──────────────────────┬─────────────────────────────────────────────────────────┬─────────────────────────────────┐
+  │       Feature        │                      Without Redis                      │           With Redis            │
+  ├──────────────────────┼─────────────────────────────────────────────────────────┼─────────────────────────────────┤
+  │ Property list cache  │ Per-worker only                                         │ Shared across all PM2 workers   │
+  ├──────────────────────┼─────────────────────────────────────────────────────────┼─────────────────────────────────┤
+  │ JWT logout blacklist │ In-memory (lost on restart)                             │ Persistent across restarts      │
+  ├──────────────────────┼─────────────────────────────────────────────────────────┼─────────────────────────────────┤
+  │ Cache invalidation   │ Only invalidates on the worker that handled the request │ Invalidates for all workers     │
+  ├──────────────────────┼─────────────────────────────────────────────────────────┼─────────────────────────────────┤
+  │ After PM2 restart    │ All cache lost                                          │ Cache survives restart          │
+  ├──────────────────────┼─────────────────────────────────────────────────────────┼─────────────────────────────────┤
+  │ Rate limiting        │ In-memory per worker                                    │ Can be upgraded to Redis-backed │
+  └──────────────────────┴─────────────────────────────────────────────────────────┴─────────────────────────────────┘
+
+  ---
+  Final Server Stack on KVM 2
+
+  Hostinger KVM 2 (8 GB RAM)
+  ├── Nginx              → SSL + reverse proxy        (~50 MB)
+  ├── PM2
+  │   ├── bricks-api     → Express (2 workers)        (~400 MB)
+  │   └── bricks-web     → Next.js SSR                (~500 MB)
+  ├── MongoDB            → local instance             (~1.5 GB)
+  └── Docker
+      └── Redis 7        → cache + JWT blacklist      (~50 MB)
+
+  Total: ~2.5 GB used / 8 GB available ✓
+
+  Your stack was already Redis-ready — you just needed the server running and the env variable set.

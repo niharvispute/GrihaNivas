@@ -8,7 +8,9 @@ export default function SectionCarousel({
   renderItem,
   title,
   subtitle,
+  emptyMessage = 'Nothing listed yet — check back soon.',
   itemClassName = 'min-w-[300px] md:min-w-[400px] lg:min-w-[450px]',
+  sectionClassName = 'bg-white',
 }) {
   const [scrollX, setScrollX] = useState(0);
   const [maxScroll, setMaxScroll] = useState(0);
@@ -52,27 +54,27 @@ export default function SectionCarousel({
     controls.start({ x: newX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
   };
 
-  if (!items || items.length === 0) return null;
+  const isEmpty = !items || items.length === 0;
 
   return (
-    <section className="py-10 md:py-16 lg:py-24 bg-gradient-to-b from-white via-slate-50/20 to-white">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-8 md:mb-12 lg:mb-16 max-w-7xl">
+    <section className={`py-6 md:py-10 lg:py-14 ${sectionClassName}`}>
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 mb-5 md:mb-7 lg:mb-10 max-w-7xl">
         <div className="flex flex-col md:flex-row justify-between md:items-end gap-5 md:gap-8">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-3 md:mb-4">
               <span className="w-10 h-1 bg-gradient-to-r from-primary to-primary/60 rounded-full"></span>
               <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/80 ">Curated Selection</p>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-3 md:mb-4 ">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight mb-2 md:mb-3 ">
               {title}
             </h2>
-            <p className="text-xs sm:text-sm md:text-base text-slate-500 font-bold leading-relaxed max-w-xl ">
+            <p className="text-xs sm:text-sm md:text-base text-slate-500 font-bold leading-relaxed max-w-lg ">
               {subtitle}
             </p>
           </div>
 
-          {/* Navigation Buttons — always visible */}
-          <div className="flex gap-3 self-start md:self-auto">
+          {/* Navigation Buttons — hidden when empty */}
+          <div className={`flex gap-3 self-start md:self-auto ${isEmpty ? 'invisible' : ''}`}>
             <button
               onClick={() => handleScroll('left')}
               disabled={scrollX >= 0}
@@ -101,46 +103,58 @@ export default function SectionCarousel({
         </div>
       </div>
 
-      {/* Carousel Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden" ref={containerRef}>
-          <motion.div
-            ref={trackRef}
-            drag="x"
-            dragConstraints={{ left: -maxScroll, right: 0 }}
-            animate={controls}
-            style={{ x: scrollX }}
-            onDragEnd={(_, info) => {
-              const proposedX = scrollX + info.offset.x;
-              const clampedX = Math.min(0, Math.max(proposedX, -maxScroll));
-              setScrollX(clampedX);
-              controls.start({ x: clampedX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
-            }}
-            className="flex gap-5 sm:gap-6 md:gap-7 cursor-grab active:cursor-grabbing"
-          >
-            {items.map((item, idx) => (
-              <div key={idx} className={`${itemClassName} shrink-0 transition-all duration-300 hover:shadow-xl`}>
-                {renderItem(item)}
-              </div>
-            ))}
-            <div className="w-2 sm:w-4 shrink-0" aria-hidden="true" />
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Progress Indicator */}
-      {maxScroll > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 md:mt-12 lg:mt-14">
-          <div className="flex justify-center md:justify-start">
-            <div className="h-1 bg-slate-100 rounded-full overflow-hidden w-32 md:w-40">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${(Math.abs(scrollX) / (maxScroll || 1)) * 100}%` }}
-                className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full"
-              />
-            </div>
+      {/* Empty state */}
+      {isEmpty ? (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center py-16 md:py-20 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50">
+            <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">inventory_2</span>
+            <p className="text-slate-500 font-bold text-sm md:text-base">{emptyMessage}</p>
           </div>
         </div>
+      ) : (
+        <>
+          {/* Carousel Container */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative overflow-hidden" ref={containerRef}>
+              <motion.div
+                ref={trackRef}
+                drag="x"
+                dragConstraints={{ left: -maxScroll, right: 0 }}
+                animate={controls}
+                style={{ x: scrollX }}
+                onDragEnd={(_, info) => {
+                  const proposedX = scrollX + info.offset.x;
+                  const clampedX = Math.min(0, Math.max(proposedX, -maxScroll));
+                  setScrollX(clampedX);
+                  controls.start({ x: clampedX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
+                }}
+                className="flex gap-5 sm:gap-6 md:gap-7 cursor-grab active:cursor-grabbing"
+              >
+                {items.map((item, idx) => (
+                  <div key={idx} className={`${itemClassName} shrink-0 transition-all duration-300 hover:shadow-xl`}>
+                    {renderItem(item)}
+                  </div>
+                ))}
+                <div className="w-2 sm:w-4 shrink-0" aria-hidden="true" />
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Progress Indicator */}
+          {maxScroll > 0 && (
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-5 md:mt-7 lg:mt-10">
+              <div className="flex justify-center md:justify-start">
+                <div className="h-1 bg-slate-100 rounded-full overflow-hidden w-32 md:w-40">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(Math.abs(scrollX) / (maxScroll || 1)) * 100}%` }}
+                    className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </section>
   );

@@ -10,6 +10,7 @@ import {
   exportAdminBuilders,
 } from '@/services/builderService';
 import ExportButton from '@/components/admin/ExportButton';
+import BuilderPropertyModal from '@/components/admin/builders/BuilderPropertyModal';
 
 function formatDate(iso) {
   if (!iso) return '—';
@@ -44,6 +45,7 @@ export default function AdminBuildersPage() {
   const [openActionFor, setOpenActionFor] = useState(null);
   const [togglingId, setTogglingId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [propertyModalBuilder, setPropertyModalBuilder] = useState(null);
 
   const fetchBuilders = useCallback(async () => {
     setLoading(true);
@@ -222,22 +224,22 @@ export default function AdminBuildersPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 overflow-hidden">
+      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 min-h-[calc(100vh-22rem)] flex flex-col">
         {loading ? (
-          <div className="p-10 space-y-4 animate-pulse">
+          <div className="p-10 space-y-4 animate-pulse flex-1">
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="h-16 bg-slate-100 rounded-2xl" />
             ))}
           </div>
         ) : items.length === 0 ? (
-          <div className="py-20 text-center">
+          <div className="py-20 text-center flex-1 flex flex-col items-center justify-center">
             <span className="material-symbols-outlined text-5xl text-slate-200 mb-4 block">apartment</span>
             <p className="text-slate-400 font-bold">No builders found.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto flex-1 flex flex-col">
             <table className="w-full text-left border-separate border-spacing-y-2 p-6">
-              <thead>
+              <thead className="sticky top-0 z-10 bg-white">
                 <tr className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
                   <th className="px-6 py-5">Builder</th>
                   <th className="px-6 py-5">Projects</th>
@@ -350,6 +352,18 @@ export default function AdminBuildersPage() {
                                   <span>Edit</span>
                                 </Link>
 
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setOpenActionFor(null);
+                                    setPropertyModalBuilder(builder);
+                                  }}
+                                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all"
+                                >
+                                  <span className="material-symbols-outlined text-lg text-primary">link</span>
+                                  <span>Manage Properties</span>
+                                </button>
+
                                 <Link
                                   href={`/builders/${builder.slug}`}
                                   target="_blank"
@@ -381,6 +395,22 @@ export default function AdminBuildersPage() {
           </div>
         )}
       </div>
+
+      {propertyModalBuilder && (
+        <BuilderPropertyModal
+          builder={propertyModalBuilder}
+          onClose={() => setPropertyModalBuilder(null)}
+          onCountChange={(delta) => {
+            setItems((prev) =>
+              prev.map((b) =>
+                b._id === propertyModalBuilder._id
+                  ? { ...b, propertyCount: Math.max(0, (Number(b.propertyCount) || 0) + delta) }
+                  : b
+              )
+            );
+          }}
+        />
+      )}
 
       {meta && meta.totalPages > 1 && (
         <div className="flex justify-center gap-2">

@@ -8,6 +8,10 @@ const POSITION_LABELS = {
   blog_sidebar: 'Blog Sidebar Banner',
 };
 
+const KNOWN_SLOTS = [
+  { position: 'home_hero', title: 'Hero Banner', recommendedSize: '1920×600px' },
+];
+
 const toLastUpdatedText = (timestamp) => {
   if (!timestamp) return 'N/A';
   return new Date(timestamp).toLocaleDateString('en-IN', {
@@ -30,12 +34,29 @@ const mapBannerToAdminVM = (banner) => ({
 });
 
 /**
- * Fetch all banner slots and their current configurations.
+ * Fetch all banner slots for admin — always returns all 4 known positions,
+ * merging DB records with placeholder slots for positions not yet uploaded.
  */
 export const listBanners = async () => {
   try {
-    const res = await apiFetch('/api/banners');
-    return Array.isArray(res.data) ? res.data.map(mapBannerToAdminVM) : [];
+    const res = await authedApiFetch('/api/banners/admin');
+    const dbBanners = Array.isArray(res.data) ? res.data : [];
+
+    return KNOWN_SLOTS.map((slot) => {
+      const db = dbBanners.find((b) => b.position === slot.position);
+      if (db) return mapBannerToAdminVM(db);
+      return {
+        id: null,
+        position: slot.position,
+        title: slot.title,
+        description: `Placement: ${slot.position}`,
+        status: 'Inactive',
+        image: null,
+        lastUpdated: 'Never',
+        recommendedSize: slot.recommendedSize,
+        raw: null,
+      };
+    });
   } catch {
     return [];
   }

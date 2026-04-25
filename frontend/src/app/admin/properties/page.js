@@ -5,6 +5,7 @@ import Link from 'next/link';
 import CloudinaryImage from '@/components/CloudinaryImage';
 import { listProperties, deleteProperty, getPropertyById, updateProperty, exportProperties, updatePropertyActiveStatus } from '@/services/propertyService';
 import ExportButton from '@/components/admin/ExportButton';
+import PropertyImageModal from '@/components/admin/properties/PropertyImageModal';
 
 const CATEGORY_LABEL = { buy: 'Buy', rent: 'Rent', commercial: 'Commercial', new_launch: 'New Launch' };
 
@@ -36,6 +37,8 @@ export default function PropertyManagementPage() {
   const [togglingFeatured, setTogglingFeatured] = useState(null);
   const [togglingNewLaunch, setTogglingNewLaunch] = useState(null);
   const [togglingActive, setTogglingActive] = useState(null);
+  const [imageModalProperty, setImageModalProperty] = useState(null);
+  const [loadingImageModal, setLoadingImageModal] = useState(false);
 
   const fetchProperties = useCallback(async () => {
     setLoading(true);
@@ -79,6 +82,19 @@ export default function PropertyManagementPage() {
       alert('Failed to fetch property details.');
     } finally {
       setLoadingPropertyDetail(false);
+    }
+  };
+
+  const handleManageImages = async (id) => {
+    setOpenActionFor(null);
+    setLoadingImageModal(true);
+    try {
+      const property = await getPropertyById(id, { map: false });
+      setImageModalProperty(property);
+    } catch {
+      alert('Failed to load property images.');
+    } finally {
+      setLoadingImageModal(false);
     }
   };
 
@@ -182,20 +198,20 @@ export default function PropertyManagementPage() {
       </div>
 
       {/* Properties Table */}
-      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 overflow-hidden">
+      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 min-h-[calc(100vh-22rem)] flex flex-col">
         {loading ? (
-          <div className="p-10 space-y-4 animate-pulse">
+          <div className="p-10 space-y-4 animate-pulse flex-1">
             {[1, 2, 3, 4].map((i) => <div key={i} className="h-20 bg-slate-100 rounded-2xl" />)}
           </div>
         ) : properties.length === 0 ? (
-          <div className="py-20 text-center">
+          <div className="py-20 text-center flex-1 flex flex-col items-center justify-center">
             <span className="material-symbols-outlined text-5xl text-slate-200 mb-4 block">home_work</span>
             <p className="text-slate-400 font-bold">No properties found.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto flex-1 flex flex-col">
             <table className="w-full text-left border-separate border-spacing-y-2 p-6">
-              <thead>
+              <thead className="sticky top-0 z-10 bg-white">
                 <tr className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
                   <th className="px-6 py-5">Property</th>
                   <th className="px-6 py-5">Category</th>
@@ -307,6 +323,15 @@ export default function PropertyManagementPage() {
                                   <span className="material-symbols-outlined text-lg text-primary">visibility</span>
                                   <span>View</span>
                                 </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleManageImages(prop._id)}
+                                  disabled={loadingImageModal}
+                                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all disabled:opacity-40"
+                                >
+                                  <span className="material-symbols-outlined text-lg text-primary">photo_library</span>
+                                  <span>{loadingImageModal ? 'Loading…' : 'Manage Images'}</span>
+                                </button>
                                 <Link
                                   href={`/property/${prop.slug || prop._id}`}
                                   target="_blank"
@@ -362,6 +387,22 @@ export default function PropertyManagementPage() {
             </button>
           ))}
         </div>
+      )}
+
+      {imageModalProperty && (
+        <PropertyImageModal
+          property={imageModalProperty}
+          onClose={() => setImageModalProperty(null)}
+          onHeroUpdated={(img) => {
+            setProperties((prev) =>
+              prev.map((p) =>
+                p._id === imageModalProperty._id
+                  ? { ...p, heroImage: img }
+                  : p
+              )
+            );
+          }}
+        />
       )}
 
       {(loadingPropertyDetail || viewingProperty) && (

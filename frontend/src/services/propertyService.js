@@ -61,6 +61,22 @@ export const deleteProperty = async (id) => {
   return true;
 };
 
+export const setPropertyHeroImage = async (id, { url, publicId }) => {
+  const res = await authedApiFetch(`/api/properties/${id}/hero-image`, {
+    method: 'PATCH',
+    body: { url, publicId },
+  });
+  return res.data;
+};
+
+export const adminListProperties = async (query = {}) => {
+  const res = await authedApiFetch('/api/properties/admin', { query });
+  return {
+    items: Array.isArray(res.data) ? res.data : [],
+    meta: res.meta,
+  };
+};
+
 export const approveProperty = async (id) => {
   const res = await authedApiFetch(`/api/properties/${id}/approve`, { method: 'PATCH' });
   return res.data;

@@ -25,7 +25,8 @@
     "test:auth:v2": "node scripts/test-auth-v2.js",
     "migrate:property-lifecycle": "node scripts/migratePropertyLifecycle.js",
     "migrate:approved-submissions": "node scripts/migrateApprovedSubmissions.js",
-    "cleanup:rejected-properties": "node scripts/cleanupRejectedProperties.js"
+    "cleanup:rejected-properties": "node scripts/cleanupRejectedProperties.js",
+    "reset:demo": "node scripts/resetForDemo.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.3",

@@ -24,6 +24,9 @@ const validate = (schema, target = 'body') => {
         field: err.path.join('.'),
         message: err.message,
       }));
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[VALIDATE] failed on', req.method, req.path, JSON.stringify(errors));
+      }
       return sendBadRequest(res, 'Validation failed', errors);
     }
 
@@ -82,6 +85,15 @@ const builderTestimonialSchema = z.object({
   rating: z.coerce.number().int().min(1).max(5).optional(),
   avatar: z.string().trim().url().optional(),
 });
+
+// Correctly coerces FormData string booleans: 'true'→true, 'false'→false, actual booleans pass through.
+const parseStringBoolean = (val) => {
+  if (val === 'true' || val === true || val === 1) return true;
+  if (val === 'false' || val === false || val === 0 || val === '' || val == null) return false;
+  return val;
+};
+
+const stringBooleanSchema = z.preprocess(parseStringBoolean, z.boolean());
 
 const parseJsonIfString = (value) => {
   if (typeof value !== 'string') return value;
@@ -385,6 +397,13 @@ const schemas = {
       limit: z.coerce.number().int().min(1).max(100).default(10),
       status: z.enum(['pending', 'approved', 'rejected']).optional(),
       search: z.string().trim().max(100).optional(),
+      builder: objectIdSchema.optional(),
+      noBuilder: z.preprocess((v) => v === 'true' || v === true, z.boolean()).optional(),
+    }),
+
+    heroImage: z.object({
+      url: z.string().url('Invalid image URL'),
+      publicId: z.string().min(1, 'publicId is required'),
     }),
 
     moderationParams: z.object({
@@ -451,13 +470,18 @@ const schemas = {
       ongoingProjects: z.coerce.number().int().min(0).optional(),
       completedDeliveries: z.coerce.number().int().min(0).optional(),
       headquarters: z.string().trim().max(200).optional(),
-      isFeatured: z.coerce.boolean().optional(),
-      isActive: z.coerce.boolean().optional(),
+      isFeatured: stringBooleanSchema.optional(),
+      isActive: stringBooleanSchema.optional(),
       seo: builderSeoSchema.optional(),
     }),
 
     featureToggle: z.object({
-      isFeatured: z.coerce.boolean(),
+      isFeatured: stringBooleanSchema,
+    }),
+
+    linkProperty: z.object({
+      propertyId: objectIdSchema,
+      action: z.enum(['link', 'unlink']),
     }),
 
     update: z
@@ -477,8 +501,8 @@ const schemas = {
         ongoingProjects: z.coerce.number().int().min(0).optional(),
         completedDeliveries: z.coerce.number().int().min(0).optional(),
         headquarters: z.string().trim().max(200).optional(),
-        isFeatured: z.coerce.boolean().optional(),
-        isActive: z.coerce.boolean().optional(),
+        isFeatured: stringBooleanSchema.optional(),
+        isActive: stringBooleanSchema.optional(),
         seo: builderSeoSchema.optional(),
       })
       .refine((value) => Object.keys(value).length > 0, {
