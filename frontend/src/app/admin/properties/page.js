@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import CloudinaryImage from '@/components/CloudinaryImage';
 import { listProperties, deleteProperty, getPropertyById, updateProperty, exportProperties, updatePropertyActiveStatus } from '@/services/propertyService';
 import ExportButton from '@/components/admin/ExportButton';
 
@@ -216,7 +217,7 @@ export default function PropertyManagementPage() {
                         <div className="flex items-center gap-4">
                           <div className="w-14 h-14 rounded-2xl overflow-hidden bg-slate-100 shrink-0 flex items-center justify-center">
                             {heroUrl
-                              ? <img src={heroUrl} alt={prop.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                              ? <CloudinaryImage src={heroUrl} alt={prop.title} width={56} height={56} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                               : <span className="material-symbols-outlined text-slate-300 text-2xl">image</span>
                             }
                           </div>

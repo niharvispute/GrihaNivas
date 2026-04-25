@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import CloudinaryImage from '@/components/CloudinaryImage';
 import { SYSTEM_DEFAULT_CITY } from '@/lib/system/defaults';
 
 export default function TrendingBuilderCard({ builder }) {
@@ -19,11 +19,10 @@ export default function TrendingBuilderCard({ builder }) {
       {/* Image Section */}
       <div className={`relative ${'h-32 sm:h-48 md:h-56'} overflow-hidden flex-none bg-gradient-to-br from-slate-100 to-slate-50`}>
         {bannerImage ? (
-          <Image
+          <CloudinaryImage
             src={bannerImage}
             alt={builderName}
             fill
-            unoptimized
             sizes="(max-width: 1024px) 100vw, 33vw"
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />

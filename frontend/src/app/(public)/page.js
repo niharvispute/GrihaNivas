@@ -15,40 +15,6 @@ const API_BASE =
 const DEFAULT_HERO_IMAGE =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuDTt4k01Rv0EI75RlMBkam6QUCJiZxmg1pWElVfvID7rJzGZ0OvtAoOIdJrlB8otSwlYcMDK1aDPGzGHb70Ue2s_zCIpF7dgmcFEv9_ATI1Je_KgD_yyAVd5Xbx2dmJdP2AV03KZ3aZmBUBVKayjj31aeM1Ymyv1dCCl64XwHK2YfR5tRqT8xvPbZkcBourkgmbc4Mp0Jd8utO0w_T8VBhyUci1XElabmyXBbVzxZvtI0QlG1K55lIV-KnpVTV2SReMkfBGWCYL2-8';
 
-const MOCK_BLOGS = [
-  {
-    slug: 'sobo-surge-2024',
-    title: 'Why South Mumbai Real Estate is Seeing a 20% Surge',
-    category: 'Market Trends',
-    date: 'Jan 24, 2024',
-    readTime: '8 min read',
-    excerpt:
-      'An in-depth look at the infrastructure projects driving property prices in Mumbai\'s most expensive areas.',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDSML6vyWgiqELp9quxULVYzQKDqLv-NoWn1ljBf10FjCuzot5I-meCNA2ZJ1c0erZuXzo2Dy3giH_SatuD8OdU1wk0qupDoRqjwMzT1I466iENthPbssGlUE366Essvx5W5Z4Ti2tT-BzjzR2V1u8LPF_jvvWfCGr1L-kxPKwmRrc69tfyeSsJbWHOmOAlGR0amfIVmxEItIj6Pdcmr8ipXjQdAgaLzcCfkreH0iMDSAIwtgaB5_OL8d2saER0F3lAln0-sUwW5SI',
-  },
-  {
-    slug: 'maximising-small-spaces',
-    title: 'Maximizing Small Spaces: Apartment Living Guide',
-    category: 'Interior Design',
-    date: 'Feb 10, 2024',
-    readTime: '5 min read',
-    excerpt: 'Clever design hacks and furniture choices for Mumbai\'s mid-range luxury apartments.',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAFIn59q4A7byfRd9Ehu0BUhysDvlO1dFDOOp8M2_y4b1lQ4Vwek3L-nt-moS87FpbmEgYHHjdmokqKNda2Vo1wfKr5yzvpnxuPc0tZ3zJpOXVOTvvDbRI8a3F-06Xm39hk7ojkvdj-lSfHl1rQbsssNCkFeBnPBGEGL16OGLD33S8sLrmvn19V_XZpoPPOr-IRdWnFZaY0pBSFTy4NslnCNdkLDgP-vmSCcZOeCyHrYK45D_K2xlAfY9Ga6cxafCGbkEu4Gj_0dTw',
-  },
-  {
-    slug: 'rera-guide-2024',
-    title: 'Navigating RERA: What Every Buyer Must Know',
-    category: 'Legal Advice',
-    date: 'Mar 05, 2024',
-    readTime: '12 min read',
-    excerpt:
-      'Our legal experts break down the essential RERA clauses that protect your real estate investment.',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC3gEuTFYyvYda68hdVr_gHaw5mGU4vmGUkoRE6lL8dGoNXOufMtVSeY0S9yRHSBBPbqyHOWvFMoCuq8a7FkyqyDKP8QoA_S9wVnWh2nOrHEw-f0pI6quSyLZb9zZBILxbAU5ZzJlWhUiDWA-RFKDSWaygUzF3OfjsM7ExI-gCubYH_Tkq0gCgbMDA5s4zCjD6OMaI2hgJM6zadsM6SwQ3J_zlroURTZeesmfJwp0G-vswP7ChMINRBpC9NNqPPzXrNDA6-HH-YZQ0',
-  },
-];
 
 async function fetchHomeData() {
   const revalidate = 300; // 5-min Next.js data cache
@@ -99,7 +65,7 @@ async function fetchHomeData() {
     return {
       properties: [],
       builders: [],
-      blogs: MOCK_BLOGS,
+      blogs: [],
       heroBannerImage: DEFAULT_HERO_IMAGE,
     };
   }
@@ -107,7 +73,7 @@ async function fetchHomeData() {
 
 export default async function HomePage() {
   const { properties, builders, blogs, heroBannerImage } = await fetchHomeData();
-  const latestBlogs = blogs.length ? blogs : MOCK_BLOGS;
+  const latestBlogs = blogs;
 
   return (
     <div className="w-full">
@@ -298,7 +264,7 @@ export default async function HomePage() {
       </section>
 
       {/* 6. Blogs */}
-      <section className="py-16 md:py-20 lg:py-24 bg-slate-900 text-white px-4 sm:px-6 lg:px-8">
+      {latestBlogs.length > 0 && <section className="py-16 md:py-20 lg:py-24 bg-slate-900 text-white px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-2xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-5 mb-10 md:mb-14 lg:mb-16">
             <div className="max-w-xl">
@@ -345,7 +311,7 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* 7. Testimonials */}
       <HomePageTestimonials />

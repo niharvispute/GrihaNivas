@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
+import CloudinaryImage from '@/components/CloudinaryImage';
 import {
   deleteAdminBuilder,
   listAdminBuilders,
@@ -261,9 +262,11 @@ export default function AdminBuildersPage() {
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center shrink-0">
                             {builder.logo?.url ? (
-                              <img
+                              <CloudinaryImage
                                 src={builder.logo.url}
                                 alt={builder.name}
+                                width={48}
+                                height={48}
                                 className="w-full h-full object-cover"
                               />
                             ) : (

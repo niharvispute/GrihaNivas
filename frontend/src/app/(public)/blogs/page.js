@@ -1,6 +1,7 @@
 import BlogCard from '@/components/blog/BlogCard';
 import NewsletterSubscribeCard from '@/components/blog/NewsletterSubscribeCard';
 import Link from 'next/link';
+import CloudinaryImage from '@/components/CloudinaryImage';
 import { listBlogs } from '@/services/blogService';
 
 const PAGE_SIZE = 9;
@@ -253,7 +254,7 @@ export default async function BlogsPage({ searchParams }) {
                     {regularPosts.slice(0, 2).map((trend, i) => (
                       <Link key={i} href={`/blogs/${trend.slug}`} className="flex gap-3 sm:gap-4 group cursor-pointer">
                         <div className="w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 shrink-0 rounded-2xl overflow-hidden shadow-md border-2 border-white group-hover:rotate-3 transition-all duration-500">
-                          <img src={trend.image} alt={trend.title} className="w-full h-full object-cover" />
+                          <CloudinaryImage src={trend.image} alt={trend.title} width={80} height={80} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex flex-col justify-center">
                           <h5 className="font-black text-[11px] sm:text-xs text-slate-900 leading-snug group-hover:text-primary transition-colors line-clamp-2 tracking-tight">{trend.title}</h5>

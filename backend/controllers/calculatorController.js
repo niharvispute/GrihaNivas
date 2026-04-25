@@ -1,9 +1,10 @@
 const { sendSuccess } = require('../utils/apiResponse');
 const { calculateEMI, calculateStampDuty } = require('../services/calculatorService');
+const StampDutyConfig = require('../models/mongoose/StampDutyConfig');
 
 /**
- * Calculator Controller — 100% functional, zero DB dependency.
- * Stamp duty rates fetched from DB when available, fallback hardcoded.
+ * Calculator Controller
+ * Stamp duty rates fetched from DB; falls back to hardcoded defaults if not seeded.
  */
 
 const DEFAULT_STAMP_RATES = {
@@ -31,17 +32,8 @@ const stampDuty = async (req, res, next) => {
   try {
     const { propertyValue, ownershipType } = req.body;
 
-    // TODO — Fetch live rates from DB
-    //
-    // MongoDB:
-    //   const config = await StampDutyConfig.findOne().sort({ updatedAt: -1 });
-    //   const rates = config || DEFAULT_STAMP_RATES;
-    //
-    // PostgreSQL:
-    //   const config = await prisma.stampDutyConfig.findFirst({ orderBy: { updatedAt: 'desc' } });
-    //   const rates = config || DEFAULT_STAMP_RATES;
-
-    const rates = DEFAULT_STAMP_RATES;
+    const config = await StampDutyConfig.findOne().sort({ updatedAt: -1 }).lean();
+    const rates = config || DEFAULT_STAMP_RATES;
 
     const result = calculateStampDuty(propertyValue, ownershipType, rates);
     return sendSuccess(res, 200, 'Stamp duty calculated', result);

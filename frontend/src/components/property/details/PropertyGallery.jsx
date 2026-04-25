@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import CloudinaryImage from '@/components/CloudinaryImage';
 import ReraQRModal from './ReraQRModal';
 
 export default function PropertyGallery({ images, property }) {
@@ -178,12 +179,12 @@ export default function PropertyGallery({ images, property }) {
           className="relative min-h-72 sm:min-h-88 lg:h-full rounded-3xl sm:rounded-4xl overflow-hidden group shadow-xl cursor-pointer"
           onClick={() => openViewer(0)}
         >
-          <Image
+          <CloudinaryImage
             src={displayImages[0]}
             alt="Main Property View"
             fill
+            eager
             sizes="(max-width: 1024px) 100vw, 70vw"
-            unoptimized
             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/15 to-transparent opacity-80 pointer-events-none" />
@@ -224,12 +225,11 @@ export default function PropertyGallery({ images, property }) {
             className="relative min-h-32 sm:min-h-44 lg:min-h-0 rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md cursor-pointer border border-slate-100"
             onClick={() => openViewer(Math.min(1, safeImages.length - 1))}
           >
-            <Image
+            <CloudinaryImage
               src={displayImages[1] || displayImages[0]}
               alt="Property Angle 2"
               fill
               sizes="(max-width: 1024px) 50vw, 30vw"
-              unoptimized
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent pointer-events-none" />
@@ -242,12 +242,11 @@ export default function PropertyGallery({ images, property }) {
             className="relative min-h-32 sm:min-h-44 lg:min-h-0 rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md cursor-pointer border border-slate-100"
             onClick={() => openViewer(Math.min(2, safeImages.length - 1))}
           >
-            <Image
+            <CloudinaryImage
               src={displayImages[2] || displayImages[1] || displayImages[0]}
               alt="Property Gallery More"
               fill
               sizes="(max-width: 1024px) 50vw, 30vw"
-              unoptimized
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[1px] flex flex-col items-center justify-center text-white text-center px-4">
@@ -336,12 +335,11 @@ export default function PropertyGallery({ images, property }) {
 
             <div className="relative overflow-hidden rounded-3xl sm:rounded-4xl bg-black shadow-2xl border border-white/10 min-h-[52vh] sm:min-h-[60vh] lg:min-h-[72vh]">
               <div className="absolute inset-0 flex items-center justify-center">
-                <Image
+                <CloudinaryImage
                   src={currentImage}
                   alt={`Gallery image ${activeIndex + 1}`}
                   fill
                   sizes="100vw"
-                  unoptimized
                   className="object-contain bg-black"
                 />
               </div>
@@ -386,12 +384,11 @@ export default function PropertyGallery({ images, property }) {
                   }`}
                   aria-label={`Show image ${index + 1}`}
                 >
-                  <Image
+                  <CloudinaryImage
                     src={image}
                     alt={`Thumbnail ${index + 1}`}
                     fill
                     sizes="150px"
-                    unoptimized
                     className="object-cover"
                   />
                 </button>

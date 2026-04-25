@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import CloudinaryImage from '@/components/CloudinaryImage';
 
 export default function BlogCard({ post, blog }) {
   const item = post || blog;
@@ -8,7 +8,7 @@ export default function BlogCard({ post, blog }) {
   return (
     <article className="group flex flex-col h-full bg-white rounded-moderate overflow-hidden shadow-sm hover:shadow-lg transition-all">
       <div className="aspect-4/3 rounded-t-moderate overflow-hidden mb-0 relative">
-        <Image
+        <CloudinaryImage
           src={item.image}
           alt={item.title}
           fill
