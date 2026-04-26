@@ -450,7 +450,14 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                   <Field label="Builder Name *">
                     <input
                       value={form.name}
-                      onChange={(e) => patchForm({ name: e.target.value })}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        const patch = { name: val };
+                        if (mode === 'create') {
+                          patch.slug = toSlug(val);
+                        }
+                        patchForm(patch);
+                      }}
                       className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-4 py-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Skyline Apex Group"
                     />

@@ -39,14 +39,11 @@ const CompareGrid = ({ properties }) => {
       label: 'Amenities', 
       getValue: (p) => (
         <div className="flex gap-2 flex-wrap max-w-xs">
-          {getAmenities(p).slice(0, 3).map((a, i) => (
+          {getAmenities(p).map((a, i) => (
             <span key={i} className="px-2 py-1 bg-slate-100 rounded-sm text-[9px] font-black tracking-widest uppercase text-slate-500">
               {a?.label || 'Amenity'}
             </span>
           ))}
-          {getAmenities(p).length > 3 && (
-            <span className="text-[9px] font-black text-slate-400 mt-1">+{getAmenities(p).length - 3} More</span>
-          )}
           {getAmenities(p).length === 0 && (
             <span className="text-[10px] font-semibold text-slate-400">No amenities listed</span>
           )}

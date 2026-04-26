@@ -92,7 +92,10 @@
       "mcp__plugin_wisdmlabs-engineering_playwright__browser_run_code",
       "mcp__plugin_wisdmlabs-engineering_playwright__browser_evaluate",
       "mcp__plugin_wisdmlabs-engineering_playwright__browser_press_key",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(grep -E \"\\\\.\\(jsx?|tsx?\\)$\")",
+      "Bash(grep -E \"\\\\.\\(js|json\\)$\")",
+      "Bash(grep -E \"\\\\.js$\")"
     ]
   }
 }

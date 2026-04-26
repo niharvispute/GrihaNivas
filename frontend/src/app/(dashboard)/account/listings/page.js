@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ListedPropertyCard from '@/components/dashboard/ListedPropertyCard';
-import { listMyPropertySubmissions } from '@/services/propertySubmissionService';
+import { listMyPropertySubmissions, deactivateMyPropertySubmission, reactivateMyPropertySubmission } from '@/services/propertySubmissionService';
 
 export default function MyListingsPage() {
   const [listings, setListings] = useState([]);
@@ -17,6 +17,16 @@ export default function MyListingsPage() {
       .catch(() => setListings([]))
       .finally(() => setLoading(false));
   }, []);
+
+  const handleDeactivate = async (id) => {
+    const updated = await deactivateMyPropertySubmission(id);
+    setListings((prev) => prev.map((l) => (l._id === id ? { ...l, ...updated } : l)));
+  };
+
+  const handleReactivate = async (id) => {
+    const updated = await reactivateMyPropertySubmission(id);
+    setListings((prev) => prev.map((l) => (l._id === id ? { ...l, ...updated } : l)));
+  };
 
   if (loading) {
     return (
@@ -56,6 +66,8 @@ export default function MyListingsPage() {
             <ListedPropertyCard
               key={property._id}
               property={property}
+              onDeactivate={handleDeactivate}
+              onReactivate={handleReactivate}
             />
           ))
         ) : (

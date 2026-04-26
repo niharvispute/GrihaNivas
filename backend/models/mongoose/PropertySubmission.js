@@ -82,13 +82,35 @@ const propertySubmissionSchema = new mongoose.Schema(
     },
     possession: {
       type: String,
-      enum: ['Ready to Move', 'Under Construction'],
+      enum: ['Ready to Move', 'Under Construction', 'Available Now', 'Available Soon'],
       required: true,
+      trim: true,
     },
     age: {
       type: String,
       trim: true,
-      required: true,
+      default: null,
+    },
+    bhk: {
+      type: Number,
+      min: [1, 'BHK must be at least 1'],
+      max: [10, 'BHK cannot exceed 10'],
+      default: null,
+    },
+    rentPerMonth: {
+      type: Number,
+      min: [0, 'Rent cannot be negative'],
+      default: null,
+    },
+    deposit: {
+      type: Number,
+      min: [0, 'Deposit cannot be negative'],
+      default: null,
+    },
+    maintenanceCharges: {
+      type: Number,
+      min: [0, 'Maintenance charges cannot be negative'],
+      default: null,
     },
     bathrooms: {
       type: String,
@@ -110,12 +132,31 @@ const propertySubmissionSchema = new mongoose.Schema(
       trim: true,
       default: null,
     },
+    carpetArea: {
+      type: Number,
+      min: [1, 'Carpet area must be at least 1 sq ft'],
+      default: null,
+    },
+    totalArea: {
+      type: Number,
+      min: [1, 'Total area must be at least 1 sq ft'],
+      default: null,
+    },
     images: {
       type: [String],
       default: [],
     },
     videoMeta: {
       type: videoMetaSchema,
+      default: null,
+    },
+    floorPlans: {
+      type: [String],
+      default: [],
+    },
+    brochure: {
+      type: String,
+      trim: true,
       default: null,
     },
     price: {
@@ -132,6 +173,11 @@ const propertySubmissionSchema = new mongoose.Schema(
       default: [],
     },
     reraUrl: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    reraNumber: {
       type: String,
       trim: true,
       default: null,
@@ -180,6 +226,10 @@ const propertySubmissionSchema = new mongoose.Schema(
     notes: {
       type: [noteSchema],
       default: [],
+    },
+    closedByOwner: {
+      type: Boolean,
+      default: false,
     },
   },
   {

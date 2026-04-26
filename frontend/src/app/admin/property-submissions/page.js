@@ -286,10 +286,18 @@ export default function PropertySubmissionsPage() {
                       </td>
                       <td className="px-6 py-5 text-sm font-bold text-slate-500">{formatDate(item.createdAt)}</td>
                       <td className="px-6 py-5">
-                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${style.bg}`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
-                          {item.status}
-                        </span>
+                        <div className="flex flex-col gap-1.5">
+                          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest w-fit ${style.bg}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
+                            {item.status}
+                          </span>
+                          {item.closedByOwner && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest bg-amber-50 text-amber-700 w-fit">
+                              <span className="material-symbols-outlined text-[11px]">person_off</span>
+                              User deactivated
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-5 text-right rounded-r-3xl">
                         <div className="flex items-center justify-end gap-2">
@@ -411,6 +419,10 @@ export default function PropertySubmissionsPage() {
                       { label: 'Open Parking', value: viewingItem.openParking },
                       { label: 'Price', value: viewingItem.price },
                       { label: 'Status', value: viewingItem.status },
+                      {
+                        label: 'Closed by Owner',
+                        value: viewingItem.closedByOwner ? 'Yes — user deactivated this listing' : null,
+                      },
                       {
                         label: 'Hero Features',
                         value: Array.isArray(viewingItem.feature)

@@ -43,6 +43,7 @@ export default function MultiStageListingForm() {
     ownerName: '',
     phone: '',
     email: '',
+    bhk: '',
 
     // Step 2: Basics
     possession: 'Ready to Move',
@@ -51,16 +52,24 @@ export default function MultiStageListingForm() {
     balconies: 'Connected',
     coveredParking: '1',
     openParking: 'N/A',
+    carpetArea: '',
+    totalArea: '',
 
     // Step 3: Media
     images: [],
     videoFile: null,
+    floorPlans: [],
+    brochureFile: null,
 
     // Step 4: Pricing & Features
     price: '',
+    rentPerMonth: '',
+    deposit: '',
+    maintenanceCharges: '',
     amenities: [],
     featureText: '',
     reraUrl: '',
+    reraNumber: '',
 
     // Step 5: Review
     title: '',
@@ -182,6 +191,52 @@ export default function MultiStageListingForm() {
     setForm((prev) => ({ ...prev, images: [] }));
   };
 
+  const handleFloorPlansSelected = (event) => {
+    const selectedFiles = Array.from(event.target.files || []);
+    if (!selectedFiles.length) return;
+
+    const oversized = selectedFiles.filter((f) => f.size > 5 * 1024 * 1024);
+    if (oversized.length > 0) {
+      setFeedback({
+        type: 'error',
+        message: `${oversized.length > 1 ? `${oversized.length} files exceed` : `"${oversized[0].name}" exceeds`} the 5 MB limit.`,
+      });
+      event.target.value = '';
+      return;
+    }
+
+    setForm((prev) => {
+      const merged = [...(prev.floorPlans || []), ...selectedFiles];
+      const limited = merged.length > 5 ? merged.slice(0, 5) : merged;
+      return { ...prev, floorPlans: limited };
+    });
+
+    event.target.value = '';
+  };
+
+  const clearFloorPlans = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setForm((prev) => ({ ...prev, floorPlans: [] }));
+  };
+
+  const handleBrochureSelected = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setFeedback({
+        type: 'error',
+        message: `Brochure file exceeds the 5 MB limit.`,
+      });
+      event.target.value = '';
+      return;
+    }
+
+    setForm((prev) => ({ ...prev, brochureFile: file }));
+    event.target.value = '';
+  };
+
   const submitListing = useCallback(async () => {
     if (form.images.length < MIN_PROPERTY_IMAGES) {
       setStep(3);
@@ -212,16 +267,37 @@ export default function MultiStageListingForm() {
       payload.append('propertyType', form.propertyType);
       payload.append('city', form.city || 'Mumbai');
       payload.append('locality', form.locality);
-      payload.append('possession', form.possession);
-      payload.append('age', form.age);
+      let possessionValue = form.possession;
+      if (possessionValue === 'Available Now') possessionValue = 'Ready to Move';
+      if (possessionValue === 'Available Soon') possessionValue = 'Under Construction';
+      payload.append('possession', possessionValue);
+      if (form.age) payload.append('age', form.age);
       payload.append('bathrooms', form.bathrooms);
+      if (form.bhk) payload.append('bhk', form.bhk);
       if (form.balconies) payload.append('balconies', form.balconies);
       if (form.coveredParking) payload.append('coveredParking', form.coveredParking);
       if (form.openParking) payload.append('openParking', form.openParking);
+      if (form.carpetArea) payload.append('carpetArea', form.carpetArea);
+      if (form.totalArea) payload.append('totalArea', form.totalArea);
 
-      if (form.price) {
+      if (form.listingType === 'Sale' && form.price) {
         const parsedPrice = parseInt(String(form.price).replace(/,/g, ''), 10);
         if (Number.isFinite(parsedPrice)) payload.append('price', String(parsedPrice));
+      }
+
+      if (form.listingType === 'Rent') {
+        if (form.rentPerMonth) {
+          const rentValue = parseInt(String(form.rentPerMonth).replace(/,/g, ''), 10);
+          if (Number.isFinite(rentValue)) payload.append('rentPerMonth', String(rentValue));
+        }
+        if (form.deposit) {
+          const depositValue = parseInt(String(form.deposit).replace(/,/g, ''), 10);
+          if (Number.isFinite(depositValue)) payload.append('deposit', String(depositValue));
+        }
+        if (form.maintenanceCharges) {
+          const maintenanceValue = parseInt(String(form.maintenanceCharges).replace(/,/g, ''), 10);
+          if (Number.isFinite(maintenanceValue)) payload.append('maintenanceCharges', String(maintenanceValue));
+        }
       }
 
       if (form.amenities.length > 0) {
@@ -235,6 +311,18 @@ export default function MultiStageListingForm() {
 
       if (form.reraUrl && form.reraUrl.trim()) {
         payload.append('reraUrl', form.reraUrl.trim());
+      }
+
+      if (form.reraNumber && form.reraNumber.trim()) {
+        payload.append('reraNumber', form.reraNumber.trim());
+      }
+
+      if (form.floorPlans && form.floorPlans.length > 0) {
+        form.floorPlans.forEach((file) => payload.append('floorPlans', file));
+      }
+
+      if (form.brochureFile) {
+        payload.append('brochure', form.brochureFile);
       }
 
       if (form.title) payload.append('title', form.title);
@@ -351,11 +439,11 @@ export default function MultiStageListingForm() {
           ))}
         </nav>
 
-        <div className="p-8 border-t border-slate-50">
+        {/* <div className="p-8 border-t border-slate-50">
           <button className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-95 shadow-xl">
             Save Draft
           </button>
-        </div>
+        </div> */}
       </aside>
 
       {/* 🏞️ Main Content Area */}
@@ -400,7 +488,7 @@ export default function MultiStageListingForm() {
                       </button>
                     </div>
                   </div>
-                  <div className="space-y-4">
+                  {/* <div className="space-y-4">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Building Type</label>
                     <div className="grid grid-cols-1 p-1 bg-slate-50 md:bg-slate-100 rounded-2xl">
                       <button 
@@ -409,13 +497,13 @@ export default function MultiStageListingForm() {
                         Residential Only
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Property Type</label>
                   <div className="flex flex-wrap gap-2 md:gap-3">
-                    {['Apartment', 'Penthouse', 'Villa', 'Plot', 'Bungalow'].map(type => (
+                    {['Apartment', 'Penthouse', 'Villa', 'Bungalow', 'Commercial'].map(type => (
                       <button 
                         key={type}
                         onClick={() => handleToggle('propertyType', type)}
@@ -437,6 +525,21 @@ export default function MultiStageListingForm() {
                       <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="+91 00000 00000" value={form.phone} onChange={handleChange('phone')} />
                   </div>
                 </div>
+
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">BHK</label>
+                  <div className="flex gap-2 flex-wrap">
+                    {['1', '2', '3', '4', '5+'].map(bhk => (
+                      <button
+                        key={bhk}
+                        onClick={() => handleToggle('bhk', bhk)}
+                        className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all ${form.bhk === bhk ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-white border border-slate-100 text-slate-400 hover:border-slate-200'}`}
+                      >
+                        {bhk}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -455,20 +558,20 @@ export default function MultiStageListingForm() {
                       <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors">location_on</span>
                       <input className="w-full bg-white border-2 border-slate-100 rounded-2xl p-4 pl-12 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="Locality or Building Name (e.g. Worli Sea Face)" value={form.locality} onChange={handleChange('locality')} />
                   </div>
-                  <div className="aspect-16/9 md:aspect-21/9 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-100 flex flex-col items-center justify-center p-6 group cursor-pointer hover:border-primary/20 transition-all">
+                  {/* <div className="aspect-16/9 md:aspect-21/9 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-100 flex flex-col items-center justify-center p-6 group cursor-pointer hover:border-primary/20 transition-all">
                       <div className="w-12 h-12 rounded-full bg-white shadow-xl flex items-center justify-center text-primary mb-3 group-hover:scale-110 transition-transform">
                         <span className="material-symbols-outlined text-2xl">map</span>
                       </div>
                       <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest  mb-1">Interactive Map Focus</span>
                       <p className="text-[9px] text-slate-400 font-bold max-w-xs text-center">Pin precisely for higher visibility. Mumbai Island & Suburbs Coverage.</p>
-                  </div>
+                  </div> */}
                 </div>
                 
                 <div className="space-y-4">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Possession Status</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Availability Status</label>
                   <div className="flex gap-4">
-                    {['Ready to Move', 'Under Construction'].map(stat => (
-                      <button 
+                    {(form.listingType === 'Rent' ? ['Available Now', 'Available Soon'] : ['Ready to Move', 'Under Construction']).map(stat => (
+                      <button
                         key={stat}
                         onClick={() => handleToggle('possession', stat)}
                         className={`flex-1 py-4 rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest border-2 transition-all ${form.possession === stat ? 'border-primary bg-primary/5 text-primary' : 'border-slate-50 bg-white text-slate-400 hover:border-slate-100'}`}
@@ -498,7 +601,7 @@ export default function MultiStageListingForm() {
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Bathrooms</label>
                     <div className="flex gap-2 flex-wrap">
                       {['1', '2', '3', '4', '5+'].map(count => (
-                        <button 
+                        <button
                           key={count}
                           onClick={() => handleToggle('bathrooms', count)}
                           className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all ${form.bathrooms === count ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-white border border-slate-100 text-slate-400 hover:border-slate-200'}`}
@@ -507,6 +610,17 @@ export default function MultiStageListingForm() {
                         </button>
                       ))}
                     </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                  <div className="space-y-3 md:space-y-4">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Carpet Area (sq.ft)</label>
+                    <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. 650" value={form.carpetArea} onChange={handleChange('carpetArea')} type="number" />
+                  </div>
+                  <div className="space-y-3 md:space-y-4">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Total Area (sq.ft)</label>
+                    <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. 950" value={form.totalArea} onChange={handleChange('totalArea')} type="number" />
                   </div>
                 </div>
               </div>
@@ -566,6 +680,40 @@ export default function MultiStageListingForm() {
                     <h4 className="text-[10px] font-black text-slate-900  tracking-tight uppercase truncate max-w-xs">{form.videoFile ? form.videoFile.name : 'Click to upload video'}</h4>
                   </div>
                 </div>
+
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Floor Plans (Optional)</label>
+                  <div className="border-4 border-dashed border-slate-100 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white" onClick={() => document.getElementById('floor-plans-upload').click()}>
+                    <input id="floor-plans-upload" type="file" className="hidden" accept="image/*,application/pdf" multiple onChange={handleFloorPlansSelected} />
+                    <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
+                      <span className="material-symbols-outlined text-2xl text-slate-300 group-hover:text-primary transition-colors">grid_view</span>
+                    </div>
+                    <h3 className="text-lg md:text-xl font-black text-slate-900 tracking-tight">Upload Floor Plans</h3>
+                    <p className="text-slate-400 font-bold text-[10px] md:text-sm mt-2 max-w-xs mx-auto">Max 5 files. PNG, JPG, PDF up to 5MB each.</p>
+                    {form.floorPlans.length > 0 && (
+                      <p className={`font-black text-[10px] mt-4 uppercase tracking-widest ${form.floorPlans.length > 0 ? 'text-emerald-600' : 'text-primary'}`}>
+                        {form.floorPlans.length} file{form.floorPlans.length > 1 ? 's' : ''} selected
+                      </p>
+                    )}
+                    {form.floorPlans.length > 0 && (
+                      <button type="button" onClick={clearFloorPlans} className="mt-4 px-6 py-2.5 border-2 border-slate-200 text-slate-500 rounded-xl font-black text-[10px] uppercase tracking-widest hover:border-primary/30 transition-all">
+                        Clear All
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Brochure (Optional)</label>
+                  <div className="border-4 border-dashed border-slate-100 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white" onClick={() => document.getElementById('brochure-upload').click()}>
+                    <input id="brochure-upload" type="file" className="hidden" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={handleBrochureSelected} />
+                    <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
+                      <span className="material-symbols-outlined text-2xl text-slate-300 group-hover:text-primary transition-colors">description</span>
+                    </div>
+                    <h4 className="text-[10px] font-black text-slate-900 tracking-tight uppercase truncate max-w-xs">{form.brochureFile ? form.brochureFile.name : 'Click to upload brochure'}</h4>
+                    <p className="text-slate-400 font-bold text-[9px] mt-1 max-w-xs mx-auto">PDF or DOC up to 5MB</p>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -574,16 +722,42 @@ export default function MultiStageListingForm() {
               <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div>
                   <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 ">Valuation & Assets</h1>
-                  <p className="text-slate-500 text-sm md:text-base font-bold">Define the market value and premium amenities.</p>
+                  <p className="text-slate-500 text-sm md:text-base font-bold">{form.listingType === 'Rent' ? 'Define the rental terms and premium amenities.' : 'Define the market value and premium amenities.'}</p>
                 </div>
 
-                <div className="space-y-4">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Expected Price (₹)</label>
-                  <div className="relative group max-w-md">
-                      <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-2xl text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
-                      <input className="w-full bg-white border-2 border-slate-50 rounded-3xl md:rounded-4xl p-6 md:p-8 pl-12 md:pl-14 font-black text-2xl md:text-4xl tracking-tighter placeholder:text-slate-100 focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.price} onChange={handleChange('price')} />
+                {form.listingType === 'Sale' ? (
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Expected Price (₹)</label>
+                    <div className="relative group max-w-md">
+                        <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-2xl text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
+                        <input className="w-full bg-white border-2 border-slate-50 rounded-3xl md:rounded-4xl p-6 md:p-8 pl-12 md:pl-14 font-black text-2xl md:text-4xl tracking-tighter placeholder:text-slate-100 focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.price} onChange={handleChange('price')} />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                    <div className="space-y-4">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Rent Per Month (₹)</label>
+                      <div className="relative group">
+                          <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-lg text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
+                          <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 pl-10 font-black text-lg placeholder:text-slate-100 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.rentPerMonth} onChange={handleChange('rentPerMonth')} />
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Security Deposit (₹)</label>
+                      <div className="relative group">
+                          <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-lg text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
+                          <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 pl-10 font-black text-lg placeholder:text-slate-100 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.deposit} onChange={handleChange('deposit')} />
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Maintenance (₹/month)</label>
+                      <div className="relative group">
+                          <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-lg text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
+                          <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 pl-10 font-black text-lg placeholder:text-slate-100 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.maintenanceCharges} onChange={handleChange('maintenanceCharges')} />
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="space-y-6">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Premium Amenities</label>
@@ -608,9 +782,15 @@ export default function MultiStageListingForm() {
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Hero Feature Bullets</label>
                       <textarea rows="4" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-6 font-bold placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all resize-none" placeholder={"One bullet per line..."} value={form.featureText} onChange={handleChange('featureText')} />
                     </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">RERA URL</label>
-                      <input type="url" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="MahaRERA link..." value={form.reraUrl} onChange={handleChange('reraUrl')} />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">RERA Number</label>
+                        <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. MahaRERA No." value={form.reraNumber} onChange={handleChange('reraNumber')} />
+                      </div>
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">RERA URL</label>
+                        <input type="url" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="MahaRERA link..." value={form.reraUrl} onChange={handleChange('reraUrl')} />
+                      </div>
                     </div>
                 </div>
               </div>
@@ -636,13 +816,41 @@ export default function MultiStageListingForm() {
                               <p className="text-xs md:text-sm font-bold text-slate-900">{form.locality}</p>
                           </div>
                           <div className="space-y-1">
-                              <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest">Price</p>
-                              <p className="text-xs md:text-sm font-bold text-slate-900">₹ {form.price || '0.00'}</p>
+                              <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                                {form.listingType === 'Rent' ? 'Rent/Month' : 'Price'}
+                              </p>
+                              <p className="text-xs md:text-sm font-bold text-slate-900">
+                                ₹ {form.listingType === 'Rent' ? (form.rentPerMonth || '0.00') : (form.price || '0.00')}
+                              </p>
                           </div>
+                          {form.listingType === 'Rent' && form.deposit && (
+                            <div className="space-y-1">
+                              <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest">Deposit</p>
+                              <p className="text-xs md:text-sm font-bold text-slate-900">₹ {form.deposit}</p>
+                            </div>
+                          )}
+                          {form.listingType === 'Rent' && form.maintenanceCharges && (
+                            <div className="space-y-1">
+                              <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest">Maintenance</p>
+                              <p className="text-xs md:text-sm font-bold text-slate-900">₹ {form.maintenanceCharges}/month</p>
+                            </div>
+                          )}
                           <div className="space-y-1">
                               <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest">Owner</p>
                               <p className="text-xs md:text-sm font-bold text-slate-900">{form.ownerName}</p>
                           </div>
+                          {form.carpetArea && (
+                            <div className="space-y-1">
+                              <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest">Carpet Area</p>
+                              <p className="text-xs md:text-sm font-bold text-slate-900">{form.carpetArea} sq.ft</p>
+                            </div>
+                          )}
+                          {form.totalArea && (
+                            <div className="space-y-1">
+                              <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest">Total Area</p>
+                              <p className="text-xs md:text-sm font-bold text-slate-900">{form.totalArea} sq.ft</p>
+                            </div>
+                          )}
                         </div>
                     </div>
 

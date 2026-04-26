@@ -99,12 +99,34 @@ const buildPropertyPayloadFromSubmission = (submission, options = {}) => {
     parseCount(submission?.propertyType) ||
     parseBhkFromText(submission?.title);
 
+  const category = deriveCategory(submission);
+  const isRent = category === 'rent';
+
+  // For rent listings, the primary price is the monthly rent
+  const priceValue = isRent 
+    ? (Number.isFinite(submission.rentPerMonth) ? submission.rentPerMonth : 0)
+    : (Number.isFinite(submission.price) ? submission.price : 0);
+
+  const highlights = [
+    `${submission.listingType} ${submission.buildingType}`,
+    submission.possession
+  ].filter(Boolean);
+
+  if (isRent) {
+    if (submission.deposit) highlights.push(`Deposit: ₹${submission.deposit.toLocaleString('en-IN')}`);
+    if (submission.maintenanceCharges) highlights.push(`Maintenance: ₹${submission.maintenanceCharges.toLocaleString('en-IN')}/mo`);
+  }
+
   return {
     title,
     slug: generateUniqueSlug(title),
     description,
-    category: deriveCategory(submission),
-    price: Number.isFinite(submission.price) ? submission.price : 0,
+    category,
+    price: priceValue,
+    priceUnit: isRent ? 'per_month' : 'total',
+    rentPerMonth: isRent ? priceValue : null,
+    deposit: submission.deposit || null,
+    maintenanceCharges: submission.maintenanceCharges || null,
     location: {
       area: locality,
       city,
@@ -117,13 +139,16 @@ const buildPropertyPayloadFromSubmission = (submission, options = {}) => {
     },
     bhk,
     bathrooms: parseCount(submission.bathrooms),
+    carpetArea: submission.carpetArea || null,
+    totalArea: submission.totalArea || null,
+    areaSqft: submission.totalArea || submission.carpetArea || null,
     parking: totalParking,
     possession: submission.possession || null,
     age: submission.age || null,
     reraUrl: submission.reraUrl || null,
     amenities: toStringArray(submission.amenities),
     feature: toStringArray(submission.feature),
-    highlights: [`${submission.listingType} ${submission.buildingType}`, submission.possession].filter(Boolean),
+    highlights,
     heroImage: mediaItems[0] || null,
     gallery: mediaItems.slice(1),
     createdBy: submission.createdBy,
@@ -175,6 +200,15 @@ const ensureSubmissionPublished = async (submission, options = {}) => {
       };
     }
     if (!property.reraUrl && payload.reraUrl) property.reraUrl = payload.reraUrl;
+
+    // 🆕 Update new fields
+    property.carpetArea = payload.carpetArea;
+    property.totalArea = payload.totalArea;
+    property.rentPerMonth = payload.rentPerMonth;
+    property.deposit = payload.deposit;
+    property.maintenanceCharges = payload.maintenanceCharges;
+    property.priceUnit = payload.priceUnit;
+    if (payload.areaSqft) property.areaSqft = payload.areaSqft;
 
     if ((!property.heroImage || !property.heroImage.url) && payload.heroImage) {
       property.heroImage = payload.heroImage;

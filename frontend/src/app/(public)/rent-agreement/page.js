@@ -45,10 +45,16 @@ export default function RentAgreementPage() {
               Secure your tenancy legally from the comfort of your home. We handle the biometric verification and registration with the Mumbai sub-registrar office.
             </p>
             <div className="flex flex-wrap gap-5">
-              <button className="bg-primary text-white px-12 py-5 rounded-full font-black text-xl shadow-2xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all">
+              <button 
+                onClick={() => document.getElementById('registration-form')?.scrollIntoView({ behavior: 'smooth' })}
+                className="bg-primary text-white px-12 py-5 rounded-full font-black text-xl shadow-2xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all"
+              >
                 Start Now
               </button>
-              <button className="flex items-center gap-3 px-10 py-5 rounded-full font-black text-xl text-slate-900 hover:bg-white hover:shadow-xl transition-all group">
+              <button 
+                onClick={() => document.getElementById('process-flow')?.scrollIntoView({ behavior: 'smooth' })}
+                className="flex items-center gap-3 px-10 py-5 rounded-full font-black text-xl text-slate-900 hover:bg-white hover:shadow-xl transition-all group"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-primary group-hover:scale-110 transition-transform"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
                 How it works
               </button>
@@ -102,7 +108,7 @@ export default function RentAgreementPage() {
       </section>
 
       {/* 🔄 Process steps */}
-      <section className="px-8 py-32 bg-slate-50">
+      <section className="px-8 py-32 bg-slate-50" id="process-flow">
         <div className="max-w-screen-2xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-10 text-center md:text-left">
             <div className="max-w-2xl">
@@ -146,7 +152,7 @@ export default function RentAgreementPage() {
       </section>
 
       {/* 💰 Pricing & Form */}
-      <section className="px-8 py-32 relative overflow-hidden">
+      <section className="px-8 py-32 relative overflow-hidden" id="registration-form">
         <div className="max-w-screen-xl mx-auto grid lg:grid-cols-2 gap-24 items-start">
           <div>
             <h2 className="text-5xl font-black text-slate-900 mb-8 tracking-tighter">Ready to register your agreement?</h2>
@@ -195,12 +201,7 @@ export default function RentAgreementPage() {
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Property Location</label>
-                  <select className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 text-slate-900 font-bold appearance-none cursor-pointer">
-                    <option>South Mumbai</option>
-                    <option>Western Suburbs</option>
-                    <option>Eastern Suburbs</option>
-                    <option>Navi Mumbai / Thane</option>
-                  </select>
+                  <input className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" placeholder="E.g. Worli, Andheri" type="text"/>
                 </div>
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">I am a...</label>
@@ -208,20 +209,33 @@ export default function RentAgreementPage() {
                     <button 
                       type="button" 
                       onClick={() => setRole('landlord')}
-                      className={`flex-1 py-4 text-xs font-black uppercase tracking-widest rounded-xl transition-all ${role === 'landlord' ? 'bg-white text-primary shadow-xl' : 'text-slate-400'}`}
+                      className={`flex-1 py-3.5 text-[10px] font-black uppercase tracking-tight rounded-xl transition-all ${role === 'landlord' ? 'bg-white text-primary shadow-xl' : 'text-slate-400'}`}
                     >
                       Landlord
                     </button>
                     <button 
                       type="button" 
                       onClick={() => setRole('tenant')}
-                      className={`flex-1 py-4 text-xs font-black uppercase tracking-widest rounded-xl transition-all ${role === 'tenant' ? 'bg-white text-primary shadow-xl' : 'text-slate-400'}`}
+                      className={`flex-1 py-3.5 text-[10px] font-black uppercase tracking-tight rounded-xl transition-all ${role === 'tenant' ? 'bg-white text-primary shadow-xl' : 'text-slate-400'}`}
                     >
                       Tenant
+                    </button>
+                    <button 
+                      type="button" 
+                      onClick={() => setRole('other')}
+                      className={`flex-1 py-3.5 text-[10px] font-black uppercase tracking-tight rounded-xl transition-all ${role === 'other' ? 'bg-white text-primary shadow-xl' : 'text-slate-400'}`}
+                    >
+                      Other
                     </button>
                   </div>
                 </div>
               </div>
+              {role === 'other' && (
+                <div className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Please Specify</label>
+                  <input className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" placeholder="E.g. Broker, Legal Advisor" type="text"/>
+                </div>
+              )}
               <button className="w-full bg-primary text-white py-6 rounded-3xl font-black text-xl shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all">
                 Submit Request
               </button>

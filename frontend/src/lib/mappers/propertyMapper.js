@@ -44,6 +44,24 @@ const parseNumberLoose = (value) => {
 };
 
 const getPriceValue = (property = {}) => {
+  const isRent = property?.category === 'rent' || property?.raw?.category === 'rent';
+
+  if (isRent) {
+    const rentCandidates = [
+      property?.rentPerMonth,
+      property?.raw?.rentPerMonth,
+      property?.rent,
+      property?.raw?.rent,
+      property?.priceUnit === 'per_month' ? property?.price : null,
+      property?.raw?.priceUnit === 'per_month' ? property?.raw?.price : null,
+    ];
+
+    for (const candidate of rentCandidates) {
+      const parsed = parseNumberLoose(candidate);
+      if (Number.isFinite(parsed) && parsed > 0) return parsed;
+    }
+  }
+
   const candidates = [
     property?.price,
     property?.priceValue,
@@ -61,12 +79,14 @@ const getPriceValue = (property = {}) => {
 
 const getAreaValue = (property = {}) => {
   const candidates = [
+    property?.totalArea,
+    property?.raw?.totalArea,
     property?.areaSqft,
+    property?.raw?.areaSqft,
     property?.superArea,
     property?.builtArea,
     property?.carpetArea,
     property?.area,
-    property?.raw?.areaSqft,
   ];
 
   for (const candidate of candidates) {
@@ -264,7 +284,7 @@ export const mapPropertyToCardVM = (property) => {
     location: [property?.location?.area, property?.location?.city].filter(Boolean).join(', '),
     priceValue,
     price: priceValue > 0
-      ? getFormattedPriceValue(priceValue)
+      ? formatPriceShort(priceValue)
       : asNonEmptyString(property?.priceDisplay || property?.priceLabel),
     priceSuffix: getPriceSuffix(property?.priceUnit),
     bhk: deriveBhkDisplay(property),
@@ -285,6 +305,41 @@ export const mapPropertyToCardVM = (property) => {
 export const mapPropertyToDetailVM = (property) => {
   const priceValue = getPriceValue(property);
   const location = [property?.location?.area, property?.location?.city].filter(Boolean).join(', ');
+  const category = property?.category || property?.raw?.category;
+  const isRent = category === 'rent';
+
+  const baseHighlights = normalizeHighlightsVM(property);
+  const enrichedHighlights = [...baseHighlights];
+
+  // Inject critical metrics if missing from highlights
+  const hasLabel = (lbl) => enrichedHighlights.some(h => h.label?.toLowerCase() === lbl.toLowerCase());
+
+  if (isRent) {
+    if (!hasLabel('Maintenance') && (property?.maintenanceCharges || property?.raw?.maintenanceCharges)) {
+      enrichedHighlights.unshift({ icon: 'handyman', label: 'Maintenance', value: `₹${Number(property?.maintenanceCharges || property?.raw?.maintenanceCharges).toLocaleString('en-IN')}/mo` });
+    }
+    if (!hasLabel('Security Deposit') && (property?.deposit || property?.raw?.deposit)) {
+      enrichedHighlights.unshift({ icon: 'account_balance_wallet', label: 'Security Deposit', value: `₹${Number(property?.deposit || property?.raw?.deposit).toLocaleString('en-IN')}` });
+    }
+    if (!hasLabel('Monthly Rent') && (property?.rentPerMonth || property?.raw?.rentPerMonth || (isRent && priceValue > 0))) {
+      const val = property?.rentPerMonth || property?.raw?.rentPerMonth || priceValue;
+      enrichedHighlights.unshift({ icon: 'payments', label: 'Monthly Rent', value: `₹${Number(val).toLocaleString('en-IN')}` });
+    }
+  } else {
+    if (!hasLabel('Price') && priceValue > 0) {
+      enrichedHighlights.unshift({ icon: 'sell', label: 'Price', value: `₹${formatPriceShort(priceValue)}` });
+    }
+  }
+
+  // 📐 Area Metrics (Prioritized)
+  if (!hasLabel('Total Area') && (property?.totalArea || property?.raw?.totalArea || property?.areaSqft || property?.raw?.areaSqft || getAreaValue(property))) {
+    const val = property?.totalArea || property?.raw?.totalArea || property?.areaSqft || property?.raw?.areaSqft || getAreaValue(property);
+    enrichedHighlights.unshift({ icon: 'square_foot', label: 'Total Area', value: `${Number(val).toLocaleString('en-IN')} sq.ft` });
+  }
+  if (!hasLabel('Carpet Area') && (property?.carpetArea || property?.raw?.carpetArea)) {
+    const val = property?.carpetArea || property?.raw?.carpetArea;
+    enrichedHighlights.unshift({ icon: 'architecture', label: 'Carpet Area', value: `${Number(val).toLocaleString('en-IN')} sq.ft` });
+  }
 
   return {
     id: property?._id,
@@ -295,9 +350,9 @@ export const mapPropertyToDetailVM = (property) => {
     location,
     priceValue,
     price: priceValue > 0
-      ? getFormattedPriceValue(priceValue)
+      ? formatPriceShort(priceValue)
       : asNonEmptyString(property?.priceDisplay || property?.priceLabel),
-    priceSuffix: getPriceSuffix(property?.priceUnit) || 'Price',
+    priceSuffix: getPriceSuffix(property?.priceUnit) || (isRent ? '/month' : 'Price'),
     bhk: deriveBhkDisplay(property),
     area: formatAreaValue(property),
     image: getPropertyImage(property),
@@ -307,13 +362,17 @@ export const mapPropertyToDetailVM = (property) => {
     reraUrl: property?.reraUrl || property?.rera?.url || '',
     floorPlans: collectMediaUrls(property?.floorPlans),
     brochureUrl: getMediaUrl(property?.brochure) || asNonEmptyString(property?.brochureUrl),
-    highlights: normalizeHighlightsVM(property),
+    highlights: enrichedHighlights,
     amenities: normalizeAmenitiesVM(property),
     neighborhood: {
       location,
       highlights: [],
     },
     builder: mapBuilderToVM(property?.builder),
+    rentPerMonth: property?.rentPerMonth || property?.raw?.rentPerMonth,
+    deposit: property?.deposit || property?.raw?.deposit,
+    maintenanceCharges: property?.maintenanceCharges || property?.raw?.maintenanceCharges,
+    category,
     raw: property,
   };
 };

@@ -14,7 +14,12 @@ export default function PropertyStickyInfo({ property }) {
   const reraUrl = property?.reraUrl || property?.raw?.reraUrl || '';
   const brochureUrl = property?.brochureUrl || property?.raw?.brochure?.url || '';
   const qrData = reraUrl || reraId || property?.title || 'RERA';
+
+  const isRent = property?.raw?.category === 'rent';
+  const rentPerMonth = property?.raw?.rentPerMonth || property?.rentPerMonth;
   const hasNumericPrice = Number.isFinite(Number(property?.priceValue)) && Number(property.priceValue) > 0;
+  const hasNumericRent = Number.isFinite(Number(rentPerMonth)) && Number(rentPerMonth) > 0;
+
   const configurationLabel =
     property?.bhk && property.bhk !== '-'
       ? `${property.bhk} BHK`
@@ -27,9 +32,15 @@ export default function PropertyStickyInfo({ property }) {
       <div className="flex items-center justify-between gap-4 mb-2">
         <div className="flex items-baseline gap-2">
           <span className="text-4xl font-heading font-black text-primary">
-            {hasNumericPrice ? `₹${property.price}` : 'Price on Request'}
+            {isRent
+              ? (hasNumericRent ? `₹${rentPerMonth}` : 'Rent on Request')
+              : (hasNumericPrice ? `₹${property.price}` : 'Price on Request')}
           </span>
-          <span className="text-slate-400 text-sm font-medium">{hasNumericPrice ? 'Price' : 'Market'} </span>
+          <span className="text-slate-400 text-sm font-medium">
+            {isRent
+              ? (hasNumericRent ? '/month' : 'Market')
+              : (hasNumericPrice ? 'Price' : 'Market')}
+          </span>
         </div>
         
         {/* RERA Badge Component (Trigger) */}
