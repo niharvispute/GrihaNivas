@@ -400,7 +400,7 @@ export default function MultiStageListingForm() {
                       </button>
                     </div>
                   </div>
-                  <div className="space-y-4">
+                  {/* <div className="space-y-4">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Building Type</label>
                     <div className="grid grid-cols-1 p-1 bg-slate-50 md:bg-slate-100 rounded-2xl">
                       <button 
@@ -409,7 +409,7 @@ export default function MultiStageListingForm() {
                         Residential Only
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="space-y-4">

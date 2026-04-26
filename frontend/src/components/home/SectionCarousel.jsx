@@ -73,33 +73,6 @@ export default function SectionCarousel({
             </p>
           </div>
 
-          {/* Navigation Buttons — hidden when empty */}
-          <div className={`flex gap-3 self-start md:self-auto ${isEmpty ? 'invisible' : ''}`}>
-            <button
-              onClick={() => handleScroll('left')}
-              disabled={scrollX >= 0}
-              aria-label="Previous"
-              className={`w-9 h-9 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
-                scrollX >= 0
-                  ? 'border-slate-100 text-slate-200 cursor-not-allowed bg-slate-50/50'
-                  : 'border-primary/10 bg-white text-slate-700 hover:border-primary hover:text-primary hover:shadow-lg hover:shadow-primary/20'
-              }`}
-            >
-              <span className="material-symbols-outlined text-base md:text-2xl">west</span>
-            </button>
-            <button
-              onClick={() => handleScroll('right')}
-              disabled={scrollX <= -maxScroll}
-              aria-label="Next"
-              className={`w-9 h-9 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
-                scrollX <= -maxScroll
-                  ? 'border-slate-100 text-slate-200 cursor-not-allowed bg-slate-50/50'
-                  : 'border-primary bg-primary text-white hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30'
-              }`}
-            >
-              <span className="material-symbols-outlined text-base md:text-2xl">east</span>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -114,7 +87,35 @@ export default function SectionCarousel({
       ) : (
         <>
           {/* Carousel Container */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative group/carousel">
+            {/* Left Button */}
+            <button
+              onClick={() => handleScroll('left')}
+              disabled={scrollX >= 0}
+              aria-label="Previous"
+              className={`absolute -left-2 md:-left-7 top-[40%] -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 shadow-xl backdrop-blur-sm ${
+                scrollX >= 0
+                  ? 'opacity-0 pointer-events-none'
+                  : 'border-white bg-white/90 text-slate-700 hover:border-primary hover:text-primary md:opacity-0 md:group-hover/carousel:opacity-100'
+              }`}
+            >
+              <span className="material-symbols-outlined text-base md:text-2xl">west</span>
+            </button>
+
+            {/* Right Button */}
+            <button
+              onClick={() => handleScroll('right')}
+              disabled={scrollX <= -maxScroll}
+              aria-label="Next"
+              className={`absolute -right-2 md:-right-7 top-[40%] -translate-y-1/2 z-30 w-10 h-10 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 shadow-xl ${
+                scrollX <= -maxScroll
+                  ? 'opacity-0 pointer-events-none'
+                  : 'border-primary bg-primary text-white hover:bg-primary/90 md:opacity-0 md:group-hover/carousel:opacity-100'
+              }`}
+            >
+              <span className="material-symbols-outlined text-base md:text-2xl">east</span>
+            </button>
+
             <div className="relative overflow-hidden" ref={containerRef}>
               <motion.div
                 ref={trackRef}
