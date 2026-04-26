@@ -222,6 +222,50 @@ const addNote = async (req, res, next) => {
   }
 };
 
+const deactivateOwn = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const submission = await PropertySubmission.findOne({ _id: id, createdBy: req.user.id });
+    if (!submission) throw new AppError('Property submission not found', 404);
+
+    if (submission.status !== 'approved') {
+      throw new AppError('Only active (approved) listings can be deactivated.', 400);
+    }
+
+    submission.status = 'closed';
+    submission.closedByOwner = true;
+    await syncPublishedPropertyVisibility(submission, 'closed');
+    await submission.save();
+
+    return sendSuccess(res, 200, 'Listing deactivated successfully', submission);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const reactivateOwn = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const submission = await PropertySubmission.findOne({ _id: id, createdBy: req.user.id });
+    if (!submission) throw new AppError('Property submission not found', 404);
+
+    if (submission.status !== 'closed' || !submission.closedByOwner) {
+      throw new AppError('Only listings you deactivated can be reactivated.', 400);
+    }
+
+    submission.status = 'approved';
+    submission.closedByOwner = false;
+    await ensureSubmissionPublished(submission);
+    await submission.save();
+
+    return sendSuccess(res, 200, 'Listing reactivated successfully', submission);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const remove = async (req, res, next) => {
   try {
     const submission = await PropertySubmission.findByIdAndDelete(req.params.id);
@@ -239,6 +283,8 @@ module.exports = {
   listAdmin,
   getOneAdmin,
   updateStatus,
+  deactivateOwn,
+  reactivateOwn,
   assign,
   addNote,
   remove,

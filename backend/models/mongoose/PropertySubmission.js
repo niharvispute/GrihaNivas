@@ -181,6 +181,10 @@ const propertySubmissionSchema = new mongoose.Schema(
       type: [noteSchema],
       default: [],
     },
+    closedByOwner: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

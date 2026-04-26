@@ -16,6 +16,8 @@ router.post(
 	propertySubmissionController.create
 );
 router.get('/my', protect, validate(schemas.propertySubmission.list, 'query'), propertySubmissionController.mySubmissions);
+router.put('/:id/deactivate', protect, validate(schemas.propertySubmission.idParams, 'params'), propertySubmissionController.deactivateOwn);
+router.put('/:id/reactivate', protect, validate(schemas.propertySubmission.idParams, 'params'), propertySubmissionController.reactivateOwn);
 
 // Admin
 router.get('/', protect, adminOnly, validate(schemas.propertySubmission.list, 'query'), propertySubmissionController.listAdmin);

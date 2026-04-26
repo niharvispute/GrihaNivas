@@ -55,6 +55,20 @@ export const addPropertySubmissionNote = async (id, text) => {
   return res.data;
 };
 
+export const deactivateMyPropertySubmission = async (id) => {
+  const res = await authedApiFetch(`/api/property-submissions/${id}/deactivate`, {
+    method: 'PUT',
+  });
+  return res.data;
+};
+
+export const reactivateMyPropertySubmission = async (id) => {
+  const res = await authedApiFetch(`/api/property-submissions/${id}/reactivate`, {
+    method: 'PUT',
+  });
+  return res.data;
+};
+
 export const deletePropertySubmission = async (id) => {
   const res = await authedApiFetch(`/api/property-submissions/${id}`, {
     method: 'DELETE',
