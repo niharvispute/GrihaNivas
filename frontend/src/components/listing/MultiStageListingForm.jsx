@@ -415,7 +415,7 @@ export default function MultiStageListingForm() {
                 <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Property Type</label>
                   <div className="flex flex-wrap gap-2 md:gap-3">
-                    {['Apartment', 'Penthouse', 'Villa', 'Plot', 'Bungalow'].map(type => (
+                    {['Apartment', 'Penthouse', 'Villa', 'Bungalow', 'Commercial'].map(type => (
                       <button 
                         key={type}
                         onClick={() => handleToggle('propertyType', type)}
