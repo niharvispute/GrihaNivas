@@ -114,6 +114,31 @@ const propertySchema = new mongoose.Schema(
       min: [1, 'Area must be at least 1 sq ft'],
       default: null,
     },
+    carpetArea: {
+      type: Number,
+      min: [1, 'Carpet area must be at least 1 sq ft'],
+      default: null,
+    },
+    totalArea: {
+      type: Number,
+      min: [1, 'Total area must be at least 1 sq ft'],
+      default: null,
+    },
+    rentPerMonth: {
+      type: Number,
+      min: [0, 'Rent cannot be negative'],
+      default: null,
+    },
+    deposit: {
+      type: Number,
+      min: [0, 'Deposit cannot be negative'],
+      default: null,
+    },
+    maintenanceCharges: {
+      type: Number,
+      min: [0, 'Maintenance charges cannot be negative'],
+      default: null,
+    },
     floor: {
       type: Number,
       default: null,

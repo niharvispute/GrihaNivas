@@ -137,17 +137,28 @@ export default async function PropertyDetailPage({ params }) {
 
       {/* Hero Section */}
       <section className="mb-8 sm:mb-16 lg:mb-20 space-y-5 sm:space-y-8">
-        <div className="max-w-4xl space-y-3">
-          <h1 className="text-[24px]! sm:text-4xl! md:text-5xl! font-heading font-extrabold tracking-tight text-slate-900 leading-tight">
-            {property.title}
-          </h1>
-          <p className="text-slate-500 flex items-center gap-2 font-medium text-sm md:text-base">
-            <svg className="w-4 h-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            <span>{property.location || locationQuery || 'Mumbai'}</span>
-          </p>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+          <div className="max-w-4xl space-y-3">
+            <h1 className="text-[24px]! sm:text-4xl! md:text-5xl! font-heading font-extrabold tracking-tight text-slate-900 leading-tight">
+              {property.title}
+            </h1>
+            <p className="text-slate-500 flex items-center gap-2 font-medium text-sm md:text-base">
+              <svg className="w-4 h-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span>{property.location || locationQuery || 'Mumbai'}</span>
+            </p>
+          </div>
+          <div className="hidden sm:block text-right">
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1 leading-none">
+              {property?.category === 'rent' ? 'Monthly Rent' : 'Expected Price'}
+            </p>
+            <p className="text-4xl lg:text-5xl font-heading font-extrabold text-slate-900 tracking-tighter">
+              {property.price || 'POA'}
+              {property?.category === 'rent' && <span className="text-lg ml-1 font-bold text-slate-400">/mo</span>}
+            </p>
+          </div>
         </div>
 
         <PropertyGallery images={gallery} property={property} />
