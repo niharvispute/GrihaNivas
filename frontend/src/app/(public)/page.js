@@ -15,6 +15,39 @@ const API_BASE =
 const DEFAULT_HERO_IMAGE =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuDTt4k01Rv0EI75RlMBkam6QUCJiZxmg1pWElVfvID7rJzGZ0OvtAoOIdJrlB8otSwlYcMDK1aDPGzGHb70Ue2s_zCIpF7dgmcFEv9_ATI1Je_KgD_yyAVd5Xbx2dmJdP2AV03KZ3aZmBUBVKayjj31aeM1Ymyv1dCCl64XwHK2YfR5tRqT8xvPbZkcBourkgmbc4Mp0Jd8utO0w_T8VBhyUci1XElabmyXBbVzxZvtI0QlG1K55lIV-KnpVTV2SReMkfBGWCYL2-8';
 
+const TRUST_SIGNALS = [
+  { value: 'RERA', label: 'Verified inventory', icon: 'verified' },
+  { value: '24 hr', label: 'Concierge callback', icon: 'support_agent' },
+  { value: '3K+', label: 'Mumbai buyers guided', icon: 'groups' },
+];
+
+const DISCOVERY_CATEGORIES = [
+  {
+    title: 'Buy',
+    desc: 'Ready homes and resale apartments',
+    href: '/buy',
+    img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    title: 'Rent',
+    desc: 'Move-in rentals across prime pockets',
+    href: '/rent',
+    img: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    title: 'Builders',
+    desc: 'Trusted names shaping Mumbai',
+    href: '/builders',
+    img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    title: 'New Launch',
+    desc: 'Fresh projects and early access',
+    href: '/new-launch',
+    img: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80',
+  },
+];
+
 
 async function fetchHomeData() {
   const revalidate = 300; // 5-min Next.js data cache
@@ -78,31 +111,46 @@ export default async function HomePage() {
   return (
     <div className="w-full">
       {/* 1. Hero Section */}
-      <section className="relative min-h-[340px] md:min-h-[440px] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+      <section className="relative min-h-[430px] md:min-h-[540px] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         <div className="absolute inset-0 z-0">
           <img
             src={heroBannerImage}
             alt="Mumbai Skyline"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-white/50"></div>
-          <div className="absolute inset-0 bg-linear-to-b from-white/30 via-white/20 to-white"></div>
+          <div className="absolute inset-0 bg-white/35"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/55 to-white"></div>
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent"></div>
         </div>
 
-        <div className="relative z-10 text-center w-full max-w-5xl pt-4 md:pt-16">
-          <h1 className="type-large-title-32 text-slate-900 mb-2 md:mb-4 uppercase md:text-4xl lg:text-5xl">
-            Find Your Dream{' '}
+        <div className="relative z-10 text-center w-full max-w-5xl pt-4 md:pt-10">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/75 px-4 py-2 text-[10px] font-black uppercase tracking-[0.28em] text-primary shadow-sm backdrop-blur-md mb-4">
+            <span className="material-symbols-outlined text-sm">location_city</span>
+            Mumbai Editorial by Bricks
+          </div>
+          <h1 className="type-large-title-32 text-slate-950 mb-3 md:mb-4 uppercase md:text-4xl lg:text-5xl">
+            Find a Mumbai home with{' '}
             <span className="text-secondary underline decoration-primary/30 underline-offset-8">
-              Property
-            </span>{' '}
-            in Mumbai
+              verified confidence
+            </span>
           </h1>
-          <p className="type-body-16 font-bold text-slate-700 mb-4 md:mb-6 max-w-2xl mx-auto sm:text-sm md:text-base">
-            Curating Mumbai&apos;s most exclusive real estate listings from SoBo luxury to suburban
-            sanctuaries.
+          <p className="type-body-16 font-bold text-slate-700 mb-5 md:mb-7 max-w-2xl mx-auto sm:text-sm md:text-base">
+            Curated projects, trusted builders, and area-led advice for buyers, renters, and new-launch investors.
           </p>
 
           <HeroSearch />
+
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 max-w-3xl mx-auto">
+            {TRUST_SIGNALS.map((item) => (
+              <div key={item.label} className="flex items-center justify-center gap-3 rounded-2xl border border-white/70 bg-white/75 px-4 py-3 text-left shadow-sm backdrop-blur-md">
+                <span className="material-symbols-outlined text-primary text-xl">{item.icon}</span>
+                <div>
+                  <p className="text-sm font-black text-slate-950 leading-none">{item.value}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-1">{item.label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -116,48 +164,26 @@ export default async function HomePage() {
       <section className="py-6 md:py-10 lg:py-14 bg-white px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <SectionHeader
-            title="Discovery Path"
-            subtitle="Explore properties by your specific needs."
+            title="Choose Your Property Path"
+            subtitle="Jump into the Mumbai journey that matches your intent."
             align="center"
           />
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            {[
-              {
-                title: 'Buy',
-                desc: 'Permanent Residencies',
-                href: '/buy',
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDtrP7J1G4WhTfOYemMEfQdOGNosX21kxNtOuO7NwHYCiXkLpDNAOl29r0R11-WorVdi8UdnB0cJGAJP-5qWr6V4sdQ-iSAyUPycFbbP08uSNeP6vzGSWtnpMUOWmcv5cujMW1_eXIH6myhWnV-lHp-b6LkbPOmn_Dan6bax3RktDgx61YuqoLQyruWVI4BwE8PxdNuSgDuWfv2jkdKN2_y303DEHnptYvMF2UzFUxjxz4nJcuf5_T2Bh57y1UPNcHlF0H07_WxZpg',
-              },
-              {
-                title: 'Rent',
-                desc: 'Curated Luxury Stays',
-                href: '/rent',
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD0_-GLExTLnnHHswJYutJ0WAmNz4HI89AWs9t6IN9-Pqcv6nHN8M0P-9Oe7AwCvZsIcbyqmuDpRatKEhePTlbj842dsve0MjcTqpxrRXdkzehYTUUd_wGb_Wg2NWXC5RzQ9NrBN7_tXveDhNIA2v8BYrQ86pM8qeiPtBC-wJ5O03h_RFRMj13w6hKBH2grM_7DFwwuU5qYDrXJy7WueQXUpFQ5pP5hZJrzDbislpiWGvaiUbgnHM7iIp-UnVit9eoNXbKNFKAQhbs',
-              },
-              {
-                title: 'Builders',
-                desc: "Crafting Mumbai's Skyline",
-                href: '/builders',
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAZFILInTcBoIKclQhYU_2ZcT5VhjD5dPVp-BLTSjIMId6a4p8hlyJvfM9rCB02NnM4aEsZt7xZgnn4aHvxhSipMLnbS7mJ7WYj2QrCEOIajVtB_1km5f3u7Mi4fgaUXxPjS1t0tNw7-gZkE8riGNAPwFfXKpB3pBJHbWQg-Ondx4q3Jn4-56lNXdnXIluPZQJs6ImQjyUHjYWa2DRJ64YAgzGStITyjpS4jEiqfPshklxvq3n6Xlc7wgmkxY1MvuIY_hhUn1L8JLs',
-              },
-              {
-                title: 'New Launch',
-                desc: 'Investment Opportunities',
-                href: '/new-launch',
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBNTx25QeH5OPXLzM40sHriQNtaNHjXe5TSk3kPZNuN6hI8HMqMUxkWvTqlZs_mmFuSe8O12Wt4Qgraf6p6G0_Bi1wmS0dbj5vhIXkfKG7vXB7A3yyfkPP3BPUGQut9zn1giIeqYuM3qKwfqwYRDBpEj2xAz8FjiyvZ9HKurADOgk4X-ZOE1nhP1ohd-X0GRuWwrvrerw7DPesDig7_3bQJxOk03B_wwJGiVw6H2LDUFQWP61kaGcywudiZgUP0bakt0OJVlwOdFB0',
-              },
-            ].map((cat, i) => (
+            {DISCOVERY_CATEGORIES.map((cat, i) => (
               <Link
                 key={i}
                 href={cat.href}
-                className="group relative h-32 sm:h-52 lg:h-60 rounded-xl sm:rounded-moderate overflow-hidden cursor-pointer block ring-1 ring-slate-200/60"
+                className="group relative h-36 sm:h-52 lg:h-64 rounded-2xl overflow-hidden cursor-pointer block border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-slate-200/80 transition-all duration-500"
               >
                 <img
                   src={cat.img}
                   alt={cat.title}
                   className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/35 to-transparent"></div>
+                <div className="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-primary shadow-sm">
+                  0{i + 1}
+                </div>
                 <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6">
                   <h3 className="text-base sm:text-2xl font-black text-white mb-0.5 tracking-tight uppercase leading-tight">
                     {cat.title}
@@ -253,13 +279,17 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden rounded-2xl border border-white shadow-2xl shadow-slate-200/90">
             <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgt1Gw7rG9pP1tt0OoFiHtg92YGnCx50E0UYIKwyzfT-abEQaBd7qSmUEHSzNtQJmXGEkdsPpCvEEkhvhXVl3D_FXvZQHIyfvcHxAowXPc2KTLNl5Dfwufzs0uIHJEik1SxSTmysoIc0mW4h19WYq74qMx9HKZqh2L0KvmHVgxccKA-3OLb-NzTdD6k5S9UIDFFY5vYdllGIRsoEOxf_q3CPb74iT8peU-Dq6dpA1eLcB7M4bPojwj1rDqDhAZFNlAt42ulP2JBCM"
-              alt="Luxury Living"
-              className="rounded-3xl md:rounded-[3rem] shadow-2xl"
+              src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80"
+              alt="Premium Mumbai apartment living room"
+              className="h-full min-h-[360px] w-full object-cover"
             />
-            <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl z-[-1]"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent"></div>
+            <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/20 bg-white/90 p-4 shadow-lg backdrop-blur-md">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Concierge Lens</p>
+              <p className="mt-1 text-sm font-black text-slate-900">Shortlists built around commute, possession, paperwork, and resale value.</p>
+            </div>
           </div>
           </div>
         </div>
@@ -326,36 +356,27 @@ export default async function HomePage() {
       <HomePageTestimonials />
 
       {/* 8. Lead Capture */}
-      <section className="py-6 md:py-10 lg:py-14 px-4 sm:px-6 lg:px-8">
+      <section className="py-6 md:py-10 lg:py-14 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-primary rounded-3xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 lg:p-20 text-white flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-20 items-start lg:items-center shadow-2xl shadow-primary/40 relative overflow-hidden">
-            <div className="absolute -top-20 -left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="bg-slate-950 rounded-2xl p-6 sm:p-8 md:p-12 lg:p-16 text-white flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-start lg:items-center shadow-2xl shadow-slate-300/80 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(184,0,73,0.35),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_45%)]"></div>
             <div className="relative z-10 lg:w-1/2">
+              <p className="text-[10px] font-black uppercase tracking-[0.35em] text-white/50 mb-4">Private Advisory</p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 md:mb-6 leading-tight tracking-tighter">
-                Your Mumbai Journey
-                <br />
-                Starts Here.
+                Get a sharper shortlist before you spend weekends visiting.
               </h2>
               <p className="text-sm sm:text-base lg:text-lg text-white/80 mb-6 md:mb-10 leading-relaxed font-medium">
-                Schedule a private consultation with our area experts. We&apos;ll help you navigate
-                the market with data-driven insights.
+                Tell us your budget, commute, and possession timeline. Our area experts will suggest verified projects and next steps.
               </p>
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-6">
-                  <div className="flex -space-x-3">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="w-12 h-12 rounded-full border-2 border-primary bg-slate-200 flex items-center justify-center text-primary font-black text-xs ring-2 ring-white/20"
-                      >
-                        AD
-                      </div>
-                    ))}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                {['Area match', 'RERA check', 'Loan assist'].map((label) => (
+                  <div key={label} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
+                    <p className="mt-2 text-xs font-black uppercase tracking-wider text-white">{label}</p>
                   </div>
-                  <span className="text-xs sm:text-sm font-bold tracking-tight">
-                    + 8 experts online now
-                  </span>
-                </div>
+                ))}
+              </div>
+              <div className="flex flex-col gap-4">
                 <a
                   href="tel:+919222456789"
                   className="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl px-5 py-3 transition-all group w-fit"

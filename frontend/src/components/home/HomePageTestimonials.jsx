@@ -33,14 +33,14 @@ export default function HomePageTestimonials() {
 
   return (
     <section className="py-6 md:py-10 lg:py-14 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="max-w-screen-2xl mx-auto">
-        <div className="text-center mb-12 md:mb-16 space-y-4">
-          <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">Social Proof</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter text-slate-900 leading-tight">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-8 md:mb-10 space-y-3">
+          <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px]">Social Proof</span>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-slate-900 leading-tight">
             What Our Users Say
           </h2>
-          <p className="text-slate-600 font-medium text-base md:text-lg max-w-2xl mx-auto">
-            Join thousands of satisfied homeowners who found their perfect property through Mumbai Editorial
+          <p className="text-slate-500 font-bold text-xs sm:text-sm md:text-base max-w-2xl mx-auto">
+            Real conversations, cleaner shortlists, and calmer decisions.
           </p>
         </div>
 
@@ -104,7 +104,15 @@ export default function HomePageTestimonials() {
 
         {/* Desktop grid */}
         {testimonials.length > 0 && (
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+          <div
+            className={`hidden md:grid gap-6 md:gap-8 mx-auto ${
+              testimonials.length === 1
+                ? 'max-w-md'
+                : testimonials.length === 2
+                  ? 'max-w-4xl md:grid-cols-2'
+                  : 'max-w-7xl md:grid-cols-2 lg:grid-cols-3'
+            }`}
+          >
             {testimonials.map((testimonial) => (
               <TestimonialCard key={testimonial.id} testimonial={testimonial} />
             ))}
@@ -112,11 +120,11 @@ export default function HomePageTestimonials() {
         )}
 
         {/* CTA */}
-        <div className="mt-12 md:mt-16 text-center">
-          <p className="text-slate-600 font-medium mb-4">Ready to find your dream property?</p>
+        <div className="mt-8 md:mt-10 text-center">
+          <p className="text-slate-600 font-bold mb-4">Ready to compare verified options?</p>
           <Link
             href="/buy"
-            className="inline-flex items-center gap-2 px-8 md:px-10 py-3 md:py-4 bg-primary text-white font-black text-sm md:text-base rounded-full shadow-lg shadow-primary/30 hover:scale-105 active:scale-95 transition-all"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white font-black text-sm rounded-full shadow-lg shadow-primary/30 hover:scale-105 active:scale-95 transition-all"
           >
             Explore Properties
             <span className="material-symbols-outlined text-lg">arrow_forward</span>
@@ -129,7 +137,7 @@ export default function HomePageTestimonials() {
 
 function TestimonialCard({ testimonial }) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary/20 transition-all duration-300 p-6 md:p-8 flex flex-col justify-between group">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg hover:shadow-slate-200/80 hover:border-primary/20 transition-all duration-500 p-5 md:p-6 flex flex-col justify-between group">
       <div className="flex gap-1 mb-4">
         {[...Array(5)].map((_, i) => (
           <span

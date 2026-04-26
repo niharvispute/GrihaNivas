@@ -25,20 +25,19 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
     property?.area && property.area !== 'N/A'
       ? `${property.area} sq.ft`
       : 'Area on request';
-  const statusLabel = property?.status || property?.feature || 'Available';
   const locationLabel = property?.location || SYSTEM_DEFAULT_CITY;
 
   return (
-    <article className={`group relative bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-primary/30 shadow-sm hover:shadow-md transition-all duration-300 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full'}`}>
+    <article className={`group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full'}`}>
       {/* Image */}
-      <div className={`relative ${isHorizontal ? 'w-full lg:w-2/5 h-52 sm:h-64 lg:h-auto' : 'h-[200px] sm:h-[220px] flex-none'} overflow-hidden bg-slate-100`}>
+      <div className={`relative ${isHorizontal ? 'w-full lg:w-2/5 h-52 sm:h-64 lg:h-auto' : 'h-44 sm:h-48 flex-none'} overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50`}>
         {property.image ? (
           <CloudinaryImage
             src={property.image}
             alt={property.title}
             fill
             sizes={isHorizontal ? '(max-width: 1024px) 100vw, 40vw' : '(max-width: 1024px) 100vw, 33vw'}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -48,7 +47,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
           </div>
         )}
         {property.isFeatured && (
-          <span className="absolute top-2 left-2 bg-primary text-white px-2 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase flex items-center gap-1">
+          <span className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-white px-2 sm:px-3 py-1 rounded-full text-[8px] sm:text-[9px] font-black tracking-wider uppercase flex items-center gap-1 shadow-lg">
             <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             Featured
           </span>
@@ -61,14 +60,14 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
       </div>
 
       {/* Content */}
-      <div className={`p-3 sm:p-4 flex flex-col grow gap-2 ${isHorizontal ? 'lg:p-6 lg:justify-center' : 'min-h-[160px]'}`}>
+      <div className={`p-3 sm:p-4 md:p-5 flex flex-col grow gap-2 sm:gap-3 ${isHorizontal ? 'lg:p-6 lg:justify-center' : 'min-h-[190px]'}`}>
         {/* Title + Price */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <h3 className={`${isHorizontal ? 'text-lg sm:text-xl font-extrabold' : '!text-[16px] font-bold'} text-slate-900 leading-tight line-clamp-1 uppercase tracking-tight`}>
+            <h3 className={`${isHorizontal ? 'text-lg sm:text-xl font-extrabold' : 'text-xs sm:text-sm font-black'} text-slate-900 leading-tight line-clamp-1 uppercase tracking-tight`}>
               {property.title}
             </h3>
-            <p className="text-slate-400 !text-[14px] flex items-center gap-0.5 mt-0.5 font-medium truncate">
+            <p className="text-slate-400 text-[11px] sm:text-xs flex items-center gap-1 mt-1 font-bold truncate">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
               <span className="truncate">{locationLabel}</span>
             </p>
@@ -85,15 +84,20 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
         )}
 
         {/* Stats — compact inline row */}
-        <div className="flex items-center gap-3 py-2 border-t border-slate-100 text-[10px] sm:text-xs text-slate-600 font-semibold">
-          <span className="flex items-center gap-1">
-            <span className="material-symbols-outlined text-primary" style={{ fontSize: '14px' }}>apartment</span>
-            {configurationLabel}
+        <div className="grid grid-cols-2 gap-3 py-2 sm:py-3 border-t border-slate-100">
+          <span className="min-w-0">
+            <span className="block text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider">Config</span>
+            <span className="mt-1 flex items-center gap-1 text-xs sm:text-sm font-black text-slate-900 truncate">
+              <span className="material-symbols-outlined text-primary text-sm sm:text-base">apartment</span>
+              {configurationLabel}
+            </span>
           </span>
-          <span className="text-slate-200">|</span>
-          <span className="flex items-center gap-1">
-            <span className="material-symbols-outlined text-primary" style={{ fontSize: '14px' }}>square_foot</span>
-            {areaLabel}
+          <span className="min-w-0 border-l border-slate-100 pl-3">
+            <span className="block text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider">Area</span>
+            <span className="mt-1 flex items-center gap-1 text-xs sm:text-sm font-black text-slate-900 truncate">
+              <span className="material-symbols-outlined text-primary text-sm sm:text-base">square_foot</span>
+              {areaLabel}
+            </span>
           </span>
         </div>
 
@@ -114,17 +118,17 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
             </Link>
           </div>
         ) : (
-          <div className="flex gap-1.5 mt-auto">
+          <div className="flex flex-col gap-2 mt-auto">
             <Link
               href={detailHref}
-              className="flex-1 h-8 sm:h-9 flex items-center justify-center bg-primary text-white rounded-lg font-bold text-[10px] sm:text-xs uppercase tracking-wider hover:bg-primary/90 transition-colors"
+              className="w-full h-9 sm:h-10 flex items-center justify-center bg-gradient-to-r from-primary to-primary/85 text-white rounded-lg font-black text-[10px] sm:text-xs uppercase tracking-tighter hover:shadow-lg hover:shadow-primary/40 transition-all"
             >
-              View
+              View Property
             </Link>
             <AddToCompareButton
               propertyId={property.id || property._id}
               variant="row"
-              className="h-8 sm:h-9 rounded-lg text-[10px] sm:text-xs font-bold tracking-wide"
+              className="w-full h-9 sm:h-10 rounded-lg text-[10px] sm:text-xs font-black tracking-tighter"
             />
           </div>
         )}

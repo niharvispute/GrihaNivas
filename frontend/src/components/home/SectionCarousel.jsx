@@ -55,6 +55,7 @@ export default function SectionCarousel({
   };
 
   const isEmpty = !items || items.length === 0;
+  const useStaticGrid = !isEmpty && items.length <= 3;
 
   return (
     <section className={`py-6 md:py-10 lg:py-14 ${sectionClassName}`}>
@@ -73,8 +74,8 @@ export default function SectionCarousel({
             </p>
           </div>
 
-          {/* Navigation Buttons — hidden when empty */}
-          <div className={`flex gap-3 self-start md:self-auto ${isEmpty ? 'invisible' : ''}`}>
+          {/* Navigation Buttons */}
+          <div className={`flex gap-3 self-start md:self-auto ${isEmpty || useStaticGrid ? 'invisible' : ''}`}>
             <button
               onClick={() => handleScroll('left')}
               disabled={scrollX >= 0}
@@ -109,6 +110,24 @@ export default function SectionCarousel({
           <div className="flex flex-col items-center justify-center py-16 md:py-20 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50">
             <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">inventory_2</span>
             <p className="text-slate-500 font-bold text-sm md:text-base">{emptyMessage}</p>
+          </div>
+        </div>
+      ) : useStaticGrid ? (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            className={`grid gap-5 sm:gap-6 md:gap-7 mx-auto ${
+              items.length === 1
+                ? 'max-w-sm'
+                : items.length === 2
+                  ? 'max-w-4xl md:grid-cols-2'
+                  : 'max-w-7xl md:grid-cols-2 lg:grid-cols-3'
+            }`}
+          >
+            {items.map((item, idx) => (
+              <div key={idx} className="min-w-0">
+                {renderItem(item)}
+              </div>
+            ))}
           </div>
         </div>
       ) : (
