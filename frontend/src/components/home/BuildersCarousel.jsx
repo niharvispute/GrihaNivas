@@ -10,7 +10,7 @@ export default function BuildersCarousel({ builders }) {
       subtitle="Discover the visionaries behind Mumbai's most iconic skylines and architectural marvels."
       items={builders}
       emptyMessage="No builders listed yet — our curated builder directory is coming soon."
-      itemClassName="w-full min-w-full md:w-[calc(50%-0.875rem)] md:min-w-[calc(50%-0.875rem)] lg:w-[calc(33.333%-1rem)] lg:min-w-[calc(33.333%-1rem)]"
+      itemClassName="min-w-[270px] w-[270px] sm:min-w-[295px] sm:w-[295px] md:min-w-[315px] md:w-[315px]"
       sectionClassName="bg-[#f8f7f5]"
       renderItem={(builder) => <TrendingBuilderCard builder={builder} />}
     />

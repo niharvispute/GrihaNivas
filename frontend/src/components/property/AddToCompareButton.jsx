@@ -177,7 +177,7 @@ export default function AddToCompareButton({ propertyId, variant = 'icon', class
         } ${className}`}
       >
         {icon}
-        <span className="text-sm font-semibold">{added ? 'Added To Comparison' : 'Compare Now'}</span>
+        <span className="text-sm font-semibold">{added ? 'Compared' : 'Compare'}</span>
       </button>
     );
   }

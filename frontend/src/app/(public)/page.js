@@ -340,20 +340,36 @@ export default async function HomePage() {
                 Schedule a private consultation with our area experts. We&apos;ll help you navigate
                 the market with data-driven insights.
               </p>
-              <div className="flex items-center gap-6">
-                <div className="flex -space-x-3">
-                  {[1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className="w-12 h-12 rounded-full border-2 border-primary bg-slate-200 flex items-center justify-center text-primary font-black text-xs ring-2 ring-white/20"
-                    >
-                      AD
-                    </div>
-                  ))}
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-6">
+                  <div className="flex -space-x-3">
+                    {[1, 2, 3].map((i) => (
+                      <div
+                        key={i}
+                        className="w-12 h-12 rounded-full border-2 border-primary bg-slate-200 flex items-center justify-center text-primary font-black text-xs ring-2 ring-white/20"
+                      >
+                        AD
+                      </div>
+                    ))}
+                  </div>
+                  <span className="text-xs sm:text-sm font-bold tracking-tight">
+                    + 8 experts online now
+                  </span>
                 </div>
-                <span className="text-xs sm:text-sm font-bold tracking-tight">
-                  + 8 experts online now
-                </span>
+                <a
+                  href="tel:+919222456789"
+                  className="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl px-5 py-3 transition-all group w-fit"
+                >
+                  <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0 group-hover:bg-white/30 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.6a16 16 0 0 0 5.55 5.55l.94-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17.92z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-white/60 text-[10px] font-black uppercase tracking-widest leading-none mb-0.5">Contact Now</p>
+                    <p className="text-white font-black text-sm sm:text-base tracking-tight">+91 92224 56789</p>
+                  </div>
+                </a>
               </div>
             </div>
             <div className="relative z-10 lg:w-1/2 w-full">

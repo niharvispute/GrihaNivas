@@ -75,26 +75,26 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
                 <span className="text-lg font-black text-primary">{activeBuilder?.name?.[0] || 'B'}</span>
               )}
             </div>
-            <h2 className="text-[20px]! sm:text-4xl! md:text-6xl! font-headline font-extrabold text-white uppercase tracking-tight leading-none">
+            <h2 className="text-[16px]! sm:text-[29px]! md:text-[48px]! font-headline font-extrabold text-white uppercase tracking-tight leading-none">
               {activeBuilder?.name}
             </h2>
           </div>
-          <p className="text-zinc-300 text-sm sm:text-base lg:text-lg mb-5 sm:mb-8 leading-relaxed font-body line-clamp-3">
+          <p className="text-zinc-300 text-xs sm:text-sm lg:text-base mb-5 sm:mb-8 leading-relaxed font-body line-clamp-3">
             {activeBuilder?.tagline} {heroDescription}
           </p>
 
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-4 gap-y-3 sm:gap-8 mb-5 sm:mb-10">
             <div>
               <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">Est. Year</p>
-              <p className="text-white text-sm sm:text-xl font-bold">{activeBuilder?.establishedYear || 'N/A'}</p>
+              <p className="text-white text-xs sm:text-base font-bold">{activeBuilder?.establishedYear || 'N/A'}</p>
             </div>
             <div>
               <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">Total Projects</p>
-              <p className="text-white text-sm sm:text-xl font-bold">{activeBuilder?.totalProjects || 'N/A'}</p>
+              <p className="text-white text-xs sm:text-base font-bold">{activeBuilder?.totalProjects || 'N/A'}</p>
             </div>
             <div className="col-span-2 sm:col-span-1">
               <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">HQ Location</p>
-              <p className="text-white text-sm sm:text-xl font-bold">{activeBuilder?.hqLocation || 'N/A'}</p>
+              <p className="text-white text-xs sm:text-base font-bold">{activeBuilder?.hqLocation || 'N/A'}</p>
             </div>
           </div>
 

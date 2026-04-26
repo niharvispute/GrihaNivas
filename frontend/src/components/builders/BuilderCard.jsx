@@ -5,81 +5,79 @@ export default function BuilderCard({ builder }) {
   const logo = builder?.logo?.trim() || '';
   const thumbnail = builder?.thumbnail?.trim() || builder?.heroImage?.trim() || '';
   const hasLogo = Boolean(logo);
+  const established = builder?.establishedYear || 'N/A';
+  const projectCount = builder?.projectCount || builder?.totalProjects || 0;
+  const headquarters = builder?.hqLocation || '';
 
   return (
-    <div className="group bg-white rounded-3xl border border-zinc-200 overflow-hidden hover:shadow-2xl hover:border-primary/20 transition-all duration-300 flex flex-col">
-      <div className="relative h-32 sm:h-48 overflow-hidden bg-zinc-100">
+    <div className="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:border-primary/30 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full">
+      {/* Image */}
+      <div className="relative h-[200px] sm:h-[220px] flex-none overflow-hidden bg-slate-100">
         {thumbnail ? (
           <Image
             fill
             sizes="(max-width: 640px) 100vw, 400px"
             src={thumbnail}
             alt={builder.name}
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full bg-linear-to-br from-zinc-100 via-zinc-50 to-white flex items-center justify-center">
-            <span className="material-symbols-outlined text-zinc-300 text-3xl sm:text-4xl">domain</span>
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="material-symbols-outlined text-3xl text-slate-200">image_not_supported</span>
           </div>
         )}
-        {builder.tier && (
-          <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4">
-            <span className="bg-white/90 backdrop-blur px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-black text-primary uppercase border border-primary/20">
+
+        {/* Badges */}
+        <div className="absolute top-2 left-2 flex gap-1.5">
+          {builder.isFeatured && (
+            <span className="bg-primary text-white px-2 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Featured
+            </span>
+          )}
+          {builder.tier && (
+            <span className="bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase text-primary">
               {builder.tier}
             </span>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-      
-      <div className="p-3.5 sm:p-6 flex flex-col grow">
-        <div className="flex items-start justify-between mb-3 sm:mb-4">
-          <div className="w-9 h-9 sm:w-12 sm:h-12 bg-zinc-50 rounded-lg p-1.5 border border-zinc-100 shadow-sm flex items-center justify-center">
-            {builder.isIconLogo ? (
-              <span className="material-symbols-outlined text-primary text-xl sm:text-3xl">{logo}</span>
-            ) : hasLogo ? (
-              <Image src={logo} alt={builder.name} width={48} height={48} className="object-contain" />
-            ) : (
-              <span className="material-symbols-outlined text-primary text-xl sm:text-3xl">domain</span>
-            )}
-          </div>
-          <span className="bg-primary/10 text-primary px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-black uppercase tracking-tighter">
-            {builder.projectCount || builder.totalProjects} Projects
-          </span>
+
+      {/* Content */}
+      <div className="p-3 sm:p-4 flex flex-col grow gap-2 min-h-[160px]">
+        {/* Name + Location */}
+        <div>
+          <h3 className="!text-[16px] font-bold text-slate-900 leading-tight line-clamp-1 uppercase tracking-tight group-hover:text-primary transition-colors">
+            {builder.name}
+          </h3>
+          {headquarters && (
+            <p className="text-slate-400 !text-[14px] flex items-center gap-0.5 mt-0.5 font-medium truncate">
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              <span className="truncate">{headquarters}</span>
+            </p>
+          )}
         </div>
-        
-        <h3 className="font-headline text-sm sm:text-xl font-black text-on-background mb-1 sm:mb-2 group-hover:text-primary transition-colors leading-tight truncate">
-          {builder.name}
-        </h3>
-        
-        <p className="text-zinc-500 text-[10px] sm:text-sm line-clamp-2 mb-3 sm:mb-4 leading-relaxed font-bold">
-          {builder.tagline}
-        </p>
-        
-        <div className="mt-auto pt-3 sm:pt-4 border-t border-zinc-100 flex flex-col gap-1 text-[9px] sm:text-xs font-black text-zinc-400 mb-4 sm:mb-6">
-          <div className="flex items-center gap-1">
-            <span className="material-symbols-outlined text-[12px] sm:text-sm">schedule</span>
-            <span>Est. {builder.establishedYear}</span>
+
+        {/* Stats */}
+        <div className="flex items-center justify-between py-2 border-t border-slate-100">
+          <div>
+            <p className="text-[9px] uppercase font-bold text-slate-400 tracking-wide">Est.</p>
+            <p className="text-xs font-black text-slate-900 mt-0.5">{established}</p>
           </div>
-          <div className="flex items-center gap-1 min-w-0">
-            <span className="material-symbols-outlined text-[12px] sm:text-sm">location_on</span>
-            <span className="truncate">{builder.hqLocation}</span>
+          <div className="w-px self-stretch bg-slate-100" />
+          <div>
+            <p className="text-[9px] uppercase font-bold text-slate-400 tracking-wide">Projects</p>
+            <p className="text-xs font-black text-primary mt-0.5">{projectCount}+</p>
           </div>
         </div>
-        
-        <div className="grid grid-cols-2 gap-2 sm:gap-3">
-          <Link 
-            href={`/builders/${builder.slug}`}
-            className="py-2 px-2 sm:py-2.5 sm:px-4 bg-primary text-white text-[9px] sm:text-xs font-black uppercase tracking-widest rounded-lg hover:bg-primary-container transition-all active:scale-95 text-center"
-          >
-            Details
-          </Link>
-          <Link 
-            href={`/builders/${builder.slug}#portfolio`}
-            className="py-2 px-2 sm:py-2.5 sm:px-4 bg-zinc-50 text-on-background border border-zinc-200 text-[9px] sm:text-xs font-black uppercase tracking-widest rounded-lg hover:bg-zinc-100 transition-all active:scale-95 text-center"
-          >
-            Portfolio
-          </Link>
-        </div>
+
+        {/* CTA */}
+        <Link
+          href={`/builders/${builder.slug}`}
+          className="mt-auto h-8 sm:h-9 flex items-center justify-center bg-primary text-white rounded-lg font-bold text-[10px] sm:text-xs uppercase tracking-wider hover:bg-primary/90 transition-colors"
+        >
+          View Builder
+        </Link>
       </div>
     </div>
   );
