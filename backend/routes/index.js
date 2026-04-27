@@ -11,6 +11,7 @@ router.use('/blogs',        require('./blogs'));
 router.use('/testimonials', require('./testimonials'));
 router.use('/banners',      require('./banners'));
 router.use('/stamp-duty',   require('./stampDuty'));
+router.use('/offers',       require('./offers'));
 router.use('/calculators',  require('./calculators'));
 router.use('/contact',      require('./contact'));
 router.use('/dashboard',    require('./dashboard'));
