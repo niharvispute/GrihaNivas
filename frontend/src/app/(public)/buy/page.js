@@ -144,7 +144,7 @@ export default async function PropertiesPage({ searchParams }) {
   return (
     <main className="w-full">
       {/* Breadcrumbs & Header */}
-      <header className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:px-8">
+      <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 lg:py-14">
         <nav aria-label="Breadcrumb" className="flex text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-3 sm:mb-4">
           <ol className="inline-flex items-center space-x-2">
             <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
@@ -154,10 +154,11 @@ export default async function PropertiesPage({ searchParams }) {
             </li>
           </ol>
         </nav>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tighter text-slate-900 mb-3 sm:mb-4">
+        <span className="type-small-10 text-primary mb-3 block tracking-[0.3em]">Mumbai Real Estate</span>
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter text-slate-900 mb-3 sm:mb-4">
           {categoryContent.title}
         </h1>
-        <p className="text-slate-500 text-sm sm:text-base lg:text-lg max-w-2xl leading-relaxed">
+        <p className="text-slate-500 text-sm sm:text-base lg:text-lg max-w-2xl leading-relaxed font-medium">
           {categoryContent.description}
         </p>
       </header>
@@ -181,9 +182,10 @@ export default async function PropertiesPage({ searchParams }) {
           </PropertyGrid>
 
           {properties.length === 0 && (
-            <p className="mt-8 text-sm font-medium text-slate-500">
-              No listings are available in this category right now. Please check back shortly.
-            </p>
+            <div className="flex flex-col items-center justify-center py-16 md:py-20 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 mt-6">
+              <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">home_work</span>
+              <p className="text-slate-500 font-bold text-sm md:text-base">No listings available in this category right now — check back shortly.</p>
+            </div>
           )}
 
           {/* Pagination */}

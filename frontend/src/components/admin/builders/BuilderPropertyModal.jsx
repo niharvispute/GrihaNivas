@@ -35,7 +35,7 @@ function PropertyRow({ property, actionLabel, actionStyle, onAction, loading }) 
         </div>
         <div className="min-w-0">
           <p className="text-xs font-black text-slate-900 truncate leading-tight">{property.title}</p>
-          <p className="text-[10px] text-slate-400 font-medium truncate">
+          <p className="text-[10px] text-slate-400 font-bold truncate">
             {property.location?.area || property.location?.city || '—'} •{' '}
             {CATEGORY_LABELS[property.category] || property.category} •{' '}
             {formatPrice(property.price)}
@@ -147,12 +147,12 @@ export default function BuilderPropertyModal({ builder, onClose, onCountChange }
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg flex flex-col max-h-[90vh]">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="flex items-start justify-between p-6 border-b border-slate-100 shrink-0">
           <div>
             <h2 className="text-base font-black text-slate-900">Manage Properties</h2>
-            <p className="text-[11px] text-slate-400 font-medium mt-0.5">{builder.name}</p>
+            <p className="text-[11px] text-slate-400 font-bold mt-0.5">{builder.name}</p>
           </div>
           <button
             type="button"

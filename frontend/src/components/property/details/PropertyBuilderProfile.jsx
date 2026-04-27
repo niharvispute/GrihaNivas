@@ -21,12 +21,12 @@ export default function PropertyBuilderProfile({ builder }) {
           )}
         </div>
         <div>
-          <h4 className="font-heading font-extrabold text-lg text-slate-800">{builder.name}</h4>
-          <p className="text-[11px] sm:text-xs text-slate-400 font-medium">Est. 1990 • {builder.projects} Projects Delivered</p>
+          <h4 className="font-heading font-black text-lg text-slate-800">{builder.name}</h4>
+          <p className="text-[11px] sm:text-xs text-slate-400 font-bold">Est. 1990 • {builder.projects} Projects Delivered</p>
         </div>
       </div>
       
-      <p className="text-sm text-slate-500 leading-relaxed mb-6 font-medium">
+      <p className="text-sm text-slate-500 leading-relaxed mb-6 font-bold">
         {builder.description}
       </p>
       

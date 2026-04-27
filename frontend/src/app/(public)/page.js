@@ -273,7 +273,7 @@ export default async function HomePage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-900 mb-1">{item.title}</h3>
-                    <p className="text-xs text-slate-500 leading-relaxed font-medium">{item.desc}</p>
+                    <p className="text-xs text-slate-500 leading-relaxed font-bold">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -303,7 +303,7 @@ export default async function HomePage() {
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter mb-3 md:mb-4">
                 Inside Mumbai Real Estate
               </h2>
-              <p className="text-slate-400 text-sm md:text-base font-medium">
+              <p className="text-slate-400 text-sm md:text-base font-bold">
                 Expert analysis, neighborhood deep-dives, and market forecasts.
               </p>
             </div>
@@ -365,7 +365,7 @@ export default async function HomePage() {
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 md:mb-6 leading-tight tracking-tighter">
                 Get a sharper shortlist before you spend weekends visiting.
               </h2>
-              <p className="text-sm sm:text-base lg:text-lg text-white/80 mb-6 md:mb-10 leading-relaxed font-medium">
+              <p className="text-sm sm:text-base lg:text-lg text-white/80 mb-6 md:mb-10 leading-relaxed font-bold">
                 Tell us your budget, commute, and possession timeline. Our area experts will suggest verified projects and next steps.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
@@ -444,7 +444,7 @@ export default async function HomePage() {
                     <path d="m6 9 6 6 6-6" />
                   </svg>
                 </summary>
-                <p className="mt-4 text-slate-500 leading-relaxed font-medium">{faq.a}</p>
+                <p className="mt-4 text-slate-500 leading-relaxed font-bold">{faq.a}</p>
               </details>
             ))}
           </div>

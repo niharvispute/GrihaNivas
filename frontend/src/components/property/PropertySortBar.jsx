@@ -46,13 +46,13 @@ export default function PropertySortBar({ basePath, currentQuery }) {
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between sm:gap-4 mb-6 sm:mb-8 bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-100">
       {/* Sort Section */}
       <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-        <span className="text-slate-500 text-xs sm:text-sm font-medium uppercase tracking-wide whitespace-nowrap">Sort by:</span>
+        <span className="text-slate-500 text-xs sm:text-sm font-bold uppercase tracking-wide whitespace-nowrap">Sort by:</span>
         <div className="flex gap-2 overflow-x-auto no-scrollbar flex-1">
           {SORT_OPTIONS.map((option) => (
             <Link
               key={option.value}
               href={buildSortHref(basePath, currentQuery, option.value)}
-              className={`flex-none px-3 sm:px-4 py-1.5 rounded-full text-[9px] sm:text-xs font-bold transition-all border whitespace-nowrap ${activeSort === option.value ? 'bg-primary text-white shadow-md shadow-primary/20 border-primary' : 'bg-white text-slate-500 hover:bg-slate-100 border-slate-200'}`}
+              className={`flex-none px-3 sm:px-4 py-1.5 rounded-full text-[9px] sm:text-xs font-bold transition-all border whitespace-nowrap ${activeSort === option.value ? 'bg-primary text-white shadow-lg shadow-primary/20 border-primary' : 'bg-white text-slate-500 hover:bg-slate-100 border-slate-200'}`}
             >
               {option.label}
             </Link>

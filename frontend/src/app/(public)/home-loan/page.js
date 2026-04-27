@@ -20,7 +20,7 @@ export default function HomeLoanPage() {
               Low Interest. <br className="hidden md:block"/>
               High <span className="text-primary ">Precision.</span>
             </h1>
-            <p className="text-base md:text-xl text-slate-500 font-medium leading-relaxed max-w-lg mx-auto md:mx-0">
+            <p className="text-base md:text-xl text-slate-500 font-bold leading-relaxed max-w-lg mx-auto md:mx-0">
               Unlock the doors to Mumbai's finest addresses with bespoke home loan offers from India's premier banking institutions.
             </p>
             <div className="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4 pt-4">
@@ -41,7 +41,7 @@ export default function HomeLoanPage() {
           </div>
           
           <div className="md:w-1/2 relative w-full">
-            <div className="rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl group">
+            <div className="rounded-2xl overflow-hidden shadow-2xl group">
               <img 
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnaAyRjGb5g3qwKgviFX6pdVArwZEvtBmaRiqlUNcdpqe9cbbb-M9dDFEi9tcwN9C5jmfnclSuXJh07Fg0q5yeQ5p4r5MzSiXSVMybTJNdtfuA2N4Z2qRX7p_6OehBKbSeDGc5xknhghschF-5G0v1uQldemxWNAx0i1GASEuUPB9h_16hJaYs1PmFEbpX1FUEdDzPevpqOMO0UKGdlp9Oys3byCSVmu7nlMndS1FitGp0qPfyQr9BxoQSquyZJ3PgVKNrH5COiPY" 
                 alt="Financial Advisory" 
@@ -50,7 +50,7 @@ export default function HomeLoanPage() {
             </div>
             
             {/* Floating EMI Card */}
-            <div className="absolute -bottom-6 -right-4 md:-bottom-10 md:-left-10 bg-white p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] shadow-2xl max-w-[160px] md:max-w-xs border border-slate-50 scale-90 md:scale-110">
+            <div className="absolute -bottom-6 -right-4 md:-bottom-10 md:-left-10 bg-white p-4 md:p-8 rounded-2xl shadow-2xl max-w-[160px] md:max-w-xs border border-slate-50 scale-90 md:scale-110">
               <div className="flex items-center gap-2 md:gap-4 mb-3 md:mb-6">
                 <div className="w-8 h-8 md:w-12 md:h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="md:w-6 md:h-6"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
@@ -78,12 +78,12 @@ export default function HomeLoanPage() {
               { icon: 'handshake', title: "Expert Advice", desc: "Dedicated managers to guide you through complex Mumbai documentation." },
               { icon: 'description', title: "Ease of Use", desc: "Doorstep document pickup and digital verification journey." }
             ].map((benefit, i) => (
-              <div key={i} className="group p-5 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] bg-white border border-slate-50 hover:shadow-2xl transition-all">
+              <div key={i} className="group p-5 md:p-10 rounded-2xl bg-white border border-slate-50 hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500">
                 <div className="w-10 h-10 md:w-14 md:h-14 bg-primary/5 rounded-xl md:rounded-2xl flex items-center justify-center text-primary mb-4 md:mb-8 transition-all scale-100 group-hover:bg-primary group-hover:text-white">
                   <span className="font-black text-lg md:text-2xl">{benefit.icon === 'percent' ? '%' : (benefit.icon === 'bolt' ? '⚡' : (benefit.icon === 'handshake' ? '🤝' : '📄'))}</span>
                 </div>
                 <h3 className="text-sm md:text-xl font-black text-slate-900 mb-2 md:mb-4 tracking-tight">{benefit.title}</h3>
-                <p className="text-slate-500 text-[10px] md:text-sm leading-relaxed font-medium line-clamp-2 md:line-clamp-none">{benefit.desc}</p>
+                <p className="text-slate-500 text-[10px] md:text-sm leading-relaxed font-bold line-clamp-2 md:line-clamp-none">{benefit.desc}</p>
               </div>
             ))}
           </div>
@@ -108,7 +108,7 @@ export default function HomeLoanPage() {
                   {item.step}
                 </div>
                 <h4 className="text-sm md:text-xl font-black text-slate-900 tracking-tight">{item.title}</h4>
-                <p className="text-[10px] md:text-sm text-slate-400 font-medium leading-relaxed px-2 md:px-4">{item.desc}</p>
+                <p className="text-[10px] md:text-sm text-slate-400 font-bold leading-relaxed px-2 md:px-4">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -123,7 +123,7 @@ export default function HomeLoanPage() {
               <h2 className="text-3xl md:text-6xl font-black tracking-tighter leading-tight text-slate-900">
                 Your Dream Home <br className="hidden md:block"/>Starts Here.
               </h2>
-              <p className="text-base md:text-xl text-slate-500 font-medium leading-relaxed max-w-xl mx-auto lg:mx-0">
+              <p className="text-base md:text-xl text-slate-500 font-bold leading-relaxed max-w-xl mx-auto lg:mx-0">
                 Provide your basic details and our senior financial engineers will curate the best possible mortgage structures.
               </p>
               <div className="space-y-4 md:space-y-6 text-left max-w-md mx-auto lg:mx-0">
@@ -158,14 +158,14 @@ export default function HomeLoanPage() {
               { q: "What is the current interest rate?", a: "Interest rates range between 8.35% and 9.15% depending on credit score." },
               { q: "What documents are required?", a: "Primary documents include ITR (3 years), Salary Slips, and Bank Statements." }
             ].map((faq, i) => (
-              <details key={i} className="group bg-slate-50 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-slate-100 transition-all hover:bg-white">
+              <details key={i} className="group bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 transition-all hover:bg-white">
                 <summary className="w-full flex items-center justify-between p-6 md:p-8 text-left cursor-pointer list-none font-black text-base md:text-xl text-slate-900 group-open:text-primary transition-colors">
                   {faq.q}
                   <div className="bg-white p-1.5 md:p-2 rounded-full shadow-sm group-open:rotate-180 transition-all duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="text-primary md:w-5 md:h-5"><path d="m6 9 6 6 6-6"/></svg>
                   </div>
                 </summary>
-                <div className="px-6 md:px-8 pb-6 md:pb-8 text-slate-500 font-medium leading-relaxed text-sm md:text-lg border-t border-slate-100 pt-4 md:pt-6">
+                <div className="px-6 md:px-8 pb-6 md:pb-8 text-slate-500 font-bold leading-relaxed text-sm md:text-lg border-t border-slate-100 pt-4 md:pt-6">
                   {faq.a}
                 </div>
               </details>

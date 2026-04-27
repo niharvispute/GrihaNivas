@@ -153,7 +153,7 @@ function TestimonialCard({ testimonial }) {
         ))}
       </div>
 
-      <p className="text-slate-700 font-medium leading-relaxed mb-6 text-sm md:text-base line-clamp-4">
+      <p className="text-slate-700 font-bold leading-relaxed mb-6 text-sm md:text-base line-clamp-4">
         &ldquo;{testimonial.content}&rdquo;
       </p>
 

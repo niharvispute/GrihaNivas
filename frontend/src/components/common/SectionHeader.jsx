@@ -11,7 +11,7 @@ export default function SectionHeader({ title, subtitle, align = 'left', classNa
         {title}
       </h2>
       {subtitle && (
-        <p className="text-lg text-slate-500 leading-relaxed font-medium">
+        <p className="text-lg text-slate-500 leading-relaxed font-bold">
           {subtitle}
         </p>
       )}

@@ -31,7 +31,7 @@ export default function ProfileForm({ user, onUpdate }) {
   };
 
   return (
-    <section className="bg-white rounded-3xl sm:rounded-4xl shadow-sm border border-slate-100 overflow-hidden">
+    <section className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
       <div className="px-6 sm:px-8 py-4 sm:py-6 border-b border-slate-50">
         <h3 className="text-base sm:text-lg font-heading font-black text-slate-900">Personal Information</h3>
       </div>
@@ -42,7 +42,7 @@ export default function ProfileForm({ user, onUpdate }) {
             <div className="space-y-2">
               <label className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Full Name</label>
               <input
-                className="w-full px-4 py-3 sm:py-3.5 rounded-lg sm:rounded-xl border border-slate-100 focus:ring-4 focus:ring-primary/5 focus:border-primary transition-all bg-slate-50 focus:bg-white font-sans text-slate-700 font-bold text-sm"
+                className="w-full px-4 py-3 sm:py-3.5 rounded-xl border border-slate-100 focus:ring-4 focus:ring-primary/5 focus:border-primary transition-all bg-slate-50 focus:bg-white font-sans text-slate-700 font-bold text-sm"
                 placeholder="Enter your full name"
                 type="text"
                 value={name}
@@ -56,7 +56,7 @@ export default function ProfileForm({ user, onUpdate }) {
               <label className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Mobile Number</label>
               <div className="relative group">
                 <input
-                  className="w-full px-4 py-3 sm:py-3.5 pr-10 rounded-lg sm:rounded-xl border border-slate-50 bg-slate-50/50 text-slate-400 font-sans font-bold cursor-not-allowed text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 pr-10 rounded-xl border border-slate-50 bg-slate-50/50 text-slate-400 font-sans font-bold cursor-not-allowed text-sm"
                   disabled
                   type="text"
                   value={user?.phone || ''}
@@ -73,7 +73,7 @@ export default function ProfileForm({ user, onUpdate }) {
               <label className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Email Address</label>
               <div className="relative group">
                 <input
-                  className="w-full px-4 py-3 sm:py-3.5 pr-10 rounded-lg sm:rounded-xl border border-slate-50 bg-slate-50/50 text-slate-400 font-sans font-bold cursor-not-allowed text-sm"
+                  className="w-full px-4 py-3 sm:py-3.5 pr-10 rounded-xl border border-slate-50 bg-slate-50/50 text-slate-400 font-sans font-bold cursor-not-allowed text-sm"
                   placeholder="Email cannot be changed"
                   type="email"
                   value={user?.email || ''}

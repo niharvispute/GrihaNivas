@@ -47,7 +47,7 @@ export default function ListedPropertyCard({ property, onDeactivate, onReactivat
   };
 
   return (
-    <div className="group bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-500">
+    <div className="group bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-xl hover:shadow-slate-200/80 transition-all duration-500">
       <div className="flex flex-col md:flex-row">
         {/* Image Section */}
         <div className="relative w-full md:w-72 h-48 md:h-auto overflow-hidden shrink-0 bg-slate-100">

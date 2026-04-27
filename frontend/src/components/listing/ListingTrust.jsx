@@ -15,7 +15,7 @@ export default function ListingTrust() {
           <div className="lg:w-1/2">
             <span className="font-bold text-primary tracking-[0.2em] text-xs uppercase mb-4 block">Trusted Excellence</span>
             <h2 className="font-heading text-4xl font-extrabold tracking-tighter mb-8 text-slate-900 leading-tight">What Property <br/>Owners Say</h2>
-            <div className="relative p-10 bg-slate-50 rounded-[2.5rem] border border-slate-100">
+            <div className="relative p-10 bg-slate-50 rounded-2xl border border-slate-100">
               <span className="material-symbols-outlined text-primary/10 text-8xl absolute top-6 right-8 pointer-events-none">format_quote</span>
               <p className="font-sans text-xl  text-slate-700 mb-8 leading-relaxed relative z-10">
                 &ldquo;The editorial approach of Bricks completely changed the demographic of inquiries I was getting. Within two weeks, I closed a deal for my Altamount Road apartment at my asking price.&rdquo;

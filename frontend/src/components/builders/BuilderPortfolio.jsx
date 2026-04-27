@@ -97,7 +97,7 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
           
           <div className="w-full md:w-auto flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-3 bg-white p-2 rounded-2xl shadow-sm border border-neutral-200">
             <select
-              className="w-full sm:w-auto border-0 focus:ring-0 text-sm font-semibold text-zinc-600 bg-transparent font-label"
+              className="w-full sm:w-auto border-0 focus:ring-0 text-sm font-bold text-zinc-600 bg-transparent font-label"
               value={selectedBhk}
               onChange={(event) => setSelectedBhk(event.target.value)}
             >
@@ -108,7 +108,7 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
             </select>
             <div className="hidden sm:block w-px h-6 bg-zinc-200 self-center"></div>
             <select
-              className="w-full sm:w-auto border-0 focus:ring-0 text-sm font-semibold text-zinc-600 bg-transparent font-label"
+              className="w-full sm:w-auto border-0 focus:ring-0 text-sm font-bold text-zinc-600 bg-transparent font-label"
               value={selectedPriceRange}
               onChange={(event) => setSelectedPriceRange(event.target.value)}
             >
@@ -119,7 +119,7 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
             </select>
             <div className="hidden sm:block w-px h-6 bg-zinc-200 self-center"></div>
             <select
-              className="w-full sm:w-auto border-0 focus:ring-0 text-sm font-semibold text-zinc-600 bg-transparent font-label"
+              className="w-full sm:w-auto border-0 focus:ring-0 text-sm font-bold text-zinc-600 bg-transparent font-label"
               value={selectedStatus}
               onChange={(event) => setSelectedStatus(event.target.value)}
             >
@@ -140,7 +140,7 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
         
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
           {filteredPortfolio.map((prop) => (
-            <div key={prop.id || prop.slug} className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-neutral-100 flex flex-col">
+            <div key={prop.id || prop.slug} className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all border border-neutral-100 flex flex-col">
               <div className="relative overflow-hidden h-32 sm:h-64 lg:h-72">
                 <Image
                   src={prop.image}
@@ -183,13 +183,13 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
         </div>
 
         {portfolioItems.length === 0 && (
-          <p className="text-center text-sm font-medium text-zinc-500 mt-12">
+          <p className="text-center text-sm font-bold text-zinc-500 mt-12">
             Portfolio listings for this builder will be published soon.
           </p>
         )}
 
         {portfolioItems.length > 0 && filteredPortfolio.length === 0 && (
-          <p className="text-center text-sm font-medium text-zinc-500 mt-12">
+          <p className="text-center text-sm font-bold text-zinc-500 mt-12">
             No portfolio properties match the selected filters.
           </p>
         )}

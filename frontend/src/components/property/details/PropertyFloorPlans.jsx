@@ -7,8 +7,8 @@ export default function PropertyFloorPlans({ floorPlans = [], brochureUrl = '' }
   return (
     <section>
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-2 mb-6 sm:mb-8">
-        <h2 className="text-2xl font-heading font-extrabold text-slate-900">Floor Plans</h2>
-        <span className="text-slate-400 font-semibold text-sm">
+        <h2 className="text-2xl font-heading font-black text-slate-900">Floor Plans</h2>
+        <span className="text-slate-400 font-bold text-sm">
           {hasFloorPlans ? `${floorPlans.length} Layout${floorPlans.length > 1 ? 's' : ''} Available` : 'No layouts uploaded'}
         </span>
       </div>
@@ -24,7 +24,7 @@ export default function PropertyFloorPlans({ floorPlans = [], brochureUrl = '' }
               unoptimized
             />
           ) : (
-            <div className="w-full h-full bg-linear-to-br from-slate-100 to-white flex flex-col items-center justify-center text-slate-400">
+            <div className="w-full h-full bg-gradient-to-br from-slate-100 to-white flex flex-col items-center justify-center text-slate-400">
               <span className="material-symbols-outlined text-5xl">grid_view</span>
               <p className="mt-3 text-xs font-bold uppercase tracking-widest">Floor plans not uploaded yet</p>
             </div>

@@ -45,7 +45,7 @@ const CompareGrid = ({ properties }) => {
             </span>
           ))}
           {getAmenities(p).length === 0 && (
-            <span className="text-[10px] font-semibold text-slate-400">No amenities listed</span>
+            <span className="text-[10px] font-bold text-slate-400">No amenities listed</span>
           )}
         </div>
       )
@@ -66,7 +66,7 @@ const CompareGrid = ({ properties }) => {
   ];
 
   return (
-    <div className="mt-4 md:mt-8 space-y-px overflow-hidden rounded-2xl md:rounded-4xl border border-slate-100 shadow-xl">
+    <div className="mt-4 md:mt-8 space-y-px overflow-hidden rounded-2xl border border-slate-100 shadow-xl">
       {parameters.map((param, idx) => (
         <div 
           key={param.label} 

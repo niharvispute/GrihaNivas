@@ -235,7 +235,7 @@ export default function WishlistButton({ propertyId, initialSaved = false, varia
       } ${className}`}
     >
       {heartIcon(saved ? '#ef4444' : 'currentColor', 18)}
-      <span className="text-sm font-semibold">{saved ? 'Saved' : 'Save'}</span>
+      <span className="text-sm font-bold">{saved ? 'Saved' : 'Save'}</span>
     </button>
   );
 }

@@ -14,7 +14,7 @@ export default function PublicError({ error, unstable_retry }) {
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </div>
       <h2 className="text-2xl font-black text-slate-900 mb-3 tracking-tight">Something went wrong</h2>
-      <p className="text-slate-500 mb-8 max-w-sm font-medium">
+      <p className="text-slate-500 mb-8 max-w-sm font-bold">
         We ran into an unexpected error. Please try again or go back to the homepage.
       </p>
       <div className="flex gap-3">

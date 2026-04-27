@@ -435,7 +435,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
         )}
 
         {loadingBuilder ? (
-          <div className="bg-white rounded-4xl border border-slate-100 p-8 space-y-4 animate-pulse">
+          <div className="bg-white rounded-2xl border border-slate-100 p-8 space-y-4 animate-pulse">
             <div className="h-8 w-60 bg-slate-100 rounded-xl" />
             <div className="h-20 w-full bg-slate-100 rounded-2xl" />
             <div className="h-20 w-full bg-slate-100 rounded-2xl" />
@@ -444,7 +444,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
         ) : (
           <>
             {step === 1 && (
-              <section className="bg-white rounded-4xl border border-slate-100 p-6 md:p-8 space-y-6">
+              <section className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 space-y-6">
                 <h3 className="text-xl font-black text-slate-900">Identity</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   <Field label="Builder Name *">
@@ -505,7 +505,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
             )}
 
             {step === 2 && (
-              <section className="bg-white rounded-4xl border border-slate-100 p-6 md:p-8 space-y-6">
+              <section className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 space-y-6">
                 <h3 className="text-xl font-black text-slate-900">Portfolio</h3>
                 <div className="grid md:grid-cols-3 gap-6">
                   <Field label="Total Projects">
@@ -569,7 +569,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
             )}
 
             {step === 3 && (
-              <section className="bg-white rounded-4xl border border-slate-100 p-6 md:p-8 space-y-6">
+              <section className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 space-y-6">
                 <h3 className="text-xl font-black text-slate-900">Media</h3>
 
                 <div className="grid md:grid-cols-2 gap-6">
@@ -589,7 +589,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                       className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-4 py-3 text-sm font-bold"
                     />
                     {existingMedia.logoUrl && !form.logoFile && (
-                      <p className="text-[11px] text-slate-500 font-semibold">Existing logo will be kept unless replaced.</p>
+                      <p className="text-[11px] text-slate-500 font-bold">Existing logo will be kept unless replaced.</p>
                     )}
                   </Field>
 
@@ -609,7 +609,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                       className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-4 py-3 text-sm font-bold"
                     />
                     {existingMedia.coverImageUrl && !form.coverImageFile && (
-                      <p className="text-[11px] text-slate-500 font-semibold">Existing cover image will be kept unless replaced.</p>
+                      <p className="text-[11px] text-slate-500 font-bold">Existing cover image will be kept unless replaced.</p>
                     )}
                   </Field>
                 </div>
@@ -627,7 +627,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
             )}
 
             {step === 4 && (
-              <section className="bg-white rounded-4xl border border-slate-100 p-6 md:p-8 space-y-8">
+              <section className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 space-y-8">
                 <h3 className="text-xl font-black text-slate-900">Story, FAQs & Testimonials</h3>
 
                 <Field label="Detailed Description *">
@@ -662,14 +662,14 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                       <input
                         value={faq.question}
                         onChange={(e) => updateFaq(index, 'question', e.target.value)}
-                        className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                        className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
                         placeholder="Question"
                       />
                       <div className="flex gap-2">
                         <input
                           value={faq.answer}
                           onChange={(e) => updateFaq(index, 'answer', e.target.value)}
-                          className="flex-1 rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                          className="flex-1 rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
                           placeholder="Answer"
                         />
                         {form.faqs.length > 1 && (
@@ -715,19 +715,19 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                       <input
                         value={item.author}
                         onChange={(e) => updateTestimonial(index, 'author', e.target.value)}
-                        className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                        className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
                         placeholder="Author"
                       />
                       <input
                         value={item.role}
                         onChange={(e) => updateTestimonial(index, 'role', e.target.value)}
-                        className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                        className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
                         placeholder="Role"
                       />
                       <input
                         value={item.avatar}
                         onChange={(e) => updateTestimonial(index, 'avatar', e.target.value)}
-                        className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                        className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
                         placeholder="Avatar URL (optional)"
                       />
                       <input
@@ -736,7 +736,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                         max="5"
                         value={item.rating}
                         onChange={(e) => updateTestimonial(index, 'rating', e.target.value)}
-                        className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                        className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
                         placeholder="Rating"
                       />
                       <div className="md:col-span-2 flex gap-2">
@@ -744,7 +744,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                           value={item.content}
                           onChange={(e) => updateTestimonial(index, 'content', e.target.value)}
                           rows={3}
-                          className="flex-1 rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                          className="flex-1 rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
                           placeholder="Testimonial content"
                         />
                         {form.testimonials.length > 1 && (
@@ -768,7 +768,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
             )}
 
             {step === 5 && (
-              <section className="bg-white rounded-4xl border border-slate-100 p-6 md:p-8 space-y-6">
+              <section className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 space-y-6">
                 <h3 className="text-xl font-black text-slate-900">SEO & Publish</h3>
 
                 <div className="grid md:grid-cols-2 gap-6">
@@ -874,7 +874,7 @@ function ToggleCard({ title, description, checked, onChange }) {
     <div className="rounded-2xl border border-slate-100 bg-slate-50 p-5 flex items-start justify-between gap-4">
       <div>
         <p className="text-sm font-black text-slate-900">{title}</p>
-        <p className="text-xs font-semibold text-slate-500 mt-1">{description}</p>
+        <p className="text-xs font-bold text-slate-500 mt-1">{description}</p>
       </div>
       <button
         type="button"

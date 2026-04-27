@@ -13,11 +13,11 @@ const BannerSlotCard = ({ banner, onReplace, uploading = false }) => {
   const isInactive = banner.status === 'Inactive';
 
   return (
-    <section className="bg-white rounded-4xl shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden transition-all duration-500 group">
+    <section className="bg-white rounded-2xl shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden transition-all duration-500 group">
       <div className="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
         <div>
           <h3 className="text-2xl font-black text-slate-900 tracking-tighter">{banner.title}</h3>
-          <p className="text-sm text-slate-500 font-medium mt-1">{banner.description}</p>
+          <p className="text-sm text-slate-500 font-bold mt-1">{banner.description}</p>
         </div>
         <div className="flex items-center gap-3">
           {isInactive && (
@@ -34,7 +34,7 @@ const BannerSlotCard = ({ banner, onReplace, uploading = false }) => {
       <div className="p-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {/* Banner Preview Area */}
         <div className="lg:col-span-8">
-          <div className={`relative group rounded-4xl overflow-hidden border border-slate-100 aspect-1920/600 bg-slate-50 shadow-inner ${isInactive && banner.image ? 'grayscale opacity-50' : ''}`}>
+          <div className={`relative group rounded-2xl overflow-hidden border border-slate-100 aspect-1920/600 bg-slate-50 shadow-inner ${isInactive && banner.image ? 'grayscale opacity-50' : ''}`}>
             {banner.image ? (
               <>
                 <Image
@@ -64,7 +64,7 @@ const BannerSlotCard = ({ banner, onReplace, uploading = false }) => {
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-slate-300">
                 <span className="material-symbols-outlined text-6xl">image</span>
                 <p className="text-xs font-black uppercase tracking-widest">No Image Uploaded</p>
-                <p className="text-[10px] font-medium text-slate-400">{banner.recommendedSize}</p>
+                <p className="text-[10px] font-bold text-slate-400">{banner.recommendedSize}</p>
               </div>
             )}
           </div>

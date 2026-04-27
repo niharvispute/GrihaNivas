@@ -6,69 +6,58 @@ import Link from 'next/link';
 import { apiFetch } from '@/lib/api';
 
 const DEFAULT_RATES = {
-  maleRate: 6,
-  femaleRate: 5,
-  jointRate: 5,
-  registrationCharge: 30000,
+  buy: { maleRate: 6, femaleRate: 5, jointRate: 5, registrationCharge: 30000 },
+  rent: { maleRate: 2, femaleRate: 2, jointRate: 2, registrationCharge: 1000 },
 };
 
-const computeResult = (propertyValue, buyerType, rates) => {
-  const rateMap = {
-    male: rates.maleRate,
-    female: rates.femaleRate,
-    joint: rates.jointRate,
-  };
-  const ratePercent = rateMap[buyerType] ?? rates.maleRate;
+const computeResult = (propertyValue, buyerType, rateSet) => {
+  const rateMap = { male: rateSet.maleRate, female: rateSet.femaleRate, joint: rateSet.jointRate };
+  const ratePercent = rateMap[buyerType] ?? rateSet.maleRate;
   const stampDuty = Math.round(propertyValue * (ratePercent / 100));
-  const registrationCharges = rates.registrationCharge;
-  const totalPayable = stampDuty + registrationCharges;
-
   return {
     stampDutyRateLabel: `${ratePercent}%`,
     stampDuty,
-    registrationCharges,
-    totalPayable,
+    registrationCharges: rateSet.registrationCharge,
+    totalPayable: stampDuty + rateSet.registrationCharge,
   };
 };
 
 const StampDutyCalculator = () => {
   const [propertyValue, setPropertyValue] = useState(50000000);
   const [buyerType, setBuyerType] = useState('male');
-  const [propertyType, setPropertyType] = useState('residential');
-  const [rates, setRates] = useState(DEFAULT_RATES);
-  const [results, setResults] = useState(() => computeResult(50000000, 'male', DEFAULT_RATES));
+  const [propertyType, setPropertyType] = useState('buy');
+  const [allRates, setAllRates] = useState(DEFAULT_RATES);
+  const [results, setResults] = useState(() =>
+    computeResult(50000000, 'male', DEFAULT_RATES.buy)
+  );
 
   useEffect(() => {
     apiFetch('/api/stamp-duty')
       .then((res) => {
+        const data = res.data || {};
         const fetched = {
-          maleRate: res.data?.maleRate ?? DEFAULT_RATES.maleRate,
-          femaleRate: res.data?.femaleRate ?? DEFAULT_RATES.femaleRate,
-          jointRate: res.data?.jointRate ?? DEFAULT_RATES.jointRate,
-          registrationCharge: res.data?.registrationCharge ?? DEFAULT_RATES.registrationCharge,
+          buy: { ...DEFAULT_RATES.buy, ...(data.buy || {}) },
+          rent: { ...DEFAULT_RATES.rent, ...(data.rent || {}) },
         };
-        setRates(fetched);
-        setResults(computeResult(propertyValue, buyerType, fetched));
+        setAllRates(fetched);
+        setResults(computeResult(propertyValue, buyerType, fetched[propertyType]));
       })
       .catch(() => {});
   }, []);
 
   useEffect(() => {
-    setResults(computeResult(propertyValue, buyerType, rates));
-  }, [propertyValue, buyerType, rates]);
+    setResults(computeResult(propertyValue, buyerType, allRates[propertyType]));
+  }, [propertyValue, buyerType, propertyType, allRates]);
 
-  const formatCurrency = (val) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0,
-    }).format(val);
-  };
+  const formatCurrency = (val) =>
+    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+
+  const currentRates = allRates[propertyType];
 
   const FAQS = [
     {
       q: "What are the current stamp duty rates in Mumbai?",
-      a: "As of 2024, the standard stamp duty rate in Mumbai is 6% (which includes a 1% Metro Cess). However, for female buyers, there is a 1% concession, bringing the rate down to 5%."
+      a: "As of 2024, the standard stamp duty rate in Mumbai for buying is 6% (which includes a 1% Metro Cess). For female buyers, there is a 1% concession, bringing the rate down to 5%."
     },
     {
       q: "Are there any tax benefits on stamp duty?",
@@ -80,19 +69,20 @@ const StampDutyCalculator = () => {
     }
   ];
 
-  return (    <div className="w-full max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-12 font-sans">
+  return (
+    <div className="w-full max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-12 font-sans">
       {/* 1. Header */}
       <header className="mb-8 md:mb-16 text-center">
         <h1 className="text-2xl md:text-5xl font-black tracking-tighter text-slate-900 mb-2 md:mb-4 px-2">
           Stamp Duty & Registration
         </h1>
-        <p className="text-slate-500 text-sm md:text-xl font-medium max-w-3xl mx-auto px-4">
+        <p className="text-slate-500 text-sm md:text-xl font-bold max-w-3xl mx-auto px-4">
           Calculate precise property charges for your Mumbai real estate investment based on the latest rates.
         </p>
       </header>
 
       {/* 2. Main Calculator Card */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-0 md:rounded-[2.5rem] rounded-[1.5rem] overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/50">
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-0 rounded-2xl overflow-hidden bg-white border border-slate-100 shadow-xl shadow-slate-200/50">
         {/* Left: Inputs */}
         <div className="lg:col-span-7 p-6 md:p-12 border-b lg:border-r lg:border-b-0 border-slate-100">
           <div className="space-y-8 md:space-y-12">
@@ -110,9 +100,34 @@ const StampDutyCalculator = () => {
                     const val = parseInt(e.target.value.replace(/,/g, '')) || 0;
                     setPropertyValue(val);
                   }}
-                  className="w-full bg-slate-50 border-none rounded-2xl md:rounded-3xl py-4 md:py-6 pl-10 md:pl-12 pr-6 md:pr-8 text-xl md:text-3xl font-black text-slate-900 focus:ring-1 focus:ring-primary/20 transition-all placeholder:text-slate-200"
+                  className="w-full bg-slate-50 border-none rounded-2xl py-4 md:py-6 pl-10 md:pl-12 pr-6 md:pr-8 text-xl md:text-3xl font-black text-slate-900 focus:ring-1 focus:ring-primary/20 transition-all placeholder:text-slate-200"
                   placeholder="50,000,000"
                 />
+              </div>
+            </div>
+
+            {/* Property Type */}
+            <div>
+              <label className="block text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase text-slate-400 mb-4 md:mb-6">
+                Property Type
+              </label>
+              <div className="grid grid-cols-2 gap-2 md:gap-4">
+                {[
+                  { id: 'buy', label: 'Buy' },
+                  { id: 'rent', label: 'Rent' },
+                ].map((type) => (
+                  <button
+                    key={type.id}
+                    onClick={() => setPropertyType(type.id)}
+                    className={`py-3 md:p-5 rounded-xl md:rounded-2xl border-2 font-bold text-sm md:text-lg transition-all active:scale-95 ${
+                      propertyType === type.id
+                        ? 'border-primary bg-primary/5 text-primary shadow-md md:shadow-lg shadow-primary/10'
+                        : 'border-slate-100 text-slate-500 hover:border-slate-200'
+                    }`}
+                  >
+                    {type.label}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -132,8 +147,8 @@ const StampDutyCalculator = () => {
                     onClick={() => setBuyerType(type.id)}
                     className={`py-3 md:p-5 rounded-xl md:rounded-2xl border-2 font-bold text-sm md:text-lg transition-all active:scale-95 ${
                       buyerType === type.id
-                      ? 'border-primary bg-primary/5 text-primary shadow-md md:shadow-lg shadow-primary/10'
-                      : 'border-slate-100 text-slate-500 hover:border-slate-200'
+                        ? 'border-primary bg-primary/5 text-primary shadow-md md:shadow-lg shadow-primary/10'
+                        : 'border-slate-100 text-slate-500 hover:border-slate-200'
                     }`}
                   >
                     {type.label}
@@ -142,34 +157,16 @@ const StampDutyCalculator = () => {
               </div>
             </div>
 
-            {/* Property Type */}
-            <div>
-              <label className="block text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase text-slate-400 mb-4 md:mb-6">
-                Property Type
-              </label>
-              <div className="relative">
-                <select
-                  value={propertyType}
-                  onChange={(e) => setPropertyType(e.target.value)}
-                  className="w-full bg-slate-50 border-none rounded-xl md:rounded-2xl py-4 md:py-5 px-5 md:px-6 font-bold text-base md:text-lg text-slate-900 focus:ring-1 focus:ring-primary/20 appearance-none cursor-pointer"
-                >
-                  <option value="residential">Apartment / Residential</option>
-                  <option value="agricultural">Agricultural Land</option>
-                </select>
-                <div className="absolute right-5 md:right-6 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400"><path d="m6 9 6 6 6-6"/></svg>
-                </div>
-              </div>
-            </div>
-
             {/* Current Rates Info */}
             <div className="bg-slate-50 rounded-2xl p-4 md:p-6">
-              <p className="text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase text-slate-400 mb-3">Current Rates</p>
+              <p className="text-[9px] md:text-[10px] font-black tracking-[0.2em] uppercase text-slate-400 mb-3">
+                Current Rates — {propertyType === 'buy' ? 'Buy' : 'Rent'}
+              </p>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { label: 'Male', value: `${rates.maleRate}%` },
-                  { label: 'Female', value: `${rates.femaleRate}%` },
-                  { label: 'Joint', value: `${rates.jointRate}%` },
+                  { label: 'Male', value: `${currentRates.maleRate}%` },
+                  { label: 'Female', value: `${currentRates.femaleRate}%` },
+                  { label: 'Joint', value: `${currentRates.jointRate}%` },
                 ].map((r) => (
                   <div key={r.label} className="text-center">
                     <p className="text-xs font-bold text-slate-500">{r.label}</p>
@@ -177,8 +174,8 @@ const StampDutyCalculator = () => {
                   </div>
                 ))}
               </div>
-              <p className="text-[9px] md:text-[10px] text-slate-400 font-medium mt-3">
-                Registration charge: {formatCurrency(rates.registrationCharge)} flat
+              <p className="text-[9px] md:text-[10px] text-slate-400 font-bold mt-3">
+                Registration charge: {formatCurrency(currentRates.registrationCharge)} flat
               </p>
             </div>
           </div>
@@ -194,7 +191,7 @@ const StampDutyCalculator = () => {
               <div className="flex justify-between items-end">
                 <div className="space-y-0.5 md:space-y-1">
                   <span className="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest block leading-none">Stamp Duty</span>
-                  <span className="text-slate-600 text-xs md:text-base font-medium">at {results.stampDutyRateLabel} Rate</span>
+                  <span className="text-slate-600 text-xs md:text-base font-bold">at {results.stampDutyRateLabel} Rate</span>
                 </div>
                 <span className="text-xl md:text-3xl font-black text-primary">{formatCurrency(results.stampDuty)}</span>
               </div>
@@ -202,7 +199,7 @@ const StampDutyCalculator = () => {
               <div className="flex justify-between items-end">
                 <div className="space-y-0.5 md:space-y-1">
                   <span className="text-slate-400 text-[10px] md:text-xs font-bold uppercase tracking-widest block leading-none">Registration</span>
-                  <span className="text-slate-600 text-xs md:text-base font-medium">Flat Charge</span>
+                  <span className="text-slate-600 text-xs md:text-base font-bold">Flat Charge</span>
                 </div>
                 <span className="text-lg md:text-xl font-black text-slate-900">{formatCurrency(results.registrationCharges)}</span>
               </div>
@@ -210,7 +207,7 @@ const StampDutyCalculator = () => {
               <div className="pt-6 md:pt-10 border-t border-slate-200">
                 <div className="flex justify-between items-end">
                   <span className="font-black text-[9px] md:text-xs uppercase tracking-[0.1em] md:tracking-[0.2em] text-slate-400">Total Payable</span>
-                  <span className="text-2xl md:text-4xl font-black text-slate-900 border-b-2 md:border-b-4 border-primary/20 pb-0.5 md:pb-1 ">
+                  <span className="text-2xl md:text-4xl font-black text-slate-900 border-b-2 md:border-b-4 border-primary/20 pb-0.5 md:pb-1">
                     {formatCurrency(results.totalPayable)}
                   </span>
                 </div>
@@ -236,7 +233,7 @@ const StampDutyCalculator = () => {
       </section>
 
       {/* 3. Disclaimer */}
-      <p className="mt-6 md:mt-8 text-center text-slate-400 text-[10px] md:text-xs font-medium  px-4">
+      <p className="mt-6 md:mt-8 text-center text-slate-400 text-[10px] md:text-xs font-bold px-4">
         * Estimates based on current Mumbai municipal rates. Ready Reckoner Rates may apply.
       </p>
 
@@ -244,19 +241,19 @@ const StampDutyCalculator = () => {
       <section className="mt-16 md:mt-32 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start px-2">
         <div>
           <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-4 md:mb-8 tracking-tighter">Understanding Stamp Duty</h2>
-          <div className="space-y-4 md:space-y-6 text-slate-500 leading-relaxed font-medium text-sm md:text-lg">
+          <div className="space-y-4 md:space-y-6 text-slate-500 leading-relaxed font-bold text-sm md:text-lg">
             <p>
               Stamp duty is a mandatory legal tax paid for asset acquisition.
               In Mumbai, these are set by the State Government of Maharashtra.
             </p>
             <p>
               Calculations are based on the higher value between the transaction price and the
-              <span className="text-primary  font-bold"> Ready Reckoner Rate</span>.
+              <span className="text-primary font-bold"> Ready Reckoner Rate</span>.
             </p>
           </div>
         </div>
 
-        <div className="bg-primary/5 rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-10 border border-primary/10">
+        <div className="bg-primary/5 rounded-2xl p-6 md:p-10 border border-primary/10">
           <h3 className="text-lg md:text-xl font-black text-primary mb-4 md:mb-6">Key Considerations</h3>
           <ul className="space-y-4 md:space-y-6">
             {[
@@ -265,10 +262,10 @@ const StampDutyCalculator = () => {
               { icon: 'person_celebrate', text: "Women buyers receive a 1% concession in Maharashtra." }
             ].map((item, i) => (
               <li key={i} className="flex gap-4 md:gap-5 items-start">
-                <div className="bg-primary/10 p-1.5 md:p-2 rounded-lg md:rounded-xl text-primary mt-0.5 md:mt-1 shrink-0">
+                <div className="bg-primary/10 p-1.5 md:p-2 rounded-xl text-primary mt-0.5 md:mt-1 shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="md:w-5 md:h-5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                 </div>
-                <span className="text-slate-600 text-xs md:text-base font-medium leading-tight md:leading-normal">{item.text}</span>
+                <span className="text-slate-600 text-xs md:text-base font-bold leading-tight md:leading-normal">{item.text}</span>
               </li>
             ))}
           </ul>
@@ -280,14 +277,14 @@ const StampDutyCalculator = () => {
         <h2 className="text-2xl md:text-4xl font-black text-center text-slate-900 mb-8 md:mb-16 tracking-tighter">Expert Insights & FAQs</h2>
         <div className="space-y-3 md:space-y-6">
           {FAQS.map((faq, i) => (
-            <details key={i} className="group bg-slate-50 rounded-2xl md:rounded-3xl p-5 md:p-8 border border-slate-100 cursor-pointer transition-all hover:bg-white">
+            <details key={i} className="group bg-slate-50 rounded-2xl p-5 md:p-8 border border-slate-100 cursor-pointer transition-all hover:bg-white">
               <summary className="flex justify-between items-center text-base md:text-xl font-black text-slate-900 list-none group-open:text-primary transition-colors">
                 {faq.q}
                 <div className="bg-white p-1.5 md:p-2 rounded-full shadow-sm group-open:rotate-180 transition-transform">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-primary md:w-5 md:h-5"><path d="m6 9 6 6 6-6"/></svg>
                 </div>
               </summary>
-              <p className="mt-4 md:mt-6 text-slate-500 text-sm md:text-base font-medium leading-relaxed border-t border-slate-200 pt-4 md:pt-6">
+              <p className="mt-4 md:mt-6 text-slate-500 text-sm md:text-base font-bold leading-relaxed border-t border-slate-200 pt-4 md:pt-6">
                 {faq.a}
               </p>
             </details>
@@ -296,7 +293,7 @@ const StampDutyCalculator = () => {
       </section>
 
       {/* 6. Asymmetric CTA Section */}
-      <section className="mt-16 md:mt-32 relative h-80 md:h-125 rounded-[2rem] md:rounded-[3rem] overflow-hidden group shadow-2xl">
+      <section className="mt-16 md:mt-32 relative h-80 md:h-125 rounded-2xl overflow-hidden group shadow-2xl">
         <Image
           fill
           sizes="(max-width: 768px) 100vw, 800px"
@@ -310,7 +307,7 @@ const StampDutyCalculator = () => {
           <h2 className="text-3xl md:text-6xl font-black text-white mb-4 md:mb-8 leading-tight tracking-tighter">
             Complexity, <br/>Simplified.
           </h2>
-          <p className="text-slate-300 text-sm md:text-xl mb-6 md:mb-12 font-medium leading-relaxed max-w-sm md:max-w-none">
+          <p className="text-slate-300 text-sm md:text-xl mb-6 md:mb-12 font-bold leading-relaxed max-w-sm md:max-w-none">
             Our experts manage the intricacies of Mumbai real estate documentation,
             ensuring a seamless transition.
           </p>

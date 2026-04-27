@@ -46,8 +46,8 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
   };
 
   return (
-    <section className="mb-10 sm:mb-16 animate-in fade-in duration-1000">
-      <div className="group relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] bg-zinc-900 min-h-96 lg:h-125 flex items-center shadow-2xl pb-10">
+    <section className="mb-8 md:mb-12 lg:mb-14 animate-in fade-in duration-1000">
+      <div className="group relative overflow-hidden rounded-2xl bg-slate-900 min-h-96 lg:h-125 flex items-center shadow-2xl pb-10">
         <div className="absolute inset-0">
           {heroImage ? (
             <Image
@@ -58,9 +58,9 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
               alt={activeBuilder?.name || 'Featured builder'}
             />
           ) : (
-            <div className="w-full h-full bg-linear-to-br from-zinc-700 via-zinc-800 to-zinc-900" />
+            <div className="w-full h-full bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900" />
           )}
-          <div className="absolute inset-0 bg-linear-to-r from-zinc-950 via-zinc-950/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/60 to-transparent"></div>
         </div>
 
         <div className="relative z-10 px-4 sm:px-8 md:px-16 py-6 sm:py-10 max-w-3xl">
@@ -68,32 +68,32 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
             Featured Partner
           </span>
           <div className="flex items-center gap-2.5 sm:gap-4 mb-2 sm:mb-4">
-            <div className="w-10 h-10 sm:w-16 sm:h-16 bg-white rounded-lg sm:rounded-xl p-1.5 flex items-center justify-center shadow-xl shrink-0">
+            <div className="w-10 h-10 sm:w-16 sm:h-16 bg-white rounded-xl sm:rounded-2xl p-1.5 flex items-center justify-center shadow-xl shrink-0">
               {logo ? (
                 <Image width={64} height={64} className="object-contain" src={logo} alt={activeBuilder?.name || 'Builder logo'} />
               ) : (
                 <span className="text-lg font-black text-primary">{activeBuilder?.name?.[0] || 'B'}</span>
               )}
             </div>
-            <h2 className="text-[16px]! sm:text-[29px]! md:text-[48px]! font-headline font-extrabold text-white uppercase tracking-tight leading-none">
+            <h2 className="text-xl sm:text-3xl md:text-5xl font-headline font-black text-white uppercase tracking-tight leading-none">
               {activeBuilder?.name}
             </h2>
           </div>
-          <p className="text-zinc-300 text-xs sm:text-sm lg:text-base mb-5 sm:mb-8 leading-relaxed font-body line-clamp-3">
+          <p className="text-slate-300 text-xs sm:text-sm lg:text-base mb-5 sm:mb-8 leading-relaxed font-body line-clamp-3">
             {activeBuilder?.tagline} {heroDescription}
           </p>
 
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-4 gap-y-3 sm:gap-8 mb-5 sm:mb-10">
             <div>
-              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">Est. Year</p>
+              <p className="text-slate-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">Est. Year</p>
               <p className="text-white text-xs sm:text-base font-bold">{activeBuilder?.establishedYear || 'N/A'}</p>
             </div>
             <div>
-              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">Total Projects</p>
+              <p className="text-slate-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">Total Projects</p>
               <p className="text-white text-xs sm:text-base font-bold">{activeBuilder?.totalProjects || 'N/A'}</p>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="text-zinc-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">HQ Location</p>
+              <p className="text-slate-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">HQ Location</p>
               <p className="text-white text-xs sm:text-base font-bold">{activeBuilder?.hqLocation || 'N/A'}</p>
             </div>
           </div>
@@ -101,13 +101,13 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
           <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4">
             <Link
               href={`/builders/${activeBuilder?.slug}`}
-              className="bg-primary text-white px-5 sm:px-8 py-2.5 sm:py-4 rounded-lg sm:rounded-xl font-black hover:bg-primary-container transition-all active:scale-95 text-[10px] sm:text-sm uppercase tracking-widest text-center"
+              className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-8 py-2.5 sm:py-4 rounded-2xl font-black transition-all active:scale-95 shadow-lg shadow-primary/30 text-[10px] sm:text-sm uppercase tracking-widest text-center"
             >
               View Details
             </Link>
             <Link
               href={`/builders/${activeBuilder?.slug}#portfolio`}
-              className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-5 sm:px-8 py-2.5 sm:py-4 rounded-lg sm:rounded-xl font-black hover:bg-white/20 transition-all text-[10px] sm:text-sm uppercase tracking-widest text-center"
+              className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-5 sm:px-8 py-2.5 sm:py-4 rounded-2xl font-black hover:bg-white/20 transition-all text-[10px] sm:text-sm uppercase tracking-widest text-center"
             >
               View Portfolio
             </Link>
@@ -118,7 +118,7 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
           <button
             type="button"
             onClick={goToPrevious}
-            className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/15 text-white border border-white/25 hover:bg-white/25 transition-colors flex items-center justify-center pointer-events-auto"
+            className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all flex items-center justify-center pointer-events-auto"
             aria-label="Previous featured builder"
           >
             <span className="material-symbols-outlined text-[20px] sm:text-[24px]">chevron_left</span>
@@ -126,7 +126,7 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
           <button
             type="button"
             onClick={goToNext}
-            className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/15 text-white border border-white/25 hover:bg-white/25 transition-colors flex items-center justify-center pointer-events-auto"
+            className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all flex items-center justify-center pointer-events-auto"
             aria-label="Next featured builder"
           >
             <span className="material-symbols-outlined text-[20px] sm:text-[24px]">chevron_right</span>

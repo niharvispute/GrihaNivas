@@ -630,10 +630,18 @@ const schemas = {
   // ── STAMP DUTY ────────────────────────────
   stampDuty: {
     update: z.object({
-      maleRate: z.number().min(0).max(100),
-      femaleRate: z.number().min(0).max(100),
-      jointRate: z.number().min(0).max(100),
-      registrationCharge: z.number().min(0),
+      buy: z.object({
+        maleRate: z.number().min(0).max(100),
+        femaleRate: z.number().min(0).max(100),
+        jointRate: z.number().min(0).max(100),
+        registrationCharge: z.number().min(0),
+      }),
+      rent: z.object({
+        maleRate: z.number().min(0).max(100),
+        femaleRate: z.number().min(0).max(100),
+        jointRate: z.number().min(0).max(100),
+        registrationCharge: z.number().min(0),
+      }),
     }),
   },
 

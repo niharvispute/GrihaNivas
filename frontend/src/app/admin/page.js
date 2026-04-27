@@ -98,7 +98,7 @@ export default function AdminDashboardPage() {
       {/* KPI Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {kpis.map((stat, i) => (
-          <div key={i} className="bg-white p-5 rounded-3xl shadow-sm border border-slate-50 flex flex-col gap-4 hover:shadow-xl hover:scale-[1.02] transition-all group">
+          <div key={i} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-4 hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500 group">
             <div className="flex justify-between items-start">
               <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-xl flex items-center justify-center shadow-inner`}>
                 <span className="material-symbols-outlined text-xl">{stat.icon}</span>
@@ -113,8 +113,8 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Recent Leads */}
-      <div className="bg-white rounded-3xl border border-slate-50 shadow-sm overflow-hidden hover:shadow-xl transition-all">
-        <div className="px-7 py-5 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500">
+        <div className="px-7 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
           <div>
             <h2 className="text-sm font-black text-slate-900 uppercase tracking-widest">Recent Leads</h2>
             <p className="text-slate-400 text-xs font-bold mt-0.5">Latest submissions across the platform</p>
@@ -129,7 +129,10 @@ export default function AdminDashboardPage() {
               {[1, 2, 3].map((i) => <div key={i} className="h-11 bg-slate-100 rounded-xl animate-pulse" />)}
             </div>
           ) : recentLeads.length === 0 ? (
-            <div className="py-10 text-center text-slate-400 font-bold text-sm">No leads yet.</div>
+            <div className="flex flex-col items-center justify-center py-16 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 my-4">
+              <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">person_add</span>
+              <p className="text-slate-500 font-bold text-sm">No leads yet — submissions will appear here.</p>
+            </div>
           ) : (
             <table className="w-full text-left border-separate border-spacing-y-3">
               <thead>
@@ -166,16 +169,16 @@ export default function AdminDashboardPage() {
                         <button
                           type="button"
                           onClick={() => setOpenActionFor((prev) => (prev === lead._id ? null : lead._id))}
-                          className="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-100 text-slate-400 hover:text-primary hover:bg-primary/5 transition-all"
+                          className="w-8 h-8 flex items-center justify-center rounded-xl border border-slate-100 text-slate-400 hover:text-primary hover:bg-primary/5 transition-all"
                         >
                           <span className="material-symbols-outlined text-base">more_horiz</span>
                         </button>
                         {openActionFor === lead._id && (
-                          <div className="absolute right-0 top-10 z-20 w-36 rounded-xl border border-slate-100 bg-white p-1.5 shadow-2xl shadow-slate-200/60">
+                          <div className="absolute right-0 top-10 z-20 w-36 rounded-2xl border border-slate-100 bg-white p-1.5 shadow-2xl shadow-slate-200/60">
                             <button
                               type="button"
                               onClick={() => handleViewLead(lead._id)}
-                              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all"
+                              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all"
                             >
                               <span className="material-symbols-outlined text-base text-primary">visibility</span>
                               <span>View</span>
@@ -201,8 +204,8 @@ export default function AdminDashboardPage() {
             { label: 'Total Banners', value: stats.banners?.total ?? '—', icon: 'panorama' },
             { label: 'Testimonials', value: stats.testimonials?.total ?? '—', icon: 'star' },
           ].map((c, i) => (
-            <div key={i} className="bg-white rounded-3xl p-4 shadow-sm border border-slate-50 flex items-center gap-4">
-              <div className="w-9 h-9 rounded-xl bg-slate-50 flex items-center justify-center text-primary">
+            <div key={i} className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center gap-4">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                 <span className="material-symbols-outlined text-xl">{c.icon}</span>
               </div>
               <div>
@@ -216,13 +219,13 @@ export default function AdminDashboardPage() {
 
       {(loadingLeadDetail || viewingLead) && (
         <div className="fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-2xl bg-white rounded-3xl border border-slate-100 shadow-2xl overflow-hidden">
+          <div className="w-full max-w-2xl bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
               <h3 className="text-lg font-black text-slate-900 tracking-tight">Lead Details</h3>
               <button
                 type="button"
                 onClick={() => { setViewingLead(null); setLoadingLeadDetail(false); }}
-                className="w-8 h-8 rounded-lg bg-slate-50 text-slate-500 hover:text-slate-900 transition-colors"
+                className="w-8 h-8 rounded-xl bg-slate-50 text-slate-500 hover:text-slate-900 transition-colors"
               >
                 <span className="material-symbols-outlined text-lg">close</span>
               </button>
@@ -259,7 +262,7 @@ export default function AdminDashboardPage() {
 
 function Info({ label, value, full = false }) {
   return (
-    <div className={`${full ? 'md:col-span-2' : ''} rounded-xl border border-slate-100 bg-slate-50 p-3`}>
+    <div className={`${full ? 'md:col-span-2' : ''} rounded-2xl border border-slate-100 bg-slate-50 p-3`}>
       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1">{label}</p>
       <p className="text-xs font-bold text-slate-800 wrap-break-word">{String(value)}</p>
     </div>

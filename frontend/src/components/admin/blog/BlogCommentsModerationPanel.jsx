@@ -20,11 +20,11 @@ export default function BlogCommentsModerationPanel({
   onDelete,
 }) {
   return (
-    <section className="bg-white rounded-4xl shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+    <section className="bg-white rounded-2xl shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
       <div className="p-8 sm:p-10 border-b border-slate-50 bg-slate-50/30 flex items-center justify-between gap-4">
         <div>
           <h3 className="font-black text-2xl text-slate-900 tracking-tighter">Comments Moderation</h3>
-          <p className="text-slate-500 text-sm font-medium mt-1">Review and approve pending blog discussions.</p>
+          <p className="text-slate-500 text-sm font-bold mt-1">Review and approve pending blog discussions.</p>
         </div>
         <span className="px-4 py-2 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest">
           Pending: {comments.length}
@@ -33,11 +33,11 @@ export default function BlogCommentsModerationPanel({
 
       <div className="p-6 sm:p-8">
         {loading ? (
-          <div className="py-14 flex items-center justify-center text-slate-400 text-sm font-semibold">
+          <div className="py-14 flex items-center justify-center text-slate-400 text-sm font-bold">
             Loading pending comments...
           </div>
         ) : comments.length === 0 ? (
-          <div className="py-14 text-center text-slate-400 text-sm font-semibold">
+          <div className="py-14 text-center text-slate-400 text-sm font-bold">
             No pending comments. Everything is up to date.
           </div>
         ) : (
@@ -49,7 +49,7 @@ export default function BlogCommentsModerationPanel({
                     <p className="text-sm font-black text-slate-900 tracking-tight">{comment.name || 'Guest'}</p>
                     <p className="text-[11px] uppercase tracking-widest font-black text-slate-400 mt-1">{formatDate(comment.createdAt)}</p>
                     {comment.email ? (
-                      <p className="text-xs text-slate-500 mt-1 font-semibold">{comment.email}</p>
+                      <p className="text-xs text-slate-500 mt-1 font-bold">{comment.email}</p>
                     ) : null}
                   </div>
 

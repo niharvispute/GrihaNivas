@@ -10,7 +10,7 @@ export default function BuilderTestimonials({ builder }) {
         <h2 className="text-3xl! sm:text-4xl! font-extrabold text-zinc-900 mb-10 sm:mb-16 text-center font-headline uppercase tracking-tight">What Our Residents Say</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
         {testimonials.map((testi) => (
-          <div key={testi.id} className="relative bg-white p-6 sm:p-8 lg:p-10 rounded-[1.75rem] sm:rounded-[2.5rem] shadow-xl border border-neutral-100 group hover:-translate-y-2 transition-all duration-300">
+          <div key={testi.id} className="relative bg-white p-6 sm:p-8 lg:p-10 rounded-2xl shadow-xl border border-neutral-100 group hover:-translate-y-2 transition-all duration-300">
             <div className="absolute -top-6 left-6 sm:left-10">
               <Image
                 src={testi.avatar}

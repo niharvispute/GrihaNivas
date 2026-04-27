@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function ConciergePromo() {
   return (
-    <div className="mt-10 relative overflow-hidden h-64 rounded-[2.5rem] group shadow-2xl shadow-primary/10">
+    <div className="mt-10 relative overflow-hidden h-64 rounded-2xl group shadow-2xl shadow-primary/10">
       <Image
         alt="Office Workspace"
         fill
@@ -15,7 +15,7 @@ export default function ConciergePromo() {
           Priority Support
         </span>
         <h3 className="text-3xl md:text-4xl font-heading font-black text-white mb-2 leading-tight">Need immediate <br/>assistance?</h3>
-        <p className="text-slate-300 max-w-sm text-sm font-medium mb-8 leading-relaxed">
+        <p className="text-slate-300 max-w-sm text-sm font-bold mb-8 leading-relaxed">
           Connect with our premium residential concierge for priority enquiry handling and expert guidance.
         </p>
         <button className="flex items-center gap-3 bg-white text-slate-900 px-8 py-3.5 rounded-full font-heading font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95 shadow-lg shadow-black/20 group/btn">

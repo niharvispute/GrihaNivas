@@ -28,10 +28,10 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
   };
 
   return (
-    <section className="bg-white rounded-[3.5rem] shadow-[0_48px_96px_-24px_rgba(0,0,0,0.12)] border border-slate-50 overflow-hidden transition-all duration-700 animate-in fade-in slide-in-from-bottom-6">
+    <section className="bg-white rounded-2xl shadow-[0_48px_96px_-24px_rgba(0,0,0,0.12)] border border-slate-50 overflow-hidden transition-all duration-700 animate-in fade-in slide-in-from-bottom-6">
       <div className="p-12 border-b border-slate-50 bg-slate-50/20">
         <h3 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">Editor Suite</h3>
-        <p className="text-slate-500 font-medium">Capture user sentiment and curate social proof with precision.</p>
+        <p className="text-slate-500 font-bold">Capture user sentiment and curate social proof with precision.</p>
       </div>
       
       <form key={initialData.id || 'new'} className="p-12" onSubmit={handleSubmit}>
@@ -42,7 +42,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Full Name</label>
                 <input 
-                  className="w-full px-8 py-5 rounded-3xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300" 
+                  className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300" 
                   placeholder="e.g. Client Name" 
                   type="text"
                   value={name}
@@ -54,7 +54,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
                 <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Satisfaction Rating</label>
                 <div className="relative group">
                   <select 
-                    className="w-full px-8 py-5 rounded-[1.25rem] bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none font-bold text-slate-900"
+                    className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none font-bold text-slate-900"
                     value={rating}
                     onChange={(e) => setRating(Number(e.target.value))}
                   >
@@ -73,7 +73,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Designation</label>
                 <input
-                  className="w-full px-8 py-5 rounded-3xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
+                  className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
                   placeholder="e.g. Homebuyer"
                   type="text"
                   value={designation}
@@ -83,7 +83,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Company</label>
                 <input
-                  className="w-full px-8 py-5 rounded-3xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
+                  className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
                   placeholder="e.g. Acme Corp"
                   type="text"
                   value={company}
@@ -95,7 +95,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
             <div className="space-y-3">
               <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Narrative Content</label>
               <textarea 
-                className="w-full px-8 py-6 rounded-[2.5rem] bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none font-medium text-slate-700 leading-relaxed text-lg min-h-55 placeholder:text-slate-200" 
+                className="w-full px-8 py-6 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none font-medium text-slate-700 leading-relaxed text-lg min-h-55 placeholder:text-slate-200" 
                 placeholder="Share the client's journey and experience with Bricks..." 
                 value={testimonial}
                 onChange={(e) => setTestimonial(e.target.value)}
@@ -107,7 +107,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Display Order</label>
                 <input
-                  className="w-full px-8 py-5 rounded-3xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900"
+                  className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900"
                   type="number"
                   min="0"
                   value={order}
@@ -116,7 +116,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
               </div>
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Visibility</label>
-                <label className="w-full px-8 py-5 rounded-3xl bg-slate-50 border-none shadow-inner flex items-center gap-3 font-bold text-slate-900">
+                <label className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner flex items-center gap-3 font-bold text-slate-900">
                   <input
                     type="checkbox"
                     checked={isActive}
@@ -131,12 +131,12 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
           {/* Asset Pipeline: Right Side */}
           <div className="lg:col-span-4 flex flex-col">
             <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1 mb-4">Identity Visualization</label>
-            <label className="flex-1 border-4 border-dashed border-slate-100 rounded-[3rem] bg-slate-50/50 flex flex-col items-center justify-center p-12 text-center group hover:bg-slate-50 hover:border-primary/20 transition-all cursor-pointer">
-               <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-xl text-primary mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+            <label className="flex-1 border-4 border-dashed border-slate-100 rounded-2xl bg-slate-50/50 flex flex-col items-center justify-center p-12 text-center group hover:bg-slate-50 hover:border-primary/20 transition-all cursor-pointer">
+               <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-xl text-primary mb-8 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                   <span className="material-symbols-outlined text-4xl">upload_file</span>
                </div>
                <p className="text-sm font-black text-slate-900 uppercase tracking-widest mb-2 font-headline">Import Avatar</p>
-               <p className="text-xs font-medium text-slate-400 leading-relaxed">SVG, PNG, or JPG formats <br/>(Optimized for 800px max)</p>
+               <p className="text-xs font-bold text-slate-400 leading-relaxed">SVG, PNG, or JPG formats <br/>(Optimized for 800px max)</p>
               {imageFile && <p className="text-[10px] font-bold text-primary mt-4 break-all">{imageFile.name}</p>}
               <input
                 type="file"

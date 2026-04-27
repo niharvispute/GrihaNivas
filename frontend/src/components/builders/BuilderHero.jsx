@@ -16,12 +16,12 @@ export default function BuilderHero({ builder }) {
           sizes="100vw"
           className="object-cover brightness-50"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-black/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/20"></div>
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10 py-8 sm:py-16 lg:py-20">
         <div className="max-w-4xl">
-          <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 lg:p-7 rounded-2xl sm:rounded-3xl border border-white/20 inline-block mb-5 sm:mb-8">
+          <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 lg:p-7 rounded-2xl border border-white/20 inline-block mb-5 sm:mb-8">
             {hasLogo ? (
               <Image
                 src={builder.logo}

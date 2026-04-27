@@ -58,7 +58,7 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
           <span className="material-symbols-outlined text-primary text-xl">payments</span>
           Budget Range
         </label>
-        <p className="text-[10px] text-slate-400 font-medium">Drag sliders to set your budget range</p>
+        <p className="text-[10px] text-slate-400 font-bold">Drag sliders to set your budget range</p>
       </div>
 
       {/* Sliders Container */}
@@ -117,7 +117,7 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
             />
           </div>
 
-          <div className="flex justify-between text-[10px] text-slate-500 font-semibold">
+          <div className="flex justify-between text-[10px] text-slate-500 font-bold">
             <span>₹1 Cr</span>
             <span>₹5 Cr</span>
           </div>
@@ -177,7 +177,7 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
             />
           </div>
 
-          <div className="flex justify-between text-[10px] text-slate-500 font-semibold">
+          <div className="flex justify-between text-[10px] text-slate-500 font-bold">
             <span>₹1 Cr</span>
             <span>₹5 Cr</span>
           </div>
@@ -189,12 +189,12 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
         <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-3">Budget Range</p>
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-slate-400 text-[9px] font-semibold mb-1">From</p>
+            <p className="text-slate-400 text-[9px] font-bold mb-1">From</p>
             <p className="text-primary font-black text-base">{formatPriceToCr(min)}</p>
           </div>
           <div className="text-slate-300 text-2xl">→</div>
           <div>
-            <p className="text-slate-400 text-[9px] font-semibold mb-1">To</p>
+            <p className="text-slate-400 text-[9px] font-bold mb-1">To</p>
             <p className="text-primary font-black text-base">{formatPriceToCr(max)}</p>
           </div>
         </div>

@@ -47,10 +47,10 @@ export default function EnquiryTable() {
 
   if (enquiries.length === 0) {
     return (
-      <div className="bg-white rounded-4xl shadow-sm border border-slate-100 py-16 text-center mb-8">
-        <span className="material-symbols-outlined text-5xl text-slate-200 mb-4 block">inbox</span>
+      <div className="bg-white rounded-2xl shadow-sm border border-dashed border-slate-200 py-16 text-center mb-8">
+        <span className="material-symbols-outlined text-5xl text-slate-300 mb-4 block">inbox</span>
         <h3 className="font-heading font-black text-slate-900 text-lg mb-1">No enquiries yet</h3>
-        <p className="text-slate-400 text-sm font-medium">Your submitted enquiries will appear here.</p>
+        <p className="text-slate-400 text-sm font-bold">Your submitted enquiries will appear here.</p>
       </div>
     );
   }
@@ -68,11 +68,11 @@ export default function EnquiryTable() {
         return (
           <div
             key={item._id}
-            className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-4 sm:p-6"
+            className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg hover:shadow-slate-200/80 hover:-translate-y-1 transition-all duration-500 p-4 sm:p-6"
           >
             {/* Header with thumbnail and title */}
             <div className="flex gap-4 sm:gap-6 mb-4 sm:mb-5">
-              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 shadow-inner flex items-center justify-center flex-none">
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 shadow-inner flex items-center justify-center flex-none">
                 {isService ? (
                   <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">{icon}</span>
                 ) : item.propertyId?.heroImage?.url ? (
@@ -104,7 +104,7 @@ export default function EnquiryTable() {
 
             {/* Message section */}
             {item.message && (
-              <div className="bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-100 text-[13px] sm:text-sm text-slate-600 font-medium leading-relaxed">
+              <div className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-slate-100 text-[13px] sm:text-sm text-slate-600 font-bold leading-relaxed">
                 <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-2">Message</p>
                 {item.message}
               </div>

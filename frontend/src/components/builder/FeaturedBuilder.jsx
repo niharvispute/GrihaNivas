@@ -5,7 +5,7 @@ import Link from 'next/link';
 const FeaturedBuilder = ({ builder }) => {
   return (
     <section className="mb-16">
-      <div className="group relative overflow-hidden rounded-[2.5rem] bg-zinc-900 h-[500px] flex items-center shadow-2xl">
+      <div className="group relative overflow-hidden rounded-2xl bg-zinc-900 h-[500px] flex items-center shadow-2xl">
         <div className="absolute inset-0">
           <Image
             fill
@@ -28,7 +28,7 @@ const FeaturedBuilder = ({ builder }) => {
               {builder.name}
             </h2>
           </div>
-          <p className="text-zinc-300 text-lg md:text-xl font-medium mb-12 leading-relaxed max-w-2xl opacity-90">
+          <p className="text-zinc-300 text-lg md:text-xl font-bold mb-12 leading-relaxed max-w-2xl opacity-90">
             {builder.description}
           </p>
           <div className="flex flex-wrap gap-12 mb-12">

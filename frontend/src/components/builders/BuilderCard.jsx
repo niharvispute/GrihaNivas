@@ -10,7 +10,7 @@ export default function BuilderCard({ builder }) {
   const headquarters = builder?.hqLocation || '';
 
   return (
-    <div className="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:border-primary/30 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full">
+    <div className="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover:border-primary/20 shadow-sm hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500 flex flex-col h-full">
       {/* Image */}
       <div className="relative h-[200px] sm:h-[220px] flex-none overflow-hidden bg-slate-100">
         {thumbnail ? (
@@ -47,11 +47,11 @@ export default function BuilderCard({ builder }) {
       <div className="p-3 sm:p-4 flex flex-col grow gap-2 min-h-[160px]">
         {/* Name + Location */}
         <div>
-          <h3 className="!text-[16px] font-bold text-slate-900 leading-tight line-clamp-1 uppercase tracking-tight group-hover:text-primary transition-colors">
+          <h3 className="text-base font-bold text-slate-900 leading-tight line-clamp-1 uppercase tracking-tight group-hover:text-primary transition-colors">
             {builder.name}
           </h3>
           {headquarters && (
-            <p className="text-slate-400 !text-[14px] flex items-center gap-0.5 mt-0.5 font-medium truncate">
+            <p className="text-slate-400 text-sm flex items-center gap-0.5 mt-0.5 font-bold truncate">
               <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
               <span className="truncate">{headquarters}</span>
             </p>
@@ -74,7 +74,7 @@ export default function BuilderCard({ builder }) {
         {/* CTA */}
         <Link
           href={`/builders/${builder.slug}`}
-          className="mt-auto h-8 sm:h-9 flex items-center justify-center bg-primary text-white rounded-lg font-bold text-[10px] sm:text-xs uppercase tracking-wider hover:bg-primary/90 transition-colors"
+          className="mt-auto h-8 sm:h-9 flex items-center justify-center bg-primary hover:bg-primary/90 text-white rounded-xl font-bold text-[10px] sm:text-xs uppercase tracking-wider transition-all hover:shadow-lg hover:shadow-primary/30"
         >
           View Builder
         </Link>

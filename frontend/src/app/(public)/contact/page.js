@@ -105,7 +105,7 @@ function ContactForm() {
     <div className="w-full">
       {/* 🏙️ Hero Section */}
       <section className="px-3 md:px-8 max-w-screen-2xl mx-auto pt-4 md:pt-20 pb-6 md:pb-16">
-        <div className="relative overflow-hidden rounded-[1.5rem] md:rounded-[3rem] bg-slate-50 p-6 md:p-28 flex flex-col items-center text-center shadow-inner">
+        <div className="relative overflow-hidden rounded-2xl bg-slate-50 p-6 md:p-28 flex flex-col items-center text-center shadow-inner">
           <div className="absolute top-0 right-0 w-1/3 h-full opacity-5 pointer-events-none">
             <img 
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfqT-o5cubMMfW3Rd96E_D7eazSloty3_kvSmsycyeOWkIV0FOFnhNphvkro3UIDPBbYlb_zCeAMuBbzTRdUlwBEdq8wrQs8tdykWW8wRfZoa6IRnq0VhoXF7__Ex9b01o1PyiCy519JtWzKfoixgpeHuxGsECiopUJDP7ZqRV7CX6stlx4gfdzkQnH3_msjf54YNwSh-GGDJmLYlhJepu8eE2lvSsWGfJlhe9KYst3dolP_ilmnnsmU4QUuQTPLdovb48EctzCno" 
@@ -117,7 +117,7 @@ function ContactForm() {
           <h1 className="text-3xl md:text-8xl font-black text-slate-900 tracking-tighter mb-3 md:mb-8 leading-none">
             Let&apos;s Start a <br className="hidden md:block"/> Conversation.
           </h1>
-          <p className="text-slate-500 text-[11px] md:text-xl max-w-2xl leading-relaxed font-medium px-4">
+          <p className="text-slate-500 text-[11px] md:text-xl max-w-2xl leading-relaxed font-bold px-4">
             We’re here to help you find your masterpiece. Expertise at your service.
           </p>
         </div>
@@ -131,7 +131,7 @@ function ContactForm() {
             {contactInfo.map((info, i) => (
               <div 
                 key={i} 
-                className="bg-white p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm border border-slate-50 hover:shadow-xl transition-all group"
+                className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-slate-50 hover:shadow-xl transition-all group"
               >
                 <div className="flex items-start md:items-center gap-4 md:gap-6 text-left">
                   <div className="p-3 md:p-4 rounded-xl md:rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all transform group-hover:rotate-6 shrink-0">
@@ -150,7 +150,7 @@ function ContactForm() {
             ))}
             
             {/* Working Hours */}
-            <div className="bg-slate-900 text-white p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
+            <div className="bg-slate-900 text-white p-6 md:p-10 rounded-2xl shadow-2xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/40 transition-all"></div>
               <h3 className="text-base md:text-xl font-black mb-6 md:mb-8 flex items-center gap-3 tracking-tight leading-none  uppercase">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary md:w-6 md:h-6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -173,7 +173,7 @@ function ContactForm() {
         </div>
 
         {/* Form Column */}
-        <div className="lg:col-span-7 bg-white p-8 md:p-16 rounded-[2rem] md:rounded-[3.5rem] shadow-2xl border border-slate-50 relative overflow-hidden">
+        <div className="lg:col-span-7 bg-white p-8 md:p-16 rounded-2xl shadow-2xl border border-slate-50 relative overflow-hidden">
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
           <h2 className="text-2xl md:text-4xl font-black text-slate-900 mb-6 md:mb-10 tracking-tighter ">Send us a message</h2>
           <form className="space-y-6 md:space-y-8" onSubmit={handleSubmit}>
@@ -231,7 +231,7 @@ function ContactForm() {
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="md:w-5 md:h-5"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
             </button>
             {feedback.message && (
-              <p className={`text-xs md:text-sm font-medium ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
+              <p className={`text-xs md:text-sm font-bold ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
                 {feedback.message}
               </p>
             )}
@@ -241,11 +241,11 @@ function ContactForm() {
 
       {/* 🗺️ Map Section */}
       <section className="mb-16 md:mb-24 px-4 md:px-8 max-w-screen-2xl mx-auto">
-        <div className="relative w-full h-[350px] md:h-[600px] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl group border-4 md:border-8 border-white">
-          <div className="absolute top-6 left-6 md:top-12 md:left-12 z-20 bg-white/95 md:backdrop-blur-xl p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] shadow-2xl border border-white/50 max-w-[calc(100%-3rem)] md:max-w-sm">
+        <div className="relative w-full h-[350px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl group border-4 md:border-8 border-white">
+          <div className="absolute top-6 left-6 md:top-12 md:left-12 z-20 bg-white/95 md:backdrop-blur-xl p-6 md:p-8 rounded-2xl shadow-2xl border border-white/50 max-w-[calc(100%-3rem)] md:max-w-sm">
             <span className="text-primary font-black text-[9px] md:text-[10px] tracking-[0.3em] uppercase mb-1 md:mb-2 block leading-none">FLAGSHIP OFFICE</span>
             <h4 className="text-xl md:text-2xl font-black text-slate-900 mb-1 tracking-tight">The Pavilion</h4>
-            <p className="text-slate-500 font-medium text-[10px] md:text-sm mb-4 md:mb-6 leading-relaxed">Iconic Worli Sea Face, bridging tradition with the Mumbai skyline.</p>
+            <p className="text-slate-500 font-bold text-[10px] md:text-sm mb-4 md:mb-6 leading-relaxed">Iconic Worli Sea Face, bridging tradition with the Mumbai skyline.</p>
             <button className="text-primary font-black text-[10px] md:text-xs uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all">
               Get Directions <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="md:w-4 md:h-4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </button>
@@ -260,11 +260,11 @@ function ContactForm() {
 
       {/* 🔗 FAQ Banner */}
       <section className="max-w-screen-2xl mx-auto px-4 md:px-8 mb-20 md:mb-32">
-        <div className="bg-slate-900 rounded-[2rem] md:rounded-[3rem] p-10 md:p-20 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 text-center md:text-left relative overflow-hidden group">
+        <div className="bg-slate-900 rounded-2xl p-10 md:p-20 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 text-center md:text-left relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-80 md:w-[30rem] h-80 md:h-[30rem] bg-primary/20 rounded-full blur-[10rem] opacity-40 group-hover:opacity-60 transition-all"></div>
           <div className="relative z-10 space-y-2 md:space-y-4">
             <h2 className="text-2xl md:text-4xl font-black text-white tracking-tighter leading-none">Have more questions?</h2>
-            <p className="text-white/60 font-medium text-sm md:text-lg max-w-xl">Browse our frequently asked questions about listing and investment processes.</p>
+            <p className="text-white/60 font-bold text-sm md:text-lg max-w-xl">Browse our frequently asked questions about listing and investment processes.</p>
           </div>
           <Link 
             href="/faq" 

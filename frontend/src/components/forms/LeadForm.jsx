@@ -125,7 +125,7 @@ export default function LeadForm({
 
   return (
     <div className="bg-white p-7 rounded-moderate shadow-2xl border border-slate-50">
-      <h3 className="text-xl font-bold text-slate-900 mb-6 tracking-tight">{title}</h3>
+      <h3 className="text-xl font-black text-slate-900 mb-6 tracking-tight">{title}</h3>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <label htmlFor={nameInputId} className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Full Name</label>
@@ -158,7 +158,7 @@ export default function LeadForm({
         </div>
         <div>
           <label htmlFor={phoneInputId} className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">
-            Phone Number <span className="text-primary normal-case font-semibold tracking-normal">*</span>
+            Phone Number <span className="text-primary normal-case font-bold tracking-normal">*</span>
           </label>
           <input
             id={phoneInputId}
@@ -189,7 +189,7 @@ export default function LeadForm({
 
         {feedback.message && (
           <div
-            className={`flex items-start gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+            className={`flex items-start gap-3 rounded-xl px-4 py-3 text-sm font-bold ${
               feedback.type === 'error'
                 ? 'bg-red-50 text-red-700 border border-red-100'
                 : 'bg-emerald-50 text-emerald-700 border border-emerald-100'
@@ -205,7 +205,7 @@ export default function LeadForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full bg-primary text-white font-black py-4 rounded-full shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isSubmitting && (
             <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

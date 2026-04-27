@@ -21,7 +21,7 @@ export default function ListingHero() {
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-slate-900 leading-[1.1] mb-8 font-heading">
             List Your <br/><span className="text-primary">Property</span> with Us
           </h1>
-          <p className="text-lg text-slate-500 mb-10 max-w-lg leading-relaxed font-medium">
+          <p className="text-lg text-slate-500 mb-10 max-w-lg leading-relaxed font-bold">
             Access Mumbai&apos;s most exclusive network of high-net-worth buyers and tenants through our curated editorial showcase.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">

@@ -82,7 +82,7 @@ function Field({ label, type = 'text', value, onChange, placeholder, disabled, a
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
-        <label className="text-sm font-semibold text-slate-700">{label}</label>
+        <label className="text-sm font-bold text-slate-700">{label}</label>
         {labelRight}
       </div>
       <div className="relative">
@@ -147,7 +147,7 @@ function ModalHeader({ onBack, onClose, showBack }) {
       {showBack ? (
         <button
           onClick={onBack}
-          className="flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors"
+          className="flex items-center gap-1 text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors"
         >
           <span className="material-symbols-outlined text-base">arrow_back</span>
           Back
@@ -252,7 +252,7 @@ function LoginView({ ctx }) {
               <button
                 type="button"
                 onClick={() => { setError(''); setView('forgot'); }}
-                className="text-xs text-primary font-semibold hover:underline"
+                className="text-xs text-primary font-bold hover:underline"
               >
                 Forgot password?
               </button>
@@ -267,7 +267,7 @@ function LoginView({ ctx }) {
           Don&apos;t have an account?{' '}
           <button
             onClick={() => { setError(''); setView('register'); }}
-            className="text-primary font-semibold hover:underline"
+            className="text-primary font-bold hover:underline"
           >
             Create one
           </button>
@@ -332,7 +332,7 @@ function RegisterView({ ctx }) {
           Already have an account?{' '}
           <button
             onClick={() => { setError(''); setView('login'); }}
-            className="text-primary font-semibold hover:underline"
+            className="text-primary font-bold hover:underline"
           >
             Sign in
           </button>
@@ -392,7 +392,7 @@ function RegisterOtpView({ ctx }) {
           <h2 className="text-2xl font-bold text-slate-900">Verify your email</h2>
           <p className="text-sm text-slate-500 mt-0.5">
             We sent a 6-digit OTP to{' '}
-            <span className="font-semibold text-slate-700">{flowData?.email || 'your email'}</span>
+            <span className="font-bold text-slate-700">{flowData?.email || 'your email'}</span>
           </p>
         </div>
 
@@ -412,7 +412,7 @@ function RegisterOtpView({ ctx }) {
             <button
               onClick={handleResend}
               disabled={loading}
-              className="text-primary font-semibold hover:underline disabled:opacity-50"
+              className="text-primary font-bold hover:underline disabled:opacity-50"
             >
               Resend OTP
             </button>
@@ -505,7 +505,7 @@ function ForgotOtpView({ ctx }) {
           <h2 className="text-2xl font-bold text-slate-900">Enter OTP</h2>
           <p className="text-sm text-slate-500 mt-0.5">
             Check {flowData?.identifier ? (
-              <span className="font-semibold text-slate-700">{flowData.identifier}</span>
+              <span className="font-bold text-slate-700">{flowData.identifier}</span>
             ) : 'your email or phone'} for the OTP
           </p>
         </div>

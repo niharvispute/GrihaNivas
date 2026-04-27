@@ -36,7 +36,7 @@ export default function PropertyStickyInfo({ property }) {
               ? (hasNumericRent ? `₹${rentPerMonth}` : 'Rent on Request')
               : (hasNumericPrice ? `₹${property.price}` : 'Price on Request')}
           </span>
-          <span className="text-slate-400 text-sm font-medium">
+          <span className="text-slate-400 text-sm font-bold">
             {isRent
               ? (hasNumericRent ? '/month' : 'Market')
               : (hasNumericPrice ? 'Price' : 'Market')}
@@ -92,7 +92,7 @@ export default function PropertyStickyInfo({ property }) {
             href={brochureUrl}
             target="_blank"
             rel="noreferrer"
-            className="w-full bg-primary text-white py-4 rounded-full font-bold text-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+            className="w-full bg-primary text-white py-4 rounded-full font-black text-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download Brochure
@@ -101,14 +101,14 @@ export default function PropertyStickyInfo({ property }) {
           <button
             type="button"
             disabled
-            className="w-full bg-slate-200 text-slate-500 py-4 rounded-full font-bold text-lg flex items-center justify-center gap-2 cursor-not-allowed"
+            className="w-full bg-slate-200 text-slate-500 py-4 rounded-full font-black text-lg flex items-center justify-center gap-2 cursor-not-allowed"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Brochure Not Available
           </button>
         )}
         <Link href="#lead-form" className="block w-full">
-          <button className="w-full border-2 border-primary text-primary py-4 rounded-full font-bold text-lg hover:bg-tertiary transition-all">
+          <button className="w-full border-2 border-primary text-primary py-4 rounded-full font-black text-lg hover:bg-tertiary transition-all">
             Contact Expert
           </button>
         </Link>

@@ -7,7 +7,7 @@ export default function DashboardLayout({ children }) {
   return (
     <AuthGuard>
       <SidebarProvider>
-        <div className="min-h-screen bg-neutral-50">
+        <div className="min-h-screen bg-[#f8f7f5]">
           <UserSidebar />
           <div className="flex flex-col min-h-screen md:ml-64">
             <DashboardHeader />

@@ -122,7 +122,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden nav:flex items-center gap-8 font-semibold tracking-tight text-sm text-slate-600">
+          <nav className="hidden nav:flex items-center gap-8 font-bold tracking-tight text-sm text-slate-600">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -167,7 +167,7 @@ export default function Header() {
                     : 'pointer-events-none -translate-y-1 opacity-0'
                 }`}
               >
-                <div className="rounded-3xl border border-slate-100 bg-white/95 p-2 shadow-2xl shadow-slate-200/70 backdrop-blur-xl">
+                <div className="rounded-2xl border border-slate-100 bg-white/95 p-2 shadow-2xl shadow-slate-200/70 backdrop-blur-xl">
                   {SERVICE_LINKS.map((service) => (
                     <Link
                       key={service.href}
@@ -213,10 +213,10 @@ export default function Header() {
                     aria-haspopup="true"
                     className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/90 px-3 py-2 shadow-sm transition-all hover:border-primary/20 hover:shadow-md"
                   >
-                    <span className="hidden xl:block max-w-35 truncate text-sm font-semibold text-slate-700">
+                    <span className="hidden xl:block max-w-35 truncate text-sm font-bold text-slate-700">
                       {displayName}
                     </span>
-                    <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-primary/10 via-white to-tertiary/60 text-primary ring-1 ring-slate-200 transition-transform hover:scale-105">
+                    <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary/10 via-white to-tertiary/60 text-primary ring-1 ring-slate-200 transition-transform hover:scale-105">
                       {avatarSrc ? (
                         <Image
                           src={avatarSrc}
@@ -242,7 +242,7 @@ export default function Header() {
                   >
                     <div className="w-64">
                       <div className="absolute right-6 -top-2 h-4 w-4 rotate-45 border-l border-t border-slate-100 bg-white/95" />
-                      <div className="overflow-hidden rounded-[1.75rem] border border-slate-100 bg-white/95 shadow-2xl shadow-slate-200/60 backdrop-blur-xl">
+                      <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white/95 shadow-2xl shadow-slate-200/60 backdrop-blur-xl">
                         <div className="border-b border-slate-100 px-5 py-4">
                           <p className="text-[10px] font-black uppercase tracking-[0.35em] text-slate-400">Signed in as</p>
                           <p className="mt-1 truncate font-heading text-sm font-black tracking-tight text-slate-900">
@@ -283,7 +283,7 @@ export default function Header() {
                 <button
                   type="button"
                   onClick={handleOpenLogin}
-                  className="text-slate-600 hover:text-primary text-sm font-semibold transition-colors"
+                  className="text-slate-600 hover:text-primary text-sm font-bold transition-colors"
                 >
                   Login / Register
                 </button>
@@ -304,7 +304,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={handleOpenLogin}
-                className="text-slate-600 hover:text-primary text-sm font-semibold transition-colors"
+                className="text-slate-600 hover:text-primary text-sm font-bold transition-colors"
               >
                 Login
               </button>
@@ -411,7 +411,7 @@ export default function Header() {
                           setIsMobileServicesOpen(false);
                           setIsMobileMenuOpen(false);
                         }}
-                        className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
+                        className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all ${
                           isActive(service.href)
                             ? 'bg-primary/10 text-primary'
                             : 'text-slate-600 hover:bg-white hover:text-slate-900'

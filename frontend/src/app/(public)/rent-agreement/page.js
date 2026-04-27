@@ -41,7 +41,7 @@ export default function RentAgreementPage() {
             <h1 className="text-6xl lg:text-[5.5rem] font-black tracking-tight text-slate-900 mb-10 leading-none">
               Rent Agreement & <br /> <span className="text-primary ">E-Registration</span>
             </h1>
-            <p className="text-xl text-slate-500 max-w-xl mb-12 font-medium leading-relaxed">
+            <p className="text-xl text-slate-500 max-w-xl mb-12 font-bold leading-relaxed">
               Secure your tenancy legally from the comfort of your home. We handle the biometric verification and registration with the Mumbai sub-registrar office.
             </p>
             <div className="flex flex-wrap gap-5">
@@ -75,13 +75,13 @@ export default function RentAgreementPage() {
           <div className="relative overflow-hidden">
             <div className="absolute -top-20 -right-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px]"></div>
             <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px]"></div>
-            <div className="relative rounded-[3.5rem] overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-all duration-1000 group">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-all duration-1000 group">
               <img 
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtAgBF21oBzOLT0IoMjhM47yGEJ3jM6QiavPNUwBGvg-lY3PJP62_ksWoMeHHXpSqfMCeh5NIth9JMIVdRnHnEyy0GiYWi-3zdnaejc_xGsCx-m48KJwnlYLpeJmCv-Bbh1h68uGRdnj201QXM4FibsecNN0poQpJPZFMM4d2eS5kKXN39Z3nm7eFRyeN6UYnCelrdOJ8dQmQJ4BJJSZSe5RHvE62LdJI6DhH7uwJ2w8Cj5Limyrs6NSaL1hG3vWjqTctpjOCKBEo" 
                 alt="Luxury Interior" 
                 className="w-full aspect-[4/5] object-cover transition-transform duration-1000 group-hover:scale-105"
               />
-              <div className="absolute bottom-10 left-10 right-10 bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/50 translate-y-4 group-hover:translate-y-0 transition-transform">
+              <div className="absolute bottom-10 left-10 right-10 bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-2xl border border-white/50 translate-y-4 group-hover:translate-y-0 transition-transform">
                 <div className="flex items-center gap-5">
                   <div className="bg-primary/10 p-4 rounded-2xl text-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -101,7 +101,7 @@ export default function RentAgreementPage() {
       <section className="px-8 py-32 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-10 tracking-tighter">Professional Real Estate Compliance</h2>
-          <p className="text-xl leading-relaxed text-slate-500 font-medium">
+          <p className="text-xl leading-relaxed text-slate-500 font-bold">
             In the fast-paced Mumbai real estate market, a verbal agreement is a liability. Under Section 55 of the Maharashtra Rent Control Act, 1999, it is mandatory to have a registered written agreement. Our service bridges the gap between traditional legal complexities and modern convenience, offering a secure, government-approved e-registration platform for landlords and tenants across Mumbai and MMR.
           </p>
         </div>
@@ -123,13 +123,13 @@ export default function RentAgreementPage() {
             {steps.map((step, i) => (
               <div key={i} className="group">
                 <div className="mb-10 relative">
-                  <div className="w-20 h-20 bg-white border border-slate-100 rounded-3xl flex items-center justify-center text-primary font-black text-3xl group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-xl shadow-slate-200/50">
+                  <div className="w-20 h-20 bg-white border border-slate-100 rounded-2xl flex items-center justify-center text-primary font-black text-3xl group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-xl shadow-slate-200/50">
                     {step.icon}
                   </div>
                   {i < 3 && <div className="hidden lg:block absolute top-10 left-28 right-0 h-[2px] bg-slate-100"></div>}
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight">{step.title}</h3>
-                <p className="text-slate-500 font-medium leading-relaxed">{step.desc}</p>
+                <p className="text-slate-500 font-bold leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -140,12 +140,12 @@ export default function RentAgreementPage() {
       <section className="px-8 py-32 bg-white">
         <div className="max-w-screen-2xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {benefits.map((benefit, i) => (
-            <div key={i} className="p-10 bg-slate-50 rounded-[3rem] hover:bg-primary hover:text-white transition-all duration-500 group">
+            <div key={i} className="p-10 bg-slate-50 rounded-2xl hover:bg-primary hover:text-white transition-all duration-500 group">
               <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-8 group-hover:bg-white transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
               </div>
               <h3 className="text-xl font-black mb-3 tracking-tight">{benefit.title}</h3>
-              <p className={`text-sm font-medium leading-relaxed ${i % 2 === 0 ? 'text-slate-500' : 'text-slate-500'} group-hover:text-white/80`}>{benefit.desc}</p>
+              <p className={`text-sm font-bold leading-relaxed ${i % 2 === 0 ? 'text-slate-500' : 'text-slate-500'} group-hover:text-white/80`}>{benefit.desc}</p>
             </div>
           ))}
         </div>
@@ -156,7 +156,7 @@ export default function RentAgreementPage() {
         <div className="max-w-screen-xl mx-auto grid lg:grid-cols-2 gap-24 items-start">
           <div>
             <h2 className="text-5xl font-black text-slate-900 mb-8 tracking-tighter">Ready to register your agreement?</h2>
-            <p className="text-slate-500 text-xl mb-16 font-medium leading-relaxed">Leave your details and our legal consultant will call you within 15 minutes to guide you through the process.</p>
+            <p className="text-slate-500 text-xl mb-16 font-bold leading-relaxed">Leave your details and our legal consultant will call you within 15 minutes to guide you through the process.</p>
             <div className="space-y-12">
               <div className="flex items-start gap-8">
                 <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
@@ -168,7 +168,7 @@ export default function RentAgreementPage() {
                   <p className="text-sm text-slate-400 mt-2 font-bold tracking-tight uppercase">Starting service fee for E-Registration</p>
                 </div>
               </div>
-              <div className="p-12 rounded-[3.5rem] bg-slate-950 text-white relative overflow-hidden group">
+              <div className="p-12 rounded-2xl bg-slate-950 text-white relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-48 h-48 bg-primary/20 rounded-full blur-[60px]"></div>
                 <p className="font-black text-xs text-white/40 uppercase tracking-[0.3em] mb-8">INCLUDED IN ALL PLANS</p>
                 <ul className="space-y-6">
@@ -182,7 +182,7 @@ export default function RentAgreementPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white p-12 md:p-16 rounded-[4rem] shadow-2xl border border-slate-50 relative">
+          <div className="bg-white p-12 md:p-16 rounded-2xl shadow-2xl border border-slate-50 relative">
             <form className="space-y-8">
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-3">
@@ -236,7 +236,7 @@ export default function RentAgreementPage() {
                   <input className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" placeholder="E.g. Broker, Legal Advisor" type="text"/>
                 </div>
               )}
-              <button className="w-full bg-primary text-white py-6 rounded-3xl font-black text-xl shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all">
+              <button className="w-full bg-primary text-white py-6 rounded-2xl font-black text-xl shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all">
                 Submit Request
               </button>
               <p className="text-[9px] text-center text-slate-400 uppercase tracking-[0.2em] font-bold">
@@ -255,12 +255,12 @@ export default function RentAgreementPage() {
           <h2 className="text-5xl font-black text-slate-900 text-center mb-24 tracking-tighter">Frequently Asked Questions</h2>
           <div className="space-y-6">
             {faqs.map((faq, i) => (
-              <div key={i} className={`p-8 rounded-3xl transition-all cursor-pointer ${expandedFaq === i ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-900 hover:bg-slate-100'}`} onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}>
+              <div key={i} className={`p-8 rounded-2xl transition-all cursor-pointer ${expandedFaq === i ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-900 hover:bg-slate-100'}`} onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}>
                 <div className="flex justify-between items-center">
                   <h3 className="font-black text-xl tracking-tight">{faq.q}</h3>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={`text-primary transition-transform ${expandedFaq === i ? 'rotate-180' : ''}`}><polyline points="6 9 12 15 18 9"/></svg>
                 </div>
-                {expandedFaq === i && <p className="mt-8 text-white/70 font-medium leading-relaxed text-lg">{faq.a}</p>}
+                {expandedFaq === i && <p className="mt-8 text-white/70 font-bold leading-relaxed text-lg">{faq.a}</p>}
               </div>
             ))}
           </div>

@@ -279,7 +279,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
 
       {/* Desktop Sidebar */}
       <aside className="hidden lg:block w-80 shrink-0">
-        <div className="sticky top-24 bg-white rounded-4xl p-8 flex flex-col gap-8 shadow-2xl shadow-slate-200/50 border border-slate-100">
+        <div className="sticky top-24 bg-white rounded-2xl p-8 flex flex-col gap-8 shadow-2xl shadow-slate-200/50 border border-slate-100">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-black text-slate-900 tracking-tighter">Filters</h2>
@@ -306,7 +306,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
             className="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
           />
           <div
-            className="absolute inset-0 bg-white rounded-t-2xl shadow-2xl p-6 sm:p-8 flex flex-col gap-6 overflow-y-auto"
+            className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl p-6 sm:p-8 flex flex-col gap-6 overflow-y-auto max-h-[90vh]"
             onClick={(e) => e.stopPropagation()}
           >
           <div className="flex items-center justify-between mb-2">

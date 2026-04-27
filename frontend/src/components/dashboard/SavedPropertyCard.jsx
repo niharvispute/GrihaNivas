@@ -55,18 +55,18 @@ export default function SavedPropertyCard({ property, onUnsave }) {
             </div>
           </div>
 
-          <div className="flex items-center text-slate-400 text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-4 sm:mb-6 bg-slate-50 w-fit px-2 sm:px-3 py-1.5 rounded-lg border border-slate-100">
+          <div className="flex items-center text-slate-400 text-[9px] sm:text-xs font-bold uppercase tracking-widest mb-4 sm:mb-6 bg-slate-50 w-fit px-2 sm:px-3 py-1.5 rounded-xl border border-slate-100">
             <span className="material-symbols-outlined text-sm mr-1.5 sm:mr-2 text-primary">location_on</span>
             <span className="truncate">{property.location}</span>
           </div>
 
           {/* Specs - Hidden on mobile, shown on sm+ */}
           <div className="hidden sm:flex flex-wrap gap-3 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500">
-            <div className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-50 rounded-lg sm:rounded-xl border border-slate-100">
+            <div className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-50 rounded-xl border border-slate-100">
               <span className="material-symbols-outlined text-base sm:text-lg text-primary">bed</span>
               {property.bhk} BHK
             </div>
-            <div className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-50 rounded-lg sm:rounded-xl border border-slate-100">
+            <div className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-50 rounded-xl border border-slate-100">
               <span className="material-symbols-outlined text-base sm:text-lg text-primary">square_foot</span>
               {property.area} sq.ft
             </div>

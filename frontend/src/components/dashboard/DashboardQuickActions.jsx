@@ -54,21 +54,21 @@ export default function DashboardQuickActions({ hasListings = false, latestListi
         <Link
           key={idx}
           href={action.href}
-          className={`w-full flex items-center justify-between p-4 rounded-xl transition-all active:scale-[0.98] group relative overflow-hidden ${
+          className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all active:scale-[0.98] group relative overflow-hidden ${
             action.primary
-              ? 'bg-primary text-white shadow-lg shadow-primary/20 hover:shadow-primary/30'
-              : 'bg-white text-slate-900 border border-slate-100 hover:border-primary/30 hover:shadow-md'
+              ? 'bg-primary text-white shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30'
+              : 'bg-white text-slate-900 border border-slate-100 hover:border-primary/20 hover:shadow-lg hover:shadow-slate-200/80'
           }`}
         >
           <div className="flex items-center gap-3 relative z-10">
-            <div className={`p-2 rounded-lg group-hover:scale-110 transition-transform ${
-              action.primary ? 'bg-white/20' : 'bg-slate-50 text-primary'
+            <div className={`p-2 rounded-xl group-hover:scale-110 transition-transform ${
+              action.primary ? 'bg-white/20' : 'bg-primary/10 text-primary'
             }`}>
               <span className="material-symbols-outlined text-xl">{action.icon}</span>
             </div>
             <div className="text-left">
               <p className="font-heading font-bold text-xs">{action.title}</p>
-              <p className={`text-[10px] font-medium ${action.primary ? 'text-white/70' : 'text-slate-400'}`}>{action.desc}</p>
+              <p className={`text-[10px] font-bold ${action.primary ? 'text-white/70' : 'text-slate-400'}`}>{action.desc}</p>
             </div>
           </div>
           {action.statusBadge && (

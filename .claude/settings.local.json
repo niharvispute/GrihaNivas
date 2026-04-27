@@ -95,7 +95,9 @@
       "Bash(git checkout *)",
       "Bash(grep -E \"\\\\.\\(jsx?|tsx?\\)$\")",
       "Bash(grep -E \"\\\\.\\(js|json\\)$\")",
-      "Bash(grep -E \"\\\\.js$\")"
+      "Bash(grep -E \"\\\\.js$\")",
+      "Bash(xargs -I{} sh -c 'grep -ln \"rounded-4xl\\\\|rounded-3xl\\\\|rounded-\\\\[.*rem\\\\]\\\\|font-semibold\\\\|bg-linear-to\" \"{}\" 2>/dev/null')",
+      "Bash(xargs '-I{}' sh -c 'result=$\\(grep -ln \"rounded-4xl\\\\|rounded-3xl\\\\|rounded-\\\\[.*rem\\\\]\\\\|font-semibold\\\\|bg-linear-to\" \"{}\" 2>/dev/null\\); if [ -n \"$result\" ]; then echo \"$result\"; fi')"
     ]
   }
 }

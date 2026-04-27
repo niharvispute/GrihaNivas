@@ -22,8 +22,8 @@ export default function ProfilePage() {
     return (
       <div className="max-w-5xl mx-auto space-y-8">
         <div className="h-10 w-64 bg-slate-100 rounded-xl animate-pulse" />
-        <div className="h-48 bg-slate-100 rounded-4xl animate-pulse" />
-        <div className="h-64 bg-slate-100 rounded-4xl animate-pulse" />
+        <div className="h-48 bg-slate-100 rounded-2xl animate-pulse" />
+        <div className="h-64 bg-slate-100 rounded-2xl animate-pulse" />
       </div>
     );
   }

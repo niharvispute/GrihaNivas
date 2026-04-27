@@ -149,7 +149,7 @@ export default function AdminBlogCMS() {
                 <h1 className="text-5xl font-black tracking-tighter text-slate-900 lg:text-6xl">
                   Content <span className="text-primary ">Engine</span>
                 </h1>
-                <p className="text-slate-500 font-medium text-lg mt-4 max-w-xl">
+                <p className="text-slate-500 font-bold text-lg mt-4 max-w-xl">
                   Curate the digital face of Mumbai Luxe. Manage your editorial pipeline with precision and scale.
                 </p>
               </div>
@@ -179,7 +179,7 @@ export default function AdminBlogCMS() {
 
            {/* CMS Statistics Dashboard (Optional Premium Touch) */}
            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-              <div className="bg-slate-900 p-10 rounded-[2.5rem] text-white overflow-hidden relative group">
+              <div className="bg-slate-900 p-10 rounded-2xl text-white overflow-hidden relative group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[60px] rounded-full translate-x-1/2 -translate-y-1/2 group-hover:bg-primary/40 transition-all duration-700"></div>
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-6">Total Reach</p>
                 <div className="flex items-end gap-3">
@@ -189,11 +189,11 @@ export default function AdminBlogCMS() {
                   </span>
                 </div>
               </div>
-              <div className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50">
+              <div className="bg-white p-10 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/50">
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-6">Avg. Read Time</p>
                 <h4 className="text-5xl font-black tracking-tighter text-slate-900">6.4m</h4>
               </div>
-              <div className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50">
+              <div className="bg-white p-10 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/50">
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-6">Engagement</p>
                 <h4 className="text-5xl font-black tracking-tighter text-slate-900">4.8%</h4>
               </div>

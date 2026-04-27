@@ -29,7 +29,7 @@ export default function ListingFaq() {
       <div className="max-w-3xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="font-heading text-4xl font-extrabold tracking-tighter mb-4 text-slate-900">Common Questions</h2>
-          <p className="text-slate-500 font-medium">Everything you need to know about the listing process.</p>
+          <p className="text-slate-500 font-bold">Everything you need to know about the listing process.</p>
         </div>
         <div className="space-y-4">
           {faqs.map((faq, idx) => (
@@ -44,7 +44,7 @@ export default function ListingFaq() {
               <div 
                 className={`overflow-hidden transition-all duration-300 ${openIndex === idx ? 'max-h-40' : 'max-h-0'}`}
               >
-                <div className="px-6 pb-6 text-sm text-slate-500 font-medium leading-relaxed">
+                <div className="px-6 pb-6 text-sm text-slate-500 font-bold leading-relaxed">
                   {faq.answer}
                 </div>
               </div>

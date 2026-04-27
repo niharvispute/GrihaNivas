@@ -17,8 +17,8 @@ export default function BlogDetailLoading() {
             </div>
           </div>
           <div className="lg:col-span-4 space-y-4">
-            <div className="h-48 bg-slate-100 rounded-[2rem]" />
-            <div className="h-32 bg-slate-100 rounded-[2rem]" />
+            <div className="h-48 bg-slate-100 rounded-2xl" />
+            <div className="h-32 bg-slate-100 rounded-2xl" />
           </div>
         </div>
       </div>

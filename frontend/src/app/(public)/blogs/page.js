@@ -124,7 +124,7 @@ export default async function BlogsPage({ searchParams }) {
 
         {(currentSearch || currentCategory) && (
           <section className="mb-8 sm:mb-10 lg:mb-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-            <p className="text-xs sm:text-sm font-semibold text-slate-500">
+            <p className="text-xs sm:text-sm font-bold text-slate-500">
               Showing results
               {currentCategory ? ` in ${BLOG_CATEGORIES.find((item) => item.value === currentCategory)?.label || currentCategory}` : ''}
               {currentSearch ? ` for "${currentSearch}"` : ''}.
@@ -141,7 +141,7 @@ export default async function BlogsPage({ searchParams }) {
         {/* ⭐ Featured Insight */}
         {featured && (
           <section className="mb-14 sm:mb-20 lg:mb-24">
-            <div className="group relative overflow-hidden rounded-4xl sm:rounded-5xl lg:rounded-[3.5rem] bg-white border border-slate-50 shadow-sm flex flex-col lg:flex-row transition-all hover:shadow-2xl duration-700">
+            <div className="group relative overflow-hidden rounded-2xl bg-white border border-slate-50 shadow-sm flex flex-col lg:flex-row transition-all hover:shadow-2xl duration-700">
               <div className="lg:w-3/5 h-64 sm:h-80 md:h-96 lg:h-auto relative overflow-hidden">
                 <img 
                   src={featured.image} 
@@ -163,7 +163,7 @@ export default async function BlogsPage({ searchParams }) {
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 mb-4 sm:mb-6 lg:mb-8 leading-tight tracking-tighter group-hover:text-primary transition-colors">
                   {featured.title}
                 </h2>
-                <p className="text-slate-500 mb-6 sm:mb-8 lg:mb-10 leading-relaxed text-sm sm:text-base lg:text-lg font-medium">
+                <p className="text-slate-500 mb-6 sm:mb-8 lg:mb-10 leading-relaxed text-sm sm:text-base lg:text-lg font-bold">
                   {featured.excerpt}
                 </p>
                 <Link 
@@ -190,7 +190,7 @@ export default async function BlogsPage({ searchParams }) {
             </div>
 
             {posts.length === 0 && (
-              <p className="text-sm font-medium text-slate-500">
+              <p className="text-sm font-bold text-slate-500">
                 No blog posts are published yet. Please check back soon.
               </p>
             )}

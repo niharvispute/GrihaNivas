@@ -240,14 +240,14 @@ export default function AdminSystemConfigPage() {
       </div>
 
       {loading ? (
-        <div className="rounded-4xl border border-slate-100 bg-white p-8 space-y-4 animate-pulse">
+        <div className="rounded-2xl border border-slate-100 bg-white p-8 space-y-4 animate-pulse">
           {[1, 2, 3, 4, 5].map((line) => (
             <div key={line} className="h-14 rounded-2xl bg-slate-100" />
           ))}
         </div>
       ) : (
         <form onSubmit={handleSave} className="space-y-8">
-          <section className="rounded-4xl border border-slate-100 bg-white p-8 space-y-6">
+          <section className="rounded-2xl border border-slate-100 bg-white p-8 space-y-6">
             <h2 className="text-lg font-black tracking-tight text-slate-900">General</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
               <Field
@@ -273,7 +273,7 @@ export default function AdminSystemConfigPage() {
             </div>
           </section>
 
-          <section className="rounded-4xl border border-slate-100 bg-white p-8 space-y-6">
+          <section className="rounded-2xl border border-slate-100 bg-white p-8 space-y-6">
             <h2 className="text-lg font-black tracking-tight text-slate-900">Dynamic Data Controls</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <ToggleCard
@@ -291,7 +291,7 @@ export default function AdminSystemConfigPage() {
             </div>
           </section>
 
-          <section className="rounded-4xl border border-slate-100 bg-white p-8 space-y-6">
+          <section className="rounded-2xl border border-slate-100 bg-white p-8 space-y-6">
             <h2 className="text-lg font-black tracking-tight text-slate-900">Areas and Amenities</h2>
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
               <TextAreaField
@@ -309,7 +309,7 @@ export default function AdminSystemConfigPage() {
             </div>
           </section>
 
-          <section className="rounded-4xl border border-slate-100 bg-white p-8 space-y-6">
+          <section className="rounded-2xl border border-slate-100 bg-white p-8 space-y-6">
             <h2 className="text-lg font-black tracking-tight text-slate-900">Option Sets</h2>
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
               <Field
@@ -335,11 +335,11 @@ export default function AdminSystemConfigPage() {
             </div>
           </section>
 
-          <section className="rounded-4xl border border-slate-100 bg-white p-8 space-y-6">
+          <section className="rounded-2xl border border-slate-100 bg-white p-8 space-y-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
                 <h2 className="text-lg font-black tracking-tight text-slate-900">Effective Public Preview</h2>
-                <p className="text-xs text-slate-500 font-semibold mt-1">
+                <p className="text-xs text-slate-500 font-bold mt-1">
                   This mirrors the data currently returned by public system endpoints.
                 </p>
               </div>
@@ -437,7 +437,7 @@ function ToggleCard({ label, description, checked, onChange }) {
     <label className="flex items-start justify-between gap-4 rounded-2xl border border-slate-100 bg-slate-50 p-5 cursor-pointer">
       <span>
         <span className="block text-sm font-black text-slate-800 tracking-tight">{label}</span>
-        <span className="block text-xs font-semibold text-slate-500 mt-1">{description}</span>
+        <span className="block text-xs font-bold text-slate-500 mt-1">{description}</span>
       </span>
       <input
         type="checkbox"

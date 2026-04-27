@@ -14,7 +14,7 @@ const BuilderStats = ({ builder }) => {
           {stats.map((stat, i) => (
             <div 
               key={i} 
-              className={`group p-12 rounded-[2.5rem] ${stat.bg} border ${stat.isHigh ? 'border-primary' : 'border-zinc-800/50'} hover:scale-105 transition-all text-center relative overflow-hidden`}
+              className={`group p-12 rounded-2xl ${stat.bg} border ${stat.isHigh ? 'border-primary' : 'border-zinc-800/50'} hover:scale-105 transition-all text-center relative overflow-hidden`}
             >
               {stat.isHigh && (
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16"></div>

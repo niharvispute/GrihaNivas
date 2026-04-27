@@ -12,12 +12,12 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete, deleting = false }) =>
     .join('');
 
   return (
-    <div className="bg-white p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-slate-50 hover:border-primary/20 transition-all group flex flex-col justify-between h-full">
+    <div className="bg-white p-10 rounded-2xl shadow-2xl shadow-slate-200/50 border border-slate-50 hover:border-primary/20 transition-all group flex flex-col justify-between h-full">
       <div>
         <div className="flex justify-between items-start mb-8">
           <div className="flex items-center gap-5">
             <div className="relative">
-              <div className="relative w-16 h-16 rounded-[1.25rem] shadow-xl border-4 border-white group-hover:rotate-3 transition-transform duration-500 bg-linear-to-br from-primary/10 via-white to-tertiary/70 text-primary flex items-center justify-center font-black text-sm overflow-hidden">
+              <div className="relative w-16 h-16 rounded-2xl shadow-xl border-4 border-white group-hover:rotate-3 transition-transform duration-500 bg-gradient-to-br from-primary/10 via-white to-tertiary/70 text-primary flex items-center justify-center font-black text-sm overflow-hidden">
                 {testimonial.image ? (
                   <CloudinaryImage
                     alt={testimonial.name}
@@ -58,7 +58,7 @@ const TestimonialCard = ({ testimonial, onEdit, onDelete, deleting = false }) =>
           </div>
         </div>
         
-        <p className="text-slate-500 font-medium leading-[1.7]  text-lg line-clamp-4">
+        <p className="text-slate-500 font-bold leading-[1.7]  text-lg line-clamp-4">
           {testimonial.content}
         </p>
       </div>

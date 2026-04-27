@@ -98,7 +98,7 @@ export default function TestimonialManagerPage() {
           <h1 className="text-5xl font-black tracking-tighter text-slate-900 lg:text-7xl">
             Social <span className="text-primary ">Proof</span>
           </h1>
-          <p className="text-slate-500 font-medium text-xl mt-6 max-w-xl leading-relaxed">
+          <p className="text-slate-500 font-bold text-xl mt-6 max-w-xl leading-relaxed">
             Manage the narratives that build trust. Curate user experiences across your organizational ecosystem.
           </p>
         </div>
@@ -106,7 +106,7 @@ export default function TestimonialManagerPage() {
           <ExportButton onExport={() => exportTestimonials()} />
           <button
             onClick={handleAddNew}
-            className="px-10 py-5 bg-primary text-white rounded-3xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-4 leading-none"
+            className="px-10 py-5 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-4 leading-none"
           >
             <span className="material-symbols-outlined font-black">add</span>
             Add Sentiment
@@ -133,7 +133,7 @@ export default function TestimonialManagerPage() {
       {/* Grid Management Suite */}
       {loading ? (
         <div className="py-32 flex flex-col items-center justify-center text-slate-200">
-            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-4xl animate-spin mb-8"></div>
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-8"></div>
            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Accessing Testimony Archive...</span>
         </div>
       ) : (

@@ -139,10 +139,10 @@ export default async function PropertyDetailPage({ params }) {
       <section className="mb-8 sm:mb-16 lg:mb-20 space-y-5 sm:space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div className="max-w-4xl space-y-3">
-            <h1 className="text-[24px]! sm:text-4xl! md:text-5xl! font-heading font-extrabold tracking-tight text-slate-900 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-black tracking-tight text-slate-900 leading-tight">
               {property.title}
             </h1>
-            <p className="text-slate-500 flex items-center gap-2 font-medium text-sm md:text-base">
+            <p className="text-slate-500 flex items-center gap-2 font-bold text-sm md:text-base">
               <svg className="w-4 h-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                 <circle cx="12" cy="10" r="3" />
@@ -154,7 +154,7 @@ export default async function PropertyDetailPage({ params }) {
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1 leading-none">
               {property?.category === 'rent' ? 'Monthly Rent' : 'Expected Price'}
             </p>
-            <p className="text-4xl lg:text-5xl font-heading font-extrabold text-slate-900 tracking-tighter">
+            <p className="text-4xl lg:text-5xl font-heading font-black text-slate-900 tracking-tighter">
               {property.price || 'POA'}
               {property?.category === 'rent' && <span className="text-lg ml-1 font-bold text-slate-400">/mo</span>}
             </p>
@@ -174,7 +174,7 @@ export default async function PropertyDetailPage({ params }) {
           
           {/* Neighborhood Placeholder */}
           <section>
-            <h2 className="text-2xl font-heading font-extrabold mb-6 sm:mb-8 text-slate-900">Neighborhood & Location</h2>
+            <h2 className="text-2xl font-heading font-black mb-6 sm:mb-8 text-slate-900">Neighborhood & Location</h2>
             <div className="rounded-2xl overflow-hidden shadow-lg h-72 sm:h-96 relative mb-8 border border-slate-100">
               {mapEmbedUrl ? (
                 <iframe
@@ -185,13 +185,13 @@ export default async function PropertyDetailPage({ params }) {
                   referrerPolicy="no-referrer-when-downgrade"
                 />
               ) : (
-                <div className="w-full h-full bg-linear-to-br from-slate-100 to-white flex flex-col items-center justify-center text-slate-400">
+                <div className="w-full h-full bg-gradient-to-br from-slate-100 to-white flex flex-col items-center justify-center text-slate-400">
                   <span className="material-symbols-outlined text-5xl">map</span>
                   <p className="mt-3 text-xs font-bold uppercase tracking-widest">Location details unavailable</p>
                 </div>
               )}
               {neighborhoodHighlights.length > 0 && (
-                <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6 bg-white/90 backdrop-blur-md p-3 sm:p-6 rounded-xl grid grid-cols-2 lg:flex lg:flex-wrap gap-4 sm:gap-8 border border-white shadow-xl">
+                <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6 bg-white/90 backdrop-blur-md p-3 sm:p-6 rounded-2xl grid grid-cols-2 lg:flex lg:flex-wrap gap-4 sm:gap-8 border border-white shadow-xl">
                   {neighborhoodHighlights.map((nh, idx) => (
                     <div key={idx} className="flex items-center gap-2 md:gap-3">
                       <span className="material-symbols-outlined text-primary text-lg sm:text-xl">{nh.icon}</span>

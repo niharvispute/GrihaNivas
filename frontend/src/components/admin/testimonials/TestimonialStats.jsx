@@ -18,7 +18,7 @@ const TestimonialStats = ({ testimonials = [] }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
       {stats.map((stat, i) => (
-        <div key={i} className={`${stat.bg} p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-slate-50 flex flex-col justify-between hover:scale-[1.02] transition-transform group`}>
+        <div key={i} className={`${stat.bg} p-10 rounded-2xl shadow-2xl shadow-slate-200/50 border border-slate-50 flex flex-col justify-between hover:scale-[1.02] transition-transform group`}>
           <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">{stat.label}</p>
           <div className="flex items-end justify-between mt-6">
             <span className="text-5xl font-black text-slate-900 tracking-tighter">{stat.value}</span>
@@ -35,7 +35,7 @@ const TestimonialStats = ({ testimonials = [] }) => {
           </div>
         </div>
       ))}
-      <div className="md:col-span-2 bg-primary p-10 rounded-[2.5rem] shadow-2xl shadow-primary/30 flex flex-col justify-between relative overflow-hidden group hover:scale-[1.02] transition-all">
+      <div className="md:col-span-2 bg-primary p-10 rounded-2xl shadow-2xl shadow-primary/30 flex flex-col justify-between relative overflow-hidden group hover:scale-[1.02] transition-all">
         <div className="relative z-10">
           <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em]">Rating Distribution</p>
           <h3 className="text-3xl font-black text-white mt-6 tracking-tighter leading-none">

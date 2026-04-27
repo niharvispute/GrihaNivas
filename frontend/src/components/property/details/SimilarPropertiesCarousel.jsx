@@ -7,10 +7,10 @@ export default function SimilarPropertiesCarousel({ properties = [] }) {
   if (!Array.isArray(properties) || properties.length === 0) {
     return (
       <section className="mt-16 sm:mt-24 lg:mt-32">
-        <h2 className="text-2xl sm:text-3xl font-heading font-extrabold text-slate-900">You May Also Like</h2>
-        <p className="mt-6 text-sm font-medium text-slate-500">
-          More similar listings will appear here soon.
-        </p>
+        <div className="flex flex-col items-center justify-center py-16 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 mt-4">
+          <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">home_work</span>
+          <p className="text-slate-500 font-bold text-sm">Similar listings will appear here soon.</p>
+        </div>
       </section>
     );
   }

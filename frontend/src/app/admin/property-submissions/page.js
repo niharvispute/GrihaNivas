@@ -19,9 +19,9 @@ const STATUS_STYLES = {
 const STATUS_TRANSITIONS = {
   new: ['reviewing'],
   reviewing: ['new', 'approved', 'rejected'],
-  approved: ['reviewing', 'closed'],
-  rejected: ['reviewing', 'closed'],
-  closed: ['approved', 'rejected'],
+  approved: [],
+  rejected: ['reviewing'],
+  closed: [],
 };
 
 function formatDate(iso) {
@@ -96,11 +96,18 @@ export default function PropertySubmissionsPage() {
     setUpdatingId(item._id);
     try {
       await updatePropertySubmissionStatus(item._id, nextStatus);
-      setItems((prev) =>
-        prev.map((entry) =>
-          entry._id === item._id ? { ...entry, status: nextStatus } : entry
-        )
-      );
+      if (nextStatus === 'approved') {
+        setItems((prev) => prev.filter((entry) => entry._id !== item._id));
+        setMeta((prev) =>
+          prev ? { ...prev, total: Math.max((prev.total || 1) - 1, 0) } : prev
+        );
+      } else {
+        setItems((prev) =>
+          prev.map((entry) =>
+            entry._id === item._id ? { ...entry, status: nextStatus } : entry
+          )
+        );
+      }
     } catch {
       alert('Failed to update status.');
     } finally {
@@ -174,7 +181,7 @@ export default function PropertySubmissionsPage() {
         )}
       </div>
 
-      <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
         <div className="flex-1 min-w-55">
           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Quick Search</label>
           <div className="relative">
@@ -211,14 +218,12 @@ export default function PropertySubmissionsPage() {
             <option value="">All Statuses</option>
             <option value="new">New</option>
             <option value="reviewing">Reviewing</option>
-            <option value="approved">Approved</option>
             <option value="rejected">Rejected</option>
-            <option value="closed">Closed</option>
           </select>
         </div>
       </div>
 
-      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-50 overflow-hidden">
         {loading ? (
           <div className="p-10 space-y-4 animate-pulse">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -252,11 +257,11 @@ export default function PropertySubmissionsPage() {
                   const deleting = deletingId === item._id;
 
                   return (
-                    <tr key={item._id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl">
-                      <td className="px-6 py-5 rounded-l-3xl">
+                    <tr key={item._id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-2xl">
+                      <td className="px-6 py-5 rounded-l-2xl">
                         <div className="space-y-1">
                           <p className="text-sm font-black text-slate-900">{item.ownerName}</p>
-                          <p className="text-[10px] text-slate-400 font-medium">{item.phone}</p>
+                          <p className="text-[10px] text-slate-400 font-bold">{item.phone}</p>
                         </div>
                       </td>
                       <td className="px-6 py-5 text-sm font-bold text-slate-600">{item.locality}</td>
@@ -299,7 +304,7 @@ export default function PropertySubmissionsPage() {
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-5 text-right rounded-r-3xl">
+                      <td className="px-6 py-5 text-right rounded-r-2xl">
                         <div className="flex items-center justify-end gap-2">
                           {transitionOptions.length > 0 && (
                             <select
@@ -382,7 +387,7 @@ export default function PropertySubmissionsPage() {
 
       {(loadingDetail || viewingItem) && (
         <div className="fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-4xl bg-white rounded-4xl border border-slate-100 shadow-2xl overflow-hidden">
+          <div className="w-full max-w-4xl bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden">
             <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
               <h3 className="text-2xl font-black text-slate-900 tracking-tight">Submission Details</h3>
               <button
@@ -464,12 +469,12 @@ export default function PropertySubmissionsPage() {
 
       {closeWarningItem && (
         <div className="fixed inset-0 z-80 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-xl rounded-3xl border border-slate-100 bg-white p-7 shadow-2xl">
+          <div className="w-full max-w-xl rounded-2xl border border-slate-100 bg-white p-7 shadow-2xl">
             <div className="mb-5 flex items-start gap-3">
               <span className="material-symbols-outlined text-2xl text-amber-500">warning</span>
               <div>
                 <h3 className="text-xl font-black tracking-tight text-slate-900">Close Property Warning</h3>
-                <p className="mt-2 text-sm font-medium text-slate-600">
+                <p className="mt-2 text-sm font-bold text-slate-600">
                   If you close this property, it will not be visible on property listings and it will be deleted
                   from your database within 30 days.
                 </p>

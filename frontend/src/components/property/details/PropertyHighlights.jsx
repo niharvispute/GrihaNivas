@@ -3,7 +3,7 @@ export default function PropertyHighlights({ highlights }) {
 
   return (
     <section>
-      <h2 className="text-2xl font-heading font-extrabold mb-6 sm:mb-8 text-slate-900">Property Highlights</h2>
+      <h2 className="text-2xl font-heading font-black mb-6 sm:mb-8 text-slate-900">Property Highlights</h2>
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-8">
         {highlights.map((item, idx) => (
           <div key={idx} className="flex items-center gap-2.5 sm:gap-4 p-2 rounded-xl border border-transparent">

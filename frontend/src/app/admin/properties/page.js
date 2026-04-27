@@ -168,7 +168,7 @@ export default function PropertyManagementPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
         <div className="flex-1 min-w-55">
           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Search</label>
           <div className="relative">
@@ -198,7 +198,7 @@ export default function PropertyManagementPage() {
       </div>
 
       {/* Properties Table */}
-      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 min-h-[calc(100vh-22rem)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-50 min-h-[calc(100vh-22rem)] flex flex-col">
         {loading ? (
           <div className="p-10 space-y-4 animate-pulse flex-1">
             {[1, 2, 3, 4].map((i) => <div key={i} className="h-20 bg-slate-100 rounded-2xl" />)}
@@ -228,8 +228,8 @@ export default function PropertyManagementPage() {
                 {properties.map((prop) => {
                   const heroUrl = prop.heroImage?.url || null;
                   return (
-                    <tr key={prop._id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl">
-                      <td className="px-6 py-5 rounded-l-3xl">
+                    <tr key={prop._id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-2xl">
+                      <td className="px-6 py-5 rounded-l-2xl">
                         <div className="flex items-center gap-4">
                           <div className="w-14 h-14 rounded-2xl overflow-hidden bg-slate-100 shrink-0 flex items-center justify-center">
                             {heroUrl
@@ -239,9 +239,9 @@ export default function PropertyManagementPage() {
                           </div>
                           <div>
                             <p className="text-sm font-black text-slate-900 group-hover:text-primary transition-colors">{prop.title}</p>
-                            {prop.reraNumber && <p className="text-[10px] text-slate-400 font-medium">RERA: {prop.reraNumber}</p>}
+                            {prop.reraNumber && <p className="text-[10px] text-slate-400 font-bold">RERA: {prop.reraNumber}</p>}
                             {Array.isArray(prop.feature) && prop.feature.length > 0 && (
-                              <p className="text-[10px] text-slate-400 font-medium">Features: {prop.feature.length}</p>
+                              <p className="text-[10px] text-slate-400 font-bold">Features: {prop.feature.length}</p>
                             )}
                             {prop.reraUrl && (
                               <a
@@ -301,7 +301,7 @@ export default function PropertyManagementPage() {
                           )}
                         </button>
                       </td>
-                      <td className="px-6 py-5 text-right rounded-r-3xl">
+                      <td className="px-6 py-5 text-right rounded-r-2xl">
                         <div className="flex justify-end">
                           <div className="relative">
                             <button
@@ -407,7 +407,7 @@ export default function PropertyManagementPage() {
 
       {(loadingPropertyDetail || viewingProperty) && (
         <div className="fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-3xl bg-white rounded-4xl border border-slate-100 shadow-2xl overflow-hidden">
+          <div className="w-full max-w-3xl bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden">
             <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
               <h3 className="text-2xl font-black text-slate-900 tracking-tight">Property Details</h3>
               <button

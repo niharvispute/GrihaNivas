@@ -65,7 +65,7 @@ export default function UserSidebar() {
       {/* Header Profile */}
       <div className="flex flex-col items-center gap-2 mb-8 px-4">
         <div className="relative group">
-          <div className="relative w-16 h-16 rounded-full overflow-hidden bg-linear-to-br from-primary/10 via-white to-tertiary/60 ring-4 ring-primary/10 group-hover:ring-primary/20 transition-all duration-300 flex items-center justify-center text-primary font-black text-sm">
+          <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-primary/10 via-white to-tertiary/60 ring-4 ring-primary/10 group-hover:ring-primary/20 transition-all duration-300 flex items-center justify-center text-primary font-black text-sm">
             {avatarSrc ? (
               <Image
                 alt={displayName}
@@ -95,7 +95,7 @@ export default function UserSidebar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg md:rounded-xl font-heading text-sm font-bold transition-all duration-200 ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl font-heading text-sm font-bold transition-all duration-200 ${
                 isActive
                   ? 'bg-primary text-white shadow-lg shadow-primary/20'
                   : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
@@ -112,7 +112,7 @@ export default function UserSidebar() {
       {/* Logout */}
       <div className="mt-auto">
         <button
-          className="flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:bg-red-50 hover:text-red-600 rounded-lg md:rounded-xl text-sm font-bold transition-all duration-200"
+          className="flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:bg-red-50 hover:text-red-600 rounded-xl text-sm font-bold transition-all duration-200"
           onClick={logout}
           type="button"
         >
@@ -126,14 +126,14 @@ export default function UserSidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:fixed md:left-0 md:top-0 md:h-screen md:w-64 md:flex md:flex-col md:p-4 md:bg-white md:border-r md:border-neutral-200 md:z-50">
+      <aside className="hidden md:fixed md:left-0 md:top-0 md:h-screen md:w-64 md:flex md:flex-col md:p-4 md:bg-white md:border-r md:border-slate-200 md:z-50">
         <SidebarContent />
       </aside>
 
       {/* Mobile Sidebar Overlay */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity"
+          className="fixed inset-0 bg-slate-900/60 z-40 md:hidden transition-opacity"
           onClick={() => setIsMobileOpen(false)}
         />
       )}

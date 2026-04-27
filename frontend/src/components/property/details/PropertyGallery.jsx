@@ -52,10 +52,10 @@ export default function PropertyGallery({ images, property }) {
   if (!safeImages.length) {
     return (
       <div className="space-y-5 sm:space-y-6">
-        <div className="h-72 sm:h-96 lg:h-105 rounded-4xl border border-slate-100 bg-linear-to-br from-slate-100 via-white to-slate-50 flex flex-col items-center justify-center text-slate-400 px-4 text-center">
+        <div className="h-72 sm:h-96 lg:h-105 rounded-2xl border border-slate-100 bg-gradient-to-br from-slate-100 via-white to-slate-50 flex flex-col items-center justify-center text-slate-400 px-4 text-center">
           <span className="material-symbols-outlined text-6xl">image_not_supported</span>
           <p className="mt-4 text-xs font-black uppercase tracking-widest">No gallery uploaded yet</p>
-          <p className="mt-2 text-[11px] font-semibold text-slate-500">This listing is live while media is being verified.</p>
+          <p className="mt-2 text-[11px] font-bold text-slate-500">This listing is live while media is being verified.</p>
         </div>
         <div className="flex flex-wrap items-center justify-between gap-4 px-2">
           <div className="flex items-center gap-6">
@@ -176,7 +176,7 @@ export default function PropertyGallery({ images, property }) {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="relative min-h-72 sm:min-h-88 lg:h-full rounded-3xl sm:rounded-4xl overflow-hidden group shadow-xl cursor-pointer"
+          className="relative min-h-72 sm:min-h-88 lg:h-full rounded-2xl overflow-hidden group shadow-xl cursor-pointer"
           onClick={() => openViewer(0)}
         >
           <CloudinaryImage
@@ -187,7 +187,7 @@ export default function PropertyGallery({ images, property }) {
             sizes="(max-width: 1024px) 100vw, 70vw"
             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           />
-          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/15 to-transparent opacity-80 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent opacity-80 pointer-events-none" />
           <button
             type="button"
             onClick={(event) => {
@@ -222,7 +222,7 @@ export default function PropertyGallery({ images, property }) {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1 }}
-            className="relative min-h-32 sm:min-h-44 lg:min-h-0 rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md cursor-pointer border border-slate-100"
+            className="relative min-h-32 sm:min-h-44 lg:min-h-0 rounded-2xl overflow-hidden group shadow-md cursor-pointer border border-slate-100"
             onClick={() => openViewer(Math.min(1, safeImages.length - 1))}
           >
             <CloudinaryImage
@@ -232,14 +232,14 @@ export default function PropertyGallery({ images, property }) {
               sizes="(max-width: 1024px) 50vw, 30vw"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="relative min-h-32 sm:min-h-44 lg:min-h-0 rounded-2xl sm:rounded-3xl overflow-hidden group shadow-md cursor-pointer border border-slate-100"
+            className="relative min-h-32 sm:min-h-44 lg:min-h-0 rounded-2xl overflow-hidden group shadow-md cursor-pointer border border-slate-100"
             onClick={() => openViewer(Math.min(2, safeImages.length - 1))}
           >
             <CloudinaryImage
@@ -271,43 +271,43 @@ export default function PropertyGallery({ images, property }) {
 
       {/* Property Info Chips */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
-        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
-          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
           <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Price</span>
           <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{rawPrice}</span>
         </div>
-        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
-          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
           <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Type</span>
           <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{typeLabel}</span>
         </div>
-        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
-          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
           <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Carpet Area</span>
           <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{carpetAreaLabel}</span>
         </div>
-        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
-          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
           <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Area</span>
           <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{areaLabel}</span>
         </div>
-        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
-          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
           <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Property Age</span>
           <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{getPropertyAge()}</span>
         </div>
-        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
-          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
           <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Bathrooms</span>
           <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{getBathrooms()}</span>
         </div>
-        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
-          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
           <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Covered Parking</span>
           <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{getCoveredParking()}</span>
         </div>
-        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl sm:rounded-3xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
-          <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+        <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
           <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Possession</span>
           <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{getPossessionStatus()}</span>
         </div>
@@ -333,7 +333,7 @@ export default function PropertyGallery({ images, property }) {
               <span className="material-symbols-outlined text-2xl sm:text-3xl">close</span>
             </button>
 
-            <div className="relative overflow-hidden rounded-3xl sm:rounded-4xl bg-black shadow-2xl border border-white/10 min-h-[52vh] sm:min-h-[60vh] lg:min-h-[72vh]">
+            <div className="relative overflow-hidden rounded-2xl bg-black shadow-2xl border border-white/10 min-h-[52vh] sm:min-h-[60vh] lg:min-h-[72vh]">
               <div className="absolute inset-0 flex items-center justify-center">
                 <CloudinaryImage
                   src={currentImage}

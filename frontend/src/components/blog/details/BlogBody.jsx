@@ -9,12 +9,12 @@ const BlogBody = ({ post }) => {
   return (
     <article className="lg:col-span-8">
       {/* Article Body */}
-      <div className="max-w-none text-slate-600 leading-[1.8] font-medium text-base sm:text-lg font-sans">
+      <div className="max-w-none text-slate-600 leading-[1.8] font-bold text-base sm:text-lg font-sans">
         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-6 sm:mb-8 tracking-tighter leading-tight" id="overview">
           Navigating the New Standard of Mumbai Opulence
         </h2>
         
-        <p className="text-lg sm:text-xl lg:text-2xl mb-8 sm:mb-12 leading-[1.6] font-light text-slate-500  border-l-4 border-primary/20 pl-4 sm:pl-6 lg:pl-8">
+        <p className="text-lg sm:text-xl lg:text-2xl mb-8 sm:mb-12 leading-[1.6] font-bold text-slate-500  border-l-4 border-primary/20 pl-4 sm:pl-6 lg:pl-8">
           {post.excerpt || "As we move further into 2024, the South Mumbai real estate landscape is witnessing a seismic shift. No longer are \"standard\" luxury apartments enough for the city's elite."}
         </p>
 
@@ -33,7 +33,7 @@ const BlogBody = ({ post }) => {
             </p>
 
             {/* Key Takeaways Box */}
-            <div className="bg-slate-50 rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-8 lg:p-10 mb-10 sm:mb-14 lg:mb-16 border border-slate-100 shadow-xl shadow-slate-200/50">
+            <div className="bg-slate-50 rounded-2xl p-6 sm:p-8 lg:p-10 mb-10 sm:mb-14 lg:mb-16 border border-slate-100 shadow-xl shadow-slate-200/50">
               <h3 className="text-primary font-black mb-8 flex items-center gap-3 uppercase tracking-widest text-xs">
                 <span className="material-symbols-outlined scale-125">stars</span>
                 Market Intelligence
@@ -61,7 +61,7 @@ const BlogBody = ({ post }) => {
 
             {/* Figure with Caption */}
             <figure className="my-10 sm:my-14 lg:my-16 group">
-              <div className="relative h-64 sm:h-80 lg:h-125 rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200 group-hover:shadow-3xl transition-shadow duration-700">
+              <div className="relative h-64 sm:h-80 lg:h-125 rounded-2xl overflow-hidden shadow-2xl shadow-slate-200 group-hover:shadow-3xl transition-shadow duration-700">
                 <Image
                   alt="Mumbai Skyline"
                   fill
@@ -76,7 +76,7 @@ const BlogBody = ({ post }) => {
             </figure>
 
             {/* Pro Tip Callout */}
-            <div className="bg-primary/5 rounded-3xl p-5 sm:p-6 lg:p-8 mb-8 sm:mb-10 lg:mb-12 border border-primary/10 flex items-start gap-4 sm:gap-6 relative overflow-hidden group">
+            <div className="bg-primary/5 rounded-2xl p-5 sm:p-6 lg:p-8 mb-8 sm:mb-10 lg:mb-12 border border-primary/10 flex items-start gap-4 sm:gap-6 relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-2xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
               <div className="bg-primary text-white p-2.5 sm:p-3 rounded-2xl shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform shrink-0">
                 <span className="material-symbols-outlined drop-shadow-md">lightbulb</span>
@@ -94,11 +94,11 @@ const BlogBody = ({ post }) => {
         )}
 
         {/* In-Article CTA */}
-        <div className="my-12 sm:my-16 lg:my-20 p-6 sm:p-8 lg:p-12 bg-slate-900 text-white rounded-4xl sm:rounded-5xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center gap-6 sm:gap-8 lg:gap-10 group shadow-2xl">
+        <div className="my-12 sm:my-16 lg:my-20 p-6 sm:p-8 lg:p-12 bg-slate-900 text-white rounded-2xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center gap-6 sm:gap-8 lg:gap-10 group shadow-2xl">
           <div className="absolute top-0 right-0 w-48 h-48 bg-primary opacity-20 -mr-16 -mt-16 rounded-full blur-[60px] group-hover:opacity-30 transition-opacity"></div>
           <div className="relative z-10 flex-1">
             <h4 className="text-2xl sm:text-3xl font-black tracking-tighter mb-3 sm:mb-4 leading-tight">Ready to find your <br/>piece of the sky?</h4>
-            <p className="text-slate-400 font-medium leading-relaxed text-sm sm:text-base">Access our exclusive, off-market listings of luxury penthouses across South Mumbai.</p>
+            <p className="text-slate-400 font-bold leading-relaxed text-sm sm:text-base">Access our exclusive, off-market listings of luxury penthouses across South Mumbai.</p>
           </div>
           <button className="relative z-10 w-full md:w-auto bg-primary text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/40 hover:scale-110 transition-transform active:scale-95 whitespace-nowrap">
             Browse Penthouses

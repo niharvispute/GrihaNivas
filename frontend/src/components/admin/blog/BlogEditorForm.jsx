@@ -64,10 +64,10 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
   };
 
   return (
-    <div className="bg-white rounded-[3rem] shadow-[0_48px_96px_-24px_rgba(0,0,0,0.12)] border border-slate-100 overflow-hidden transition-all animate-in fade-in slide-in-from-bottom-5 duration-700">
+    <div className="bg-white rounded-2xl shadow-[0_48px_96px_-24px_rgba(0,0,0,0.12)] border border-slate-100 overflow-hidden transition-all animate-in fade-in slide-in-from-bottom-5 duration-700">
       <div className="p-12 border-b border-slate-50 bg-slate-50/10">
         <h3 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">Editor Suite</h3>
-        <p className="text-slate-500 font-medium">Compose, optimize, and publish your real estate narrative.</p>
+        <p className="text-slate-500 font-bold">Compose, optimize, and publish your real estate narrative.</p>
       </div>
 
       <div className="p-12">
@@ -79,7 +79,7 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
                 Post Title <span className="text-red-400">*</span>
               </label>
               <input
-                className="w-full px-8 py-5 rounded-[1.5rem] bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
+                className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
                 placeholder="The Future of Mumbai Luxury..."
                 type="text"
                 value={form.title}
@@ -91,7 +91,7 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
               <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Category Segment</label>
               <div className="relative group">
                 <select
-                  className="w-full px-8 py-5 rounded-[1.25rem] bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none font-bold text-slate-900"
+                  className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none font-bold text-slate-900"
                   value={form.category}
                   onChange={set('category')}
                 >
@@ -110,7 +110,7 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
             <div className="flex flex-col gap-3">
               <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Focus SEO Keyword</label>
               <input
-                className="w-full px-8 py-5 rounded-[1.25rem] bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
+                className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
                 placeholder="e.g., south mumbai penthouses"
                 type="text"
                 value={form.keyword}
@@ -134,7 +134,7 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
                   }
                   setForm((prev) => ({ ...prev, featuredImageFile: file }));
                 }}
-                className="w-full px-6 py-4 rounded-[1.25rem] bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-xs file:font-black file:uppercase file:tracking-widest file:text-primary hover:file:bg-primary/20"
+                className="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-xs file:font-black file:uppercase file:tracking-widest file:text-primary hover:file:bg-primary/20"
               />
               <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">
                 This image is used as the blog banner and card thumbnail.
@@ -159,7 +159,7 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
               Meta Narrative (Short Summary)
             </label>
             <textarea
-              className="w-full flex-1 min-h-[220px] px-8 py-6 rounded-[2rem] bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none font-medium text-slate-600 leading-relaxed placeholder:text-slate-300"
+              className="w-full flex-1 min-h-[220px] px-8 py-6 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none font-medium text-slate-600 leading-relaxed placeholder:text-slate-300"
               placeholder="Write a short summary for search engine snippets..."
               value={form.excerpt}
               onChange={set('excerpt')}
@@ -172,7 +172,7 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
           <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1 mb-4 block text-center">
             Manuscript Canvas <span className="text-red-400">*</span>
           </label>
-          <div className="border border-slate-100 rounded-[2.5rem] overflow-hidden bg-white shadow-2xl shadow-slate-100">
+          <div className="border border-slate-100 rounded-2xl overflow-hidden bg-white shadow-2xl shadow-slate-100">
             <textarea
               className="w-full min-h-[500px] p-12 border-none focus:ring-0 outline-none text-slate-800 leading-[1.8] font-medium text-lg placeholder:text-slate-200 resize-y"
               placeholder="Begin your editorial journey here..."

@@ -167,7 +167,7 @@ export default function LeadCRMPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
         <div className="flex-1 min-w-55">
           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Quick Search</label>
           <div className="relative">
@@ -211,7 +211,7 @@ export default function LeadCRMPage() {
       </div>
 
       {/* Leads Table */}
-      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-50 overflow-hidden">
         {loading ? (
           <div className="p-10 space-y-4 animate-pulse">
             {[1, 2, 3, 4, 5].map((i) => <div key={i} className="h-16 bg-slate-100 rounded-2xl" />)}
@@ -241,8 +241,8 @@ export default function LeadCRMPage() {
                   const busy = updatingId === lead._id;
                   const deleting = deletingId === lead._id;
                   return (
-                    <tr key={lead._id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl">
-                      <td className="px-6 py-5 rounded-l-3xl">
+                    <tr key={lead._id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-2xl">
+                      <td className="px-6 py-5 rounded-l-2xl">
                         <div className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-2xl bg-white text-primary flex items-center justify-center font-black text-xs shadow-sm border border-slate-100 group-hover:bg-primary group-hover:text-white transition-all">
                             {getInitials(lead.name)}
@@ -252,7 +252,7 @@ export default function LeadCRMPage() {
                       </td>
                       <td className="px-6 py-5">
                         <p className="text-sm font-bold text-slate-700">{lead.phone}</p>
-                        {lead.email && <p className="text-[10px] text-slate-400 font-medium">{lead.email}</p>}
+                        {lead.email && <p className="text-[10px] text-slate-400 font-bold">{lead.email}</p>}
                       </td>
                       <td className="px-6 py-5">
                         <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1.5 bg-slate-100 text-slate-600 rounded-full">
@@ -266,7 +266,7 @@ export default function LeadCRMPage() {
                           {lead.status}
                         </span>
                       </td>
-                      <td className="px-6 py-5 text-right rounded-r-3xl">
+                      <td className="px-6 py-5 text-right rounded-r-2xl">
                         <div className="flex items-center justify-end gap-2">
                           {nextStatus && (
                             <button
@@ -352,7 +352,7 @@ export default function LeadCRMPage() {
       {/* Lead View Modal */}
       {(loadingLeadDetail || viewingLead) && (
         <div className="fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-3xl bg-white rounded-4xl border border-slate-100 shadow-2xl overflow-hidden">
+          <div className="w-full max-w-3xl bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden">
             <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
               <h3 className="text-2xl font-black text-slate-900 tracking-tight">Lead Details</h3>
               <button
@@ -415,7 +415,7 @@ export default function LeadCRMPage() {
                     <div className="space-y-3 mb-5 max-h-48 overflow-y-auto pr-1">
                       {viewingLead.notes.map((note, i) => (
                         <div key={i} className="bg-amber-50 border border-amber-100 rounded-xl p-4">
-                          <p className="text-sm font-medium text-slate-700 leading-relaxed">{note.text}</p>
+                          <p className="text-sm font-bold text-slate-700 leading-relaxed">{note.text}</p>
                           <p className="text-[10px] font-bold text-amber-500 mt-2 uppercase tracking-widest">
                             {note.addedAt ? formatDate(note.addedAt) : ''}
                           </p>

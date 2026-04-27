@@ -69,7 +69,7 @@ export default function TrendingBuilderCard({ builder }) {
           </div>
         </div>
 
-        <p className="text-xs font-semibold leading-relaxed text-slate-500 line-clamp-2">{tagline}</p>
+        <p className="text-xs font-bold leading-relaxed text-slate-500 line-clamp-2">{tagline}</p>
 
         {/* CTA */}
         <Link

@@ -10,7 +10,7 @@ const BlogSidebar = ({ relatedPosts = [], trendingAssets = [] }) => {
   return (
     <aside className="lg:col-span-4 space-y-8 sm:space-y-10 lg:space-y-16">
       {/* Related Articles Widget */}
-      <div className="bg-white p-6 sm:p-8 lg:p-10 rounded-4xl shadow-2xl shadow-slate-200/50 border border-slate-50">
+      <div className="bg-white p-6 sm:p-8 lg:p-10 rounded-2xl shadow-2xl shadow-slate-200/50 border border-slate-50">
         <h4 className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-6 sm:mb-8 lg:mb-10 flex items-center gap-3">
           <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
           Related Insights
@@ -18,7 +18,7 @@ const BlogSidebar = ({ relatedPosts = [], trendingAssets = [] }) => {
         <div className="space-y-6 sm:space-y-8 lg:space-y-10">
           {relatedPosts.length > 0 ? relatedPosts.map((post) => (
             <Link key={post.slug || post.id} href={`/blogs/${post.slug}`} className="group flex gap-4 sm:gap-5 lg:gap-6">
-              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-3xl overflow-hidden shrink-0 shadow-lg border-4 border-white group-hover:rotate-3 transition-transform duration-500">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shrink-0 shadow-lg border-4 border-white group-hover:rotate-3 transition-transform duration-500">
                 <Image src={post.image || FALLBACK_RELATED_IMAGE} alt={post.title} fill sizes="96px" className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="flex flex-col justify-center">
@@ -29,13 +29,13 @@ const BlogSidebar = ({ relatedPosts = [], trendingAssets = [] }) => {
               </div>
             </Link>
           )) : (
-            <p className="text-sm font-semibold text-slate-400">Related insights will appear here shortly.</p>
+            <p className="text-sm font-bold text-slate-400">Related insights will appear here shortly.</p>
           )}
         </div>
       </div>
 
       {/* Trending Card Widget */}
-      <div className="bg-primary rounded-[2.25rem] sm:rounded-[3rem] p-6 sm:p-8 lg:p-10 text-white relative overflow-hidden shadow-2xl shadow-primary/30 group">
+      <div className="bg-primary rounded-2xl p-6 sm:p-8 lg:p-10 text-white relative overflow-hidden shadow-2xl shadow-primary/30 group">
         <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-1000"></div>
         <h4 className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-white/50 mb-6 sm:mb-8 lg:mb-10 border-b border-white/10 pb-4">
           Trending Assets
@@ -54,7 +54,7 @@ const BlogSidebar = ({ relatedPosts = [], trendingAssets = [] }) => {
               </Link>
             );
           }) : (
-            <p className="text-sm font-semibold text-white/70">Featured assets will appear here shortly.</p>
+            <p className="text-sm font-bold text-white/70">Featured assets will appear here shortly.</p>
           )}
           <Link href="/buy" className="block w-full bg-white text-primary py-4 rounded-full text-center font-black text-[10px] uppercase tracking-widest shadow-2xl shadow-black/10 hover:scale-[1.03] transition-all active:scale-95 mt-2 sm:mt-4">
             View All Listings

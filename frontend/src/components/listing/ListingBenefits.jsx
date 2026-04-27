@@ -32,7 +32,7 @@ export default function ListingBenefits() {
                 <span className="material-symbols-outlined text-primary group-hover:text-white text-3xl">{benefit.icon}</span>
               </div>
               <h3 className="font-heading font-bold text-xl mb-3 text-slate-900">{benefit.title}</h3>
-              <p className="text-slate-500 leading-relaxed text-sm font-medium">{benefit.description}</p>
+              <p className="text-slate-500 leading-relaxed text-sm font-bold">{benefit.description}</p>
             </div>
           ))}
         </div>

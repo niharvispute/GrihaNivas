@@ -119,8 +119,8 @@ export default function PropertyLeadForm({ property }) {
 
   return (
     <section id="lead-form" className="scroll-mt-28 sm:scroll-mt-32 bg-slate-50 p-5 sm:p-8 rounded-2xl border border-slate-100 shadow-sm">
-      <h3 className="text-xl font-heading font-extrabold mb-1 text-slate-900">Inquire for Details</h3>
-      <p className="text-sm text-slate-500 mb-6 font-medium">Our consultants will contact you within 2 hours.</p>
+      <h3 className="text-xl font-heading font-black mb-1 text-slate-900">Inquire for Details</h3>
+      <p className="text-sm text-slate-500 mb-6 font-bold">Our consultants will contact you within 2 hours.</p>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
@@ -166,7 +166,7 @@ export default function PropertyLeadForm({ property }) {
 
         {feedback.message && (
           <div
-            className={`flex items-start gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+            className={`flex items-start gap-3 rounded-xl px-4 py-3 text-sm font-bold ${
               feedback.type === 'error'
                 ? 'bg-red-50 text-red-700 border border-red-100'
                 : 'bg-emerald-50 text-emerald-700 border border-emerald-100'
@@ -181,7 +181,7 @@ export default function PropertyLeadForm({ property }) {
 
         <button
           disabled={isSubmitting}
-          className="w-full bg-primary text-white py-3.5 sm:py-4 rounded-full font-bold text-sm sm:text-base shadow-lg hover:shadow-primary/20 transition-all active:scale-95 mt-4 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full bg-primary text-white py-3.5 sm:py-4 rounded-full font-black text-sm sm:text-base shadow-lg hover:shadow-primary/20 transition-all active:scale-95 mt-4 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isSubmitting && (
             <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -209,7 +209,7 @@ export default function PropertyLeadForm({ property }) {
       </div>
 
       <div className="mt-5 pt-5 border-t border-slate-200 text-center">
-        <p className="text-[11px] text-slate-400 flex items-center justify-center gap-1 font-semibold">
+        <p className="text-[11px] text-slate-400 flex items-center justify-center gap-1 font-bold">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           Your data is secure and confidential
         </p>

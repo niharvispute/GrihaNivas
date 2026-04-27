@@ -17,7 +17,7 @@ const BlogHero = ({ post }) => {
           className="object-cover"
           src={post.image || 'https://images.unsplash.com/photo-1600607687940-47a04f92bb1f?auto=format&fit=crop&q=80&w=1200'}
         />
-        <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-12 sm:pt-16 lg:pt-20">
@@ -28,7 +28,7 @@ const BlogHero = ({ post }) => {
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tighter mb-6 sm:mb-8 lg:mb-10 drop-shadow-2xl">
             {post.title}
           </h1>
-          <div className="text-white/80 font-medium">
+          <div className="text-white/80 font-bold">
             <p className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-60">
               {post.date} • {post.readTime}
             </p>

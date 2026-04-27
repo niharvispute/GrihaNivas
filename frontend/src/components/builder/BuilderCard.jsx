@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const BuilderCard = ({ builder }) => {
   return (
-    <div className="group bg-white rounded-[1.5rem] border border-zinc-200 overflow-hidden hover:shadow-2xl hover:border-primary/20 transition-all duration-300 flex flex-col h-full">
+    <div className="group bg-white rounded-2xl border border-zinc-200 overflow-hidden hover:shadow-2xl hover:border-primary/20 transition-all duration-300 flex flex-col h-full">
       <div className="relative h-48 overflow-hidden bg-zinc-100">
         <Image
           fill
@@ -37,7 +37,7 @@ const BuilderCard = ({ builder }) => {
         <h3 className="font-headline text-xl font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors tracking-tight">
           {builder.name}
         </h3>
-        <p className="text-slate-500 text-sm line-clamp-2 mb-6 font-medium leading-relaxed">
+        <p className="text-slate-500 text-sm line-clamp-2 mb-6 font-bold leading-relaxed">
           {builder.description}
         </p>
         <div className="mt-auto pt-4 border-t border-zinc-50 flex items-center justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">

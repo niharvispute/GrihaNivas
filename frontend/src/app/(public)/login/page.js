@@ -307,7 +307,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-[calc(100vh-10rem)] max-w-5xl mx-auto px-6 lg:px-8 py-14">
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-        <div className="bg-linear-to-br from-slate-50 via-white to-slate-100 border border-slate-100 rounded-4xl p-8 md:p-10">
+        <div className="bg-gradient-to-br from-slate-50 via-white to-slate-100 border border-slate-100 rounded-2xl p-8 md:p-10">
           <p className="text-[11px] font-black tracking-[0.22em] uppercase text-primary mb-4">Secure Access</p>
           <h1 className="text-5xl font-black tracking-tighter text-slate-900 mb-5 leading-none">Account Access</h1>
           <p className="text-slate-600 leading-relaxed mb-8">
@@ -321,7 +321,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-4xl border border-slate-100 shadow-sm p-8 md:p-10">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 md:p-10">
           <div className="grid grid-cols-3 gap-2 bg-slate-100 p-1 rounded-xl mb-6">
             <button
               type="button"
@@ -361,7 +361,7 @@ export default function LoginPage() {
                   value={loginIdentifier}
                   onChange={(event) => setLoginIdentifier(event.target.value)}
                   placeholder="you@example.com or +91XXXXXXXXXX"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-medium"
                   required
                 />
               </div>
@@ -373,7 +373,7 @@ export default function LoginPage() {
                   value={loginPassword}
                   onChange={(event) => setLoginPassword(event.target.value)}
                   placeholder="Enter password"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-medium"
                   required
                 />
               </div>
@@ -397,7 +397,7 @@ export default function LoginPage() {
                   value={signupName}
                   onChange={(event) => setSignupName(event.target.value)}
                   placeholder="Your full name"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-medium"
                   required
                 />
               </div>
@@ -409,7 +409,7 @@ export default function LoginPage() {
                   value={signupEmail}
                   onChange={(event) => setSignupEmail(event.target.value)}
                   placeholder="you@example.com"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-medium"
                   required
                 />
               </div>
@@ -425,7 +425,7 @@ export default function LoginPage() {
                     value={signupPhone}
                     onChange={(event) => setSignupPhone(normalizeIndianPhoneInput(event.target.value))}
                     placeholder="9876543210"
-                    className="w-full bg-transparent py-4 outline-none text-sm font-semibold text-slate-700"
+                    className="w-full bg-transparent py-4 outline-none text-sm font-medium text-slate-700"
                     required
                   />
                 </div>
@@ -438,7 +438,7 @@ export default function LoginPage() {
                   value={signupPassword}
                   onChange={(event) => setSignupPassword(event.target.value)}
                   placeholder="Min 8 chars with upper, lower, number"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-medium"
                   required
                 />
               </div>
@@ -455,7 +455,7 @@ export default function LoginPage() {
 
           {mode === 'signup' && signupStep === 'otp' && (
             <form className="space-y-5" onSubmit={handleSignupVerify}>
-              <div className="text-xs font-semibold text-slate-500 bg-slate-50 rounded-xl p-3">
+              <div className="text-xs font-bold text-slate-500 bg-slate-50 rounded-xl p-3">
                 OTP sent to {signupEmail.trim().toLowerCase()}
               </div>
 
@@ -468,7 +468,7 @@ export default function LoginPage() {
                   value={signupOtp}
                   onChange={(event) => setSignupOtp(event.target.value.replace(/\D/g, ''))}
                   placeholder="Enter OTP"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-medium"
                   required
                 />
               </div>
@@ -514,7 +514,7 @@ export default function LoginPage() {
                   value={forgotIdentifier}
                   onChange={(event) => setForgotIdentifier(event.target.value)}
                   placeholder="you@example.com or +91XXXXXXXXXX"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-medium"
                   required
                 />
               </div>
@@ -531,7 +531,7 @@ export default function LoginPage() {
 
           {mode === 'forgot' && forgotStep === 'otp' && (
             <form className="space-y-5" onSubmit={handleForgotVerify}>
-              <div className="text-xs font-semibold text-slate-500 bg-slate-50 rounded-xl p-3">
+              <div className="text-xs font-bold text-slate-500 bg-slate-50 rounded-xl p-3">
                 Enter the OTP sent to your registered email.
               </div>
 
@@ -544,7 +544,7 @@ export default function LoginPage() {
                   value={forgotOtp}
                   onChange={(event) => setForgotOtp(event.target.value.replace(/\D/g, ''))}
                   placeholder="Enter OTP"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-medium"
                   required
                 />
               </div>
@@ -568,7 +568,7 @@ export default function LoginPage() {
                   value={forgotPassword}
                   onChange={(event) => setForgotPassword(event.target.value)}
                   placeholder="Min 8 chars with upper, lower, number"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-medium"
                   required
                 />
               </div>
@@ -580,7 +580,7 @@ export default function LoginPage() {
                   value={forgotConfirmPassword}
                   onChange={(event) => setForgotConfirmPassword(event.target.value)}
                   placeholder="Re-enter new password"
-                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-semibold"
+                  className="w-full bg-slate-50 rounded-xl px-4 py-4 outline-none border border-transparent focus:border-primary/30 text-sm font-medium"
                   required
                 />
               </div>
@@ -596,7 +596,7 @@ export default function LoginPage() {
           )}
 
           {feedback.message && (
-            <p className={`mt-5 text-sm font-medium ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
+            <p className={`mt-5 text-sm font-bold ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
               {feedback.message}
             </p>
           )}

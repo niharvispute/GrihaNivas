@@ -17,7 +17,7 @@ export default function FeaturedGuideCard() {
         <h4 className="text-white font-heading text-lg font-black leading-tight mb-3 group-hover:text-primary transition-colors">
           5 Tips for Investing in Mumbai Real Estate 2024
         </h4>
-        <button className="w-full py-3 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-white hover:text-slate-900 transition-all active:scale-[0.98]">
+        <button className="w-full py-3 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-white hover:text-slate-900 transition-all active:scale-[0.98]">
           Read Article
         </button>
       </div>

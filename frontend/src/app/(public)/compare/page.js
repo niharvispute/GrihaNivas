@@ -58,15 +58,17 @@ export default function ComparePage() {
             <h1 className="text-2xl md:text-5xl font-black tracking-tighter text-slate-900 mb-1">
               Compare Properties
             </h1>
-            <p className="text-slate-500 font-medium text-xs md:text-lg">
+            <p className="text-slate-500 font-bold text-xs md:text-lg">
               Side-by-side analysis of your top picks
             </p>
           </div>
         </div>
 
         {loading ? (
-          <div className="py-20 text-center">
-            <p className="text-slate-500 font-medium">Loading your comparison list...</p>
+          <div className="py-20 flex flex-col items-center justify-center rounded-2xl border border-slate-100 bg-slate-50/50">
+            <div className="space-y-3 animate-pulse w-full max-w-md">
+              {[1, 2, 3].map((i) => <div key={i} className="h-12 bg-slate-100 rounded-2xl" />)}
+            </div>
           </div>
         ) : comparedProperties.length > 0 ? (
           <div className="overflow-x-auto -mx-4 px-4 pb-8 no-scrollbar md:overflow-visible">
@@ -81,12 +83,12 @@ export default function ComparePage() {
             </div>
           </div>
         ) : (
-          <div className="py-20 md:py-32 text-center bg-slate-50 rounded-[2rem] md:rounded-[3rem] border-2 border-dashed border-slate-200">
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl md:rounded-3xl shadow-xl flex items-center justify-center text-slate-300 mx-auto mb-6 md:mb-8">
+          <div className="py-20 md:py-32 text-center bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+            <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center text-slate-300 mx-auto mb-6 md:mb-8">
               <span className="material-symbols-outlined text-3xl md:text-4xl">compare_arrows</span>
             </div>
             <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-2 md:mb-4">No Properties Selected</h2>
-            <p className="text-slate-500 font-medium mb-8 md:mb-12 max-w-xs mx-auto text-sm md:text-base">
+            <p className="text-slate-500 font-bold mb-8 md:mb-12 max-w-xs mx-auto text-sm md:text-base">
               Add properties from the listings page to start a detailed side-by-side comparison.
             </p>
             <Link 
@@ -100,7 +102,7 @@ export default function ComparePage() {
 
         {/* Comparison Insight Section */}
         {comparedProperties.length > 0 && (
-          <section className="mt-16 md:mt-32 p-8 md:p-12 bg-slate-900 rounded-[2rem] md:rounded-[3rem] text-white relative overflow-hidden">
+          <section className="mt-16 md:mt-32 p-8 md:p-12 bg-slate-900 rounded-2xl text-white relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 md:w-100 md:h-100 bg-primary/10 blur-[60px] md:blur-[100px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
               <div>
@@ -108,7 +110,7 @@ export default function ComparePage() {
                 <h2 className="text-2xl md:text-4xl font-black tracking-tighter leading-tight mb-6 md:mb-8">
                   Confused between <br className="hidden md:block"/>your top choices?
                 </h2>
-                <p className="text-slate-400 text-sm md:text-lg font-medium leading-relaxed mb-8 md:mb-10">
+                <p className="text-slate-400 text-sm md:text-lg font-bold leading-relaxed mb-8 md:mb-10">
                   Our area experts can provide a personalized feasibility report comparing appreciation potential and more.
                 </p>
                 <button className="w-full md:w-auto px-8 py-4 md:px-10 md:py-5 bg-primary text-white rounded-full font-black text-[10px] md:text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-2xl shadow-primary/40 leading-none">
@@ -116,15 +118,15 @@ export default function ComparePage() {
                 </button>
               </div>
               <div className="grid grid-cols-2 gap-4 md:gap-6">
-                <div className="p-6 md:p-8 bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl backdrop-blur-sm text-center md:text-left">
+                <div className="p-6 md:p-8 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm text-center md:text-left">
                   <h4 className="font-black text-primary text-xl md:text-2xl mb-1 md:mb-2">98%</h4>
                   <p className="text-[8px] md:text-xs font-bold uppercase tracking-widest text-slate-500">Data Accuracy</p>
                 </div>
-                <div className="p-6 md:p-8 bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl backdrop-blur-sm text-center md:text-left">
+                <div className="p-6 md:p-8 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm text-center md:text-left">
                   <h4 className="font-black text-white text-xl md:text-2xl mb-1 md:mb-2">Verified</h4>
                   <p className="text-[8px] md:text-xs font-bold uppercase tracking-widest text-slate-500">RERA Compliance</p>
                 </div>
-                <div className="p-6 md:p-8 bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl backdrop-blur-sm col-span-2">
+                <div className="p-6 md:p-8 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm col-span-2">
                   <p className="text-slate-300 text-xs md:text-base font-medium ">&ldquo;The side-by-side comparison saved us weeks of site visits.&rdquo;</p>
                   <p className="mt-3 md:mt-4 text-[8px] md:text-xs font-black uppercase tracking-widest text-primary">— Mumbai Resident</p>
                 </div>

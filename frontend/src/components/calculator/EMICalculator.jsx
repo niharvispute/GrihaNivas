@@ -115,7 +115,7 @@ const EMICalculator = () => {
         <h1 className="text-2xl md:text-5xl font-black tracking-tighter text-slate-900 mb-2 md:mb-4">
           EMI Calculator
         </h1>
-        <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto font-medium px-4">
+        <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto font-bold px-4">
           Plan your home ownership journey with precision. 
           Calculate monthly payments and view your interest breakdown instantly.
         </p>
@@ -238,7 +238,7 @@ const EMICalculator = () => {
                 <div className="flex justify-between items-center pb-3 md:pb-4 border-b border-slate-100">
                   <div className="flex items-center gap-2 md:gap-3">
                     <div className="w-2.5 h-2.5 rounded-full bg-primary"></div>
-                    <span className="text-slate-500 text-xs md:text-sm font-medium">Principal Amount</span>
+                    <span className="text-slate-500 text-xs md:text-sm font-bold">Principal Amount</span>
                   </div>
                   <span className="text-slate-900 font-bold text-sm md:text-base">{formatCurrency(loanAmount)}</span>
                 </div>
@@ -246,7 +246,7 @@ const EMICalculator = () => {
                 <div className="flex justify-between items-center pb-3 md:pb-4 border-b border-slate-100">
                   <div className="flex items-center gap-2 md:gap-3">
                     <div className="w-2.5 h-2.5 rounded-full bg-secondary"></div>
-                    <span className="text-slate-500 text-xs md:text-sm font-medium">Total Interest</span>
+                    <span className="text-slate-500 text-xs md:text-sm font-bold">Total Interest</span>
                   </div>
                   <span className="text-slate-900 font-bold text-sm md:text-base">{formatCurrency(results.totalInterest)}</span>
                 </div>
@@ -327,7 +327,7 @@ const EMICalculator = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 md:mb-8 gap-4">
           <div>
             <h3 className="text-xl md:text-2xl font-black tracking-tight text-slate-900">Amortization Schedule</h3>
-            <p className="text-slate-500 text-[10px] md:text-sm mt-0.5 md:mt-1 font-medium ">Yearly breakdown of your loan repayment journey.</p>
+            <p className="text-slate-500 text-[10px] md:text-sm mt-0.5 md:mt-1 font-bold">Yearly breakdown of your loan repayment journey.</p>
           </div>
           <button className="text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:translate-x-1 transition-transform bg-primary/5 px-4 py-2 rounded-full leading-none">
             Download Report 
@@ -335,7 +335,7 @@ const EMICalculator = () => {
           </button>
         </div>
 
-        <div className="overflow-x-auto rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm no-scrollbar">
+        <div className="overflow-x-auto rounded-2xl border border-slate-100 shadow-sm no-scrollbar">
           <table className="w-full text-left border-collapse bg-white">
             <thead>
               <tr className="bg-slate-50">
@@ -350,8 +350,8 @@ const EMICalculator = () => {
               {schedule.map((row) => (
                 <tr key={row.year} className="hover:bg-slate-50/50 transition-colors group">
                   <td className="px-4 md:px-8 py-3 md:py-5 font-black text-slate-900 text-xs md:text-base">{row.year}</td>
-                  <td className="px-4 md:px-8 py-3 md:py-5 text-slate-500 font-medium text-[10px] md:text-sm whitespace-nowrap">{formatCurrency(row.principal)}</td>
-                  <td className="px-4 md:px-8 py-3 md:py-5 text-slate-500 font-medium text-[10px] md:text-sm whitespace-nowrap">{formatCurrency(row.interest)}</td>
+                  <td className="px-4 md:px-8 py-3 md:py-5 text-slate-500 font-bold text-[10px] md:text-sm whitespace-nowrap">{formatCurrency(row.principal)}</td>
+                  <td className="px-4 md:px-8 py-3 md:py-5 text-slate-500 font-bold text-[10px] md:text-sm whitespace-nowrap">{formatCurrency(row.interest)}</td>
                   <td className="px-4 md:px-8 py-3 md:py-5 text-slate-900 font-bold text-[10px] md:text-sm whitespace-nowrap">{formatCurrency(row.totalPayment)}</td>
                   <td className="px-4 md:px-8 py-3 md:py-5 text-right font-black text-primary group-hover:scale-105 transition-transform origin-right text-[10px] md:text-sm whitespace-nowrap">
                     {formatCurrency(row.balance)}
@@ -364,13 +364,13 @@ const EMICalculator = () => {
       </section>
 
       {/* 5. CTA Section */}
-      <section className="mt-12 md:mt-24 bg-slate-900 rounded-4xl md:rounded-[3rem] p-8 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
+      <section className="mt-12 md:mt-24 bg-slate-900 rounded-2xl p-8 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
         <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-primary/20 blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2 rounded-full"></div>
         <div className="absolute bottom-0 left-0 w-48 md:w-64 h-48 md:h-64 bg-secondary/10 blur-[50px] md:blur-[80px] translate-y-1/2 -translate-x-1/2 rounded-full"></div>
         
         <div className="relative z-10 max-w-3xl mx-auto">
           <h2 className="text-2xl md:text-5xl font-black tracking-tighter mb-4 md:mb-6">Ready to Lock in Your Rate?</h2>
-          <p className="text-slate-400 text-sm md:text-lg mb-8 md:mb-12 font-medium">
+          <p className="text-slate-400 text-sm md:text-lg mb-8 md:mb-12 font-bold">
             Get exclusive pre-approved home loan offers from our banking partners 
             at competitive rates specifically for Mumbai's premium properties.
           </p>

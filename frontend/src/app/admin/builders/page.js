@@ -168,7 +168,7 @@ export default function AdminBuildersPage() {
         </div>
       </div>
 
-      <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
         <div className="flex-1 min-w-55">
           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">
             Search
@@ -224,7 +224,7 @@ export default function AdminBuildersPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 min-h-[calc(100vh-22rem)] flex flex-col">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-50 min-h-[calc(100vh-22rem)] flex flex-col">
         {loading ? (
           <div className="p-10 space-y-4 animate-pulse flex-1">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -258,9 +258,9 @@ export default function AdminBuildersPage() {
                   return (
                     <tr
                       key={builder._id}
-                      className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl"
+                      className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-2xl"
                     >
-                      <td className="px-6 py-5 rounded-l-3xl">
+                      <td className="px-6 py-5 rounded-l-2xl">
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center shrink-0">
                             {builder.logo?.url ? (
@@ -329,7 +329,7 @@ export default function AdminBuildersPage() {
                         </span>
                       </td>
 
-                      <td className="px-6 py-5 text-right rounded-r-3xl">
+                      <td className="px-6 py-5 text-right rounded-r-2xl">
                         <div className="flex justify-end">
                           <div className="relative">
                             <button

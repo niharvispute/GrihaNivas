@@ -31,9 +31,9 @@ export default function MyListingsPage() {
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto space-y-8 animate-pulse">
-        <div className="h-16 bg-slate-100 rounded-3xl" />
+        <div className="h-16 bg-slate-100 rounded-2xl" />
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-64 bg-slate-100 rounded-[2rem]" />
+          <div key={i} className="h-64 bg-slate-100 rounded-2xl" />
         ))}
       </div>
     );
@@ -71,7 +71,7 @@ export default function MyListingsPage() {
             />
           ))
         ) : (
-          <div className="py-24 text-center bg-white rounded-[3rem] border border-dashed border-slate-200">
+          <div className="py-24 text-center bg-white rounded-2xl border border-dashed border-slate-200">
             <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="material-symbols-outlined text-4xl text-slate-300">home_work</span>
             </div>

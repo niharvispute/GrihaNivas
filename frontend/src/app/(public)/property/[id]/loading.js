@@ -2,7 +2,7 @@ export default function PropertyDetailLoading() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 lg:px-8 animate-pulse">
       {/* Gallery skeleton */}
-      <div className="w-full h-[480px] bg-slate-100 rounded-[2.5rem] mb-12" />
+      <div className="w-full h-[480px] bg-slate-100 rounded-2xl mb-12" />
 
       <div className="flex flex-col lg:flex-row gap-12">
         {/* Main content */}
@@ -27,8 +27,8 @@ export default function PropertyDetailLoading() {
         </div>
         {/* Sticky sidebar */}
         <div className="w-full lg:w-80 space-y-4">
-          <div className="h-64 bg-slate-100 rounded-[2rem]" />
-          <div className="h-48 bg-slate-100 rounded-[2rem]" />
+          <div className="h-64 bg-slate-100 rounded-2xl" />
+          <div className="h-48 bg-slate-100 rounded-2xl" />
         </div>
       </div>
     </div>

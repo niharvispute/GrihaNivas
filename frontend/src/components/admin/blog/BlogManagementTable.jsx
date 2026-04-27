@@ -5,11 +5,11 @@ import Image from 'next/image';
 
 const BlogManagementTable = ({ blogs, onEdit, onDelete, onAddNew }) => {
   return (
-    <div className="bg-white rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden mb-12 transition-all">
+    <div className="bg-white rounded-2xl shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden mb-12 transition-all">
       <div className="p-10 border-b border-slate-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-slate-50/30">
         <div>
           <h3 className="font-black text-2xl text-slate-900 tracking-tighter">Editorial Desk</h3>
-          <p className="text-slate-500 text-sm font-medium mt-1">Manage and publish content for your audience</p>
+          <p className="text-slate-500 text-sm font-bold mt-1">Manage and publish content for your audience</p>
         </div>
         <div className="flex gap-4">
           <button className="px-6 py-3 text-xs font-black uppercase tracking-widest rounded-2xl bg-white border border-slate-100 text-slate-500 hover:bg-slate-50 transition-all shadow-sm">

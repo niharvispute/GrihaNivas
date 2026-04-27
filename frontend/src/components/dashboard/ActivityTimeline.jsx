@@ -46,8 +46,9 @@ export default function ActivityTimeline() {
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
       <div className="p-5 border-b border-slate-50 flex justify-between items-center">
         <h2 className="text-base font-heading font-black text-slate-900">Account Overview</h2>
-        <Link href="/account/enquiries" className="text-primary text-[10px] font-bold uppercase tracking-widest hover:underline">
+        <Link href="/account/enquiries" className="text-primary text-[10px] font-black uppercase tracking-widest hover:translate-x-1 transition-transform flex items-center gap-1">
           View Enquiries
+          <span className="material-symbols-outlined text-sm">arrow_forward</span>
         </Link>
       </div>
       <div className="divide-y divide-slate-50">
@@ -63,7 +64,7 @@ export default function ActivityTimeline() {
             </div>
             <div className="flex-1">
               <p className="font-heading font-bold text-slate-900 text-sm mb-0.5">{item.title}</p>
-              <span className="text-[11px] text-slate-400 font-medium">{item.meta}</span>
+              <span className="text-[11px] text-slate-400 font-bold">{item.meta}</span>
             </div>
           </Link>
         ))}

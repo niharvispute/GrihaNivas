@@ -22,19 +22,19 @@ export default function DashboardHeader() {
   const initials = getInitials(displayName);
 
   return (
-    <header className="flex justify-between items-center h-16 sm:h-20 px-4 sm:px-6 md:px-8 sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-100 shadow-sm">
+    <header className="flex justify-between items-center h-16 sm:h-20 px-4 sm:px-6 md:px-8 sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm">
       {/* Hamburger + Back to Home - Mobile */}
       <div className="md:hidden flex items-center gap-2">
         <button
           onClick={() => setIsMobileOpen(true)}
-          className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+          className="p-2 rounded-xl hover:bg-slate-100 transition-colors"
           title="Open Navigation"
         >
           <span className="material-symbols-outlined text-2xl text-slate-900">menu</span>
         </button>
         <Link
           href="/"
-          className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-primary transition-colors px-2 py-1.5 rounded-lg hover:bg-slate-100"
+          className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-primary transition-colors px-2 py-1.5 rounded-xl hover:bg-slate-100"
         >
           <span className="material-symbols-outlined text-base">home</span>
           <span className="hidden sm:inline">Home</span>
@@ -59,7 +59,7 @@ export default function DashboardHeader() {
             <p className="text-sm font-bold text-slate-900 leading-none">{displayName}</p>
             <p className="text-[10px] font-bold text-primary uppercase tracking-tighter mt-1">Active Now</p>
           </div>
-          <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-primary/10 hover:border-primary transition-colors cursor-pointer bg-linear-to-br from-primary/10 via-white to-tertiary/60 flex items-center justify-center text-primary font-black text-xs flex-none">
+          <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-primary/10 hover:border-primary transition-colors cursor-pointer bg-gradient-to-br from-primary/10 via-white to-tertiary/60 flex items-center justify-center text-primary font-black text-xs flex-none">
             {avatarSrc ? (
               <Image
                 src={avatarSrc}

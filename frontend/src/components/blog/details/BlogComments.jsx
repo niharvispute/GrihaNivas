@@ -87,19 +87,19 @@ const BlogComments = ({ blogId, comments = [] }) => {
                     <span className="font-black text-slate-900 tracking-tight text-base sm:text-lg">{comment.name}</span>
                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">{comment.date}</span>
                   </div>
-                  <p className="text-slate-500 leading-relaxed font-medium text-sm sm:text-base lg:text-lg max-w-3xl">
+                  <p className="text-slate-500 leading-relaxed font-bold text-sm sm:text-base lg:text-lg max-w-3xl">
                     {comment.body}
                   </p>
                 </div>
               </div>
             )) : (
-              <p className="text-base font-semibold text-slate-400">
+              <p className="text-base font-bold text-slate-400">
                 No approved discussions yet. Be the first to share your perspective.
               </p>
             )}
           </div>
 
-          <div className="bg-slate-50 p-6 sm:p-8 lg:p-12 rounded-5xl border border-slate-100 shadow-2xl shadow-slate-200/50">
+          <div className="bg-slate-50 p-6 sm:p-8 lg:p-12 rounded-2xl border border-slate-100 shadow-2xl shadow-slate-200/50">
             <h4 className="text-xl sm:text-2xl font-black text-slate-900 mb-6 sm:mb-8 lg:mb-10 tracking-tighter flex items-center gap-3">
               <span className="material-symbols-outlined text-primary font-black">add_comment</span>
               Join the Dialogue
@@ -107,8 +107,8 @@ const BlogComments = ({ blogId, comments = [] }) => {
             <form className="space-y-6 sm:space-y-8" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 px-1">Share your perspective</label>
-                <textarea 
-                  className="w-full bg-white border-none rounded-4xl p-5 sm:p-6 lg:p-8 focus:ring-2 focus:ring-primary/20 text-sm sm:text-base lg:text-lg font-medium shadow-sm min-h-32 sm:min-h-40 placeholder:text-slate-200" 
+                <textarea
+                  className="w-full bg-white border-none rounded-2xl p-5 sm:p-6 lg:p-8 focus:ring-2 focus:ring-primary/20 text-sm sm:text-base lg:text-lg font-medium shadow-sm min-h-32 sm:min-h-40 placeholder:text-slate-200"
                   placeholder="What are your thoughts on this market outlook?" 
                   rows="4"
                   value={form.comment}

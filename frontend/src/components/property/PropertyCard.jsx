@@ -106,13 +106,13 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
           <div className="flex gap-2 mt-2">
             <Link
               href={detailHref}
-              className="flex-1 bg-primary text-white py-2.5 rounded-lg font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-primary/90 hover:shadow-md hover:shadow-primary/30 transition-all text-center"
+              className="flex-1 bg-primary text-white py-2.5 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 transition-all text-center"
             >
               Inquire Now
             </Link>
             <Link
               href={`${detailHref}#lead-form`}
-              className="flex-1 border border-primary text-primary py-2.5 rounded-lg font-semibold text-xs sm:text-sm hover:bg-primary/5 transition-all text-center"
+              className="flex-1 border border-primary text-primary py-2.5 rounded-xl font-bold text-xs sm:text-sm hover:bg-primary/5 transition-all text-center"
             >
               Schedule Tour
             </Link>
@@ -121,7 +121,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
           <div className="flex flex-col gap-2 mt-auto">
             <Link
               href={detailHref}
-              className="w-full h-9 sm:h-10 flex items-center justify-center bg-gradient-to-r from-primary to-primary/85 text-white rounded-lg font-black text-[10px] sm:text-xs uppercase tracking-tighter hover:shadow-lg hover:shadow-primary/40 transition-all"
+              className="w-full h-9 sm:h-10 flex items-center justify-center bg-primary hover:bg-primary/90 text-white rounded-xl font-black text-[10px] sm:text-xs uppercase tracking-tighter hover:shadow-lg hover:shadow-primary/30 transition-all"
             >
               View Property
             </Link>

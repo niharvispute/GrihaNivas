@@ -635,11 +635,11 @@ export default function MultiStageListingForm() {
                 </div>
                 
                 <div
-                  className="border-4 border-dashed border-slate-100 rounded-[2rem] md:rounded-[3rem] p-10 md:p-20 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white"
+                  className="border-4 border-dashed border-slate-100 rounded-2xl p-10 md:p-20 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white"
                   onClick={() => document.getElementById('images-upload').click()}
                 >
                   <input id="images-upload" type="file" className="hidden" accept="image/*" multiple onChange={handleImagesSelected} />
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-50 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
                     <span className="material-symbols-outlined text-3xl md:text-4xl text-slate-300 group-hover:text-primary transition-colors">cloud_upload</span>
                   </div>
                   <h3 className="text-lg md:text-xl font-black text-slate-900  tracking-tight">Upload Gallery</h3>
@@ -672,7 +672,7 @@ export default function MultiStageListingForm() {
 
                 <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Property Video (Optional)</label>
-                  <div className="border-4 border-dashed border-slate-100 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white" onClick={() => document.getElementById('video-upload').click()}>
+                  <div className="border-4 border-dashed border-slate-100 rounded-2xl p-8 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white" onClick={() => document.getElementById('video-upload').click()}>
                     <input id="video-upload" type="file" className="hidden" accept="video/*" onChange={(e) => handleToggle('videoFile', e.target.files[0])} />
                     <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
                       <span className="material-symbols-outlined text-2xl text-slate-300 group-hover:text-primary transition-colors">videocam</span>
@@ -683,7 +683,7 @@ export default function MultiStageListingForm() {
 
                 <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Floor Plans (Optional)</label>
-                  <div className="border-4 border-dashed border-slate-100 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white" onClick={() => document.getElementById('floor-plans-upload').click()}>
+                  <div className="border-4 border-dashed border-slate-100 rounded-2xl p-8 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white" onClick={() => document.getElementById('floor-plans-upload').click()}>
                     <input id="floor-plans-upload" type="file" className="hidden" accept="image/*,application/pdf" multiple onChange={handleFloorPlansSelected} />
                     <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
                       <span className="material-symbols-outlined text-2xl text-slate-300 group-hover:text-primary transition-colors">grid_view</span>
@@ -705,7 +705,7 @@ export default function MultiStageListingForm() {
 
                 <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Brochure (Optional)</label>
-                  <div className="border-4 border-dashed border-slate-100 rounded-[2rem] p-8 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white" onClick={() => document.getElementById('brochure-upload').click()}>
+                  <div className="border-4 border-dashed border-slate-100 rounded-2xl p-8 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white" onClick={() => document.getElementById('brochure-upload').click()}>
                     <input id="brochure-upload" type="file" className="hidden" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={handleBrochureSelected} />
                     <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
                       <span className="material-symbols-outlined text-2xl text-slate-300 group-hover:text-primary transition-colors">description</span>
@@ -730,7 +730,7 @@ export default function MultiStageListingForm() {
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Expected Price (₹)</label>
                     <div className="relative group max-w-md">
                         <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-2xl text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
-                        <input className="w-full bg-white border-2 border-slate-50 rounded-3xl md:rounded-4xl p-6 md:p-8 pl-12 md:pl-14 font-black text-2xl md:text-4xl tracking-tighter placeholder:text-slate-100 focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.price} onChange={handleChange('price')} />
+                        <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-6 md:p-8 pl-12 md:pl-14 font-black text-2xl md:text-4xl tracking-tighter placeholder:text-slate-100 focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.price} onChange={handleChange('price')} />
                     </div>
                   </div>
                 ) : (
@@ -805,7 +805,7 @@ export default function MultiStageListingForm() {
                 </div>
 
                 <div className="space-y-8">
-                    <div className="bg-slate-50/50 rounded-[2rem] p-6 md:p-10 border border-slate-100 space-y-6 md:space-y-8 shadow-sm">
+                    <div className="bg-slate-50/50 rounded-2xl p-6 md:p-10 border border-slate-100 space-y-6 md:space-y-8 shadow-sm">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-12">
                           <div className="space-y-1">
                               <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest">Listing Info</p>
@@ -961,7 +961,7 @@ export default function MultiStageListingForm() {
     {isSuccessModalOpen && (
       <div className="fixed inset-0 z-[210] flex items-center justify-center p-4">
         <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-500" onClick={() => router.push('/')} />
-        <div className="relative bg-white w-full max-w-lg rounded-[2.5rem] p-8 md:p-12 text-center shadow-2xl animate-in zoom-in-95 fade-in duration-500 border border-slate-100">
+        <div className="relative bg-white w-full max-w-lg rounded-2xl p-8 md:p-12 text-center shadow-2xl animate-in zoom-in-95 fade-in duration-500 border border-slate-100">
           <div className="mb-8 relative inline-block">
             <div className="w-24 h-24 rounded-full bg-emerald-500/10 flex items-center justify-center animate-bounce duration-1000">
               <span className="material-symbols-outlined text-5xl text-emerald-500" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>

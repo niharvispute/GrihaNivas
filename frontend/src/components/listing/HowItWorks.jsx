@@ -21,7 +21,7 @@ export default function HowItWorks() {
                 {step.number}
               </div>
               <h4 className="font-heading font-bold mb-2 text-slate-800 text-lg">{step.title}</h4>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed">{step.description}</p>
+              <p className="text-sm text-slate-500 font-bold leading-relaxed">{step.description}</p>
             </div>
           ))}
         </div>

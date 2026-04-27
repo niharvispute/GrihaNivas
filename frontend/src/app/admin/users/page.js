@@ -94,7 +94,7 @@ export default function UserManagementPage() {
       </div>
 
       {/* Search */}
-      <div className="bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-50 flex gap-4 items-end">
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-50 flex gap-4 items-end">
         <div className="flex-1">
           <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Search</label>
           <div className="relative">
@@ -110,7 +110,7 @@ export default function UserManagementPage() {
       </div>
 
       {/* Users Table */}
-      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-50 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-50 overflow-hidden">
         {loading ? (
           <div className="p-10 space-y-4 animate-pulse">
             {[1, 2, 3, 4, 5].map((i) => <div key={i} className="h-16 bg-slate-100 rounded-2xl" />)}
@@ -135,7 +135,7 @@ export default function UserManagementPage() {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user.id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-3xl">
+                  <tr key={user.id} className="bg-slate-50/50 hover:bg-white hover:shadow-xl transition-all group rounded-2xl">
                     <td className="px-6 py-5 rounded-l-3xl">
                       <div className="flex items-center gap-4">
                         <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-black text-xs shrink-0">
@@ -143,7 +143,7 @@ export default function UserManagementPage() {
                         </div>
                         <div>
                           <p className="text-sm font-black text-slate-900">{user.name}</p>
-                          <p className="text-[10px] text-slate-400 font-medium">{user.email || '—'}</p>
+                          <p className="text-[10px] text-slate-400 font-bold">{user.email || '—'}</p>
                         </div>
                       </div>
                     </td>
@@ -220,7 +220,7 @@ export default function UserManagementPage() {
 
       {(loadingUserDetail || viewingUser) && (
         <div className="fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-3xl bg-white rounded-4xl border border-slate-100 shadow-2xl overflow-hidden">
+          <div className="w-full max-w-3xl bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden">
             <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
               <h3 className="text-2xl font-black text-slate-900 tracking-tight">User Details</h3>
               <button

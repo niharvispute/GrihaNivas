@@ -60,13 +60,13 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div className="order-2 md:order-1" data-aos="fade-right">
             <h2 className="text-5xl font-black text-slate-900 mb-10 tracking-tight leading-none">A Legacy of Excellence</h2>
-            <div className="space-y-8 text-slate-500 text-lg leading-relaxed font-medium">
+            <div className="space-y-8 text-slate-500 text-lg leading-relaxed font-bold">
               <p>Founded at the intersection of architecture and heritage, Bricks began as a specialized boutique focused exclusively on South Mumbai's historic mansions. We believed then, as we do now, that luxury is not just a price point—it's a narrative of space and craftsmanship.</p>
               <p>Over the last twelve years, we have evolved into a market leader, curating the city's most prestigious skyline silhouettes. Our journey is defined by a commitment to the "Editorial" standard: every listing is vetted for its architectural significance, lifestyle potential, and investment integrity.</p>
             </div>
           </div>
           <div className="order-1 md:order-2" data-aos="zoom-in">
-            <div className="bg-slate-100 p-4 rounded-[2rem] shadow-2xl rotate-3 scale-95 hover:rotate-0 hover:scale-100 transition-all duration-700 cursor-pointer">
+            <div className="bg-slate-100 p-4 rounded-2xl shadow-2xl rotate-3 scale-95 hover:rotate-0 hover:scale-100 transition-all duration-700 cursor-pointer">
               <img 
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhHSA19jfOT3ptyV811OR4A_pSGPe_ojr6buy8YNM_ms0_PgFXSYaeeDYSQbl1FBM7N8ac_7PXKwSg5QPO68zgVZW3hG_8s49cqaD6sho28D7Z0m6pT7zI_RreQf8GH1rOWO9bUurhTKma_hWZ8bUxd9hqqTbcJM121Y0NZhFF_UD9P7wyP191SqVCgzDYdy6_1tCVykz4qNt-D-vERgih0oUe77-WKyZul-aGX31pOVhvtPl75Fw6-mjsjlLiUr1cMHw9nxKbr-U" 
                 alt="Luxury Penthouse" 
@@ -80,19 +80,19 @@ export default function AboutPage() {
       {/* 🎯 Strategic Pillars */}
       <section className="py-24 bg-slate-50 px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="bg-white p-12 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all group">
+          <div className="bg-white p-12 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all group">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-8 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3h12l4 6-10 13L2 9l4-6z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
             </div>
             <h3 className="text-3xl font-black text-slate-900 mb-6 tracking-tight">Our Mission</h3>
-            <p className="text-slate-500 text-lg leading-relaxed font-medium">To curate the most exclusive living experiences by blending deep local market insights with a world-class standard of service and discretion.</p>
+            <p className="text-slate-500 text-lg leading-relaxed font-bold">To curate the most exclusive living experiences by blending deep local market insights with a world-class standard of service and discretion.</p>
           </div>
-          <div className="bg-white p-12 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all group">
+          <div className="bg-white p-12 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all group">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-8 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </div>
             <h3 className="text-3xl font-black text-slate-900 mb-6 tracking-tight">Our Vision</h3>
-            <p className="text-slate-500 text-lg leading-relaxed font-medium">To be the gold standard for luxury real estate in India, recognized for transforming property acquisition into an art form.</p>
+            <p className="text-slate-500 text-lg leading-relaxed font-bold">To be the gold standard for luxury real estate in India, recognized for transforming property acquisition into an art form.</p>
           </div>
         </div>
       </section>
@@ -103,11 +103,11 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
           {features.map((f, i) => (
             <div key={i} className="group flex flex-col items-center">
-              <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mb-8 text-primary rotate-3 group-hover:rotate-12 transition-all shadow-lg shadow-primary/5">
+              <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 text-primary rotate-3 group-hover:rotate-12 transition-all shadow-lg shadow-primary/5">
                 <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               </div>
               <h4 className="text-xl font-black text-slate-900 mb-4 tracking-tight">{f.title}</h4>
-              <p className="text-slate-500 text-sm font-medium leading-relaxed">{f.desc}</p>
+              <p className="text-slate-500 text-sm font-bold leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -137,7 +137,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
           {leadership.map((member, i) => (
             <div key={i} className="group text-center">
-              <div className="relative overflow-hidden rounded-[2.5rem] mb-8 aspect-square shadow-2xl">
+              <div className="relative overflow-hidden rounded-2xl mb-8 aspect-square shadow-2xl">
                 <img 
                   src={member.image} 
                   alt={member.name} 
@@ -165,7 +165,7 @@ export default function AboutPage() {
 
       {/* 🎟️ Call to Action */}
       <section className="py-32 px-8">
-        <div className="max-w-6xl mx-auto bg-slate-950 rounded-[4rem] p-16 md:p-32 text-center relative overflow-hidden shadow-2xl group">
+        <div className="max-w-6xl mx-auto bg-slate-950 rounded-2xl p-16 md:p-32 text-center relative overflow-hidden shadow-2xl group">
           <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-primary/20 rounded-full blur-[8rem] -mr-80 -mt-80 group-hover:opacity-40 transition-opacity"></div>
           <div className="relative z-10">
             <h2 className="text-white text-5xl md:text-7xl font-black mb-12 tracking-tighter">Ready to find your<br /> masterpiece?</h2>

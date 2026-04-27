@@ -7,7 +7,7 @@ export default function PropertyAbout({ description }) {
 
   return (
     <section>
-      <h2 className="text-2xl font-heading font-extrabold mb-6 text-slate-900">About the Property</h2>
+      <h2 className="text-2xl font-heading font-black mb-6 text-slate-900">About the Property</h2>
       <div className="prose prose-slate lg:prose-lg max-w-none text-slate-600 leading-relaxed font-sans">
         <p className={`whitespace-pre-line transition-all duration-300 ${!isExpanded ? 'line-clamp-3' : ''}`}>
           {description}

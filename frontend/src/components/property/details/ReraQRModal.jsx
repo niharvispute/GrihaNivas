@@ -25,7 +25,7 @@ export default function ReraQRModal({ isOpen, onClose, reraId, reraUrl, property
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="relative w-full max-w-lg h-[80dvh] max-h-[80dvh] bg-white rounded-3xl sm:rounded-[2.5rem] shadow-2xl shadow-black/20 overflow-hidden flex flex-col"
+          className="relative w-full max-w-lg h-[80dvh] max-h-[80dvh] bg-white rounded-2xl shadow-2xl shadow-black/20 overflow-hidden flex flex-col"
         >
           {/* Header */}
           <div className="bg-primary px-5 sm:px-8 py-5 sm:py-8 text-white relative">
@@ -45,7 +45,7 @@ export default function ReraQRModal({ isOpen, onClose, reraId, reraUrl, property
 
           {/* Body */}
           <div className="px-4 sm:px-8 py-4 sm:py-6 flex-1 overflow-y-auto flex flex-col items-center text-center">
-            <div className="p-3 sm:p-4 bg-slate-50 rounded-4xl border-4 border-slate-100 mb-5 sm:mb-6">
+            <div className="p-3 sm:p-4 bg-slate-50 rounded-2xl border-4 border-slate-100 mb-5 sm:mb-6">
               <div className="relative p-2 bg-white rounded-2xl shadow-inner border border-slate-200">
                 <Image
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(verificationData)}&color=b80049`}
@@ -86,7 +86,7 @@ export default function ReraQRModal({ isOpen, onClose, reraId, reraUrl, property
                 </a>
               ) : null}
 
-              <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed pt-3 border-t border-slate-100">
+              <p className="text-[11px] sm:text-xs text-slate-500 font-bold leading-relaxed pt-3 border-t border-slate-100">
                 This project is officially registered with the Maharashtra Real Estate Regulatory Authority. 
                 Scan the QR code to view the registration details and project timeline from the listing data.
               </p>

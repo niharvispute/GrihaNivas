@@ -141,10 +141,10 @@ export default function ListingForm() {
   return (
     <section className="py-24 bg-slate-50" id="submit-form">
       <div className="max-w-4xl mx-auto px-6 lg:px-8">
-        <div className="bg-white rounded-[2rem] p-8 md:p-16 shadow-2xl shadow-primary/5 border border-slate-100">
+        <div className="bg-white rounded-2xl p-8 md:p-16 shadow-2xl shadow-primary/5 border border-slate-100">
           <div className="mb-12">
             <h2 className="font-heading text-3xl font-extrabold tracking-tight mb-2 text-slate-900">Submit Property</h2>
-            <p className="text-slate-500 font-medium">Confidential and secure property assessment.</p>
+            <p className="text-slate-500 font-bold">Confidential and secure property assessment.</p>
           </div>
           
           <form className="space-y-10" onSubmit={handleSubmit}>
@@ -261,10 +261,10 @@ export default function ListingForm() {
             {/* Upload Area */}
             <div className="space-y-2">
               <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Property Images</label>
-              <div className="border-2 border-dashed border-slate-200 rounded-[1.5rem] p-12 text-center flex flex-col items-center group hover:border-primary/50 transition-all cursor-pointer bg-slate-50 hover:bg-white">
+              <div className="border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center flex flex-col items-center group hover:border-primary/50 transition-all cursor-pointer bg-slate-50 hover:bg-white">
                 <span className="material-symbols-outlined text-4xl text-slate-300 mb-4 group-hover:text-primary transition-all">cloud_upload</span>
                 <p className="font-heading font-bold text-slate-700">Drag and drop images</p>
-                <p className="text-sm text-slate-400 mt-1 font-medium">PNG, JPG up to 10MB each (Min. 5 images recommended)</p>
+                <p className="text-sm text-slate-400 mt-1 font-bold">PNG, JPG up to 10MB each (Min. 5 images recommended)</p>
                 <button className="mt-6 text-primary font-heading font-bold text-sm underline underline-offset-4 hover:text-primary/80" type="button">Browse Files</button>
               </div>
             </div>
@@ -274,7 +274,7 @@ export default function ListingForm() {
             </button>
 
             {feedback.message && (
-              <p className={`text-sm font-medium ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
+              <p className={`text-sm font-bold ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
                 {feedback.message}
               </p>
             )}

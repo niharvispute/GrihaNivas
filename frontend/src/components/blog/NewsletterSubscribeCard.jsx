@@ -43,7 +43,7 @@ export default function NewsletterSubscribeCard() {
   };
 
   return (
-    <div className="bg-primary p-6 sm:p-7 lg:p-9 rounded-4xl sm:rounded-5xl lg:rounded-[3rem] text-white shadow-2xl shadow-primary/40 relative overflow-hidden group">
+    <div className="bg-primary p-6 sm:p-7 lg:p-9 rounded-2xl text-white shadow-2xl shadow-primary/40 relative overflow-hidden group">
       <div className="absolute -top-20 -left-20 w-48 h-48 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all"></div>
       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-6 opacity-40"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
       <h3 className="text-xl sm:text-2xl font-black mb-3 tracking-tighter leading-none uppercase ">Subscribe for <br /> Insights</h3>

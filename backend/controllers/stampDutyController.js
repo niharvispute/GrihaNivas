@@ -2,10 +2,8 @@ const { sendSuccess } = require('../utils/apiResponse');
 const StampDutyConfig = require('../models/mongoose/StampDutyConfig');
 
 const DEFAULT_RATES = {
-  maleRate: 6,
-  femaleRate: 5,
-  jointRate: 5,
-  registrationCharge: 30000,
+  buy: { maleRate: 6, femaleRate: 5, jointRate: 5, registrationCharge: 30000 },
+  rent: { maleRate: 2, femaleRate: 2, jointRate: 2, registrationCharge: 1000 },
 };
 
 // ── GET /api/stamp-duty ───────────────────────────────────────────────────────
@@ -13,7 +11,13 @@ const DEFAULT_RATES = {
 const getConfig = async (req, res, next) => {
   try {
     const config = await StampDutyConfig.findOne().sort({ updatedAt: -1 });
-    return sendSuccess(res, 200, 'Stamp duty config fetched', config || DEFAULT_RATES);
+    if (!config) return sendSuccess(res, 200, 'Stamp duty config fetched', DEFAULT_RATES);
+
+    return sendSuccess(res, 200, 'Stamp duty config fetched', {
+      buy: config.buy,
+      rent: config.rent,
+      updatedAt: config.updatedAt,
+    });
   } catch (err) {
     next(err);
   }
@@ -23,16 +27,19 @@ const getConfig = async (req, res, next) => {
 
 const updateConfig = async (req, res, next) => {
   try {
-    const { maleRate, femaleRate, jointRate, registrationCharge } = req.body;
+    const { buy, rent } = req.body;
 
-    // Upsert — only one config document ever exists
     const config = await StampDutyConfig.findOneAndUpdate(
       {},
-      { maleRate, femaleRate, jointRate, registrationCharge, updatedAt: new Date() },
-      { upsert: true, returnDocument: 'after', runValidators: true }
+      { buy, rent, updatedBy: req.user?._id },
+      { upsert: true, returnDocument: 'after', runValidators: true, new: true }
     );
 
-    return sendSuccess(res, 200, 'Stamp duty config updated', config);
+    return sendSuccess(res, 200, 'Stamp duty config updated', {
+      buy: config.buy,
+      rent: config.rent,
+      updatedAt: config.updatedAt,
+    });
   } catch (err) {
     next(err);
   }
