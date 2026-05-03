@@ -11,7 +11,7 @@ const rateLimit = require('express-rate-limit');
  */
 
 const windowMs = parseInt(process.env.RATE_LIMIT_WINDOW_MS, 10) || 15 * 60 * 1000; // 15 min
-const defaultMaxRequests = process.env.NODE_ENV === 'production' ? 300 : 1000;
+const defaultMaxRequests = process.env.NODE_ENV === 'production' ? 500 : 5000;
 const maxRequests = parseInt(process.env.RATE_LIMIT_MAX, 10) || defaultMaxRequests;
 
 /**
