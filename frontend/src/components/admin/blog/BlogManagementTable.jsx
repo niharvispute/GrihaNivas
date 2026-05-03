@@ -69,10 +69,17 @@ const BlogManagementTable = ({ blogs, onEdit, onDelete, onAddNew }) => {
                 <td className="px-10 py-6">
                   <div className="flex flex-col">
                     <span className="text-sm font-bold text-slate-700">{blog.date}</span>
-                    <span className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-green-500 mt-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                      Published
-                    </span>
+                    {blog.raw?.isPublished ? (
+                      <span className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-green-500 mt-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        Published
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-amber-500 mt-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                        Draft
+                      </span>
+                    )}
                   </div>
                 </td>
                 <td className="px-10 py-6 text-right">

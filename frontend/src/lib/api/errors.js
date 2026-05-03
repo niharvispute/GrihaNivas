@@ -28,6 +28,15 @@ export const parseErrorPayload = (payload, status) => {
 export const getErrorMessage = (error, fallback = 'Something went wrong') => {
   if (!error) return fallback;
   if (typeof error === 'string') return error;
+
+  if (error instanceof ApiError) {
+    // If it's a validation error and we have details, format them
+    if (error.status === 400 && Array.isArray(error.details)) {
+      return error.details.map((d) => d.message).join('. ');
+    }
+    return error.message || fallback;
+  }
+
   if (error instanceof Error) return error.message || fallback;
   return fallback;
 };

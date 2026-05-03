@@ -53,6 +53,16 @@ const create = async (req, res, next) => {
       throw new AppError('You can upload up to 20 property images per submission.', 400);
     }
 
+    const mergedFloorPlans = [
+      ...(Array.isArray(req.body.floorPlans) ? req.body.floorPlans : []),
+      ...media.floorPlans.map((item) => item.url),
+    ];
+    const normalizedFloorPlans = mergedFloorPlans
+      .map((value) => (typeof value === 'string' ? value.trim() : ''))
+      .filter(Boolean);
+
+    const brochureUrl = media.brochure?.url || req.body.brochure || null;
+
     const existingVideoMeta = req.body.videoMeta || {};
     const mergedVideoMeta = media.video
       ? {
@@ -65,6 +75,8 @@ const create = async (req, res, next) => {
     const submission = await PropertySubmission.create({
       ...req.body,
       images: normalizedImages,
+      floorPlans: normalizedFloorPlans,
+      brochure: brochureUrl,
       videoMeta: Object.keys(mergedVideoMeta).length > 0 ? mergedVideoMeta : null,
       createdBy: req.user.id,
       status: 'new',

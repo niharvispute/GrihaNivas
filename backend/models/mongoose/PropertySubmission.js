@@ -142,6 +142,11 @@ const propertySubmissionSchema = new mongoose.Schema(
       min: [1, 'Total area must be at least 1 sq ft'],
       default: null,
     },
+    furnishing: {
+      type: String,
+      trim: true,
+      default: null,
+    },
     images: {
       type: [String],
       default: [],

@@ -7,6 +7,7 @@ import { listProperties } from '@/services/propertyService';
 import BlogHero from '@/components/blog/details/BlogHero';
 import BlogBody from '@/components/blog/details/BlogBody';
 import BlogSidebar from '@/components/blog/details/BlogSidebar';
+import BlogBottomSubscription from '@/components/blog/BlogBottomSubscription';
 import BlogComments from '@/components/blog/details/BlogComments';
 
 export async function generateMetadata({ params }) {
@@ -137,21 +138,10 @@ export default async function BlogDetailPage({ params }) {
       {/* 💬 Discussions Section */}
       <BlogComments blogId={post.id} comments={post.comments} />
 
-      {/* 📧 Newsletter Footer Integration (Optional - if not in global footer) */}
+      {/* 📧 Newsletter Footer Integration */}
       <section className="mt-16 sm:mt-20 lg:mt-32 py-14 sm:py-16 lg:py-24 bg-slate-50 border-t border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 sm:gap-10 lg:gap-12">
-           <div className="max-w-xl">
-              <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter mb-4 leading-tight">Subscribe to <br/><span className="text-primary ">Mumbai Insights</span></h3>
-              <p className="text-slate-500 font-medium text-sm sm:text-base lg:text-lg leading-relaxed">Get the latest market analysis and exclusive penthouse listings delivered to your inbox weekly.</p>
-           </div>
-           <form className="flex flex-col sm:flex-row w-full md:w-auto gap-3 sm:gap-4">
-              <input 
-                className="flex-1 md:w-80 bg-white border-none rounded-full px-6 sm:px-8 py-4 sm:py-5 text-sm font-bold shadow-2xl shadow-slate-200/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
-                placeholder="Email address" 
-                type="email"
-              />
-              <button className="bg-primary text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/30 hover:scale-105 transition-all active:scale-95">Subscribe</button>
-           </form>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <BlogBottomSubscription />
         </div>
       </section>
     </div>

@@ -8,7 +8,10 @@ const Testimonial = require('../models/mongoose/Testimonial');
 
 const list = async (req, res, next) => {
   try {
-    const testimonials = await Testimonial.find({ isActive: true })
+    const isAdmin = req.user?.role === 'admin';
+    const filter = isAdmin ? {} : { isActive: true };
+
+    const testimonials = await Testimonial.find(filter)
       .sort({ order: 1, createdAt: -1 })
       .select('-__v');
 

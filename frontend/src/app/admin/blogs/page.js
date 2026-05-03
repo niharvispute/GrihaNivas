@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  listBlogs,
+  listBlogsAdmin,
+  getBlogByIdAdmin,
   createBlog,
   updateBlog,
   deleteBlog,
@@ -32,7 +33,7 @@ export default function AdminBlogCMS() {
   const fetchBlogs = async () => {
     setLoading(true);
     try {
-      const response = await listBlogs({ limit: 20 }, { map: true });
+      const response = await listBlogsAdmin({ limit: 50 }, { map: true });
       setBlogs(response.items || []);
     } catch (error) {
       console.error('Failed to fetch blogs:', error);
@@ -85,10 +86,20 @@ export default function AdminBlogCMS() {
     }
   };
 
-  const handleEdit = (post) => {
-    setEditingPost(post);
-    setIsAddingNew(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleEdit = async (post) => {
+    setLoading(true);
+    try {
+      // Fetch full post details including content/body
+      const fullPost = await getBlogByIdAdmin(post.id, { map: true });
+      setEditingPost(fullPost);
+      setIsAddingNew(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      alert('Failed to load post details for editing.');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAddNew = () => {
@@ -177,27 +188,6 @@ export default function AdminBlogCMS() {
              </>
            )}
 
-           {/* CMS Statistics Dashboard (Optional Premium Touch) */}
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-              <div className="bg-slate-900 p-10 rounded-2xl text-white overflow-hidden relative group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[60px] rounded-full translate-x-1/2 -translate-y-1/2 group-hover:bg-primary/40 transition-all duration-700"></div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-6">Total Reach</p>
-                <div className="flex items-end gap-3">
-                  <h4 className="text-5xl font-black tracking-tighter">84.2k</h4>
-                  <span className="text-green-500 text-xs font-black mb-2 flex items-center gap-1">
-                    <span className="material-symbols-outlined text-sm">trending_up</span>+12%
-                  </span>
-                </div>
-              </div>
-              <div className="bg-white p-10 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/50">
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-6">Avg. Read Time</p>
-                <h4 className="text-5xl font-black tracking-tighter text-slate-900">6.4m</h4>
-              </div>
-              <div className="bg-white p-10 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/50">
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-6">Engagement</p>
-                <h4 className="text-5xl font-black tracking-tighter text-slate-900">4.8%</h4>
-              </div>
-           </div>
         </section>
       )}
     </div>

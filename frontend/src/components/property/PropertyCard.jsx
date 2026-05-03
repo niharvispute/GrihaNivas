@@ -20,7 +20,11 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
       ? `${property.bhk} BHK`
       : property?.raw?.category === 'commercial'
         ? 'Commercial'
-        : 'Configuration on request';
+        : property?.raw?.category === 'new_launch'
+          ? 'New Launch'
+          : property?.raw?.category === 'rent'
+            ? 'Rental'
+            : 'Residential';
   const areaLabel =
     property?.area && property.area !== 'N/A'
       ? `${property.area} sq.ft`
@@ -61,20 +65,22 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
 
       {/* Content */}
       <div className={`p-3 sm:p-4 md:p-5 flex flex-col grow gap-2 sm:gap-3 ${isHorizontal ? 'lg:p-6 lg:justify-center' : 'min-h-[190px]'}`}>
-        {/* Title + Price */}
+        {/* Title + Configuration Badge */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <h3 className={`${isHorizontal ? 'text-lg sm:text-xl font-extrabold' : 'text-xs sm:text-sm font-black'} text-slate-900 leading-tight line-clamp-1 uppercase tracking-tight`}>
-              {property.title}
-            </h3>
-            <p className="text-slate-400 text-[11px] sm:text-xs flex items-center gap-1 mt-1 font-bold truncate">
+            <div className="flex items-center gap-2 mb-1">
+               <h3 className={`${isHorizontal ? 'text-lg sm:text-xl font-extrabold' : 'text-[11px] sm:text-[13px] font-black'} text-slate-900 leading-tight line-clamp-1 uppercase tracking-tight`}>
+                {property.title}
+              </h3>
+              <span className="flex-shrink-0 px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[8px] sm:text-[9px] font-black uppercase tracking-tighter">
+                {configurationLabel}
+              </span>
+            </div>
+            <p className="text-slate-400 text-[10px] sm:text-xs flex items-center gap-1 font-bold truncate">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
               <span className="truncate">{locationLabel}</span>
             </p>
           </div>
-          <p className={`text-primary font-black tracking-tighter shrink-0 ${isHorizontal ? 'text-base sm:text-lg' : 'text-xs sm:text-sm'}`}>
-            {displayPrice}
-          </p>
         </div>
 
         {isHorizontal && property.description && (
@@ -86,10 +92,10 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
         {/* Stats — compact inline row */}
         <div className="grid grid-cols-2 gap-3 py-2 sm:py-3 border-t border-slate-100">
           <span className="min-w-0">
-            <span className="block text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider">Config</span>
+            <span className="block text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider">Cost</span>
             <span className="mt-1 flex items-center gap-1 text-xs sm:text-sm font-black text-slate-900 truncate">
-              <span className="material-symbols-outlined text-primary text-sm sm:text-base">apartment</span>
-              {configurationLabel}
+              <span className="material-symbols-outlined text-primary text-sm sm:text-base">payments</span>
+              {displayPrice}
             </span>
           </span>
           <span className="min-w-0 border-l border-slate-100 pl-3">

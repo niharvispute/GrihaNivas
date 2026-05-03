@@ -90,6 +90,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
   const [maxPrice, setMaxPrice] = useState(currentQuery?.maxPrice || MAX_BUDGET);
   const [areaOptions, setAreaOptions] = useState(DEFAULT_AREA_OPTIONS);
   const [bhkOptions, setBhkOptions] = useState(DEFAULT_BHK_OPTIONS);
+  const [furnishingOptions, setFurnishingOptions] = useState(FURNISHING_OPTIONS);
   
   const sortBy = currentQuery?.sortBy || 'newest';
   const category = currentQuery?.category || 'buy';
@@ -136,6 +137,10 @@ export default function PropertyFilters({ basePath, currentQuery }) {
           ? bootstrap.options.bhkValues.map((value) => String(value).trim()).filter(Boolean)
           : [];
 
+        const dynamicFurnishing = Array.isArray(bootstrap?.options?.furnishingOptions)
+          ? bootstrap.options.furnishingOptions.map((value) => String(value).trim()).filter(Boolean)
+          : [];
+
         if (dynamicAreas.length > 0) {
           setAreaOptions([
             { label: 'All Locations', value: '' },
@@ -147,6 +152,16 @@ export default function PropertyFilters({ basePath, currentQuery }) {
           setBhkOptions([
             { label: 'Any', value: '' },
             ...dynamicBhk.map((value) => ({ label: `${value} BHK`, value })),
+          ]);
+        }
+
+        if (dynamicFurnishing.length > 0) {
+          setFurnishingOptions([
+            { label: 'Any', value: '' },
+            ...dynamicFurnishing.map((val) => ({
+              label: val.charAt(0).toUpperCase() + val.slice(1).replace('_', ' '),
+              value: val,
+            })),
           ]);
         }
       })

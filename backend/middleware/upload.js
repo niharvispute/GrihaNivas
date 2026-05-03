@@ -1,4 +1,5 @@
 const multer = require('multer');
+const AppError = require('../utils/AppError');
 
 /**
  * File Upload Middleware (Multer).
@@ -21,7 +22,11 @@ const MAX_VIDEO_SIZE = 50 * 1024 * 1024; // 50 MB
 const MAX_GALLERY    = 10;
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
-const ALLOWED_PDF_TYPES   = ['application/pdf'];
+const ALLOWED_PDF_TYPES   = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+];
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm'];
 
 // ── Storage ─────────────────────────────────────────────────────────────────
@@ -66,15 +71,17 @@ const mixedFilter = (req, file, cb) => {
 };
 
 const propertySubmissionFilter = (req, file, cb) => {
-  const allowed = [...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEO_TYPES];
+  const allowed = [...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEO_TYPES, ...ALLOWED_PDF_TYPES];
   if (allowed.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    const err = new Error(
-      `Invalid file type: "${file.mimetype}". Allowed: JPEG, PNG, WEBP, MP4, MOV, WEBM.`
+    cb(
+      new AppError(
+        `Invalid file type: "${file.mimetype}". Allowed: JPEG, PNG, WEBP, MP4, MOV, WEBM, PDF, DOC.`,
+        400
+      ),
+      false
     );
-    err.code = 'INVALID_FILE_TYPE';
-    cb(err, false);
   }
 };
 
@@ -146,6 +153,8 @@ const builderUploadFields = uploadImages.fields([
 
 const propertySubmissionUploadFields = uploadPropertySubmission.fields([
   { name: 'images', maxCount: 10 },
+  { name: 'floorPlans', maxCount: 5 },
+  { name: 'brochure', maxCount: 1 },
   { name: 'video', maxCount: 1 },
 ]);
 

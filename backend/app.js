@@ -78,9 +78,9 @@ app.use(
 );
 
 // ── 3. Request Parsing ─────────────────────────────────────────────────────
-// 10kb limit prevents large payload attacks
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+// 1mb limit allows for larger property descriptions and metadata
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
 // ── 4. Data Sanitization ───────────────────────────────────────────────────
 // Strips $ and . from keys — prevents NoSQL injection
@@ -89,7 +89,7 @@ app.use(mongoSanitize());
 app.use(xss());
 // Prevents HTTP Parameter Pollution (e.g. ?status=new&status=closed)
 // Whitelist allows multiple values for these specific params
-app.use(hpp({ whitelist: ['category', 'bhk', 'amenities', 'highlights', 'builder', 'builderSlug'] }));
+app.use(hpp({ whitelist: ['category', 'bhk', 'furnishing', 'amenities', 'highlights', 'builder', 'builderSlug'] }));
 
 // ── 5. Compression ─────────────────────────────────────────────────────────
 app.use(compression());

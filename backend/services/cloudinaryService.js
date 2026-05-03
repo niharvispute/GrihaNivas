@@ -122,13 +122,12 @@ const uploadImages = async (buffers, folder, preset = null) => {
  */
 const uploadPDF = async (buffer, folder) => {
   if (!buffer || !buffer.length) {
-    throw new AppError('PDF buffer is empty', 400);
+    throw new AppError('Document buffer is empty', 400);
   }
 
   return uploadBuffer(buffer, {
     folder,
     resource_type: 'raw', // Cloudinary type for non-image/video files
-    format: 'pdf',
   });
 };
 
@@ -208,7 +207,7 @@ const uploadPropertyMedia = async (files = {}) => {
  * @returns {Promise<{images: Array<{url, publicId}>, video: {url, publicId} | null}>}
  */
 const uploadPropertySubmissionMedia = async (files = {}) => {
-  const [images, video] = await Promise.all([
+  const [images, floorPlans, brochure, video] = await Promise.all([
     files.images?.length
       ? uploadImages(
           files.images.map((f) => f.buffer),
@@ -216,6 +215,16 @@ const uploadPropertySubmissionMedia = async (files = {}) => {
           'propertyGallery'
         )
       : Promise.resolve([]),
+    files.floorPlans?.length
+      ? uploadImages(
+          files.floorPlans.map((f) => f.buffer),
+          'bricks/property-submissions/plans',
+          'floorPlan'
+        )
+      : Promise.resolve([]),
+    files.brochure?.[0]
+      ? uploadPDF(files.brochure[0].buffer, 'bricks/property-submissions/brochures')
+      : Promise.resolve(null),
     files.video?.[0]
       ? uploadVideo(files.video[0].buffer, 'bricks/property-submissions/videos')
       : Promise.resolve(null),
@@ -223,6 +232,8 @@ const uploadPropertySubmissionMedia = async (files = {}) => {
 
   return {
     images: images.map((item) => ({ url: item.url, publicId: item.publicId })),
+    floorPlans: floorPlans.map((item) => ({ url: item.url, publicId: item.publicId })),
+    brochure: brochure ? { url: brochure.url, publicId: brochure.publicId } : null,
     video: video ? { url: video.url, publicId: video.publicId } : null,
   };
 };
