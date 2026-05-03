@@ -40,6 +40,14 @@ export const listTestimonials = async () => {
 };
 
 /**
+ * Fetch all testimonials (for admin).
+ */
+export const listTestimonialsAdmin = async () => {
+  const res = await authedApiFetch('/api/testimonials');
+  return Array.isArray(res.data) ? res.data.map(mapTestimonialToAdminVM) : [];
+};
+
+/**
  * Create a new testimonial.
  */
 export const createTestimonial = async (payload) => {

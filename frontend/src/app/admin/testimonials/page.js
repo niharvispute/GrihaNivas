@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { listTestimonials, deleteTestimonial, createTestimonial, updateTestimonial, exportTestimonials } from '@/services/testimonialService';
+import { listTestimonialsAdmin, deleteTestimonial, createTestimonial, updateTestimonial, exportTestimonials } from '@/services/testimonialService';
 import TestimonialStats from '@/components/admin/testimonials/TestimonialStats';
 import TestimonialCard from '@/components/admin/testimonials/TestimonialCard';
 import TestimonialForm from '@/components/admin/testimonials/TestimonialForm';
@@ -22,7 +22,7 @@ export default function TestimonialManagerPage() {
   const fetchTestimonials = async () => {
     setLoading(true);
     try {
-      const data = await listTestimonials();
+      const data = await listTestimonialsAdmin();
       setTestimonials(data);
     } catch (error) {
       console.error('Failed to fetch testimonials:', error);
