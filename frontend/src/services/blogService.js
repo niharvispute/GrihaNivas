@@ -50,8 +50,22 @@ export const listBlogs = async (query = {}, { map = true } = {}) => {
   }
 };
 
+export const listBlogsAdmin = async (query = {}, { map = true } = {}) => {
+  const res = await authedApiFetch('/api/blogs', { query });
+  return {
+    items: map ? mapBlogListToCardVM(res.data || []) : res.data || [],
+    meta: res.meta,
+    message: res.message,
+  };
+};
+
 export const getBlogBySlug = async (slug, { map = true } = {}) => {
   const res = await apiFetch(`/api/blogs/${slug}`);
+  return map ? mapBlogToDetailVM(res.data) : res.data;
+};
+
+export const getBlogByIdAdmin = async (id, { map = true } = {}) => {
+  const res = await authedApiFetch(`/api/blogs/admin/${id}`);
   return map ? mapBlogToDetailVM(res.data) : res.data;
 };
 

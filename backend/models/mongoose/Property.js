@@ -155,10 +155,7 @@ const propertySchema = new mongoose.Schema(
     // ── Details ───────────────────────────────────────────────────────────
     furnishing: {
       type: String,
-      enum: {
-        values: ['unfurnished', 'semi_furnished', 'furnished'],
-        message: 'Furnishing must be unfurnished, semi_furnished, or furnished',
-      },
+      trim: true,
       default: null,
     },
     builder: {

@@ -145,6 +145,7 @@ const buildPropertyPayloadFromSubmission = (submission, options = {}) => {
     parking: totalParking,
     possession: submission.possession || null,
     age: submission.age || null,
+    furnishing: submission.furnishing || null,
     reraUrl: submission.reraUrl || null,
     amenities: toStringArray(submission.amenities),
     feature: toStringArray(submission.feature),
@@ -208,6 +209,7 @@ const ensureSubmissionPublished = async (submission, options = {}) => {
     property.deposit = payload.deposit;
     property.maintenanceCharges = payload.maintenanceCharges;
     property.priceUnit = payload.priceUnit;
+    property.furnishing = payload.furnishing;
     if (payload.areaSqft) property.areaSqft = payload.areaSqft;
 
     if ((!property.heroImage || !property.heroImage.url) && payload.heroImage) {

@@ -15,6 +15,7 @@ import {
   normalizeAuthIdentifier,
   toIndianPhoneE164,
 } from '@/lib/validation/phone';
+import { getErrorMessage } from '@/lib/api';
 
 // ── OTP Boxes ─────────────────────────────────────────────────────────────────
 
@@ -214,7 +215,7 @@ function LoginView({ ctx }) {
       const data = await loginWithPassword({ identifier: normalizedIdentifier, password });
       onAuthSuccess(data.user);
     } catch (err) {
-      setError(err.message || 'Login failed. Please try again.');
+      setError(getErrorMessage(err, 'Login failed. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -302,7 +303,7 @@ function RegisterView({ ctx }) {
       setFlowData({ email: String(form.email || '').trim().toLowerCase() });
       setView('register-otp');
     } catch (err) {
-      setError(err.message || 'Registration failed. Please try again.');
+      setError(getErrorMessage(err, 'Registration failed. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -363,7 +364,7 @@ function RegisterOtpView({ ctx }) {
       const data = await completeSignupVerification({ otp });
       onAuthSuccess(data.user);
     } catch (err) {
-      setError(err.message || 'OTP verification failed.');
+      setError(getErrorMessage(err, 'OTP verification failed.'));
     } finally {
       setLoading(false);
     }
@@ -378,7 +379,7 @@ function RegisterOtpView({ ctx }) {
       setResendCooldown(60);
       setSuccessMsg('A new OTP has been sent to your email.');
     } catch (err) {
-      setError(err.message || 'Failed to resend OTP.');
+      setError(getErrorMessage(err, 'Failed to resend OTP.'));
     } finally {
       setLoading(false);
     }
@@ -443,7 +444,7 @@ function ForgotView({ ctx }) {
       setFlowData({ identifier: normalizedIdentifier });
       setView('forgot-otp');
     } catch (err) {
-      setError(err.message || 'Failed to send OTP. Please try again.');
+      setError(getErrorMessage(err, 'Failed to send OTP. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -491,7 +492,7 @@ function ForgotOtpView({ ctx }) {
       await forgotPasswordVerify({ otp });
       setView('forgot-reset');
     } catch (err) {
-      setError(err.message || 'OTP verification failed.');
+      setError(getErrorMessage(err, 'OTP verification failed.'));
     } finally {
       setLoading(false);
     }
@@ -540,7 +541,7 @@ function ForgotResetView({ ctx }) {
       setDone(true);
       setTimeout(() => { setView('login'); }, 2500);
     } catch (err) {
-      setError(err.message || 'Failed to reset password.');
+      setError(getErrorMessage(err, 'Failed to reset password.'));
     } finally {
       setLoading(false);
     }

@@ -67,11 +67,18 @@ const list = async (req, res, next) => {
     const { category, tag, search } = req.query;
     const normalizedCategory = normalizeBlogCategory(category);
 
-    const cacheKey = `${BLOG_CACHE_PREFIX}list:${blogQueryKey(req.query)}`;
-    const cached = await cache.get(cacheKey);
-    if (cached) return sendSuccess(res, 200, 'Blogs fetched', cached.blogs, cached.meta);
+    const isAdmin = req.user?.role === 'admin';
 
-    const filter = { isPublished: true };
+    // ── Cache Layer ─────────────────────────────────────────────────────────
+    // Skip cache for admins so they always see the latest drafts/changes
+    const cacheKey = `${BLOG_CACHE_PREFIX}list:${blogQueryKey(req.query)}`;
+    if (!isAdmin) {
+      const cached = await cache.get(cacheKey);
+      if (cached) return sendSuccess(res, 200, 'Blogs fetched', cached.blogs, cached.meta);
+    }
+
+    // ── Database Query ──────────────────────────────────────────────────────
+    const filter = isAdmin ? {} : { isPublished: true };
     if (normalizedCategory) filter.category = normalizedCategory;
     if (tag)      filter.tags = tag;
     if (search) {
@@ -111,6 +118,18 @@ const getBySlug = async (req, res, next) => {
 
     // Strip unapproved comments from public response
     blog.comments = (blog.comments || []).filter((c) => c.isApproved);
+
+    return sendSuccess(res, 200, 'Blog fetched', blog);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const adminGet = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const blog = await Blog.findById(id).lean();
+    if (!blog) throw new AppError('Blog not found', 404);
 
     return sendSuccess(res, 200, 'Blog fetched', blog);
   } catch (err) {
@@ -349,6 +368,7 @@ const deleteComment = async (req, res, next) => {
 module.exports = {
   list,
   getBySlug,
+  adminGet,
   create,
   update,
   remove,

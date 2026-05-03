@@ -7,6 +7,7 @@ import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { invalidateMyListingsSummary } from '@/hooks/useMyListingsSummary';
 import { createPropertySubmission } from '@/services/propertySubmissionService';
+import { getSystemBootstrap } from '@/services/systemService';
 
 const MIN_PROPERTY_IMAGES = 5;
 const MAX_PROPERTY_IMAGES = 10;
@@ -54,6 +55,7 @@ export default function MultiStageListingForm() {
     openParking: 'N/A',
     carpetArea: '',
     totalArea: '',
+    furnishing: 'unfurnished',
 
     // Step 3: Media
     images: [],
@@ -84,6 +86,16 @@ export default function MultiStageListingForm() {
       container.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [step]);
+  
+  const [furnishingOptions, setFurnishingOptions] = useState(['unfurnished', 'semi_furnished', 'furnished']);
+
+  useEffect(() => {
+    getSystemBootstrap().then(data => {
+      if (data?.options?.furnishingOptions?.length > 0) {
+        setFurnishingOptions(data.options.furnishingOptions);
+      }
+    });
+  }, []);
 
   // 🆕 Media Cleanup: Revoke object URLs to prevent memory leaks
   useEffect(() => {
@@ -279,6 +291,7 @@ export default function MultiStageListingForm() {
       if (form.openParking) payload.append('openParking', form.openParking);
       if (form.carpetArea) payload.append('carpetArea', form.carpetArea);
       if (form.totalArea) payload.append('totalArea', form.totalArea);
+      if (form.furnishing) payload.append('furnishing', form.furnishing);
 
       if (form.listingType === 'Sale' && form.price) {
         const parsedPrice = parseInt(String(form.price).replace(/,/g, ''), 10);
@@ -363,6 +376,9 @@ export default function MultiStageListingForm() {
       setFeedback({ type: 'success', message: 'Property submitted for review successfully!' });
     } catch (error) {
       setFeedback({ type: 'error', message: getErrorMessage(error, 'Submission failed.') });
+      // Scroll to top to show the error
+      const container = document.getElementById('form-content-area');
+      if (container) container.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setIsSubmitting(false);
       setUploadStage('');
@@ -463,6 +479,26 @@ export default function MultiStageListingForm() {
         {/* 🆕 Scrollable Internal Content */}
         <div id="form-content-area" className="flex-1 overflow-y-auto custom-scrollbar relative">
           <div className="max-w-4xl mx-auto w-full px-6 md:px-12 py-8 md:py-16">
+            {/* 🆕 Global Feedback Alert */}
+            {feedback.message && (
+              <div className={`mb-8 p-4 rounded-2xl border flex items-start gap-3 animate-in fade-in slide-in-from-top-4 duration-300 ${
+                feedback.type === 'error' 
+                  ? 'bg-rose-50 border-rose-100 text-rose-600' 
+                  : 'bg-emerald-50 border-emerald-100 text-emerald-600'
+              }`}>
+                <span className="material-symbols-outlined text-xl mt-0.5">
+                  {feedback.type === 'error' ? 'error' : 'check_circle'}
+                </span>
+                <div className="flex-1">
+                  <p className="text-sm font-black uppercase tracking-widest mb-1">{feedback.type === 'error' ? 'Attention' : 'Success'}</p>
+                  <p className="text-xs font-bold leading-relaxed">{feedback.message}</p>
+                </div>
+                <button onClick={() => setFeedback({ type: '', message: '' })} className="p-1 hover:bg-black/5 rounded-lg transition-colors">
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+            )}
+
             {/* Step 1: Details */}
             {step === 1 && (
               <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -610,6 +646,21 @@ export default function MultiStageListingForm() {
                         </button>
                       ))}
                     </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Furnishing Status</label>
+                  <div className="flex gap-2 flex-wrap">
+                    {furnishingOptions.map(opt => (
+                      <button
+                        key={opt}
+                        onClick={() => handleToggle('furnishing', opt)}
+                        className={`px-6 py-4 rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest border-2 transition-all ${form.furnishing === opt ? 'border-primary bg-primary/5 text-primary' : 'border-slate-50 bg-white text-slate-400 hover:border-slate-100'}`}
+                      >
+                        {opt.replace('_', ' ')}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
