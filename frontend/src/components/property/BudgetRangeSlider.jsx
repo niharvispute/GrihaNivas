@@ -53,13 +53,7 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <label className="font-bold flex items-center gap-2 text-slate-700 text-xs uppercase tracking-wide mb-2">
-          <span className="material-symbols-outlined text-primary text-xl">payments</span>
-          Budget Range
-        </label>
-        <p className="text-[10px] text-slate-400 font-bold">Drag sliders to set your budget range</p>
-      </div>
+
 
       {/* Sliders Container */}
       <div className="space-y-8">
@@ -186,7 +180,6 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
 
       {/* Budget Range Summary */}
       <div className="bg-slate-100 rounded-xl p-5 border border-slate-200">
-        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-3">Budget Range</p>
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-slate-400 text-[9px] font-bold mb-1">From</p>

@@ -143,27 +143,7 @@ export default async function PropertiesPage({ searchParams }) {
 
   return (
     <main className="w-full">
-      {/* Breadcrumbs & Header */}
-      <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 lg:py-14">
-        <nav aria-label="Breadcrumb" className="flex text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-3 sm:mb-4">
-          <ol className="inline-flex items-center space-x-2">
-            <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
-            <li className="flex items-center">
-              <svg className="w-3 h-3 mx-1 text-slate-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
-              <span className="text-primary truncate">{categoryContent.breadcrumb}</span>
-            </li>
-          </ol>
-        </nav>
-        <span className="type-small-10 text-primary mb-3 block tracking-[0.3em]">Mumbai Real Estate</span>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter text-slate-900 mb-3 sm:mb-4">
-          {categoryContent.title}
-        </h1>
-        <p className="text-slate-500 text-sm sm:text-base lg:text-lg max-w-2xl leading-relaxed font-medium">
-          {categoryContent.description}
-        </p>
-      </header>
-
-      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+           <div className="flex flex-col lg:flex-row gap-6 sm:pt-8 lg:pt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {/* Sidebar Filters */}
         <PropertyFilters basePath={BASE_PATH} currentQuery={currentQuery} />
 
@@ -211,7 +191,7 @@ export default async function PropertiesPage({ searchParams }) {
               <Link
                 key={page}
                 href={buildListingHref(BASE_PATH, currentQuery, page)}
-                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm transition-colors ${page === currentPage ? 'bg-primary text-white shadow-lg' : 'hover:bg-slate-100 text-slate-600'}`}
+                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm transition-colors ${page === currentPage ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'hover:bg-slate-100 text-slate-600'}`}
               >
                 {page}
               </Link>

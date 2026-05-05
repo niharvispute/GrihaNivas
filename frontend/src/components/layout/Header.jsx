@@ -115,14 +115,16 @@ export default function Header() {
   return (
     <>
       <header className="sticky top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-gray-100/50 shadow-sm">
-        <div className="flex justify-between items-center px-5 md:px-8 py-4 max-w-screen-2xl mx-auto">
+        <div className="grid grid-cols-2 nav:grid-cols-3 items-center px-5 md:px-8 py-4 max-w-screen-2xl mx-auto">
           {/* Brand Logo */}
-          <Link href="/" className="text-2xl font-black tracking-tighter text-slate-900 shrink-0">
-            Mumbai Editorial
-          </Link>
+          <div className="flex justify-start">
+            <Link href="/" className="text-2xl font-black tracking-tighter text-slate-900 shrink-0 font-heading">
+              Mumbai Editorial
+            </Link>
+          </div>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden nav:flex items-center gap-8 font-bold tracking-tight text-sm text-slate-600">
+          {/* Desktop Navigation Links (Column 2) */}
+          <nav className="hidden nav:flex items-center justify-center gap-4 lg:gap-6 font-bold tracking-tight text-[11px] lg:text-xs text-slate-600 uppercase tracking-widest whitespace-nowrap">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -148,14 +150,14 @@ export default function Header() {
                 aria-expanded={isServicesMenuOpen}
                 aria-haspopup="true"
                 onClick={() => setIsServicesMenuOpen((prev) => !prev)}
-                className={`flex items-center gap-1.5 py-2 border-b-2 transition-colors ${
+                className={`flex items-center gap-1 py-2 border-b-2 transition-colors ${
                   isServicesActive
                     ? 'text-primary border-primary'
                     : 'border-transparent hover:text-primary'
                 }`}
               >
                 <span>Services</span>
-                <span className={`material-symbols-outlined text-base transition-transform ${isServicesMenuOpen ? 'rotate-180' : ''}`}>
+                <span className={`material-symbols-outlined text-sm transition-transform ${isServicesMenuOpen ? 'rotate-180' : ''}`}>
                   expand_more
                 </span>
               </button>
@@ -199,103 +201,101 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden nav:flex items-center gap-6">
-            <div className="flex shrink-0 items-center gap-3 sm:gap-4">
-              {loadingUser ? (
-                <div className="w-24 h-8 rounded-full bg-slate-100 animate-pulse" />
-              ) : user ? (
-                <div ref={accountMenuRef} className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setIsAccountMenuOpen((prev) => !prev)}
-                    aria-expanded={isAccountMenuOpen}
-                    aria-haspopup="true"
-                    className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/90 px-3 py-2 shadow-sm transition-all hover:border-primary/20 hover:shadow-md"
-                  >
-                    <span className="hidden xl:block max-w-35 truncate text-sm font-bold text-slate-700">
-                      {displayName}
-                    </span>
-                    <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary/10 via-white to-tertiary/60 text-primary ring-1 ring-slate-200 transition-transform hover:scale-105">
-                      {avatarSrc ? (
-                        <Image
-                          src={avatarSrc}
-                          alt={displayName}
-                          fill
-                          sizes="44px"
-                          unoptimized
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <span className="material-symbols-outlined text-2xl">person</span>
-                      )}
-                    </span>
-                  </button>
+          {/* Desktop Actions (Column 3) */}
+          <div className="hidden nav:flex justify-end items-center gap-3 lg:gap-4">
+            {loadingUser ? (
+              <div className="w-24 h-8 rounded-full bg-slate-100 animate-pulse" />
+            ) : user ? (
+              <div ref={accountMenuRef} className="relative">
+                <button
+                  type="button"
+                  onClick={() => setIsAccountMenuOpen((prev) => !prev)}
+                  aria-expanded={isAccountMenuOpen}
+                  aria-haspopup="true"
+                  className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 shadow-sm transition-all hover:border-primary/20 hover:shadow-md min-w-[140px] justify-between"
+                >
+                  <span className="max-w-35 truncate text-[10px] font-black text-slate-700 uppercase tracking-widest">
+                    {displayName}
+                  </span>
+                  <span className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary/10 via-white to-tertiary/60 text-primary ring-1 ring-slate-200 transition-transform hover:scale-105">
+                    {avatarSrc ? (
+                      <Image
+                        src={avatarSrc}
+                        alt={displayName}
+                        fill
+                        sizes="32px"
+                        unoptimized
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <span className="material-symbols-outlined text-base">person</span>
+                    )}
+                  </span>
+                </button>
 
-                  {/* Account Dropdown */}
-                  <div
-                    className={`absolute right-0 top-full z-50 pt-3 transition-all duration-200 ${
-                      isAccountMenuOpen
-                        ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
-                        : 'pointer-events-none translate-y-2 scale-95 opacity-0'
-                    }`}
-                  >
-                    <div className="w-64">
-                      <div className="absolute right-6 -top-2 h-4 w-4 rotate-45 border-l border-t border-slate-100 bg-white/95" />
-                      <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white/95 shadow-2xl shadow-slate-200/60 backdrop-blur-xl">
-                        <div className="border-b border-slate-100 px-5 py-4">
-                          <p className="text-[10px] font-black uppercase tracking-[0.35em] text-slate-400">Signed in as</p>
-                          <p className="mt-1 truncate font-heading text-sm font-black tracking-tight text-slate-900">
-                            {displayName}
-                          </p>
-                        </div>
-                        <div className="p-2">
-                          <Link
-                            href={accountHref}
-                            onClick={() => setIsAccountMenuOpen(false)}
-                            className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-slate-900"
-                          >
-                            <span className="material-symbols-outlined text-xl text-primary">person</span>
-                            <span>My Account</span>
-                          </Link>
-                          <Link
-                            href="/account/saved"
-                            onClick={() => setIsAccountMenuOpen(false)}
-                            className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-slate-900"
-                          >
-                            <span className="material-symbols-outlined text-xl text-primary">favorite</span>
-                            <span>Wishlist</span>
-                          </Link>
-                          <button
-                            type="button"
-                            onClick={handleLogout}
-                            className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold text-slate-600 transition-all hover:bg-red-50 hover:text-red-600"
-                          >
-                            <span className="material-symbols-outlined text-xl">logout</span>
-                            <span>Logout</span>
-                          </button>
-                        </div>
+                {/* Account Dropdown */}
+                <div
+                  className={`absolute right-0 top-full z-50 pt-3 transition-all duration-200 ${
+                    isAccountMenuOpen
+                      ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
+                      : 'pointer-events-none translate-y-2 scale-95 opacity-0'
+                  }`}
+                >
+                  <div className="w-64">
+                    <div className="absolute right-6 -top-2 h-4 w-4 rotate-45 border-l border-t border-slate-100 bg-white/95" />
+                    <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white/95 shadow-2xl shadow-slate-200/60 backdrop-blur-xl">
+                      <div className="border-b border-slate-100 px-5 py-4">
+                        <p className="text-[10px] font-black uppercase tracking-[0.35em] text-slate-400">Signed in as</p>
+                        <p className="mt-1 truncate font-heading text-sm font-black tracking-tight text-slate-900">
+                          {displayName}
+                        </p>
+                      </div>
+                      <div className="p-2">
+                        <Link
+                          href={accountHref}
+                          onClick={() => setIsAccountMenuOpen(false)}
+                          className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-slate-900"
+                        >
+                          <span className="material-symbols-outlined text-xl text-primary">person</span>
+                          <span>My Account</span>
+                        </Link>
+                        <Link
+                          href="/account/saved"
+                          onClick={() => setIsAccountMenuOpen(false)}
+                          className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-slate-600 transition-all hover:bg-slate-50 hover:text-slate-900"
+                        >
+                          <span className="material-symbols-outlined text-xl text-primary">favorite</span>
+                          <span>Wishlist</span>
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={handleLogout}
+                          className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold text-slate-600 transition-all hover:bg-red-50 hover:text-red-600"
+                        >
+                          <span className="material-symbols-outlined text-xl">logout</span>
+                          <span>Logout</span>
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleOpenLogin}
-                  className="text-slate-600 hover:text-primary text-sm font-bold transition-colors"
-                >
-                  Login / Register
-                </button>
-              )}
-
+              </div>
+            ) : (
               <button
-                onClick={handleListProperty}
-                className="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-bold tracking-tight hover:bg-primary/90 transition-all shadow-lg"
+                type="button"
+                onClick={handleOpenLogin}
+                className="bg-white border border-slate-200 text-slate-600 px-6 lg:px-8 py-2.5 lg:py-3 rounded-full text-[10px] lg:text-xs font-black uppercase tracking-widest hover:text-primary hover:border-primary/30 transition-all shadow-sm"
               >
-                List Property
+                Login / Register
               </button>
-            </div>
+            )}
+
+            <button
+              onClick={handleListProperty}
+              className="bg-primary text-white px-6 lg:px-8 py-2.5 lg:py-3 rounded-full text-[10px] lg:text-xs font-black uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg active:scale-95"
+            >
+              List Property
+            </button>
           </div>
 
           {/* Mobile: Login + Hamburger */}

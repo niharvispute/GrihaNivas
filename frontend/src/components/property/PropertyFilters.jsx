@@ -313,7 +313,6 @@ export default function PropertyFilters({ basePath, currentQuery }) {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-black text-slate-900 tracking-tighter">Filters</h2>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Refine your search</p>
             </div>
             {activeChips.length > 0 && (
               <span className="bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
