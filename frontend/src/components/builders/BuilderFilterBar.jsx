@@ -160,7 +160,7 @@ export default function BuilderFilterBar({ initialSearch = '', initialIsFeatured
         <button
           type="submit"
           disabled={isPending}
-          className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full font-black text-xs sm:text-sm transition-all active:scale-95 shadow-lg shadow-primary/30 w-full xl:w-auto uppercase tracking-widest disabled:opacity-50"
+          className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full font-black text-xs sm:text-sm transition-all active:scale-95 shadow-lg w-full xl:w-auto uppercase tracking-widest disabled:opacity-50"
         >
           {isPending ? 'Wait...' : 'Search'}
         </button>

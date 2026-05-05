@@ -53,7 +53,7 @@ export default function MyListingsPage() {
         </div>
         <Link 
           href="/list-property" 
-          className="bg-primary text-white px-8 py-4 rounded-full font-black uppercase tracking-widest text-[10px] shadow-2xl shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95"
+          className="bg-primary text-white px-8 py-4 rounded-full font-black uppercase tracking-widest text-[10px] shadow-2xl hover:bg-primary/90 transition-all active:scale-95"
         >
           List New Property
         </Link>
@@ -77,7 +77,7 @@ export default function MyListingsPage() {
             </div>
             <h3 className="font-black text-slate-900 text-2xl mb-2 tracking-tight">No properties listed yet</h3>
             <p className="text-slate-400 font-bold mb-10 text-sm max-w-sm mx-auto uppercase tracking-wide">Ready to showcase your property to Mumbai's elite?</p>
-            <Link href="/list-property" className="bg-primary text-white px-10 py-5 rounded-full font-black uppercase tracking-widest text-xs shadow-2xl shadow-primary/20 hover:bg-primary/90 transition-all inline-block">
+            <Link href="/list-property" className="bg-primary text-white px-10 py-5 rounded-full font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-primary/90 transition-all inline-block">
               Start Listing
             </Link>
           </div>

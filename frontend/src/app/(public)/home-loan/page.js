@@ -26,7 +26,7 @@ export default function HomeLoanPage() {
             <div className="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4 pt-4">
               <Link 
                 href="#apply-form" 
-                className="bg-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-base md:text-lg shadow-2xl shadow-primary/30 hover:bg-primary/90 transition-all leading-none flex items-center justify-center text-center"
+                className="bg-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-base md:text-lg shadow-2xl hover:bg-primary/90 transition-all leading-none flex items-center justify-center text-center"
               >
                 Apply Now
               </Link>

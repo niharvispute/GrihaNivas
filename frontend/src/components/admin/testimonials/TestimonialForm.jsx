@@ -169,7 +169,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
               <button 
                 type="submit"
                 disabled={saving}
-                className="flex-1 md:flex-none px-12 py-5 rounded-full font-black text-xs uppercase tracking-widest bg-primary text-white shadow-2xl shadow-primary/20 hover:scale-105 transition-all active:scale-95 leading-none disabled:opacity-60 disabled:hover:scale-100"
+                className="flex-1 md:flex-none px-12 py-5 rounded-full font-black text-xs uppercase tracking-widest bg-primary text-white shadow-2xl hover:scale-105 transition-all active:scale-95 leading-none disabled:opacity-60 disabled:hover:scale-100"
               >
                 {saving ? 'Saving...' : 'Sync Testimonial'}
               </button>

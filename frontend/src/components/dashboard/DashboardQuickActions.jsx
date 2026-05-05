@@ -56,7 +56,7 @@ export default function DashboardQuickActions({ hasListings = false, latestListi
           href={action.href}
           className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all active:scale-[0.98] group relative overflow-hidden ${
             action.primary
-              ? 'bg-primary text-white shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30'
+              ? 'bg-primary text-white shadow-lg hover:shadow-xl'
               : 'bg-white text-slate-900 border border-slate-100 hover:border-primary/20 hover:shadow-lg hover:shadow-slate-200/80'
           }`}
         >

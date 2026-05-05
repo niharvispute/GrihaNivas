@@ -17,7 +17,7 @@ const BlogManagementTable = ({ blogs, onEdit, onDelete, onAddNew }) => {
           </button>
           <button 
             onClick={onAddNew}
-            className="px-8 py-3 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-3"
+            className="px-8 py-3 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-3"
           >
             <span className="material-symbols-outlined text-lg">add</span>
             New Insight

@@ -67,7 +67,7 @@ export default function SavedPropertiesPage() {
             </div>
             <h3 className="font-heading font-black text-slate-900 text-lg sm:text-xl md:text-2xl mb-2">No saved properties yet</h3>
             <p className="text-slate-400 font-bold mb-6 sm:mb-8 text-sm sm:text-base">Start exploring and save the ones you love.</p>
-            <Link href="/buy" className="bg-primary text-white px-6 sm:px-10 py-3 sm:py-4 rounded-full font-heading font-black uppercase tracking-widest text-[10px] sm:text-xs shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all inline-block">
+            <Link href="/buy" className="bg-primary text-white px-6 sm:px-10 py-3 sm:py-4 rounded-full font-heading font-black uppercase tracking-widest text-[10px] sm:text-xs shadow-xl hover:bg-primary/90 transition-all inline-block">
               Browse Listings
             </Link>
           </div>

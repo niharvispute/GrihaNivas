@@ -54,7 +54,7 @@ export default function WhatsAppCTA({ propertyTitle }) {
             type="button"
             aria-label="View current offer"
             onClick={() => setOfferOpen(true)}
-            className="w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 active:scale-95 bg-primary text-white shadow-primary/40 hover:shadow-primary/60 hover:scale-105 relative"
+            className="w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 active:scale-95 bg-primary text-white hover:scale-105 relative"
           >
             {/* Pulse ring */}
             <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-30 pointer-events-none" />
@@ -102,7 +102,7 @@ export default function WhatsAppCTA({ propertyTitle }) {
             onClick={() => setServicesOpen((o) => !o)}
             className={`w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 active:scale-95 ${
               servicesOpen
-                ? 'bg-primary text-white shadow-primary/40'
+                ? 'bg-primary text-white'
                 : 'bg-white border border-slate-200 text-slate-700 hover:border-primary hover:text-primary hover:shadow-xl'
             }`}
           >
@@ -206,7 +206,7 @@ export default function WhatsAppCTA({ propertyTitle }) {
                       target={card.buttonUrl.startsWith('http') ? '_blank' : '_self'}
                       rel="noreferrer noopener"
                       onClick={() => setOfferOpen(false)}
-                      className="inline-flex items-center gap-1.5 mt-4 px-4 py-2 rounded-full bg-primary text-white text-xs font-black uppercase tracking-widest shadow-md shadow-primary/20 hover:bg-primary/90 transition-colors"
+                      className="inline-flex items-center gap-1.5 mt-4 px-4 py-2 rounded-full bg-primary text-white text-xs font-black uppercase tracking-widest shadow-md hover:bg-primary/90 transition-colors"
                     >
                       Learn More
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">

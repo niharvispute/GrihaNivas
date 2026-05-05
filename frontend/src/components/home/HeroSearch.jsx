@@ -86,7 +86,7 @@ export default function HeroSearch() {
               onClick={() => setIntent(option.value)}
               className={`px-5 sm:px-7 py-2.5 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-widest transition-all duration-200 ${
                 intent === option.value
-                  ? 'bg-primary text-white shadow-lg shadow-primary/40'
+                  ? 'bg-primary text-white shadow-lg'
                   : 'text-slate-500 hover:text-slate-800 hover:bg-white/60'
               }`}
             >
@@ -194,7 +194,7 @@ export default function HeroSearch() {
         <div className="p-2.5">
           <button
             type="submit"
-            className="w-full h-full min-h-[52px] bg-primary hover:bg-primary/90 active:scale-95 text-white font-black text-xs uppercase tracking-widest rounded-xl sm:rounded-full flex items-center justify-center gap-2.5 px-7 shadow-lg shadow-primary/30 transition-all duration-200"
+            className="w-full h-full min-h-[52px] bg-primary hover:bg-primary/90 active:scale-95 text-white font-black text-xs uppercase tracking-widest rounded-xl sm:rounded-full flex items-center justify-center gap-2.5 px-7 shadow-lg transition-all duration-200"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

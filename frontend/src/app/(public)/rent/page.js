@@ -186,7 +186,7 @@ export default async function PropertiesPage({ searchParams }) {
               <Link
                 key={page}
                 href={buildListingHref(BASE_PATH, currentQuery, page)}
-                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm transition-colors ${page === currentPage ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'hover:bg-slate-100 text-slate-600'}`}
+                className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm transition-colors ${page === currentPage ? 'bg-primary text-white shadow-lg' : 'hover:bg-slate-100 text-slate-600'}`}
               >
                 {page}
               </Link>

@@ -42,7 +42,7 @@ export default function UserDashboardPage() {
             <span className="material-symbols-outlined text-lg">calendar_today</span>
             This Month
           </button>
-          <button className="px-5 py-2.5 bg-primary text-white rounded-xl shadow-lg shadow-primary/20 text-xs font-bold hover:scale-105 transition-all flex items-center gap-2">
+          <button className="px-5 py-2.5 bg-primary text-white rounded-xl shadow-lg text-xs font-bold hover:scale-105 transition-all flex items-center gap-2">
             <span className="material-symbols-outlined text-lg">filter_list</span>
             Filters
           </button>

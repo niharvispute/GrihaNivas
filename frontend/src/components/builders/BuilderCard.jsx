@@ -74,7 +74,7 @@ export default function BuilderCard({ builder }) {
         {/* CTA */}
         <Link
           href={`/builders/${builder.slug}`}
-          className="mt-auto h-8 sm:h-9 flex items-center justify-center bg-primary hover:bg-primary/90 text-white rounded-xl font-bold text-[10px] sm:text-xs uppercase tracking-wider transition-all hover:shadow-lg hover:shadow-primary/30"
+          className="mt-auto h-8 sm:h-9 flex items-center justify-center bg-primary hover:bg-primary/90 text-white rounded-xl font-bold text-[10px] sm:text-xs uppercase tracking-wider transition-all hover:shadow-lg"
         >
           View Builder
         </Link>

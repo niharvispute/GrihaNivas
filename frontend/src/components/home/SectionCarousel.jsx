@@ -83,7 +83,7 @@ export default function SectionCarousel({
               className={`w-9 h-9 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
                 scrollX >= 0
                   ? 'border-slate-100 text-slate-200 cursor-not-allowed bg-slate-50/50'
-                  : 'border-primary/10 bg-white text-slate-700 hover:border-primary hover:text-primary hover:shadow-lg hover:shadow-primary/20'
+                  : 'border-primary/10 bg-white text-slate-700 hover:border-primary hover:text-primary hover:shadow-lg'
               }`}
             >
               <span className="material-symbols-outlined text-base md:text-2xl">west</span>
@@ -95,7 +95,7 @@ export default function SectionCarousel({
               className={`w-9 h-9 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
                 scrollX <= -maxScroll
                   ? 'border-slate-100 text-slate-200 cursor-not-allowed bg-slate-50/50'
-                  : 'border-primary bg-primary text-white hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30'
+                  : 'border-primary bg-primary text-white hover:bg-primary/90 hover:shadow-lg'
               }`}
             >
               <span className="material-symbols-outlined text-base md:text-2xl">east</span>

@@ -27,7 +27,7 @@ export default function ListingHero() {
           <div className="flex flex-col sm:flex-row gap-4">
             <Link 
               href="#submit-form" 
-              className="bg-primary text-white px-10 py-4 rounded-full font-bold text-lg text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+              className="bg-primary text-white px-10 py-4 rounded-full font-bold text-lg text-center hover:bg-primary/90 transition-all shadow-lg"
             >
               Get Started
             </Link>

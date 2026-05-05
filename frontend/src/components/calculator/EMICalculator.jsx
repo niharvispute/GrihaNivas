@@ -377,7 +377,7 @@ const EMICalculator = () => {
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center">
             <Link 
               href={`/contact?message=I would like to speak to an advisor regarding my home loan EMI calculation for a loan amount of ₹${(loanAmount / 100000).toFixed(1)} Lacs at ${interestRate}% interest for ${tenure} years.`}
-              className="bg-primary hover:bg-primary/90 text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-base md:text-lg shadow-xl shadow-primary/20 transition-all active:scale-95 w-full sm:w-auto leading-none text-center"
+              className="bg-primary hover:bg-primary/90 text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-base md:text-lg shadow-xl transition-all active:scale-95 w-full sm:w-auto leading-none text-center"
             >
               Speak to Advisor
             </Link>

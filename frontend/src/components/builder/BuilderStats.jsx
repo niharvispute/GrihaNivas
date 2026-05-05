@@ -3,7 +3,7 @@ import React from 'react';
 const BuilderStats = ({ builder }) => {
   const stats = [
     { label: "Total Projects", value: builder.totalProjects, bg: "bg-zinc-800/50" },
-    { label: "Ongoing Projects", value: builder.ongoingProjects, bg: "bg-primary text-white shadow-2xl shadow-primary/30", isHigh: true },
+    { label: "Ongoing Projects", value: builder.ongoingProjects, bg: "bg-primary text-white shadow-2xl", isHigh: true },
     { label: "Completed Deliveries", value: builder.completedProjects, bg: "bg-zinc-800/50" },
   ];
 

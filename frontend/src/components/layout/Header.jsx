@@ -291,7 +291,7 @@ export default function Header() {
 
               <button
                 onClick={handleListProperty}
-                className="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-bold tracking-tight hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                className="bg-primary text-white px-6 py-2.5 rounded-full text-sm font-bold tracking-tight hover:bg-primary/90 transition-all shadow-lg"
               >
                 List Property
               </button>
@@ -442,7 +442,7 @@ export default function Header() {
           <div className="px-4 pb-8 space-y-3 border-t border-slate-100 pt-6">
             <button
               onClick={handleListProperty}
-              className="w-full bg-primary text-white py-3.5 rounded-full font-bold text-sm tracking-tight hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+              className="w-full bg-primary text-white py-3.5 rounded-full font-bold text-sm tracking-tight hover:bg-primary/90 transition-all shadow-lg"
             >
               List Your Property
             </button>

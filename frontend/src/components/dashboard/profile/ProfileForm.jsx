@@ -96,7 +96,7 @@ export default function ProfileForm({ user, onUpdate }) {
 
           <div className="pt-4 flex justify-center sm:justify-end">
             <button
-              className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 bg-primary text-white font-heading font-black uppercase tracking-widest text-[11px] sm:text-xs rounded-full shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 bg-primary text-white font-heading font-black uppercase tracking-widest text-[11px] sm:text-xs rounded-full shadow-lg hover:scale-105 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
               type="submit"
               disabled={saving}
             >

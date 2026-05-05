@@ -204,7 +204,7 @@ export default function BlogEditorForm({ initialData = {}, onSave, onCancel, isS
               type="button"
               disabled={isSaving}
               onClick={handlePublish}
-              className="flex-1 md:flex-none px-12 py-5 rounded-full font-black text-xs uppercase tracking-widest bg-primary text-white shadow-2xl shadow-primary/20 hover:bg-primary/90 hover:scale-105 transition-all active:scale-95 leading-none disabled:opacity-50"
+              className="flex-1 md:flex-none px-12 py-5 rounded-full font-black text-xs uppercase tracking-widest bg-primary text-white shadow-2xl hover:bg-primary/90 hover:scale-105 transition-all active:scale-95 leading-none disabled:opacity-50"
             >
               {isSaving ? 'Publishing…' : 'Publish Insight'}
             </button>

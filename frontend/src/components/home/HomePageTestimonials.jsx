@@ -124,7 +124,7 @@ export default function HomePageTestimonials() {
           <p className="text-slate-600 font-bold mb-4">Ready to compare verified options?</p>
           <Link
             href="/buy"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white font-black text-sm rounded-full shadow-lg shadow-primary/30 hover:scale-105 active:scale-95 transition-all"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white font-black text-sm rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all"
           >
             Explore Properties
             <span className="material-symbols-outlined text-lg">arrow_forward</span>

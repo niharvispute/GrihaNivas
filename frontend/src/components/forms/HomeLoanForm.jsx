@@ -210,7 +210,7 @@ export default function HomeLoanForm({ title = "Apply for Home Loan" }) {
 
         <button 
           disabled={isSubmitting}
-          className="w-full bg-primary text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95"
+          className="w-full bg-primary text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-primary/90 transition-all active:scale-95"
           type="submit"
         >
           {isSubmitting ? 'Submitting...' : 'Check Eligibility'}

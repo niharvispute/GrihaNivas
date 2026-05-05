@@ -100,7 +100,7 @@ export default function TermsAndConditionsPage() {
                     <h4 className="font-black text-slate-900 uppercase text-sm mb-1 tracking-tight">Need clarification?</h4>
                     <p className="text-slate-400 text-xs font-bold">Our compliance team is available Mon-Fri.</p>
                   </div>
-                  <button className="bg-primary text-white px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                  <button className="bg-primary text-white px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all">
                     Download PDF Version
                   </button>
                 </div>

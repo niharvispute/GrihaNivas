@@ -78,7 +78,7 @@ const BlogBody = ({ post }) => {
             {/* Pro Tip Callout */}
             <div className="bg-primary/5 rounded-2xl p-5 sm:p-6 lg:p-8 mb-8 sm:mb-10 lg:mb-12 border border-primary/10 flex items-start gap-4 sm:gap-6 relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-2xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
-              <div className="bg-primary text-white p-2.5 sm:p-3 rounded-2xl shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform shrink-0">
+              <div className="bg-primary text-white p-2.5 sm:p-3 rounded-2xl shadow-lg group-hover:scale-110 transition-transform shrink-0">
                 <span className="material-symbols-outlined drop-shadow-md">lightbulb</span>
               </div>
               <div>
@@ -100,7 +100,7 @@ const BlogBody = ({ post }) => {
             <h4 className="text-2xl sm:text-3xl font-black tracking-tighter mb-3 sm:mb-4 leading-tight">Ready to find your <br/>piece of the sky?</h4>
             <p className="text-slate-400 font-bold leading-relaxed text-sm sm:text-base">Access our exclusive, off-market listings of luxury penthouses across South Mumbai.</p>
           </div>
-          <button className="relative z-10 w-full md:w-auto bg-primary text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/40 hover:scale-110 transition-transform active:scale-95 whitespace-nowrap">
+          <button className="relative z-10 w-full md:w-auto bg-primary text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-110 transition-transform active:scale-95 whitespace-nowrap">
             Browse Penthouses
           </button>
         </div>

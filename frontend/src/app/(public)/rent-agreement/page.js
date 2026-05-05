@@ -47,7 +47,7 @@ export default function RentAgreementPage() {
             <div className="flex flex-wrap gap-5">
               <button 
                 onClick={() => document.getElementById('registration-form')?.scrollIntoView({ behavior: 'smooth' })}
-                className="bg-primary text-white px-12 py-5 rounded-full font-black text-xl shadow-2xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all"
+                className="bg-primary text-white px-12 py-5 rounded-full font-black text-xl shadow-2xl hover:scale-105 active:scale-95 transition-all"
               >
                 Start Now
               </button>
@@ -236,7 +236,7 @@ export default function RentAgreementPage() {
                   <input className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" placeholder="E.g. Broker, Legal Advisor" type="text"/>
                 </div>
               )}
-              <button className="w-full bg-primary text-white py-6 rounded-2xl font-black text-xl shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all">
+              <button className="w-full bg-primary text-white py-6 rounded-2xl font-black text-xl shadow-2xl hover:scale-[1.02] active:scale-95 transition-all">
                 Submit Request
               </button>
               <p className="text-[9px] text-center text-slate-400 uppercase tracking-[0.2em] font-bold">

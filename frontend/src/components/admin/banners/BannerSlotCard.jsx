@@ -106,7 +106,7 @@ const BannerSlotCard = ({ banner, onReplace, uploading = false }) => {
                   type="button"
                   onClick={() => onReplace(banner)}
                   disabled={uploading}
-                  className="flex-1 flex items-center justify-center gap-3 bg-primary text-white font-black text-xs uppercase tracking-widest py-5 px-8 rounded-full hover:bg-primary/90 transition-all shadow-2xl shadow-primary/30 active:scale-95 leading-none"
+                  className="flex-1 flex items-center justify-center gap-3 bg-primary text-white font-black text-xs uppercase tracking-widest py-5 px-8 rounded-full hover:bg-primary/90 transition-all shadow-2xl active:scale-95 leading-none"
                 >
                   <span className="material-symbols-outlined">cloud_upload</span>
                   {uploading ? 'Uploading...' : isInactive ? 'Upload Asset' : 'Replace Image'}

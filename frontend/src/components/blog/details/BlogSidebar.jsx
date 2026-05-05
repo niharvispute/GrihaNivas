@@ -35,7 +35,7 @@ const BlogSidebar = ({ relatedPosts = [], trendingAssets = [] }) => {
       </div>
 
       {/* Trending Card Widget */}
-      <div className="bg-primary rounded-2xl p-6 sm:p-8 lg:p-10 text-white relative overflow-hidden shadow-2xl shadow-primary/30 group">
+      <div className="bg-primary rounded-2xl p-6 sm:p-8 lg:p-10 text-white relative overflow-hidden shadow-2xl group">
         <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-1000"></div>
         <h4 className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em] text-white/50 mb-6 sm:mb-8 lg:mb-10 border-b border-white/10 pb-4">
           Trending Assets

@@ -412,7 +412,7 @@ export default function MultiStageListingForm() {
       <aside className="hidden lg:flex flex-col w-80 bg-white border-r border-slate-200 sticky top-0 h-screen shadow-sm z-50">
         <div className="p-8 border-b border-slate-50">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+            <div className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center shadow-lg">
               <span className="material-symbols-outlined text-white text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>apartment</span>
             </div>
             <span className="text-xl font-black text-slate-900 tracking-tighter">Bricks Listing</span>
@@ -569,7 +569,7 @@ export default function MultiStageListingForm() {
                       <button
                         key={bhk}
                         onClick={() => handleToggle('bhk', bhk)}
-                        className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all ${form.bhk === bhk ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-white border border-slate-100 text-slate-400 hover:border-slate-200'}`}
+                        className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all ${form.bhk === bhk ? 'bg-primary text-white shadow-lg' : 'bg-white border border-slate-100 text-slate-400 hover:border-slate-200'}`}
                       >
                         {bhk}
                       </button>
@@ -626,7 +626,7 @@ export default function MultiStageListingForm() {
                         <button 
                           key={age}
                           onClick={() => handleToggle('age', age)}
-                          className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all ${form.age === age ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-white border border-slate-100 text-slate-400 hover:border-slate-200'}`}
+                          className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all ${form.age === age ? 'bg-primary text-white shadow-lg' : 'bg-white border border-slate-100 text-slate-400 hover:border-slate-200'}`}
                         >
                           {age}
                         </button>
@@ -640,7 +640,7 @@ export default function MultiStageListingForm() {
                         <button
                           key={count}
                           onClick={() => handleToggle('bathrooms', count)}
-                          className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all ${form.bathrooms === count ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-white border border-slate-100 text-slate-400 hover:border-slate-200'}`}
+                          className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all ${form.bathrooms === count ? 'bg-primary text-white shadow-lg' : 'bg-white border border-slate-100 text-slate-400 hover:border-slate-200'}`}
                         >
                           {count}
                         </button>
@@ -960,11 +960,11 @@ export default function MultiStageListingForm() {
               </button>
             )}
             {step < 5 ? (
-              <button onClick={handleNext} className="flex-[2] flex items-center justify-center gap-2 py-4 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/20 active:scale-95 transition-all">
+              <button onClick={handleNext} className="flex-[2] flex items-center justify-center gap-2 py-4 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-all">
                 Next <span className="material-symbols-outlined text-sm">arrow_forward</span>
               </button>
             ) : (
-              <button onClick={handleSubmit} disabled={isSubmitting || !form.readyToProceed} className="flex-[2] flex items-center justify-center gap-2 py-4 bg-emerald-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-600/20 disabled:opacity-30 active:scale-95 transition-all">
+              <button onClick={handleSubmit} disabled={isSubmitting || !form.readyToProceed} className="flex-[2] flex items-center justify-center gap-2 py-4 bg-emerald-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg disabled:opacity-30 active:scale-95 transition-all">
                 {isSubmitting ? 'Submitting...' : 'Confirm'} <span className="material-symbols-outlined text-sm">send</span>
               </button>
             )}

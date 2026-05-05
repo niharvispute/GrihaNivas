@@ -25,7 +25,7 @@ export default function SavedPropertyCard({ property, onUnsave }) {
           </div>
         )}
         <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex gap-2">
-          <span className="bg-primary text-white text-[8px] sm:text-[10px] font-black px-2 sm:px-3 py-1 rounded-full tracking-widest uppercase shadow-lg shadow-primary/20">
+          <span className="bg-primary text-white text-[8px] sm:text-[10px] font-black px-2 sm:px-3 py-1 rounded-full tracking-widest uppercase shadow-lg">
             {property.type || 'BUY'}
           </span>
         </div>
@@ -84,7 +84,7 @@ export default function SavedPropertyCard({ property, onUnsave }) {
           </Link>
           <Link
             href={`${detailHref}#lead-form`}
-            className="flex-1 bg-primary text-white font-heading font-black uppercase tracking-widest text-[10px] sm:text-xs py-2 sm:py-3 lg:py-4 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-105 transition-all active:scale-[0.98] text-center"
+            className="flex-1 bg-primary text-white font-heading font-black uppercase tracking-widest text-[10px] sm:text-xs py-2 sm:py-3 lg:py-4 rounded-full shadow-lg hover:scale-105 transition-all active:scale-[0.98] text-center"
           >
             Enquire
           </Link>

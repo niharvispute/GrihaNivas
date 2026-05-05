@@ -53,7 +53,7 @@ const BuilderCard = ({ builder }) => {
         <div className="grid grid-cols-2 gap-3">
           <Link 
             href={`/builders/${builder.slug}`}
-            className="py-3 px-4 bg-primary text-white text-[10px] font-black uppercase tracking-widest text-center rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/10 active:scale-95 leading-none"
+            className="py-3 px-4 bg-primary text-white text-[10px] font-black uppercase tracking-widest text-center rounded-xl hover:bg-primary/90 transition-all shadow-lg active:scale-95 leading-none"
           >
             Details
           </Link>

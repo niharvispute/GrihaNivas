@@ -37,7 +37,7 @@ export default function ComparePage() {
         <div className="flex items-center gap-4 md:gap-6 mb-8 md:mb-16">
           <Link 
             href="/buy"
-            className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-primary shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all group"
+            className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-primary shadow-sm hover:shadow-xl transition-all group"
           >
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
@@ -93,7 +93,7 @@ export default function ComparePage() {
             </p>
             <Link 
               href="/buy" 
-              className="px-8 py-4 md:px-10 md:py-5 bg-primary text-white rounded-full font-black text-[10px] md:text-xs uppercase tracking-widest shadow-2xl shadow-primary/20 hover:bg-primary/90 transition-all"
+              className="px-8 py-4 md:px-10 md:py-5 bg-primary text-white rounded-full font-black text-[10px] md:text-xs uppercase tracking-widest shadow-2xl hover:bg-primary/90 transition-all"
             >
               Browse Listings
             </Link>
@@ -113,7 +113,7 @@ export default function ComparePage() {
                 <p className="text-slate-400 text-sm md:text-lg font-bold leading-relaxed mb-8 md:mb-10">
                   Our area experts can provide a personalized feasibility report comparing appreciation potential and more.
                 </p>
-                <button className="w-full md:w-auto px-8 py-4 md:px-10 md:py-5 bg-primary text-white rounded-full font-black text-[10px] md:text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-2xl shadow-primary/40 leading-none">
+                <button className="w-full md:w-auto px-8 py-4 md:px-10 md:py-5 bg-primary text-white rounded-full font-black text-[10px] md:text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-2xl leading-none">
                   Request Expert Consultation
                 </button>
               </div>

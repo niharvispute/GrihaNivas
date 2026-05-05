@@ -145,7 +145,7 @@ const BlogComments = ({ blogId, comments = [] }) => {
                 </p>
               )}
               <button
-                className="w-full sm:w-auto bg-primary text-white px-10 sm:px-12 py-4 sm:py-5 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/30 hover:scale-105 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto bg-primary text-white px-10 sm:px-12 py-4 sm:py-5 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                 type="submit"
                 disabled={isSubmitting}
               >

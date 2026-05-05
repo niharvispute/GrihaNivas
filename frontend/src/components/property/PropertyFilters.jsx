@@ -246,7 +246,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
         <button
           type="submit"
           onClick={() => isMobile && setIsDrawerOpen(false)}
-          className="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary/90 transition-all active:scale-95 shadow-xl shadow-primary/20 text-sm uppercase tracking-widest"
+          className="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary/90 transition-all active:scale-95 shadow-xl text-sm uppercase tracking-widest"
         >
           Update Results
         </button>
@@ -294,14 +294,14 @@ export default function PropertyFilters({ basePath, currentQuery }) {
 
       {/* Desktop Sidebar */}
       <aside className="hidden lg:block w-80 shrink-0">
-        <div className="sticky top-24 bg-white rounded-2xl p-8 flex flex-col gap-8 shadow-2xl shadow-slate-200/50 border border-slate-100">
+        <div className="sticky top-24 bg-white rounded-2xl p-8 flex flex-col gap-8 shadow-2xl border border-slate-100">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-black text-slate-900 tracking-tighter">Filters</h2>
               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Refine your search</p>
             </div>
             {activeChips.length > 0 && (
-              <span className="bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg shadow-primary/20">
+              <span className="bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg">
                 {activeChips.length}
               </span>
             )}

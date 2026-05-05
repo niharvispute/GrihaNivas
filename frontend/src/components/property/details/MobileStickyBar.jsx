@@ -29,7 +29,7 @@ export default function MobileStickyBar({ property }) {
         <button
           onClick={scrollToForm}
           type="button"
-          className="h-12 flex-1 bg-primary text-white rounded-full font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all active:scale-[0.98] shadow-lg shadow-primary/20"
+          className="h-12 flex-1 bg-primary text-white rounded-full font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all active:scale-[0.98] shadow-lg"
         >
           Enquire
         </button>

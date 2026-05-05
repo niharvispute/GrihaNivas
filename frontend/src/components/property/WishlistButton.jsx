@@ -211,8 +211,8 @@ export default function WishlistButton({ propertyId, initialSaved = false, varia
         aria-label={saved ? 'Remove from Wishlist' : 'Save to Wishlist'}
         className={`w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 disabled:opacity-50 ${
           saved
-            ? 'bg-red-500 text-white shadow-lg shadow-red-500/30'
-            : 'bg-white/20 backdrop-blur-md text-white hover:bg-red-500 hover:shadow-lg hover:shadow-red-500/30'
+            ? 'bg-red-500 text-white shadow-lg'
+            : 'bg-white/20 backdrop-blur-md text-white hover:bg-red-500 hover:shadow-lg'
         } ${className}`}
       >
         {heartIcon('currentColor', 20)}

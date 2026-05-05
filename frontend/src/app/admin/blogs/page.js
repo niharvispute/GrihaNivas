@@ -137,7 +137,7 @@ export default function AdminBlogCMS() {
           <div className="flex items-center gap-4 mb-10">
             <button 
               onClick={() => { setEditingPost(null); setIsAddingNew(false); }}
-              className="w-12 h-12 rounded-full bg-white border border-slate-100 flex items-center justify-center text-primary shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all active:scale-95"
+              className="w-12 h-12 rounded-full bg-white border border-slate-100 flex items-center justify-center text-primary shadow-sm hover:shadow-xl transition-all active:scale-95"
             >
               <span className="material-symbols-outlined text-xl">arrow_back</span>
             </button>

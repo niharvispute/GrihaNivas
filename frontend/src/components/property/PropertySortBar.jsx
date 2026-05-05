@@ -52,7 +52,7 @@ export default function PropertySortBar({ basePath, currentQuery }) {
             <Link
               key={option.value}
               href={buildSortHref(basePath, currentQuery, option.value)}
-              className={`flex-none px-3 sm:px-4 py-1.5 rounded-full text-[9px] sm:text-xs font-bold transition-all border whitespace-nowrap ${activeSort === option.value ? 'bg-primary text-white shadow-lg shadow-primary/20 border-primary' : 'bg-white text-slate-500 hover:bg-slate-100 border-slate-200'}`}
+              className={`flex-none px-3 sm:px-4 py-1.5 rounded-full text-[9px] sm:text-xs font-bold transition-all border whitespace-nowrap ${activeSort === option.value ? 'bg-primary text-white shadow-lg border-primary' : 'bg-white text-slate-500 hover:bg-slate-100 border-slate-200'}`}
             >
               {option.label}
             </Link>

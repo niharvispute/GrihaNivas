@@ -284,7 +284,7 @@ export default function AdminOffersPage() {
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center justify-center rounded-2xl bg-primary px-6 py-3 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-colors disabled:opacity-50"
+              className="inline-flex items-center justify-center rounded-2xl bg-primary px-6 py-3 text-xs font-black uppercase tracking-widest text-white shadow-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {saving ? 'Saving...' : offer ? 'Update Offer' : 'Create Offer'}
             </button>

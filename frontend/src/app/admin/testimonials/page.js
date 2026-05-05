@@ -106,7 +106,7 @@ export default function TestimonialManagerPage() {
           <ExportButton onExport={() => exportTestimonials()} />
           <button
             onClick={handleAddNew}
-            className="px-10 py-5 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-4 leading-none"
+            className="px-10 py-5 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-4 leading-none"
           >
             <span className="material-symbols-outlined font-black">add</span>
             Add Sentiment

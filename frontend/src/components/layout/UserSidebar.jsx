@@ -97,7 +97,7 @@ export default function UserSidebar() {
               href={link.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl font-heading text-sm font-bold transition-all duration-200 ${
                 isActive
-                  ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                  ? 'bg-primary text-white shadow-lg'
                   : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
               }`}
               onClick={() => setIsMobileOpen(false)}

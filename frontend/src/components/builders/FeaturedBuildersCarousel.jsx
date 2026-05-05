@@ -101,7 +101,7 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
           <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4">
             <Link
               href={`/builders/${activeBuilder?.slug}`}
-              className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-8 py-2.5 sm:py-4 rounded-2xl font-black transition-all active:scale-95 shadow-lg shadow-primary/30 text-[10px] sm:text-sm uppercase tracking-widest text-center"
+              className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-8 py-2.5 sm:py-4 rounded-2xl font-black transition-all active:scale-95 shadow-lg text-[10px] sm:text-sm uppercase tracking-widest text-center"
             >
               View Details
             </Link>

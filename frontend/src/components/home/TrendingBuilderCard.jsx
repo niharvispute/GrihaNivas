@@ -74,7 +74,7 @@ export default function TrendingBuilderCard({ builder }) {
         {/* CTA */}
         <Link
           href={detailHref}
-          className="mt-auto h-9 sm:h-10 flex items-center justify-center bg-gradient-to-r from-primary to-primary/85 text-white rounded-lg font-black text-[10px] sm:text-xs uppercase tracking-tighter hover:shadow-lg hover:shadow-primary/40 transition-all"
+          className="mt-auto h-9 sm:h-10 flex items-center justify-center bg-gradient-to-r from-primary to-primary/85 text-white rounded-lg font-black text-[10px] sm:text-xs uppercase tracking-tighter hover:shadow-lg transition-all"
         >
           View Builder
         </Link>

@@ -69,7 +69,7 @@ export default function BlogBottomSubscription() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="bg-primary text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/30 hover:scale-105 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed whitespace-nowrap"
+            className="bg-primary text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed whitespace-nowrap"
           >
             {isSubmitting ? 'Subscribing...' : 'Subscribe'}
           </button>

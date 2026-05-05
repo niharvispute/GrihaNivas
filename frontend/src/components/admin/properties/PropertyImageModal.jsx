@@ -85,7 +85,7 @@ export default function PropertyImageModal({ property, onClose, onHeroUpdated })
                     onClick={() => handleSetHero(img)}
                     className={`relative rounded-2xl overflow-hidden aspect-video group transition-all ${
                       hero
-                        ? 'ring-2 ring-primary cursor-default shadow-lg shadow-primary/20'
+                        ? 'ring-2 ring-primary cursor-default shadow-lg'
                         : 'ring-1 ring-slate-200 hover:ring-primary/40 hover:shadow-md cursor-pointer'
                     }`}
                   >

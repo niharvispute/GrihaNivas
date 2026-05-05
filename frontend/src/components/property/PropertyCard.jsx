@@ -32,7 +32,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
   const locationLabel = property?.location || SYSTEM_DEFAULT_CITY;
 
   return (
-    <article className={`group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full'}`}>
+    <article className={`group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-lg transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full'}`}>
       {/* Image */}
       <div className={`relative ${isHorizontal ? 'w-full lg:w-2/5 h-52 sm:h-64 lg:h-auto' : 'h-44 sm:h-48 flex-none'} overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50`}>
         {property.image ? (
@@ -112,7 +112,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
           <div className="flex gap-2 mt-2">
             <Link
               href={detailHref}
-              className="flex-1 bg-primary text-white py-2.5 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 transition-all text-center"
+              className="flex-1 bg-primary text-white py-2.5 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-primary/90 hover:shadow-lg transition-all text-center"
             >
               Inquire Now
             </Link>
@@ -127,7 +127,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
           <div className="flex flex-col gap-2 mt-auto">
             <Link
               href={detailHref}
-              className="w-full h-9 sm:h-10 flex items-center justify-center bg-primary hover:bg-primary/90 text-white rounded-xl font-black text-[10px] sm:text-xs uppercase tracking-tighter hover:shadow-lg hover:shadow-primary/30 transition-all"
+              className="w-full h-9 sm:h-10 flex items-center justify-center bg-primary hover:bg-primary/90 text-white rounded-xl font-black text-[10px] sm:text-xs uppercase tracking-tighter hover:shadow-lg transition-all"
             >
               View Property
             </Link>

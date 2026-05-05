@@ -17,7 +17,7 @@ export default function HowItWorks() {
           <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-slate-100 -translate-y-1/2 z-0"></div>
           {steps.map((step, idx) => (
             <div key={idx} className="relative z-10 bg-white flex flex-col items-center text-center p-8 group">
-              <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-heading font-bold text-xl mb-6 ring-8 ring-white shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-heading font-bold text-xl mb-6 ring-8 ring-white shadow-lg group-hover:scale-110 transition-transform">
                 {step.number}
               </div>
               <h4 className="font-heading font-bold mb-2 text-slate-800 text-lg">{step.title}</h4>

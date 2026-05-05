@@ -93,7 +93,7 @@ export default async function BlogsPage({ searchParams }) {
               <Link
                 key={cat.label}
                 href={buildBlogsHref(1, { category: cat.value })}
-                className={`px-5 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm font-black tracking-tight transition-all ${currentCategory === cat.value ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
+                className={`px-5 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm font-black tracking-tight transition-all ${currentCategory === cat.value ? 'bg-primary text-white shadow-xl' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
               >
                 {cat.label}
               </Link>
@@ -168,7 +168,7 @@ export default async function BlogsPage({ searchParams }) {
                 </p>
                 <Link 
                   href={`/blogs/${featured.slug}`} 
-                  className="w-full sm:w-fit flex items-center justify-center gap-2 sm:gap-3 bg-primary text-white px-6 sm:px-8 lg:px-10 py-3.5 sm:py-4 lg:py-5 rounded-full font-black text-sm sm:text-base lg:text-lg hover:gap-5 transition-all shadow-2xl shadow-primary/20"
+                  className="w-full sm:w-fit flex items-center justify-center gap-2 sm:gap-3 bg-primary text-white px-6 sm:px-8 lg:px-10 py-3.5 sm:py-4 lg:py-5 rounded-full font-black text-sm sm:text-base lg:text-lg hover:gap-5 transition-all shadow-2xl"
                 >
                   Read Full Insight
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -218,7 +218,7 @@ export default async function BlogsPage({ searchParams }) {
                 <Link
                   key={page}
                   href={buildBlogsHref(page)}
-                  className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center text-sm sm:text-base font-black transition-all ${page === currentPage ? 'bg-primary text-white shadow-xl shadow-primary/20' : 'text-slate-400 bg-slate-50 hover:bg-slate-100'}`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center text-sm sm:text-base font-black transition-all ${page === currentPage ? 'bg-primary text-white shadow-xl' : 'text-slate-400 bg-slate-50 hover:bg-slate-100'}`}
                 >
                   {page}
                 </Link>

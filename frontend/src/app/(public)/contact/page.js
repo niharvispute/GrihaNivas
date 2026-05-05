@@ -224,7 +224,7 @@ function ContactForm() {
             </div>
             <button 
               disabled={isSubmitting}
-              className="w-full md:w-auto bg-primary text-white px-10 md:px-12 py-4 md:py-5 rounded-full font-black text-base md:text-lg tracking-tight hover:bg-primary/90 transition-all transform active:scale-95 flex items-center justify-center gap-2 md:gap-3 shadow-2xl shadow-primary/30 leading-none" 
+              className="w-full md:w-auto bg-primary text-white px-10 md:px-12 py-4 md:py-5 rounded-full font-black text-base md:text-lg tracking-tight hover:bg-primary/90 transition-all transform active:scale-95 flex items-center justify-center gap-2 md:gap-3 shadow-2xl leading-none" 
               type="submit"
             >
               {isSubmitting ? 'Sending...' : 'Send Message'}
@@ -268,7 +268,7 @@ function ContactForm() {
           </div>
           <Link 
             href="/faq" 
-            className="px-8 md:px-12 py-3.5 md:py-5 border-2 border-primary text-primary font-black rounded-full hover:bg-primary hover:text-white transition-all duration-500 shadow-2xl shadow-primary/10 relative z-10 text-sm md:text-lg uppercase tracking-tight leading-none"
+            className="px-8 md:px-12 py-3.5 md:py-5 border-2 border-primary text-primary font-black rounded-full hover:bg-primary hover:text-white transition-all duration-500 shadow-2xl relative z-10 text-sm md:text-lg uppercase tracking-tight leading-none"
           >
             Go to FAQs
           </Link>

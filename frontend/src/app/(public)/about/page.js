@@ -103,7 +103,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
           {features.map((f, i) => (
             <div key={i} className="group flex flex-col items-center">
-              <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 text-primary rotate-3 group-hover:rotate-12 transition-all shadow-lg shadow-primary/5">
+              <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 text-primary rotate-3 group-hover:rotate-12 transition-all shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               </div>
               <h4 className="text-xl font-black text-slate-900 mb-4 tracking-tight">{f.title}</h4>
@@ -171,7 +171,7 @@ export default function AboutPage() {
             <h2 className="text-white text-5xl md:text-7xl font-black mb-12 tracking-tighter">Ready to find your<br /> masterpiece?</h2>
             <Link 
               href="/buy" 
-              className="inline-block bg-primary text-white px-12 py-5 rounded-full font-black text-xl hover:scale-105 hover:bg-white hover:text-primary transition-all shadow-2xl shadow-primary/20"
+              className="inline-block bg-primary text-white px-12 py-5 rounded-full font-black text-xl hover:scale-105 hover:bg-white hover:text-primary transition-all shadow-2xl"
             >
               Browse Properties
             </Link>

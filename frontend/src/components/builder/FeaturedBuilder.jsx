@@ -46,7 +46,7 @@ const FeaturedBuilder = ({ builder }) => {
           <div className="flex gap-6">
             <Link 
               href={`/builders/${builder.slug}`}
-              className="bg-primary text-white px-10 py-4.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all active:scale-95 shadow-2xl shadow-primary/20 leading-none"
+              className="bg-primary text-white px-10 py-4.5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all active:scale-95 shadow-2xl leading-none"
             >
               View Legacy
             </Link>

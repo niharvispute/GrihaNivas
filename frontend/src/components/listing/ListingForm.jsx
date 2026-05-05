@@ -141,7 +141,7 @@ export default function ListingForm() {
   return (
     <section className="py-24 bg-slate-50" id="submit-form">
       <div className="max-w-4xl mx-auto px-6 lg:px-8">
-        <div className="bg-white rounded-2xl p-8 md:p-16 shadow-2xl shadow-primary/5 border border-slate-100">
+        <div className="bg-white rounded-2xl p-8 md:p-16 shadow-2xl border border-slate-100">
           <div className="mb-12">
             <h2 className="font-heading text-3xl font-extrabold tracking-tight mb-2 text-slate-900">Submit Property</h2>
             <p className="text-slate-500 font-bold">Confidential and secure property assessment.</p>
@@ -195,7 +195,7 @@ export default function ListingForm() {
                     onClick={() => setPropertyType(type)}
                     className={`px-6 py-2 rounded-full font-heading font-bold text-sm transition-all ${
                       propertyType === type 
-                        ? 'bg-primary text-white shadow-lg shadow-primary/20 scale-105' 
+                        ? 'bg-primary text-white shadow-lg scale-105' 
                         : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                     }`} 
                     type="button"
@@ -269,7 +269,7 @@ export default function ListingForm() {
               </div>
             </div>
 
-            <button disabled={isSubmitting} className="w-full bg-primary text-white p-6 rounded-full font-heading font-bold text-xl shadow-xl shadow-primary/20 hover:scale-[0.98] transition-all">
+            <button disabled={isSubmitting} className="w-full bg-primary text-white p-6 rounded-full font-heading font-bold text-xl shadow-xl hover:scale-[0.98] transition-all">
               {isSubmitting ? 'Submitting...' : 'Submit for Review'}
             </button>
 

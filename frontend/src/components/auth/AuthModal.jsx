@@ -176,7 +176,7 @@ function SubmitButton({ loading, children }) {
       disabled={loading}
       className="w-full bg-primary text-white py-3.5 rounded-xl font-bold text-sm
                  hover:bg-primary/90 active:scale-[0.99] transition-all
-                 disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-primary/20"
+                 disabled:opacity-60 disabled:cursor-not-allowed shadow-lg"
     >
       {loading ? (
         <span className="flex items-center justify-center gap-2">

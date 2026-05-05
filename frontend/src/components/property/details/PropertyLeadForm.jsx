@@ -181,7 +181,7 @@ export default function PropertyLeadForm({ property }) {
 
         <button
           disabled={isSubmitting}
-          className="w-full bg-primary text-white py-3.5 sm:py-4 rounded-full font-black text-sm sm:text-base shadow-lg hover:shadow-primary/20 transition-all active:scale-95 mt-4 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full bg-primary text-white py-3.5 sm:py-4 rounded-full font-black text-sm sm:text-base shadow-lg transition-all active:scale-95 mt-4 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isSubmitting && (
             <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
