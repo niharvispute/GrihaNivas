@@ -190,15 +190,20 @@ export default function PropertyFilters({ basePath, currentQuery }) {
           <span className="material-symbols-outlined text-primary text-xl">location_on</span>
           Location
         </label>
-        <select
-          name="area"
-          defaultValue={currentQuery?.area || ''}
-          className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/20 appearance-none font-medium"
-        >
-          {areaOptions.map((option) => (
-            <option key={option.label} value={option.value}>{option.label}</option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            name="area"
+            defaultValue={currentQuery?.area || ''}
+            className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors appearance-none font-semibold text-slate-800 cursor-pointer hover:border-slate-300"
+          >
+            {areaOptions.map((option) => (
+              <option key={option.label} value={option.value}>{option.label}</option>
+            ))}
+          </select>
+          <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
       </div>
 
       {/* Budget Slider Filter */}
@@ -214,15 +219,20 @@ export default function PropertyFilters({ basePath, currentQuery }) {
           <span className="material-symbols-outlined text-primary text-xl">home</span>
           BHK Type
         </label>
-        <select
-          name="bhk"
-          defaultValue={currentQuery?.bhk || ''}
-          className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/20 appearance-none font-medium"
-        >
-          {bhkOptions.map((option) => (
-            <option key={option.label} value={option.value}>{option.label}</option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            name="bhk"
+            defaultValue={currentQuery?.bhk || ''}
+            className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors appearance-none font-semibold text-slate-800 cursor-pointer hover:border-slate-300"
+          >
+            {bhkOptions.map((option) => (
+              <option key={option.label} value={option.value}>{option.label}</option>
+            ))}
+          </select>
+          <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
       </div>
 
       {/* Furnishing */}
@@ -231,15 +241,20 @@ export default function PropertyFilters({ basePath, currentQuery }) {
           <span className="material-symbols-outlined text-primary text-xl">chair</span>
           Furnishing
         </label>
-        <select
-          name="furnishing"
-          defaultValue={currentQuery?.furnishing || ''}
-          className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/20 appearance-none font-medium"
-        >
-          {furnishingOptions.map((option) => (
-            <option key={option.label} value={option.value}>{option.label}</option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            name="furnishing"
+            defaultValue={currentQuery?.furnishing || ''}
+            className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors appearance-none font-semibold text-slate-800 cursor-pointer hover:border-slate-300"
+          >
+            {FURNISHING_OPTIONS.map((option) => (
+              <option key={option.label} value={option.value}>{option.label}</option>
+            ))}
+          </select>
+          <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+        </div>
       </div>
 
       <div className="pt-6 space-y-4">
