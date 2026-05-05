@@ -8,16 +8,13 @@
   --color-neutral: #F6F3F2;
 
   /* Typography */
-  --font-script: var(--font-damion-ui), cursive;
-  --font-brand: var(--font-montserrat-ui), ui-sans-serif, system-ui, sans-serif;
-  --font-arial: Arial, sans-serif;
-
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-brand);
+  --font-heading: var(--font-playfair), serif;
 
-  /* Aliases used across components — all resolve to the same two families */
-  --font-headline: var(--font-brand);
-  --font-label: var(--font-brand);
+  /* Aliases used across components */
+  --font-headline: var(--font-playfair), serif;
+  --font-brand: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-label: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   --text-display: 2.25rem;
@@ -90,14 +87,14 @@ body {
 
 @layer components {
   .type-large-title {
-    font-family: var(--font-script);
+    font-family: var(--font-heading);
     font-size: clamp(1.5rem, 3.5vw, var(--text-large-title));
-    font-weight: 400;
+    font-weight: 700;
     line-height: var(--text-large-title--line-height);
   }
 
   .type-large-title-32 {
-    font-family: var(--font-brand);
+    font-family: var(--font-heading);
     font-size: clamp(1.25rem, 2.5vw, var(--text-large-title-32));
     font-weight: 700;
     line-height: var(--text-large-title-32--line-height);
