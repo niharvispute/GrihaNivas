@@ -129,9 +129,9 @@ export default async function HomePage() {
             Mumbai Editorial by Bricks
           </div>
           <h1 className="type-large-title-32 text-slate-950 mb-3 md:mb-4 uppercase md:text-4xl lg:text-5xl">
-            Find a Mumbai home with{' '}
+            Still looking a for a place which feels right… ?{' '}
             <span className="text-secondary underline decoration-primary/30 underline-offset-8">
-              verified confidence
+              
             </span>
           </h1>
           <p className="type-body-16 font-bold text-slate-700 mb-5 md:mb-7 max-w-2xl mx-auto sm:text-sm md:text-base">

@@ -28,8 +28,12 @@ export default async function ExploreBuildersPage({ searchParams }) {
   ]);
 
   const builders = response?.items || [];
+  const meta = response?.meta || {};
   const featuredBuilders = (featuredResponse?.items || []).slice(0, 4);
   const hasRateLimit = Boolean(response?.rateLimited || featuredResponse?.rateLimited);
+
+  const hasMore = meta.totalPages > meta.currentPage;
+  const showLoadMore = builders.length > 6 && hasMore;
 
   return (
     <div className="w-full">
@@ -64,12 +68,14 @@ export default async function ExploreBuildersPage({ searchParams }) {
         )}
 
         {/* Pagination placeholder */}
-        <div className="mt-10 sm:mt-16 flex justify-center">
-          <button className="group flex items-center gap-2 bg-slate-950 hover:bg-slate-900 text-white px-7 sm:px-10 py-3.5 sm:py-4 rounded-full font-black transition-all active:scale-95 shadow-xl uppercase tracking-widest text-[11px] sm:text-xs">
-            <span>Load More Builders</span>
-            <span className="material-symbols-outlined group-hover:translate-y-1 transition-transform">expand_more</span>
-          </button>
-        </div>
+        {showLoadMore && (
+          <div className="mt-10 sm:mt-16 flex justify-center">
+            <button className="group flex items-center gap-2 bg-slate-950 hover:bg-slate-900 text-white px-7 sm:px-10 py-3.5 sm:py-4 rounded-full font-black transition-all active:scale-95 shadow-xl uppercase tracking-widest text-[11px] sm:text-xs">
+              <span>Load More Builders</span>
+              <span className="material-symbols-outlined group-hover:translate-y-1 transition-transform">expand_more</span>
+            </button>
+          </div>
+        )}
       </main>
     </div>
   );

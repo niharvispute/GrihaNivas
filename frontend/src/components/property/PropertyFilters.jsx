@@ -278,7 +278,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
   return (
     <>
       {/* Mobile Sticky Bar */}
-      <div className="lg:hidden sticky top-18.25 z-40 px-4 py-3 -mx-4 sm:-mx-6 bg-white/80 backdrop-blur-md border-b border-slate-100 mb-6">
+      <div className="lg:hidden sticky top-18.25 z-30 px-4 py-3 -mx-4 sm:-mx-6 bg-white/80 backdrop-blur-md border-b border-slate-100 mb-6">
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
           <button
             onClick={() => setIsDrawerOpen(true)}

@@ -89,7 +89,7 @@ export default function HomeLoanPage() {
           </div>
         </section>
 
-        <section className="py-16 md:py-32 px-6 md:px-8 max-w-7xl mx-auto">
+        <section className="py-8 md:py-16 px-6 md:px-8 max-w-7xl mx-auto">
           <div className="text-center mb-12 md:mb-20 space-y-2 md:space-y-4">
             <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">The Workflow</span>
             <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900">Simple 4-Step Journey</h2>
