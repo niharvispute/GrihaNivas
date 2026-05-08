@@ -143,7 +143,20 @@ export default async function PropertiesPage({ searchParams }) {
 
   return (
     <main className="w-full">
-           <div className="flex flex-col lg:flex-row gap-6 sm:pt-8 lg:pt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      {/* Breadcrumb */}
+      <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 lg:py-14">
+        <nav aria-label="Breadcrumb" className="flex text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-3 sm:mb-4">
+          <ol className="inline-flex items-center space-x-2">
+            <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
+            <li className="flex items-center">
+              <svg className="w-3 h-3 mx-1 text-slate-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+              <span className="text-primary truncate">{categoryContent.breadcrumb}</span>
+            </li>
+          </ol>
+        </nav>
+      </header>
+
+      <div className="flex flex-col lg:flex-row gap-6 sm:pt-0 lg:pt-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {/* Sidebar Filters */}
         <PropertyFilters basePath={BASE_PATH} currentQuery={currentQuery} />
 

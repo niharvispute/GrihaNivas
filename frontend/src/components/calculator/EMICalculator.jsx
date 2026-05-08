@@ -100,6 +100,33 @@ const EMICalculator = () => {
     }).format(val);
   };
 
+  const downloadReport = () => {
+    const rows = [
+      ['EMI REPORT — Mumbai Editorial by Bricks'],
+      [],
+      ['Loan Summary'],
+      ['Loan Amount', formatCurrency(loanAmount)],
+      ['Interest Rate', `${interestRate}%`],
+      ['Tenure', `${tenure} Years`],
+      ['Monthly EMI', formatCurrency(results.emi)],
+      ['Total Interest', formatCurrency(results.totalInterest)],
+      ['Total Payable', formatCurrency(results.totalPayable)],
+      [],
+      ['Amortization Schedule (Yearly)'],
+      ['Year', 'Principal Paid', 'Interest Paid', 'Total Payment', 'Outstanding Balance'],
+      ...schedule.map((r) => [r.year, r.principal, r.interest, r.totalPayment, r.balance]),
+    ];
+
+    const csv = rows.map((r) => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `EMI_Report_${loanAmount / 100000}L_${interestRate}pct_${tenure}yrs.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const principalShare = Math.max(0, Math.min(100, Number(results.principalPercent) || 0));
   const interestShare = Math.max(0, Math.min(100, Number(results.interestPercent) || 0));
 
@@ -329,8 +356,12 @@ const EMICalculator = () => {
             <h3 className="text-xl md:text-2xl font-black tracking-tight text-slate-900">Amortization Schedule</h3>
             <p className="text-slate-500 text-[10px] md:text-sm mt-0.5 md:mt-1 font-bold">Yearly breakdown of your loan repayment journey.</p>
           </div>
-          <button className="text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:translate-x-1 transition-transform bg-primary/5 px-4 py-2 rounded-full leading-none">
-            Download Report 
+          <button
+            type="button"
+            onClick={downloadReport}
+            className="text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:translate-x-1 transition-transform bg-primary/5 hover:bg-primary/10 px-4 py-2 rounded-full leading-none active:scale-95"
+          >
+            Download Report
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="md:w-3.5 md:h-3.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           </button>
         </div>

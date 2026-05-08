@@ -11,13 +11,24 @@ export default function SectionCarousel({
   emptyMessage = 'Nothing listed yet — check back soon.',
   itemClassName = 'min-w-[300px] md:min-w-[400px] lg:min-w-[450px]',
   sectionClassName = 'bg-white',
+  autoplay = true,
+  autoplayInterval = 3500,
 }) {
   const [scrollX, setScrollX] = useState(0);
   const [maxScroll, setMaxScroll] = useState(0);
   const [stepSize, setStepSize] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const containerRef = useRef(null);
   const trackRef = useRef(null);
   const controls = useAnimation();
+  const scrollXRef = useRef(0);
+  const maxScrollRef = useRef(0);
+  const stepSizeRef = useRef(0);
+
+  // Keep refs in sync so autoplay interval always has current values
+  useEffect(() => { scrollXRef.current = scrollX; }, [scrollX]);
+  useEffect(() => { maxScrollRef.current = maxScroll; }, [maxScroll]);
+  useEffect(() => { stepSizeRef.current = stepSize; }, [stepSize]);
 
   useEffect(() => {
     const calculateLayoutMetrics = () => {
@@ -44,6 +55,24 @@ export default function SectionCarousel({
     return () => window.removeEventListener('resize', calculateLayoutMetrics);
   }, [items]);
 
+  // Autoplay
+  useEffect(() => {
+    if (!autoplay || isPaused) return;
+    const id = setInterval(() => {
+      const step = stepSizeRef.current > 0 ? stepSizeRef.current : 320;
+      const max = maxScrollRef.current;
+      if (max <= 0) return;
+      const current = scrollXRef.current;
+
+      // If already at (or past) last card, loop to start. Otherwise advance one step.
+      const newX = current <= -(max - step * 0.5) ? 0 : Math.max(current - step, -max);
+      scrollXRef.current = newX;
+      setScrollX(newX);
+      controls.start({ x: newX, transition: { type: 'spring', stiffness: 260, damping: 28 } });
+    }, autoplayInterval);
+    return () => clearInterval(id);
+  }, [autoplay, autoplayInterval, isPaused, controls]);
+
   const handleScroll = (direction) => {
     const step = stepSize > 0 ? stepSize : 320;
     const newX = direction === 'left'
@@ -55,7 +84,41 @@ export default function SectionCarousel({
   };
 
   const isEmpty = !items || items.length === 0;
-  const useStaticGrid = !isEmpty && items.length <= 3;
+  // Desktop (md+): use static grid for ≤3 items. Mobile: always carousel.
+  const useStaticGridOnDesktop = !isEmpty && items.length <= 3;
+
+  const carouselTrack = (
+    <div
+      className="relative overflow-hidden"
+      ref={containerRef}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <motion.div
+        ref={trackRef}
+        drag="x"
+        dragConstraints={{ left: -maxScroll, right: 0 }}
+        animate={controls}
+        style={{ x: scrollX }}
+        onDragStart={() => setIsPaused(true)}
+        onDragEnd={(_, info) => {
+          const proposedX = scrollX + info.offset.x;
+          const clampedX = Math.min(0, Math.max(proposedX, -maxScroll));
+          setScrollX(clampedX);
+          controls.start({ x: clampedX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
+          setIsPaused(false);
+        }}
+        className="flex gap-5 sm:gap-6 md:gap-7 cursor-grab active:cursor-grabbing"
+      >
+        {items.map((item, idx) => (
+          <div key={idx} className={`${itemClassName} shrink-0 transition-all duration-300 hover:shadow-xl`}>
+            {renderItem(item)}
+          </div>
+        ))}
+        <div className="w-2 sm:w-4 shrink-0" aria-hidden="true" />
+      </motion.div>
+    </div>
+  );
 
   return (
     <section className={`py-6 md:py-10 lg:py-14 ${sectionClassName}`}>
@@ -74,8 +137,8 @@ export default function SectionCarousel({
             </p>
           </div>
 
-          {/* Navigation Buttons */}
-          <div className={`flex gap-3 self-start md:self-auto ${isEmpty || useStaticGrid ? 'invisible' : ''}`}>
+          {/* Header nav buttons — visible only for desktop carousel (>3 items) */}
+          <div className={`flex gap-3 self-start md:self-auto ${isEmpty || useStaticGridOnDesktop ? 'invisible' : ''}`}>
             <button
               onClick={() => handleScroll('left')}
               disabled={scrollX >= 0}
@@ -112,29 +175,37 @@ export default function SectionCarousel({
             <p className="text-slate-500 font-bold text-sm md:text-base">{emptyMessage}</p>
           </div>
         </div>
-      ) : useStaticGrid ? (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className={`grid gap-5 sm:gap-6 md:gap-7 mx-auto ${
-              items.length === 1
-                ? 'max-w-sm'
-                : items.length === 2
-                  ? 'max-w-4xl md:grid-cols-2'
-                  : 'max-w-7xl md:grid-cols-2 lg:grid-cols-3'
-            }`}
-          >
-            {items.map((item, idx) => (
-              <div key={idx} className="min-w-0">
-                {renderItem(item)}
-              </div>
-            ))}
+      ) : useStaticGridOnDesktop ? (
+        <>
+          {/* Mobile: always carousel */}
+          <div className="md:hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {carouselTrack}
           </div>
-        </div>
+
+          {/* Desktop: static grid for ≤3 items */}
+          <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div
+              className={`grid gap-5 sm:gap-6 md:gap-7 mx-auto ${
+                items.length === 1
+                  ? 'max-w-sm'
+                  : items.length === 2
+                    ? 'max-w-4xl md:grid-cols-2'
+                    : 'max-w-7xl md:grid-cols-2 lg:grid-cols-3'
+              }`}
+            >
+              {items.map((item, idx) => (
+                <div key={idx} className="min-w-0">
+                  {renderItem(item)}
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
       ) : (
         <>
-          {/* Carousel Container */}
+          {/* Carousel Container (mobile + desktop for >3 items) */}
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative group/carousel">
-            {/* Left Button */}
+            {/* Left overlay button */}
             <button
               onClick={() => handleScroll('left')}
               disabled={scrollX >= 0}
@@ -148,7 +219,7 @@ export default function SectionCarousel({
               <span className="material-symbols-outlined text-base md:text-2xl">west</span>
             </button>
 
-            {/* Right Button */}
+            {/* Right overlay button */}
             <button
               onClick={() => handleScroll('right')}
               disabled={scrollX <= -maxScroll}
@@ -162,29 +233,7 @@ export default function SectionCarousel({
               <span className="material-symbols-outlined text-base md:text-2xl">east</span>
             </button>
 
-            <div className="relative overflow-hidden" ref={containerRef}>
-              <motion.div
-                ref={trackRef}
-                drag="x"
-                dragConstraints={{ left: -maxScroll, right: 0 }}
-                animate={controls}
-                style={{ x: scrollX }}
-                onDragEnd={(_, info) => {
-                  const proposedX = scrollX + info.offset.x;
-                  const clampedX = Math.min(0, Math.max(proposedX, -maxScroll));
-                  setScrollX(clampedX);
-                  controls.start({ x: clampedX, transition: { type: 'spring', stiffness: 300, damping: 30 } });
-                }}
-                className="flex gap-5 sm:gap-6 md:gap-7 cursor-grab active:cursor-grabbing"
-              >
-                {items.map((item, idx) => (
-                  <div key={idx} className={`${itemClassName} shrink-0 transition-all duration-300 hover:shadow-xl`}>
-                    {renderItem(item)}
-                  </div>
-                ))}
-                <div className="w-2 sm:w-4 shrink-0" aria-hidden="true" />
-              </motion.div>
-            </div>
+            {carouselTrack}
           </div>
 
           {/* Progress Indicator */}

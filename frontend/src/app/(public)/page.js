@@ -315,12 +315,12 @@ export default async function HomePage() {
             </Link>
           </div>
           {latestBlogs.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 lg:gap-10">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-5 sm:gap-8 lg:gap-10 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-3 pb-4 sm:pb-0 scrollbar-hide pl-0.5 sm:pl-0">
               {latestBlogs.map((blog, i) => (
                 <Link
                   key={i}
                   href={`/blogs/${blog.slug}`}
-                  className="group cursor-pointer block"
+                  className="group cursor-pointer block snap-start shrink-0 w-[270px] sm:w-auto"
                 >
                   <div className="aspect-11/8 sm:aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-6 relative">
                     <img

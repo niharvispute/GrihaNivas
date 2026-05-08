@@ -60,8 +60,8 @@ export default function PropertySortBar({ basePath, currentQuery }) {
         </div>
       </div>
 
-      {/* View Toggle */}
-      <div className="flex items-center justify-end mt-3 sm:mt-0">
+      {/* View Toggle — hidden on mobile */}
+      <div className="hidden sm:flex items-center justify-end mt-3 sm:mt-0">
         <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
           <Link
             href={buildViewHref(basePath, currentQuery, 'grid')}

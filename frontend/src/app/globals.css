@@ -182,6 +182,13 @@ p { @apply text-body font-sans; }
 
 /* Custom Scrollbar Utility */
 @layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
   }

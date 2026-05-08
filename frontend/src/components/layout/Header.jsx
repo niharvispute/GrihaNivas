@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
 const NAV_LINKS = [
@@ -27,6 +27,7 @@ export default function Header() {
   const { user, loadingUser, openModal, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesMenuOpen, setIsServicesMenuOpen] = useState(false);
@@ -107,6 +108,13 @@ export default function Header() {
 
   const isActive = (href) => {
     if (href === '/') return pathname === '/';
+    if (href === '/new-launch') {
+      return (pathname === '/new-launch') ||
+        (pathname === '/buy' && searchParams.get('category') === 'new_launch');
+    }
+    if (href === '/buy') {
+      return pathname === '/buy' && searchParams.get('category') !== 'new_launch';
+    }
     return pathname === href || pathname.startsWith(href + '/');
   };
 
@@ -117,8 +125,8 @@ export default function Header() {
       <header className="sticky top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-gray-100/50 shadow-sm">
         <div className="grid grid-cols-2 nav:grid-cols-3 items-center px-5 md:px-8 py-4 max-w-screen-2xl mx-auto">
           {/* Brand Logo */}
-          <div className="flex justify-start">
-            <Link href="/" className="text-2xl font-black tracking-tighter text-slate-900 shrink-0 font-heading">
+          <div className="flex justify-start min-w-0">
+            <Link href="/" className="text-lg nav:text-2xl font-black tracking-tighter text-slate-900 shrink-0 font-heading truncate">
               Mumbai Editorial
             </Link>
           </div>
@@ -299,7 +307,7 @@ export default function Header() {
           </div>
 
           {/* Mobile: Login + Hamburger */}
-          <div className="flex nav:hidden items-center gap-3">
+          <div className="flex nav:hidden items-center justify-end gap-3">
             {!loadingUser && !user && (
               <button
                 type="button"

@@ -64,10 +64,10 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
         </div>
 
         <div className="relative z-10 px-4 sm:px-8 md:px-16 py-6 sm:py-10 max-w-3xl">
-          <span className="inline-block px-2.5 sm:px-4 py-1 rounded-full bg-primary/20 text-white border border-primary/30 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-widest mb-3 sm:mb-6">
+          <span className="inline-block px-2.5 sm:px-4 py-1 rounded-full bg-primary/20 text-white border border-primary/30 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-widest mb-4 sm:mb-6">
             Featured Partner
           </span>
-          <div className="flex items-center gap-2.5 sm:gap-4 mb-2 sm:mb-4">
+          <div className="flex items-center gap-2.5 sm:gap-4 mb-5 sm:mb-4">
             <div className="w-10 h-10 sm:w-16 sm:h-16 bg-white rounded-xl sm:rounded-2xl p-1.5 flex items-center justify-center shadow-xl shrink-0">
               {logo ? (
                 <Image width={64} height={64} className="object-contain" src={logo} alt={activeBuilder?.name || 'Builder logo'} />
@@ -79,7 +79,7 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
               {activeBuilder?.name}
             </h2>
           </div>
-          <p className="text-slate-300 text-xs sm:text-sm lg:text-base mb-5 sm:mb-8 leading-relaxed font-body line-clamp-3">
+          <p className="hidden sm:block text-slate-300 text-xs sm:text-sm lg:text-base mb-5 sm:mb-8 leading-relaxed font-body line-clamp-3">
             {activeBuilder?.tagline} {heroDescription}
           </p>
 

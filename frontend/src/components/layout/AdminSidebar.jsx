@@ -31,14 +31,13 @@ export default function AdminSidebar() {
           <span className="text-2xl font-black text-white tracking-tighter">Bricks.</span>
         </div>
         <p className="text-primary font-black text-[9px] uppercase tracking-[0.3em] opacity-80 mb-3">Admin Console</p>
-        <button
-          type="button"
-          onClick={logout}
-          className="flex items-center gap-1.5 text-red-400 hover:text-red-300 text-[9px] font-black uppercase tracking-[0.3em] transition-colors"
+        <Link
+          href="/"
+          className="flex items-center gap-1.5 text-slate-400 hover:text-white text-[9px] font-black uppercase tracking-[0.3em] transition-colors group"
         >
-          <span className="material-symbols-outlined text-sm">logout</span>
-          Logout
-        </button>
+          <span className="material-symbols-outlined text-sm group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+          Back to Home
+        </Link>
       </div>
 
       <nav className="flex-1 px-4 space-y-2 overflow-y-auto custom-scrollbar py-4">

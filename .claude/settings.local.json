@@ -97,7 +97,9 @@
       "Bash(grep -E \"\\\\.\\(js|json\\)$\")",
       "Bash(grep -E \"\\\\.js$\")",
       "Bash(xargs -I{} sh -c 'grep -ln \"rounded-4xl\\\\|rounded-3xl\\\\|rounded-\\\\[.*rem\\\\]\\\\|font-semibold\\\\|bg-linear-to\" \"{}\" 2>/dev/null')",
-      "Bash(xargs '-I{}' sh -c 'result=$\\(grep -ln \"rounded-4xl\\\\|rounded-3xl\\\\|rounded-\\\\[.*rem\\\\]\\\\|font-semibold\\\\|bg-linear-to\" \"{}\" 2>/dev/null\\); if [ -n \"$result\" ]; then echo \"$result\"; fi')"
+      "Bash(xargs '-I{}' sh -c 'result=$\\(grep -ln \"rounded-4xl\\\\|rounded-3xl\\\\|rounded-\\\\[.*rem\\\\]\\\\|font-semibold\\\\|bg-linear-to\" \"{}\" 2>/dev/null\\); if [ -n \"$result\" ]; then echo \"$result\"; fi')",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\visha\\\\OneDrive\\\\Desktop\\\\Bricks\" -Recurse -Name -Filter \"*.html\")",
+      "Bash(Select-Object -First 20)"
     ]
   }
 }

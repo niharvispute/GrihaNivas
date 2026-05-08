@@ -128,14 +128,6 @@ export default async function PropertiesPage({ searchParams }) {
             </li>
           </ol>
         </nav>
-        <span className="type-small-10 text-primary mb-3 block tracking-[0.3em]">Mumbai Real Estate</span>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter text-slate-900 mb-3 sm:mb-4">
-          Mumbai Rental Properties
-        </h1>
-        <p className="text-slate-500 font-bold text-sm sm:text-base lg:text-lg max-w-2xl leading-relaxed">
-          Discover curated luxury residences across South Mumbai, Bandra, and beyond.
-          Refined living in India's most vibrant skyline.
-        </p>
       </header>
 
       <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
