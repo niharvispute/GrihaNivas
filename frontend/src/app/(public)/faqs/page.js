@@ -33,7 +33,7 @@ export default function FaqsPage() {
         <p className="text-[11px] font-black tracking-[0.22em] uppercase text-primary mb-4">Support</p>
         <h1 className="text-5xl md:text-6xl font-black tracking-tighter text-slate-900 mb-5">Frequently Asked Questions</h1>
         <p className="text-slate-500 max-w-3xl leading-relaxed text-lg font-bold">
-          Answers to common questions about buying, renting, financing, and documentation on Mumbai Editorial.
+          Answers to common questions about buying, renting, financing, and documentation on Grihavastu.
         </p>
       </header>
 

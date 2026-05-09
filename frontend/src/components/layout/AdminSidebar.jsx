@@ -28,7 +28,7 @@ export default function AdminSidebar() {
     <aside className="fixed left-0 top-0 h-screen w-64 flex flex-col py-8 bg-slate-900 text-white z-50 border-r border-slate-800 shadow-2xl">
       <div className="px-8 mb-4">
         <div className="flex items-center gap-3 mb-2">
-          <span className="text-2xl font-black text-white tracking-tighter">Bricks.</span>
+          <span className="text-2xl font-black text-white tracking-tighter">Ghar.</span>
         </div>
         <p className="text-primary font-black text-[9px] uppercase tracking-[0.3em] opacity-80 mb-3">Admin Console</p>
         <Link

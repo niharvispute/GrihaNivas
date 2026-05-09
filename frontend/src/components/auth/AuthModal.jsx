@@ -154,7 +154,7 @@ function ModalHeader({ onBack, onClose, showBack }) {
           Back
         </button>
       ) : (
-        <span className="font-black text-lg tracking-tighter text-slate-900">Mumbai Editorial</span>
+        <span className="font-black text-lg tracking-tighter text-slate-900">Grihavastu</span>
       )}
       <button
         onClick={onClose}
@@ -315,7 +315,7 @@ function RegisterView({ ctx }) {
       <div className="px-6 pb-7 pt-2 space-y-4 max-h-[80vh] overflow-y-auto">
         <div>
           <h2 className="text-2xl font-bold text-slate-900">Create account</h2>
-          <p className="text-sm text-slate-500 mt-0.5">Join Mumbai Editorial today</p>
+          <p className="text-sm text-slate-500 mt-0.5">Join Grihavastu today</p>
         </div>
         <ErrorAlert message={error} />
 

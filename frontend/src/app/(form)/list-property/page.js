@@ -2,7 +2,7 @@ import MultiStageListingForm from '@/components/listing/MultiStageListingForm';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Showcase Your Property | Bricks Mumbai',
+  title: 'Showcase Your Property | Ghar Mumbai',
   description: 'Submit your estate for a premium editorial feature. Professional evaluation and global exposure in 5 steps.',
 };
 

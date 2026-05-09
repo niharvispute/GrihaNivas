@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 /**
  * Blog Model
  *
- * Blog posts for the Mumbai Editorial content section.
+ * Blog posts for the Grihavastu content section.
  *
  * Slug is auto-generated from the title by the controller.
  * Comments are embedded (not referenced) — they're tied to the post lifecycle

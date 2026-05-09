@@ -91,7 +91,7 @@ export default function AdminDashboardPage() {
       <div className="flex flex-col md:flex-row justify-between items-end gap-4 mb-2">
         <div>
           <h1 className="text-2xl font-black text-slate-900 tracking-tighter">Admin <span className="text-primary">Console</span></h1>
-          <p className="text-slate-500 font-bold mt-1 uppercase tracking-[0.2em] text-[10px]">Mumbai Editorial Management Dashboard</p>
+          <p className="text-slate-500 font-bold mt-1 uppercase tracking-[0.2em] text-[10px]">Grihavastu Management Dashboard</p>
         </div>
       </div>
 

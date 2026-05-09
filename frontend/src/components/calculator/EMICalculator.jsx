@@ -102,7 +102,7 @@ const EMICalculator = () => {
 
   const downloadReport = () => {
     const rows = [
-      ['EMI REPORT — Mumbai Editorial by Bricks'],
+      ['EMI REPORT — Grihavastu by Ghar'],
       [],
       ['Loan Summary'],
       ['Loan Amount', formatCurrency(loanAmount)],

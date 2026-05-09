@@ -49,14 +49,14 @@ export default function TermsAndConditionsPage() {
               <article>
                 <h2 className="text-2xl font-black text-slate-900 mb-6 tracking-tight uppercase">1. Acceptance of Terms</h2>
                 <p className="text-slate-500 font-bold leading-relaxed">
-                  By accessing and using Mumbai Editorial (the "Platform"), you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use. If you do not agree to these terms, please refrain from using our digital concierge services.
+                  By accessing and using Grihavastu (the "Platform"), you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use. If you do not agree to these terms, please refrain from using our digital concierge services.
                 </p>
               </article>
 
               <article className="p-8 rounded-2xl bg-slate-50 border border-slate-100">
                 <h2 className="text-2xl font-black text-slate-900 mb-6 tracking-tight uppercase">2. Scope of Services</h2>
                 <p className="text-slate-600 font-bold leading-relaxed mb-6">
-                  Mumbai Editorial provides a curated selection of real estate listings, architectural insights, and advisory services. While we strive for absolute accuracy:
+                  Grihavastu provides a curated selection of real estate listings, architectural insights, and advisory services. While we strive for absolute accuracy:
                 </p>
                 <div className="space-y-4">
                   {[
@@ -90,7 +90,7 @@ export default function TermsAndConditionsPage() {
               <article>
                 <h2 className="text-2xl font-black text-slate-900 mb-6 tracking-tight uppercase">4. Limitation of Liability</h2>
                 <p className="text-slate-500 font-bold leading-relaxed">
-                  Mumbai Editorial (Bricks) shall not be liable for any direct, indirect, or consequential damages resulting from your use of the platform, including but not limited to financial losses during property transactions. All transactions are independent contracts between the user and the developer/owner.
+                  Grihavastu (Ghar) shall not be liable for any direct, indirect, or consequential damages resulting from your use of the platform, including but not limited to financial losses during property transactions. All transactions are independent contracts between the user and the developer/owner.
                 </p>
               </article>
 

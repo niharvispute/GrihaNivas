@@ -36,7 +36,7 @@ const HEADER_STYLE = {
  */
 const buildWorkbookBuffer = async ({ sheetName = 'Sheet1', columns, rows }) => {
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = 'Bricks Admin';
+  workbook.creator = 'Ghar Admin';
   workbook.created = new Date();
 
   const sheet = workbook.addWorksheet(sheetName, {

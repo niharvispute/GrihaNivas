@@ -993,7 +993,7 @@ const testTestimonials = async () => {
 
   // Non-admin cannot create (no file, will fail at auth before file check)
   const r2 = await request('POST', `${BASE}/testimonials`,
-    { name: 'Sneha', rating: 5, message: 'Excellent service from Bricks team.' },
+    { name: 'Sneha', rating: 5, message: 'Excellent service from Ghar team.' },
     userAccessToken);
   assert('POST /testimonials non-admin → 403', r2.status === 403, r2.body);
 };
@@ -1095,7 +1095,7 @@ const run = async () => {
 
   const server = http.createServer(app);
   await new Promise((res) => server.listen(PORT, res));
-  console.log(`\n🧪 Bricks API Tests — server on :${PORT}\n${'─'.repeat(55)}`);
+  console.log(`\n🧪 Ghar API Tests — server on :${PORT}\n${'─'.repeat(55)}`);
 
   try {
     await testHealth();

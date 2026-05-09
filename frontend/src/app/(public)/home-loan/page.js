@@ -4,7 +4,7 @@ import BankPartners from '@/components/common/BankPartners';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Home Loan Assistance | Mumbai Editorial Real Estate',
+  title: 'Home Loan Assistance | Grihavastu Real Estate',
   description: 'Get expert home loan assistance in Mumbai. Compare interest rates, check eligibility, and get fast approvals with India\'s top banks.',
 };
 
@@ -73,7 +73,7 @@ export default function HomeLoanPage() {
         <section className="py-12 md:py-24 px-6 md:px-8 max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-10">
             {[
-              { icon: 'percent', title: "Lowest Rates", desc: "Access exclusive interest rates reserved for Mumbai Editorial clients." },
+              { icon: 'percent', title: "Lowest Rates", desc: "Access exclusive interest rates reserved for Grihavastu clients." },
               { icon: 'bolt', title: "Fast Approval", desc: "Digital-first process with approvals in under 24 hours." },
               { icon: 'handshake', title: "Expert Advice", desc: "Dedicated managers to guide you through complex Mumbai documentation." },
               { icon: 'description', title: "Ease of Use", desc: "Doorstep document pickup and digital verification journey." }

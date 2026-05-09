@@ -96,7 +96,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
               <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Narrative Content</label>
               <textarea 
                 className="w-full px-8 py-6 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none font-medium text-slate-700 leading-relaxed text-lg min-h-55 placeholder:text-slate-200" 
-                placeholder="Share the client's journey and experience with Bricks..." 
+                placeholder="Share the client's journey and experience with Ghar..."
                 value={testimonial}
                 onChange={(e) => setTestimonial(e.target.value)}
                 required

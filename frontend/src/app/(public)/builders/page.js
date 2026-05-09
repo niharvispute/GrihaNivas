@@ -4,7 +4,7 @@ import FeaturedBuildersCarousel from '@/components/builders/FeaturedBuildersCaro
 import { listBuilders } from '@/services/builderService';
 
 export const metadata = {
-  title: 'Explore Builders | Bricks - Mumbai Editorial',
+  title: 'Explore Builders | Ghar - Grihavastu',
   description: 'Discover trusted real estate developers crafting the future of modern living across Mumbai.',
 };
 

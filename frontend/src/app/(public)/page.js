@@ -126,7 +126,7 @@ export default async function HomePage() {
         <div className="relative z-10 text-center w-full max-w-5xl pt-4 md:pt-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/75 px-4 py-2 text-[10px] font-black uppercase tracking-[0.28em] text-primary shadow-sm backdrop-blur-md mb-4">
             <span className="material-symbols-outlined text-sm">location_city</span>
-            Mumbai Editorial by Bricks
+            Grihavastu by Ghar
           </div>
           <h1 className="type-large-title-32 text-slate-950 mb-3 md:mb-4 uppercase md:text-4xl lg:text-5xl">
             Still looking a for a place which feels right… ?{' '}
@@ -221,14 +221,14 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-center">
           <div>
             <span className="type-small-10 text-primary mb-4 block tracking-[0.3em]">
-              The Bricks Philosophy
+              The Ghar Philosophy
             </span>
             <h2 className="type-heading-26 text-slate-900 mb-6 md:mb-8 tracking-tighter sm:text-4xl lg:text-5xl">
               We Don&apos;t Just Find Homes. We Curate{' '}
               <span className="text-primary">Lifestyles.</span>
             </h2>
             <p className="type-body-16 text-slate-500 mb-8 md:mb-12 md:text-lg">
-              Mumbai Editorial by Bricks is more than a portal. We are a boutique real estate
+              Grihavastu by Ghar is more than a portal. We are a boutique real estate
               advisory dedicated to the city&apos;s most discerning residents.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">

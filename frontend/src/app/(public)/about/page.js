@@ -61,7 +61,7 @@ export default function AboutPage() {
           <div className="order-2 md:order-1" data-aos="fade-right">
             <h2 className="text-5xl font-black text-slate-900 mb-10 tracking-tight leading-none">A Legacy of Excellence</h2>
             <div className="space-y-8 text-slate-500 text-lg leading-relaxed font-bold">
-              <p>Founded at the intersection of architecture and heritage, Bricks began as a specialized boutique focused exclusively on South Mumbai's historic mansions. We believed then, as we do now, that luxury is not just a price point—it's a narrative of space and craftsmanship.</p>
+              <p>Founded at the intersection of architecture and heritage, Ghar began as a specialized boutique focused exclusively on South Mumbai's historic mansions. We believed then, as we do now, that luxury is not just a price point—it's a narrative of space and craftsmanship.</p>
               <p>Over the last twelve years, we have evolved into a market leader, curating the city's most prestigious skyline silhouettes. Our journey is defined by a commitment to the "Editorial" standard: every listing is vetted for its architectural significance, lifestyle potential, and investment integrity.</p>
             </div>
           </div>
@@ -99,7 +99,7 @@ export default function AboutPage() {
 
       {/* 🏆 Features Section */}
       <section className="py-24 px-8 max-w-7xl mx-auto">
-        <h2 className="text-center text-5xl font-black text-slate-900 mb-20 tracking-tighter">Why Bricks?</h2>
+        <h2 className="text-center text-5xl font-black text-slate-900 mb-20 tracking-tighter">Why Ghar?</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
           {features.map((f, i) => (
             <div key={i} className="group flex flex-col items-center">

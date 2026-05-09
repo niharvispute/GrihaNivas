@@ -31,13 +31,13 @@ export async function generateMetadata({ params }) {
       title: `${title} in ${area}`,
       description: `${title} — ${area}, Mumbai. ${price ? `Starting at ${price}.` : ''} View details, photos, floor plans and more.`.trim(),
       openGraph: {
-        title: `${title} | Bricks Mumbai`,
+        title: `${title} | Ghar Mumbai`,
         description: `${title} in ${area}, Mumbai. ${price ? `Price: ${price}.` : ''}`,
         ...(image && { images: [{ url: image, width: 1200, height: 630, alt: title }] }),
       },
       twitter: {
         card: 'summary_large_image',
-        title: `${title} | Bricks Mumbai`,
+        title: `${title} | Ghar Mumbai`,
         ...(image && { images: [image] }),
       },
     };

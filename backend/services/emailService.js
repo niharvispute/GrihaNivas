@@ -108,7 +108,7 @@ const baseTemplate = (title, bodyHtml) => `
           <tr>
             <td style="background:#b80049;padding:24px 32px;">
               <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.5px;">
-                Mumbai Editorial
+                Grihavastu
               </h1>
               <p style="margin:4px 0 0;color:rgba(255,255,255,0.8);font-size:13px;">
                 Premium Real Estate
@@ -125,7 +125,7 @@ const baseTemplate = (title, bodyHtml) => `
           <tr>
             <td style="background:#f9f9f9;padding:20px 32px;border-top:1px solid #eeeeee;">
               <p style="margin:0;color:#999999;font-size:12px;text-align:center;">
-                © ${new Date().getFullYear()} Mumbai Editorial. All rights reserved.<br/>
+                © ${new Date().getFullYear()} Grihavastu. All rights reserved.<br/>
                 This is an automated message — please do not reply.
               </p>
             </td>
@@ -150,11 +150,11 @@ const leadNotificationTemplate = (lead) => {
   };
 
   return baseTemplate(
-    'New Lead — Mumbai Editorial',
+    'New Lead — Grihavastu',
     `
     <h2 style="margin:0 0 8px;color:#1a1a1a;font-size:20px;">🔔 New Lead Received</h2>
     <p style="margin:0 0 24px;color:#666666;font-size:14px;">
-      A new enquiry has been submitted on Mumbai Editorial.
+      A new enquiry has been submitted on Grihavastu.
     </p>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eeeeee;border-radius:6px;overflow:hidden;">
@@ -177,7 +177,7 @@ const leadNotificationTemplate = (lead) => {
 
 const leadConfirmationTemplate = (lead) =>
   baseTemplate(
-    'We received your enquiry — Mumbai Editorial',
+    'We received your enquiry — Grihavastu',
     `
     <h2 style="margin:0 0 8px;color:#1a1a1a;font-size:20px;">Thank you, ${lead.name}!</h2>
     <p style="margin:0 0 24px;color:#555555;font-size:15px;line-height:1.6;">
@@ -200,7 +200,7 @@ const leadConfirmationTemplate = (lead) =>
 
 const contactNotificationTemplate = (contact) =>
   baseTemplate(
-    'New Contact Message — Mumbai Editorial',
+    'New Contact Message — Grihavastu',
     `
     <h2 style="margin:0 0 8px;color:#1a1a1a;font-size:20px;">📩 New Contact Form Submission</h2>
     <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eeeeee;border-radius:6px;overflow:hidden;">
@@ -215,7 +215,7 @@ const contactNotificationTemplate = (contact) =>
 
 const welcomeTemplate = (user) =>
   baseTemplate(
-    'Welcome to Mumbai Editorial',
+    'Welcome to Grihavastu',
     `
     <h2 style="margin:0 0 8px;color:#1a1a1a;font-size:20px;">Welcome, ${user.name || 'there'}! 🎉</h2>
     <p style="margin:0 0 24px;color:#555555;font-size:15px;line-height:1.6;">
@@ -236,7 +236,7 @@ const welcomeTemplate = (user) =>
 
 const otpTemplate = (otp) =>
   baseTemplate(
-    'Your OTP — Mumbai Editorial',
+    'Your OTP — Grihavastu',
     `
     <h2 style="margin:0 0 8px;color:#1a1a1a;font-size:20px;">Your One-Time Password</h2>
     <p style="margin:0 0 24px;color:#555555;font-size:15px;">
@@ -290,7 +290,7 @@ const sendLeadConfirmation = async (lead) => {
   }
   return sendEmail({
     to: lead.email,
-    subject: 'We received your enquiry — Mumbai Editorial',
+    subject: 'We received your enquiry — Grihavastu',
     html: leadConfirmationTemplate(lead),
     text: `Hi ${lead.name}, we received your enquiry and will contact you within 24 hours.`,
   });
@@ -319,9 +319,9 @@ const sendWelcome = async (user) => {
   }
   return sendEmail({
     to: user.email,
-    subject: 'Welcome to Mumbai Editorial 🎉',
+    subject: 'Welcome to Grihavastu 🎉',
     html: welcomeTemplate(user),
-    text: `Welcome to Mumbai Editorial! Your account is ready.`,
+    text: `Welcome to Grihavastu! Your account is ready.`,
   });
 };
 
@@ -334,7 +334,7 @@ const sendWelcome = async (user) => {
 const sendOtpEmail = async (email, otp) => {
   return sendEmail({
     to: email,
-    subject: `${otp} is your Mumbai Editorial OTP`,
+    subject: `${otp} is your Grihavastu OTP`,
     html: otpTemplate(otp),
     text: `Your OTP is ${otp}. It expires in 10 minutes. Do not share it with anyone.`,
   });

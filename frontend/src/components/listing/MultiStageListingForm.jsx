@@ -415,7 +415,7 @@ export default function MultiStageListingForm() {
             <div className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center shadow-lg">
               <span className="material-symbols-outlined text-white text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>apartment</span>
             </div>
-            <span className="text-xl font-black text-slate-900 tracking-tighter">Bricks Listing</span>
+            <span className="text-xl font-black text-slate-900 tracking-tighter">Ghar Listing</span>
           </div>
           <div className="space-y-1">
             <h2 className="text-lg font-black text-slate-900">List Property</h2>
@@ -467,7 +467,7 @@ export default function MultiStageListingForm() {
         {/* 🆕 Sticky Mobile Header & Progress Bar */}
         <div className="flex-none bg-white/95 backdrop-blur-xl border-b border-slate-100 lg:hidden h-14 flex items-center px-6 relative z-50">
           <div className="absolute top-0 left-0 h-1 bg-primary transition-all duration-500" style={{ width: `${progress}%` }}></div>
-          <span className="text-lg font-black text-slate-900 tracking-tighter">Bricks</span>
+          <span className="text-lg font-black text-slate-900 tracking-tighter">Ghar</span>
           <div className="ml-auto flex items-center gap-3">
              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded-full border border-slate-100">Step {step}/5</span>
              <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center">
@@ -852,7 +852,7 @@ export default function MultiStageListingForm() {
               <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div>
                   <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 ">Final Review</h1>
-                  <p className="text-slate-500 text-sm md:text-base font-bold">Review and confirm your Mumbai Editorial feature.</p>
+                  <p className="text-slate-500 text-sm md:text-base font-bold">Review and confirm your Grihavastu feature.</p>
                 </div>
 
                 <div className="space-y-8">

@@ -127,7 +127,7 @@ export default function Header() {
           {/* Brand Logo */}
           <div className="flex justify-start min-w-0">
             <Link href="/" className="text-lg nav:text-2xl font-black tracking-tighter text-slate-900 shrink-0 font-heading truncate">
-              Mumbai Editorial
+              Grihavastu
             </Link>
           </div>
 

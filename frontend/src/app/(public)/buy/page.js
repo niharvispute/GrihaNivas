@@ -9,7 +9,7 @@ export const metadata = {
   title: 'Buy Property in Mumbai',
   description: 'Browse flats, apartments, villas, and new launches available for sale across Mumbai. Filter by BHK, area, price and more.',
   openGraph: {
-    title: 'Buy Property in Mumbai | Bricks',
+    title: 'Buy Property in Mumbai | Ghar',
     description: 'Explore thousands of properties for sale in Mumbai — from affordable flats to luxury villas.',
   },
 };

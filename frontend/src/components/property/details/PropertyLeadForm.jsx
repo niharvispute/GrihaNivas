@@ -114,8 +114,8 @@ export default function PropertyLeadForm({ property }) {
   };
 
   const whatsappMessage = property?.title
-    ? `Hi! I'm interested in "${property.title}" on Mumbai Editorial. Can you share more details?`
-    : `Hi! I'm interested in a property on Mumbai Editorial. Can you help me?`;
+    ? `Hi! I'm interested in "${property.title}" on Grihavastu. Can you share more details?`
+    : `Hi! I'm interested in a property on Grihavastu. Can you help me?`;
 
   return (
     <section id="lead-form" className="scroll-mt-28 sm:scroll-mt-32 bg-slate-50 p-5 sm:p-8 rounded-2xl border border-slate-100 shadow-sm">

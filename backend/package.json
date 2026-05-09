@@ -1,7 +1,7 @@
 {
   "name": "bricks-backend",
   "version": "1.0.0",
-  "description": "Mumbai Editorial — Real Estate Platform Backend",
+  "description": "Grihavastu — Real Estate Platform Backend",
   "main": "server.js",
   "engines": {
     "node": ">=18.0.0"

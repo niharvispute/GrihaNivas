@@ -25,7 +25,7 @@ const ADMIN_CONFIG = {
 };
 
 const seed = async () => {
-  console.log('\n🌱 Bricks Admin Seeder\n');
+  console.log('\n🌱 Ghar Admin Seeder\n');
   console.log('Admin to create:', {
     phone: ADMIN_CONFIG.phone,
     email: ADMIN_CONFIG.email,

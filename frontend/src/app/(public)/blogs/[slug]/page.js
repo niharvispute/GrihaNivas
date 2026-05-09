@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
       title: post.title,
       description: post.excerpt,
       openGraph: {
-        title: `${post.title} | Bricks Mumbai`,
+        title: `${post.title} | Ghar Mumbai`,
         description: post.excerpt,
         type: 'article',
         publishedTime: post.createdAt,
@@ -98,10 +98,10 @@ export default async function BlogDetailPage({ params }) {
     image: post.coverImage?.url || post.coverImage || undefined,
     datePublished: post.createdAt,
     dateModified: post.updatedAt || post.createdAt,
-    author: { '@type': 'Organization', name: 'Bricks Mumbai' },
+    author: { '@type': 'Organization', name: 'Ghar Mumbai' },
     publisher: {
       '@type': 'Organization',
-      name: 'Bricks Mumbai',
+      name: 'Ghar Mumbai',
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
     },
   };

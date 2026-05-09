@@ -51,7 +51,7 @@ export default function UserSidebar() {
       {/* Brand Logo */}
       <div className="px-4 py-6 md:py-8 flex items-center justify-between">
         <Link href="/" className="text-2xl font-black text-primary tracking-tighter font-heading">
-          Bricks<span className="text-slate-900">.</span>
+          Ghar<span className="text-slate-900">.</span>
         </Link>
         {/* Close button for mobile */}
         <button

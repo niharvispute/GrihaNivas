@@ -43,7 +43,7 @@ if (!confirmed) {
 }
 
 const reset = async () => {
-  console.log('\n🗑️  Bricks Demo Reset\n');
+  console.log('\n🗑️  Ghar Demo Reset\n');
   console.log('Connecting to MongoDB...');
   await mongoose.connect(process.env.MONGODB_URI);
   console.log('✅ Connected\n');

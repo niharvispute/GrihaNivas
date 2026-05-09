@@ -47,7 +47,7 @@ export default function Footer() {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-12 px-8 py-16 max-w-screen-2xl mx-auto text-slate-600">
         {/* Column 1: Company */}
         <div className="col-span-2 md:col-span-1">
-          <div className="text-xl font-bold text-slate-900 mb-4">Mumbai Editorial</div>
+          <div className="text-xl font-bold text-slate-900 mb-4">Grihavastu</div>
           <p className="text-slate-500 mb-6 max-w-xs leading-relaxed text-[13px]">
             Curating Mumbai's most exclusive real estate opportunities with an architectural lens.
           </p>
@@ -124,7 +124,7 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-200 py-8 px-8 max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="text-slate-600 text-xs">© {currentYear} Mumbai Editorial Real Estate. All rights reserved.</div>
+        <div className="text-slate-600 text-xs">© {currentYear} Grihavastu Real Estate. All rights reserved.</div>
         <div className="flex gap-6 text-xs font-bold text-slate-500">
           <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-primary transition-colors">Terms of Use</Link>

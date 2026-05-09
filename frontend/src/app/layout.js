@@ -19,27 +19,27 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://bricksmumbai.com';
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Bricks — Mumbai Real Estate',
-    template: '%s | Bricks Mumbai',
+    default: 'Ghar — Mumbai Real Estate',
+    template: '%s | Ghar Mumbai',
   },
   description:
-    'Discover flats, villas, and commercial properties across Mumbai. Buy, rent, or invest with Bricks — your trusted Mumbai real estate platform.',
+    'Discover flats, villas, and commercial properties across Mumbai. Buy, rent, or invest with Ghar — your trusted Mumbai real estate platform.',
   keywords: ['Mumbai real estate', 'flats in Mumbai', 'buy property Mumbai', 'rent apartment Mumbai', 'new launch Mumbai'],
-  authors: [{ name: 'Bricks Mumbai' }],
-  creator: 'Bricks Mumbai',
+  authors: [{ name: 'Ghar Mumbai' }],
+  creator: 'Ghar Mumbai',
   openGraph: {
     type: 'website',
     locale: 'en_IN',
     url: SITE_URL,
-    siteName: 'Bricks Mumbai',
-    title: 'Bricks — Mumbai Real Estate',
+    siteName: 'Ghar Mumbai',
+    title: 'Ghar — Mumbai Real Estate',
     description:
-      'Discover flats, villas, and commercial properties across Mumbai. Buy, rent, or invest with Bricks.',
-    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: 'Bricks Mumbai Real Estate' }],
+      'Discover flats, villas, and commercial properties across Mumbai. Buy, rent, or invest with Ghar.',
+    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: 'Ghar Mumbai Real Estate' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Bricks — Mumbai Real Estate',
+    title: 'Ghar — Mumbai Real Estate',
     description: 'Discover flats, villas, and commercial properties across Mumbai.',
     images: ['/og-default.jpg'],
   },

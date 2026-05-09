@@ -14,8 +14,8 @@ export default function WhatsAppCTA({ propertyTitle }) {
   const popupRef = useRef(null);
 
   const message = propertyTitle
-    ? `Hi! I'm interested in "${propertyTitle}" listed on Mumbai Editorial. Could you share more details?`
-    : `Hi! I found your listing on Mumbai Editorial and I'd like to know more about available properties.`;
+    ? `Hi! I'm interested in "${propertyTitle}" listed on Grihavastu. Could you share more details?`
+    : `Hi! I found your listing on Grihavastu and I'd like to know more about available properties.`;
 
   const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
