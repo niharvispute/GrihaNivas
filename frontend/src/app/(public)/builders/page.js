@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import BuilderCard from '@/components/builders/BuilderCard';
 import BuilderFilterBar from '@/components/builders/BuilderFilterBar';
 import FeaturedBuildersCarousel from '@/components/builders/FeaturedBuildersCarousel';
@@ -39,11 +40,13 @@ export default async function ExploreBuildersPage({ searchParams }) {
     <div className="w-full">
       <main className="pb-16 sm:pb-20 pt-6 md:pt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Dynamic Search & Filter Bar */}
-        <BuilderFilterBar
-          initialSearch={params?.search || ''}
-          initialIsFeatured={params?.isFeatured === 'true'}
-          initialCity={params?.city || ''}
-        />
+        <Suspense fallback={<div className="h-12 bg-slate-50 rounded-full animate-pulse" />}>
+          <BuilderFilterBar
+            initialSearch={params?.search || ''}
+            initialIsFeatured={params?.isFeatured === 'true'}
+            initialCity={params?.city || ''}
+          />
+        </Suspense>
 
         {hasRateLimit && (
           <div className="mb-6 sm:mb-8 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs sm:text-sm font-bold text-amber-800">
