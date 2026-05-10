@@ -98,10 +98,10 @@ const BlogBody = ({ post }) => {
           <div className="absolute top-0 right-0 w-48 h-48 bg-primary opacity-20 -mr-16 -mt-16 rounded-full blur-[60px] group-hover:opacity-30 transition-opacity"></div>
           <div className="relative z-10 flex-1">
             <h4 className="text-2xl sm:text-3xl font-black tracking-tighter mb-3 sm:mb-4 leading-tight">Ready to find your <br/>piece of the sky?</h4>
-            <p className="text-slate-400 font-bold leading-relaxed text-sm sm:text-base">Access our exclusive, off-market listings of luxury penthouses across South Mumbai.</p>
+            <p className="text-slate-400 font-bold leading-relaxed text-sm sm:text-base">Access our exclusive, Property listings.</p>
           </div>
-          <button className="relative z-10 w-full md:w-auto bg-primary text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-110 transition-transform active:scale-95 whitespace-nowrap">
-            Browse Penthouses
+          <button className="relative z-10 w-full md:w-auto bg-primary text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-110 transition-transform active:scale-95 whitespace-nowrap" onClick={() => window.location.href = '/buy'}>
+            Browse Property
           </button>
         </div>
 

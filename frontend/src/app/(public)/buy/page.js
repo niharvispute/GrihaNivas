@@ -14,7 +14,7 @@ export const metadata = {
   },
 };
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 8;
 const BASE_PATH = '/buy';
 const ALLOWED_CATEGORY = new Set(['buy', 'new_launch']);
 const ALLOWED_SORT = new Set(['newest', 'price_asc', 'price_desc']);

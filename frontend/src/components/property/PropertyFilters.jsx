@@ -83,6 +83,78 @@ function buildActiveFilterChips(currentQuery, basePath, areaOptions) {
   return chips;
 }
 
+const CustomSelect = ({ name, options, defaultValue, label, icon }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState(defaultValue);
+  const dropdownRef = useRef(null);
+
+  // Sync with prop changes (important for reset)
+  useEffect(() => {
+    setSelected(defaultValue);
+  }, [defaultValue]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
+  const selectedOption = options.find((o) => o.value === selected) || options[0] || { label: 'Select...', value: '' };
+
+  return (
+    <div className="space-y-2" ref={dropdownRef}>
+      <label className="font-bold flex items-center gap-2 text-slate-700 text-xs uppercase tracking-wide">
+        <span className="material-symbols-outlined text-primary text-xl">{icon}</span>
+        {label}
+      </label>
+      <div className="relative">
+        <input type="hidden" name={name} value={selected} />
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none font-semibold text-slate-800 cursor-pointer hover:border-slate-300 text-left flex items-center justify-between group"
+        >
+          <span className="truncate">{selectedOption.label}</span>
+          <span className={`material-symbols-outlined text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+            expand_more
+          </span>
+        </button>
+
+        {isOpen && (
+          <div className="absolute top-full left-0 right-0 mt-2 z-[60] bg-white/95 backdrop-blur-xl border border-slate-100 rounded-2xl shadow-2xl py-2 overflow-y-auto max-h-60 no-scrollbar animate-in fade-in slide-in-from-top-2 duration-200">
+            {options.map((option) => (
+              <button
+                key={option.label + option.value}
+                type="button"
+                onClick={() => {
+                  setSelected(option.value);
+                  setIsOpen(false);
+                }}
+                className={`w-full text-left px-4 py-3 text-sm font-bold transition-all flex items-center justify-between ${
+                  selected === option.value 
+                    ? 'bg-primary/10 text-primary' 
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }`}
+              >
+                {option.label}
+                {selected === option.value && (
+                  <span className="material-symbols-outlined text-base">check</span>
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export default function PropertyFilters({ basePath, currentQuery }) {
   const router = useRouter();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -185,26 +257,13 @@ export default function PropertyFilters({ basePath, currentQuery }) {
       <input type="hidden" name="sortBy" value={sortBy} />
 
       {/* Location Filter */}
-      <div className="space-y-2">
-        <label className="font-bold flex items-center gap-2 text-slate-700 text-xs uppercase tracking-wide">
-          <span className="material-symbols-outlined text-primary text-xl">location_on</span>
-          Location
-        </label>
-        <div className="relative">
-          <select
-            name="area"
-            defaultValue={currentQuery?.area || ''}
-            className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors appearance-none font-semibold text-slate-800 cursor-pointer hover:border-slate-300"
-          >
-            {areaOptions.map((option) => (
-              <option key={option.label} value={option.value}>{option.label}</option>
-            ))}
-          </select>
-          <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </div>
-        </div>
-      </div>
+      <CustomSelect
+        name="area"
+        defaultValue={currentQuery?.area || ''}
+        options={areaOptions}
+        label="Location"
+        icon="location_on"
+      />
 
       {/* Budget Slider Filter */}
       <BudgetRangeSlider
@@ -214,48 +273,22 @@ export default function PropertyFilters({ basePath, currentQuery }) {
       />
 
       {/* BHK Type */}
-      <div className="space-y-2">
-        <label className="font-bold flex items-center gap-2 text-slate-700 text-xs uppercase tracking-wide">
-          <span className="material-symbols-outlined text-primary text-xl">home</span>
-          BHK Type
-        </label>
-        <div className="relative">
-          <select
-            name="bhk"
-            defaultValue={currentQuery?.bhk || ''}
-            className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors appearance-none font-semibold text-slate-800 cursor-pointer hover:border-slate-300"
-          >
-            {bhkOptions.map((option) => (
-              <option key={option.label} value={option.value}>{option.label}</option>
-            ))}
-          </select>
-          <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </div>
-        </div>
-      </div>
+      <CustomSelect
+        name="bhk"
+        defaultValue={currentQuery?.bhk || ''}
+        options={bhkOptions}
+        label="BHK Type"
+        icon="home"
+      />
 
       {/* Furnishing */}
-      <div className="space-y-2">
-        <label className="font-bold flex items-center gap-2 text-slate-700 text-xs uppercase tracking-wide">
-          <span className="material-symbols-outlined text-primary text-xl">chair</span>
-          Furnishing
-        </label>
-        <div className="relative">
-          <select
-            name="furnishing"
-            defaultValue={currentQuery?.furnishing || ''}
-            className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 pl-4 pr-10 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors appearance-none font-semibold text-slate-800 cursor-pointer hover:border-slate-300"
-          >
-            {FURNISHING_OPTIONS.map((option) => (
-              <option key={option.label} value={option.value}>{option.label}</option>
-            ))}
-          </select>
-          <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </div>
-        </div>
-      </div>
+      <CustomSelect
+        name="furnishing"
+        defaultValue={currentQuery?.furnishing || ''}
+        options={furnishingOptions}
+        label="Furnishing"
+        icon="chair"
+      />
 
       <div className="pt-6 space-y-4">
         <button

@@ -14,7 +14,7 @@ export const metadata = {
   },
 };
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 8;
 const BASE_PATH = '/rent';
 const ALLOWED_SORT = new Set(['newest', 'price_asc', 'price_desc']);
 const ALLOWED_FURNISHING = new Set(['unfurnished', 'semi_furnished', 'furnished']);

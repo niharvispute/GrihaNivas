@@ -94,7 +94,7 @@ function ContactForm() {
     },
     {
       title: "Email Address",
-      desc: "contact@bricksrealestate.com",
+      desc: "contact@grihavastu.com",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
       )
@@ -240,7 +240,7 @@ function ContactForm() {
       </section>
 
       {/* 🗺️ Map Section */}
-      <section className="mb-16 md:mb-24 px-4 md:px-8 max-w-screen-2xl mx-auto">
+      {/* <section className="mb-16 md:mb-24 px-4 md:px-8 max-w-screen-2xl mx-auto">
         <div className="relative w-full h-[350px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl group border-4 md:border-8 border-white">
           <div className="absolute top-6 left-6 md:top-12 md:left-12 z-20 bg-white/95 md:backdrop-blur-xl p-6 md:p-8 rounded-2xl shadow-2xl border border-white/50 max-w-[calc(100%-3rem)] md:max-w-sm">
             <span className="text-primary font-black text-[9px] md:text-[10px] tracking-[0.3em] uppercase mb-1 md:mb-2 block leading-none">FLAGSHIP OFFICE</span>
@@ -256,7 +256,7 @@ function ContactForm() {
             alt="Mumbai Map"
           />
         </div>
-      </section>
+      </section> */}
 
       {/* 🔗 FAQ Banner */}
       <section className="max-w-screen-2xl mx-auto px-4 md:px-8 mb-20 md:mb-32">
