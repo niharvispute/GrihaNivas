@@ -4,16 +4,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-
 const NAV_LINKS = [
-  { label: 'Buy', href: '/buy' },
-  { label: 'Rent', href: '/rent' },
-  { label: 'New Launch', href: '/new-launch' },
-  { label: 'Builders', href: '/builders' },
-  { label: 'Blogs', href: '/blogs' },
+  { label: 'BUY', href: '/buy' },
+  { label: 'RENT', href: '/rent' },
+  { label: 'NEW LAUNCH', href: '/new-launch' },
+  { label: 'BUILDERS', href: '/builders' },
+  { label: 'BLOGS', href: '/blogs' },
 ];
 
-const CONTACT_LINK = { label: 'Contact', href: '/contact' };
+const CONTACT_LINK = { label: 'CONTACT', href: '/contact' };
 
 const SERVICE_LINKS = [
   { label: 'Home Loan', href: '/home-loan', icon: 'account_balance' },
@@ -132,7 +131,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation Links (Column 2) */}
-          <nav className="hidden nav:flex items-center justify-center gap-4 lg:gap-6 font-bold tracking-tight text-[11px] lg:text-xs text-slate-600 uppercase tracking-widest whitespace-nowrap">
+          <nav className="hidden nav:flex items-center justify-center gap-4 lg:gap-6 font-bold text-[11px] lg:text-xs text-slate-600 uppercase tracking-widest whitespace-nowrap font-body">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -158,13 +157,13 @@ export default function Header() {
                 aria-expanded={isServicesMenuOpen}
                 aria-haspopup="true"
                 onClick={() => setIsServicesMenuOpen((prev) => !prev)}
-                className={`flex items-center gap-1 py-2 border-b-2 transition-colors ${
+                className={`flex items-center gap-1 py-2 border-b-2 transition-colors font-bold uppercase tracking-widest ${
                   isServicesActive
                     ? 'text-primary border-primary'
                     : 'border-transparent hover:text-primary'
                 }`}
               >
-                <span>Services</span>
+                <span>SERVICES</span>
                 <span className={`material-symbols-outlined text-sm transition-transform ${isServicesMenuOpen ? 'rotate-180' : ''}`}>
                   expand_more
                 </span>
