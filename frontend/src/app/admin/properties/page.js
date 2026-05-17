@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import CloudinaryImage from '@/components/CloudinaryImage';
-import { listProperties, deleteProperty, getPropertyById, updateProperty, exportProperties, updatePropertyActiveStatus } from '@/services/propertyService';
+import { adminListProperties, deleteProperty, getPropertyById, updateProperty, exportProperties, updatePropertyActiveStatus } from '@/services/propertyService';
 import ExportButton from '@/components/admin/ExportButton';
 import PropertyImageModal from '@/components/admin/properties/PropertyImageModal';
 
@@ -29,6 +29,7 @@ export default function PropertyManagementPage() {
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState('');
   const [search, setSearch] = useState('');
+  const [activeStatus, setActiveStatus] = useState('');
   const [page, setPage] = useState(1);
   const [deletingId, setDeletingId] = useState(null);
   const [openActionFor, setOpenActionFor] = useState(null);
@@ -46,15 +47,16 @@ export default function PropertyManagementPage() {
       const query = { page, limit: 12 };
       if (category) query.category = category;
       if (search) query.search = search;
-      const res = await listProperties(query, { map: false });
+      if (activeStatus !== '') query.isActive = activeStatus;
+      const res = await adminListProperties({ ...query, status: 'approved' });
       setProperties(res.items || []);
       setMeta(res.meta || null);
-    } catch {
+    } catch (err) {
       setProperties([]);
     } finally {
       setLoading(false);
     }
-  }, [category, search, page]);
+  }, [category, search, page, activeStatus]);
 
   useEffect(() => { fetchProperties(); }, [fetchProperties]);
 
@@ -161,6 +163,7 @@ export default function PropertyManagementPage() {
               const query = {};
               if (category) query.category = category;
               if (search) query.search = search;
+              if (activeStatus !== '') query.isActive = activeStatus;
               return exportProperties(query);
             }}
           />
@@ -193,6 +196,18 @@ export default function PropertyManagementPage() {
             <option value="rent">Rent</option>
             <option value="commercial">Commercial</option>
             <option value="new_launch">New Launch</option>
+          </select>
+        </div>
+        <div className="w-48">
+          <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Status</label>
+          <select
+            className="w-full appearance-none bg-slate-50 rounded-2xl px-5 py-4 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
+            value={activeStatus}
+            onChange={(e) => { setActiveStatus(e.target.value); setPage(1); }}
+          >
+            <option value="">All Statuses</option>
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
           </select>
         </div>
       </div>
