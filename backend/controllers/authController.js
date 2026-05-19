@@ -29,8 +29,8 @@ const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
 
 const cookieOptions = (maxAge) => ({
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax',
+  secure: true,
+  sameSite: 'none',
   path: '/api/auth',
   maxAge,
 });
