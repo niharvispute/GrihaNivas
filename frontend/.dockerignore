@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.env*.local
+*.log
+npm-debug.log*
+.DS_Store
+Dockerfile
+.dockerignore
+README.md
+Progress.md
+design_guidelines.md
+eslint-report.json
+client-req

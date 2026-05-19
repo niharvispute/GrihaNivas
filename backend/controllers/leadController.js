@@ -1,0 +1,292 @@
+const { sendLeadNotification, sendLeadConfirmation } = require('../services/emailService');
+const { parsePagination } = require('../utils/pagination');
+const { sendSuccess, sendCreated } = require('../utils/apiResponse');
+const { sendExcel, formatDate, joinList } = require('../utils/excelExport');
+const AppError = require('../utils/AppError');
+const Lead = require('../models/mongoose/Lead');
+
+/**
+ * Lead Controller — CRM
+ *
+ * Status transitions (one-step moves only):
+ *   new ↔ contacted ↔ qualified ↔ closed
+ */
+
+const STATUS_ORDER = { new: 0, contacted: 1, qualified: 2, closed: 3 };
+
+// ── POST /api/leads ───────────────────────────────────────────────────────────
+
+const create = async (req, res, next) => {
+  try {
+    const lead = await Lead.create({
+      ...req.body,
+      userId: req.user.id,
+      status: 'new',
+      source: 'website',
+    });
+
+    // Fire both emails in parallel — non-blocking
+    Promise.all([
+      sendLeadNotification(lead),
+      sendLeadConfirmation(lead),
+    ]).catch((err) => console.error('Lead email failed (non-fatal):', err.message));
+
+    return sendCreated(res, 'Enquiry submitted successfully. Our team will contact you within 24 hours.', lead);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── GET /api/leads/my-enquiries  [user] ──────────────────────────────────────
+
+const myEnquiries = async (req, res, next) => {
+  try {
+    const { limit, skip, buildMeta } = parsePagination(req.query);
+    const userPhone = req.user.phone;
+    const ownershipFilter = userPhone
+      ? { $or: [{ userId: req.user.id }, { phone: userPhone }] }
+      : { userId: req.user.id };
+
+    const [leads, total] = await Promise.all([
+      Lead.find(ownershipFilter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .select('name phone email leadType status message propertyId assignedTo createdAt lastContactedAt')
+        .populate('assignedTo', 'name email')
+        .populate('propertyId', 'title slug'),
+      Lead.countDocuments(ownershipFilter),
+    ]);
+
+    return sendSuccess(res, 200, 'Your enquiries fetched', leads, buildMeta(total));
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── GET /api/leads  [admin] ───────────────────────────────────────────────────
+
+const list = async (req, res, next) => {
+  try {
+    const { limit, skip, buildMeta } = parsePagination(req.query);
+    const { status, leadType, search } = req.query;
+
+    const filter = {};
+    if (status)   filter.status = status;
+    if (leadType) filter.leadType = leadType;
+    if (search) {
+      filter.$or = [
+        { name:  new RegExp(search, 'i') },
+        { phone: new RegExp(search, 'i') },
+        { email: new RegExp(search, 'i') },
+      ];
+    }
+
+    const [leads, total] = await Promise.all([
+      Lead.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .select('name phone email leadType status message propertyId assignedTo createdAt lastContactedAt notesCount')
+        .populate('assignedTo', 'name email')
+        .populate('propertyId', 'title slug'),
+      Lead.countDocuments(filter),
+    ]);
+
+    return sendSuccess(res, 200, 'Leads fetched', leads, buildMeta(total));
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── GET /api/leads/export  [admin] ────────────────────────────────────────────
+
+const exportLeads = async (req, res, next) => {
+  try {
+    const { status, leadType, search } = req.query;
+
+    const filter = {};
+    if (status) filter.status = status;
+    if (leadType) filter.leadType = leadType;
+    if (search) {
+      filter.$or = [
+        { name: new RegExp(search, 'i') },
+        { phone: new RegExp(search, 'i') },
+        { email: new RegExp(search, 'i') },
+      ];
+    }
+
+    const leads = await Lead.find(filter)
+      .sort({ createdAt: -1 })
+      .populate('assignedTo', 'name email')
+      .populate('propertyId', 'title slug')
+      .populate('userId', 'name email phone')
+      .lean();
+
+    const columns = [
+      { header: 'Name', key: 'name', width: 24 },
+      { header: 'Phone', key: 'phone', width: 16 },
+      { header: 'Email', key: 'email', width: 30 },
+      { header: 'Lead Type', key: 'leadType', width: 12 },
+      { header: 'Status', key: 'status', width: 12 },
+      { header: 'Source', key: 'source', width: 16 },
+      { header: 'Message', key: 'message', width: 50 },
+      { header: 'Property', key: 'property', width: 30 },
+      { header: 'Budget Min', key: 'budgetMin', width: 14 },
+      { header: 'Budget Max', key: 'budgetMax', width: 14 },
+      { header: 'BHK Preferences', key: 'bhkPreferences', width: 16 },
+      { header: 'Preferred Locations', key: 'preferredLocations', width: 30 },
+      { header: 'Monthly Income', key: 'monthlyIncome', width: 14 },
+      { header: 'Assigned To', key: 'assignedTo', width: 24 },
+      { header: 'Notes Count', key: 'notesCount', width: 12 },
+      { header: 'Latest Note', key: 'latestNote', width: 40 },
+      { header: 'Last Contacted', key: 'lastContactedAt', width: 22 },
+      { header: 'Registered User', key: 'registeredUser', width: 26 },
+      { header: 'Created At', key: 'createdAt', width: 22 },
+      { header: 'Updated At', key: 'updatedAt', width: 22 },
+    ];
+
+    const rows = leads.map((l) => {
+      const latestNote = Array.isArray(l.notes) && l.notes.length > 0
+        ? l.notes[l.notes.length - 1].text
+        : '';
+      return {
+        name: l.name || '',
+        phone: l.phone || '',
+        email: l.email || '',
+        leadType: l.leadType || '',
+        status: l.status || '',
+        source: l.source || '',
+        message: l.message || '',
+        property: l.propertyId?.title || '',
+        budgetMin: l.budgetMin ?? '',
+        budgetMax: l.budgetMax ?? '',
+        bhkPreferences: joinList(l.bhkPreferences),
+        preferredLocations: joinList(l.preferredLocations),
+        monthlyIncome: l.monthlyIncome ?? '',
+        assignedTo: l.assignedTo ? `${l.assignedTo.name || ''} (${l.assignedTo.email || ''})` : '',
+        notesCount: Array.isArray(l.notes) ? l.notes.length : 0,
+        latestNote,
+        lastContactedAt: formatDate(l.lastContactedAt),
+        registeredUser: l.userId ? `${l.userId.name || ''} (${l.userId.email || l.userId.phone || ''})` : '',
+        createdAt: formatDate(l.createdAt),
+        updatedAt: formatDate(l.updatedAt),
+      };
+    });
+
+    return sendExcel(res, {
+      filename: 'bricks_leads',
+      sheetName: 'Leads',
+      columns,
+      rows,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── GET /api/leads/:id  [admin] ───────────────────────────────────────────────
+
+const getOne = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const lead = await Lead.findById(id)
+      .populate('assignedTo', 'name email')
+      .populate('propertyId', 'title slug heroImage');
+
+    if (!lead) throw new AppError('Lead not found', 404);
+
+    return sendSuccess(res, 200, 'Lead fetched', lead);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── PUT /api/leads/:id/status  [admin] ────────────────────────────────────────
+
+const updateStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status: newStatus } = req.body;
+
+    const lead = await Lead.findById(id);
+    if (!lead) throw new AppError('Lead not found', 404);
+
+    const diff = STATUS_ORDER[newStatus] - STATUS_ORDER[lead.status];
+    if (Math.abs(diff) > 1) {
+      throw new AppError(
+        `Can only move one stage at a time. Cannot jump from "${lead.status}" to "${newStatus}".`,
+        400
+      );
+    }
+
+    lead.status = newStatus;
+    if (newStatus === 'contacted') lead.lastContactedAt = new Date();
+    await lead.save();
+
+    return sendSuccess(res, 200, 'Lead status updated', lead);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── PUT /api/leads/:id/assign  [admin] ────────────────────────────────────────
+
+const assign = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { adminId } = req.body;
+
+    const lead = await Lead.findByIdAndUpdate(
+      id,
+      { assignedTo: adminId },
+      { returnDocument: 'after' }
+    ).populate('assignedTo', 'name email');
+
+    if (!lead) throw new AppError('Lead not found', 404);
+
+    return sendSuccess(res, 200, 'Lead assigned', lead);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── POST /api/leads/:id/notes  [admin] ────────────────────────────────────────
+
+const addNote = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { text } = req.body;
+
+    const lead = await Lead.findByIdAndUpdate(
+      id,
+      { $push: { notes: { text, addedBy: req.user.id, addedAt: new Date() } } },
+      { returnDocument: 'after' }
+    );
+
+    if (!lead) throw new AppError('Lead not found', 404);
+
+    const addedNote = lead.notes[lead.notes.length - 1];
+    return sendCreated(res, 'Note added', addedNote);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ── DELETE /api/leads/:id  [admin] ───────────────────────────────────────────
+
+const remove = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const lead = await Lead.findByIdAndDelete(id);
+    if (!lead) throw new AppError('Lead not found', 404);
+
+    return sendSuccess(res, 200, 'Lead deleted', { id: lead._id });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { create, list, exportLeads, myEnquiries, getOne, updateStatus, assign, addNote, remove };

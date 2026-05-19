@@ -1,0 +1,26 @@
+{
+  "name": "bricks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RohitHuge/Bricks.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RohitHuge/Bricks/issues"
+  },
+  "homepage": "https://github.com/RohitHuge/Bricks#readme",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

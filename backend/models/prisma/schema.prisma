@@ -1,0 +1,384 @@
+// Prisma Schema — Ghar Real Estate Platform
+// Database: PostgreSQL
+//
+// To use:
+//   1. Copy this file to the project root as prisma/schema.prisma
+//   2. Set DATABASE_URL in .env
+//   3. Run: npx prisma migrate dev --name init
+//   4. Run: npx prisma generate
+//
+// Install Prisma if not already:
+//   npm install @prisma/client
+//   npm install -D prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Enums ─────────────────────────────────────────────────────────────────────
+
+enum Role {
+  user
+  admin
+}
+
+enum PropertyCategory {
+  buy
+  rent
+  commercial
+  new_launch
+}
+
+enum PriceUnit {
+  total
+  per_sqft
+  per_month
+}
+
+enum Furnishing {
+  unfurnished
+  semi_furnished
+  furnished
+}
+
+enum LeadType {
+  buy
+  rent
+  loan
+  agreement
+}
+
+enum LeadStatus {
+  new
+  contacted
+  qualified
+  closed
+}
+
+enum BlogCategory {
+  market_trends
+  buying_guide
+  legal
+  investment
+  lifestyle
+}
+
+enum BannerPosition {
+  home_hero
+  home_secondary
+  listing_sidebar
+  blog_sidebar
+}
+
+// ── Models ────────────────────────────────────────────────────────────────────
+
+model User {
+  id          String   @id @default(uuid())
+  phone       String   @unique
+  email       String?  @unique
+  name        String?
+  role        Role     @default(user)
+  isVerified  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  firebaseUid String?  @unique
+
+  // Profile picture (Cloudinary)
+  profilePictureUrl      String?
+  profilePicturePublicId String?
+
+  lastLogin   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  savedProperties    SavedProperty[]
+  comparedProperties ComparedProperty[]
+  postedProperties   Property[]          @relation("PropertyPostedBy")
+  blogs              Blog[]              @relation("BlogAuthor")
+  assignedLeads      Lead[]              @relation("LeadAssignedTo")
+  leadNotes          LeadNote[]
+  stampDutyUpdates   StampDutyConfig[]   @relation("StampDutyUpdatedBy")
+
+  @@map("users")
+}
+
+// Many-to-many: User ↔ Property (saved)
+model SavedProperty {
+  userId     String
+  propertyId String
+  savedAt    DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@id([userId, propertyId])
+  @@map("saved_properties")
+}
+
+// Many-to-many: User ↔ Property (compare) — max 3 enforced in controller
+model ComparedProperty {
+  userId     String
+  propertyId String
+  addedAt    DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@id([userId, propertyId])
+  @@map("compared_properties")
+}
+
+model Property {
+  id          String           @id @default(uuid())
+  title       String
+  slug        String           @unique
+  description String           @db.Text
+  category    PropertyCategory
+  price       Decimal          @db.Decimal(15, 2)
+  priceUnit   PriceUnit        @default(total)
+  isNegotiable Boolean         @default(false)
+
+  // Location
+  area        String
+  address     String?
+  city        String   @default("Mumbai")
+  pincode     String?
+  lat         Decimal? @db.Decimal(10, 7)
+  lng         Decimal? @db.Decimal(10, 7)
+
+  // Specs
+  bhk         Int?
+  bathrooms   Int?
+  areaSqft    Decimal? @db.Decimal(10, 2)
+  floor       Int?
+  totalFloors Int?
+  parking     Int      @default(0)
+
+  // Details
+  furnishing  Furnishing?
+  facing      String?
+  possession  String?
+  age         String?
+  reraNumber  String?
+  amenities   String[]
+  highlights  String[]
+
+  // Media (stored as JSON arrays of {url, publicId} objects)
+  heroImageUrl       String?
+  heroImagePublicId  String?
+  gallery            Json     @default("[]")   // [{url, publicId}]
+  floorPlans         Json     @default("[]")   // [{url, publicId}]
+  brochureUrl        String?
+  brochurePublicId   String?
+
+  // Status
+  isFeatured  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  views       Int      @default(0)
+
+  // SEO
+  seoTitle        String?
+  seoDescription  String?
+
+  // Relations
+  postedBy    String
+  postedByUser User   @relation("PropertyPostedBy", fields: [postedBy], references: [id])
+
+  savedBy   SavedProperty[]
+  comparedBy ComparedProperty[]
+  leads     Lead[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([area])
+  @@index([price])
+  @@index([bhk])
+  @@index([isFeatured])
+  @@index([isActive])
+  @@index([category, isActive])
+  @@map("properties")
+}
+
+model Lead {
+  id        String     @id @default(uuid())
+  name      String
+  phone     String
+  email     String?
+  leadType  LeadType
+  status    LeadStatus @default(new)
+  message   String?    @db.Text
+
+  // Optional property association
+  propertyId String?
+  property   Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+
+  // Budget (for buy/rent leads)
+  budgetMin Decimal? @db.Decimal(15, 2)
+  budgetMax Decimal? @db.Decimal(15, 2)
+
+  // Preferences (stored as string/int arrays)
+  preferredLocations String[]
+  bhkPreferences     Int[]
+
+  // CRM
+  assignedToId   String?
+  assignedTo     User?      @relation("LeadAssignedTo", fields: [assignedToId], references: [id], onDelete: SetNull)
+  notes          LeadNote[]
+  lastContactedAt DateTime?
+
+  source    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([leadType])
+  @@index([assignedToId])
+  @@index([createdAt])
+  @@map("leads")
+}
+
+model LeadNote {
+  id       String   @id @default(uuid())
+  text     String   @db.Text
+  addedAt  DateTime @default(now())
+
+  leadId   String
+  lead     Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  addedById String
+  addedBy   User   @relation(fields: [addedById], references: [id])
+
+  @@index([leadId])
+  @@map("lead_notes")
+}
+
+model Blog {
+  id          String       @id @default(uuid())
+  title       String
+  slug        String       @unique
+  content     String       @db.Text
+  excerpt     String?
+  category    BlogCategory
+  tags        String[]
+
+  // Featured image (Cloudinary)
+  featuredImageUrl      String?
+  featuredImagePublicId String?
+
+  // Author
+  authorId String
+  author   User   @relation("BlogAuthor", fields: [authorId], references: [id])
+
+  // SEO
+  seoTitle       String?
+  seoDescription String?
+
+  // Publishing
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  views       Int       @default(0)
+
+  // Comments (stored in separate table for relational integrity)
+  comments BlogComment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([isPublished])
+  @@index([publishedAt])
+  @@map("blogs")
+}
+
+model BlogComment {
+  id         String   @id @default(uuid())
+  name       String
+  email      String?
+  content    String   @db.Text
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  blogId String
+  blog   Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@index([blogId])
+  @@index([isApproved])
+  @@map("blog_comments")
+}
+
+model Testimonial {
+  id          String  @id @default(uuid())
+  name        String
+  designation String?
+  company     String?
+  testimonial String  @db.Text
+  photoUrl    String?
+  photoPublicId String?
+  rating      Int     @default(5)
+  isActive    Boolean @default(true)
+  order       Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, order])
+  @@map("testimonials")
+}
+
+model Banner {
+  id       String         @id @default(uuid())
+  title    String?
+  imageUrl      String
+  imagePublicId String
+  link     String?
+  position BannerPosition
+  isActive Boolean        @default(true)
+  order    Int            @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([position, isActive, order])
+  @@map("banners")
+}
+
+// Singleton — only one row (id = 1) ever exists.
+// Controller uses upsert with where: { id: 1 }.
+model StampDutyConfig {
+  id                 Int     @id @default(1)
+  maleRate           Decimal @db.Decimal(5, 2) @default(6)
+  femaleRate         Decimal @db.Decimal(5, 2) @default(5)
+  jointRate          Decimal @db.Decimal(5, 2) @default(5)
+  registrationCharge Decimal @db.Decimal(10, 2) @default(30000)
+
+  updatedById String?
+  updatedBy   User?   @relation("StampDutyUpdatedBy", fields: [updatedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("stamp_duty_config")
+}
+
+model Contact {
+  id      String  @id @default(uuid())
+  name    String
+  phone   String
+  email   String?
+  message String  @db.Text
+  isRead  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("contacts")
+}
