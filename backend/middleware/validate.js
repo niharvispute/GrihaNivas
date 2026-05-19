@@ -305,6 +305,7 @@ const schemas = {
       page: z.coerce.number().int().min(1).default(1),
       limit: z.coerce.number().int().min(1).max(100).default(10),
       status: z.enum(['new', 'reviewing', 'approved', 'rejected', 'closed']).optional(),
+      excludeStatus: z.enum(['new', 'reviewing', 'approved', 'rejected', 'closed']).optional(),
       listingType: z.enum(['Sale', 'Rent']).optional(),
       buildingType: z.enum(['Residential', 'Commercial']).optional(),
       search: z.string().trim().max(100).optional(),
@@ -418,6 +419,11 @@ const schemas = {
       search: z.string().trim().max(100).optional(),
       builder: objectIdSchema.optional(),
       noBuilder: z.preprocess((v) => v === 'true' || v === true, z.boolean()).optional(),
+      isActive: z.preprocess((v) => {
+        if (v === 'true' || v === true) return true;
+        if (v === 'false' || v === false) return false;
+        return undefined;
+      }, z.boolean()).optional(),
     }),
 
     heroImage: z.object({

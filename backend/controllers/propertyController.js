@@ -130,7 +130,7 @@ const buildMongoSort = (sortBy) => {
 };
 
 const buildAdminFilter = (query) => {
-  const { status, search, builder, noBuilder } = query;
+  const { status, search, builder, noBuilder, isActive } = query;
   const filter = {
     status: status || 'pending',
   };
@@ -147,6 +147,10 @@ const buildAdminFilter = (query) => {
 
   if (builder) filter.builder = builder;
   if (noBuilder) filter.builder = null;
+
+  if (isActive !== undefined) {
+    filter.isActive = isActive;
+  }
 
   return filter;
 };
@@ -371,11 +375,14 @@ const adminList = async (req, res, next) => {
 
 const exportProperties = async (req, res, next) => {
   try {
-    const { category, status, search } = req.query;
+    const { category, status, search, isActive } = req.query;
 
     const filter = {};
     if (category) filter.category = category;
     if (status) filter.status = status;
+    if (isActive !== undefined && isActive !== '') {
+      filter.isActive = isActive === 'true' || isActive === true;
+    }
 
     if (search) {
       const regex = new RegExp(search, 'i');

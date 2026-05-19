@@ -61,6 +61,7 @@ export default function PropertySubmissionsPage() {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
   const [listingType, setListingType] = useState('');
+  const [showApproved, setShowApproved] = useState(false);
   const [page, setPage] = useState(1);
   const [openActionFor, setOpenActionFor] = useState(null);
   const [updatingId, setUpdatingId] = useState(null);
@@ -68,15 +69,19 @@ export default function PropertySubmissionsPage() {
   const [viewingItem, setViewingItem] = useState(null);
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [closeWarningItem, setCloseWarningItem] = useState(null);
-
+ 
   const fetchItems = useCallback(async () => {
     setLoading(true);
     try {
       const query = { page, limit: 15 };
       if (search) query.search = search;
-      if (status) query.status = status;
+      if (status) {
+        query.status = status;
+      } else if (!showApproved) {
+        query.excludeStatus = 'approved';
+      }
       if (listingType) query.listingType = listingType;
-
+ 
       const res = await listPropertySubmissions(query);
       setItems(res.items || []);
       setMeta(res.meta || null);
@@ -86,8 +91,8 @@ export default function PropertySubmissionsPage() {
     } finally {
       setLoading(false);
     }
-  }, [search, status, listingType, page]);
-
+  }, [search, status, listingType, page, showApproved]);
+ 
   useEffect(() => {
     fetchItems();
   }, [fetchItems]);
@@ -174,11 +179,23 @@ export default function PropertySubmissionsPage() {
           <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Property Submissions</h1>
           <p className="text-slate-500 font-bold mt-2">Review and process owner listing requests.</p>
         </div>
-        {meta && (
-          <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
-            {meta.total} submissions
-          </span>
-        )}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => { setShowApproved((prev) => !prev); setPage(1); }}
+            className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider transition-all border ${showApproved ? 'bg-emerald-600 text-white border-emerald-600 shadow-lg shadow-emerald-600/20' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'}`}
+          >
+            <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: showApproved ? "'FILL' 1" : "'FILL' 0" }}>
+              check_circle
+            </span>
+            <span>Show Approved</span>
+          </button>
+          {meta && (
+            <span className="bg-slate-50 border border-slate-100 text-slate-600 px-6 py-3 rounded-2xl text-sm font-black">
+              {meta.total} submissions
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-50 flex flex-wrap gap-6 items-end">
@@ -219,6 +236,8 @@ export default function PropertySubmissionsPage() {
             <option value="new">New</option>
             <option value="reviewing">Reviewing</option>
             <option value="rejected">Rejected</option>
+            <option value="approved">Approved</option>
+            <option value="closed">Closed</option>
           </select>
         </div>
       </div>

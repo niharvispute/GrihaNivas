@@ -118,10 +118,15 @@ const mySubmissions = async (req, res, next) => {
 const listAdmin = async (req, res, next) => {
   try {
     const { limit, skip, buildMeta } = parsePagination(req.query);
-    const { status, listingType, buildingType, search } = req.query;
+    const { status, excludeStatus, listingType, buildingType, search } = req.query;
 
     const filter = {};
-    if (status) filter.status = status;
+    if (status) {
+      filter.status = status;
+    } else if (excludeStatus) {
+      filter.status = { $ne: excludeStatus };
+    }
+
     if (listingType) filter.listingType = listingType;
     if (buildingType) filter.buildingType = buildingType;
 
