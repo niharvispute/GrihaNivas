@@ -7,6 +7,7 @@ const {
   ensureSubmissionPublished,
   syncPublishedPropertyVisibility,
 } = require('../services/propertySubmissionPublishingService');
+const { sendPropertySubmissionNotification } = require('../services/emailService');
 
 const ALLOWED_STATUS_TRANSITIONS = {
   new: ['reviewing'],
@@ -82,6 +83,10 @@ const create = async (req, res, next) => {
       status: 'new',
       source: 'list_property_form',
     });
+
+    sendPropertySubmissionNotification(submission).catch((err) =>
+      console.error('Property submission email failed (non-fatal):', err.message)
+    );
 
     return sendCreated(res, 'Property submission created', submission);
   } catch (err) {

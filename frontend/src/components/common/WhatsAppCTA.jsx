@@ -4,8 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { apiFetch } from '@/lib/api';
 
-const WHATSAPP_NUMBER = '919222456789';
-const CALL_NUMBER = '+919222456789';
+const WHATSAPP_NUMBER = '919137950050';
+const CALL_NUMBER = '+919137950050';
 
 export default function WhatsAppCTA({ propertyTitle }) {
   const [servicesOpen, setServicesOpen] = useState(false);

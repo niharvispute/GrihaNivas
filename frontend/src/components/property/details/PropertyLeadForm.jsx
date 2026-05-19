@@ -7,7 +7,7 @@ import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { createLead } from '@/services/leadService';
 
 const DRAFT_KEY = 'lead_draft:property_interest';
-const WHATSAPP_NUMBER = '919222456789'; // Replace with actual business number
+const WHATSAPP_NUMBER = '919137950050';
 
 export default function PropertyLeadForm({ property }) {
   const { user, openModal } = useAuth();

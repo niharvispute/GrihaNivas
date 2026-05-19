@@ -1,6 +1,6 @@
 'use client';
 
-const WHATSAPP_NUMBER = '919222456789'; // Replace with actual business number
+const WHATSAPP_NUMBER = '919137950050';
 
 export default function MobileStickyBar({ property }) {
   const whatsappMessage = property?.title

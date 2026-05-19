@@ -264,6 +264,40 @@ const row = (label, value) => `
   </tr>
 `;
 
+const propertySubmissionNotificationTemplate = (sub) => {
+  const typeLabel = sub.listingType === 'rent' ? 'Rent' : 'Sale';
+  const buildingLabel = sub.buildingType || 'Property';
+  const bhk = sub.bhk ? `${sub.bhk} BHK ` : '';
+
+  return baseTemplate(
+    'New Property Listing — Grihavastu',
+    `
+    <h2 style="margin:0 0 8px;color:#1a1a1a;font-size:20px;">🏠 New Property Listing Submitted</h2>
+    <p style="margin:0 0 24px;color:#666666;font-size:14px;">
+      A user has submitted a property for review on Grihavastu.
+    </p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eeeeee;border-radius:6px;overflow:hidden;">
+      ${row('Title', sub.title || `${bhk}${buildingLabel} for ${typeLabel}`)}
+      ${row('Listing Type', `<span style="background:#b80049;color:#fff;padding:2px 10px;border-radius:20px;font-size:12px;">${typeLabel}</span>`)}
+      ${row('Building Type', buildingLabel)}
+      ${sub.bhk ? row('BHK', sub.bhk) : ''}
+      ${sub.locality ? row('Locality', sub.locality) : ''}
+      ${sub.price ? row('Price', `₹${Number(sub.price).toLocaleString('en-IN')}`) : ''}
+      ${row('Owner Name', sub.ownerName || '—')}
+      ${row('Owner Phone', sub.phone || '—')}
+      ${sub.email ? row('Owner Email', sub.email) : ''}
+      ${row('Images Uploaded', `${(sub.images || []).length} photo(s)`)}
+      ${row('Submitted At', new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }))}
+    </table>
+
+    <p style="margin:24px 0 0;font-size:13px;color:#888888;">
+      Log in to the admin panel to review and approve or reject this listing.
+    </p>
+    `
+  );
+};
+
 // ── Public API ───────────────────────────────────────────────────────────────
 
 /**
@@ -340,10 +374,20 @@ const sendOtpEmail = async (email, otp) => {
   });
 };
 
+const sendPropertySubmissionNotification = async (submission) => {
+  return sendEmail({
+    to: process.env.ADMIN_EMAIL,
+    subject: `🏠 New Property Listed — ${submission.title || submission.ownerName || 'Review Required'}`,
+    html: propertySubmissionNotificationTemplate(submission),
+    text: `New property submission from ${submission.ownerName || 'a user'} (${submission.phone}). Locality: ${submission.locality || 'N/A'}. Please review in admin panel.`,
+  });
+};
+
 module.exports = {
   sendLeadNotification,
   sendLeadConfirmation,
   sendContactNotification,
+  sendPropertySubmissionNotification,
   sendWelcome,
   sendOtpEmail,
 };
