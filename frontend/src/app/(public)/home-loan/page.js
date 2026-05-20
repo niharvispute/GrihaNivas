@@ -11,9 +11,9 @@ export const metadata = {
 export default function HomeLoanPage() {
   return (
     <div className="bg-white min-h-screen font-sans">
-      <main className="pt-8 md:pt-12">
+      <main className="pt-0">
         {/* 1. Hero Section */}
-        <section className="px-6 md:px-8 py-8 md:py-24 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-24">
+        <section className="px-6 md:px-8 pt-6 pb-8 md:pt-16 md:pb-24 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-24">
           <div className="md:w-2/5 space-y-6 md:space-y-8 text-center md:text-left">
             <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">Mortgage Solutions</span>
             <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-tight text-slate-900">

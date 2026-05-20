@@ -32,7 +32,7 @@ export default function RentAgreementPage() {
   return (
     <div className="w-full">
       {/* 🏙️ Hero Section */}
-      <section className="relative px-8 pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden bg-slate-50/50">
+      <section className="relative px-8 pt-6 pb-20 lg:pt-16 lg:pb-32 overflow-hidden bg-slate-50/50">
         <div className="max-w-screen-2xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
           <div className="z-10">
             <span className="inline-block px-5 py-2 mb-8 text-[10px] font-black tracking-[0.3em] uppercase text-primary bg-primary/10 rounded-full">
