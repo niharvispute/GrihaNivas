@@ -21,20 +21,20 @@ export default function ProfileStats({ user }) {
   ];
 
   return (
-    <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+    <div className="mt-4 sm:mt-6 md:mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
       {stats.map((stat, idx) => (
         <div
           key={idx}
-          className={`relative overflow-hidden rounded-2xl p-3 sm:p-6 md:p-8 shadow-sm transition-all duration-500 hover:shadow-lg hover:shadow-slate-200/80 hover:-translate-y-1 border border-slate-100 ${
+          className={`relative overflow-hidden rounded-2xl p-3 sm:p-5 md:p-6 lg:p-8 shadow-sm transition-all duration-500 hover:shadow-lg hover:shadow-slate-200/80 hover:-translate-y-1 border border-slate-100 ${
             stat.gradient ? `bg-gradient-to-br ${stat.gradient} border-transparent` : 'bg-white'
           }`}
         >
           <div className="relative z-10 flex flex-col h-full justify-between">
             <div>
-              <p className={`text-[7px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-widest mb-0.5 sm:mb-1 md:mb-2 ${stat.gradient ? 'text-white/70' : 'text-slate-400'}`}>
+              <p className={`text-[6px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-widest mb-0.5 sm:mb-1 ${stat.gradient ? 'text-white/70' : 'text-slate-400'}`}>
                 {stat.label}
               </p>
-              <h4 className={`text-xl sm:text-2xl md:text-4xl font-heading font-black mb-2 sm:mb-3 md:mb-4 ${stat.text}`}>
+              <h4 className={`text-lg sm:text-2xl md:text-3xl lg:text-4xl font-heading font-black mb-1 sm:mb-2 md:mb-4 ${stat.text}`}>
                 {stat.value}
               </h4>
             </div>

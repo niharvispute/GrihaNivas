@@ -40,20 +40,20 @@ export default function MyListingsPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="max-w-6xl mx-auto space-y-5 sm:space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-slate-100 pb-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-100 pb-4 sm:pb-8 md:pb-10">
         <div>
-          <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tighter">
+          <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tighter">
             My <span className="text-primary ">Listings</span>
           </h1>
-          <p className="text-slate-400 mt-2 font-black uppercase tracking-[0.25em] text-[10px]">
+          <p className="text-slate-400 mt-1 sm:mt-2 font-black uppercase tracking-[0.25em] text-[8px] sm:text-[10px]">
             {listings.length} {listings.length === 1 ? 'property' : 'properties'} submitted for review
           </p>
         </div>
         <Link 
           href="/list-property" 
-          className="bg-primary text-white px-8 py-4 rounded-full font-black uppercase tracking-widest text-[10px] shadow-2xl hover:bg-primary/90 transition-all active:scale-95"
+          className="bg-primary text-white px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full font-black uppercase tracking-widest text-[9px] sm:text-[10px] shadow-2xl hover:bg-primary/90 transition-all active:scale-95 text-center w-full md:w-auto"
         >
           List New Property
         </Link>

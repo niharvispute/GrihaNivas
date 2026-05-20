@@ -121,7 +121,7 @@ const sendViaTwilio = async (phone, otp) => {
   }
 
   // Twilio requires form-encoded body, not JSON
-  const messageBody = `Your Grihavastu OTP is ${otp}. Valid for 10 minutes. Do not share this with anyone.`;
+  const messageBody = `Your Grihanivas OTP is ${otp}. Valid for 10 minutes. Do not share this with anyone.`;
   const formBody    = new URLSearchParams({ From: from, To: phone, Body: messageBody }).toString();
 
   // Basic Auth: base64 encode "accountSid:authToken"

@@ -18,7 +18,7 @@ export default function ListingTrust() {
             <div className="relative p-10 bg-slate-50 rounded-2xl border border-slate-100">
               <span className="material-symbols-outlined text-primary/10 text-8xl absolute top-6 right-8 pointer-events-none">format_quote</span>
               <p className="font-sans text-xl  text-slate-700 mb-8 leading-relaxed relative z-10">
-                &ldquo;The editorial approach of Ghar completely changed the demographic of inquiries I was getting. Within two weeks, I closed a deal for my Altamount Road apartment at my asking price.&rdquo;
+                &ldquo;The editorial approach of Grihanivas completely changed the demographic of inquiries I was getting. Within two weeks, I closed a deal for my Altamount Road apartment at my asking price.&rdquo;
               </p>
               <div className="flex items-center gap-4 relative z-10">
                 <div className="w-12 h-12 rounded-full overflow-hidden shadow-md relative">

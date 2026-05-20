@@ -68,44 +68,44 @@ export default function EnquiryTable() {
         return (
           <div
             key={item._id}
-            className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg hover:shadow-slate-200/80 hover:-translate-y-1 transition-all duration-500 p-4 sm:p-6"
+            className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-lg hover:shadow-slate-200/80 hover:-translate-y-1 transition-all duration-500 p-3.5 sm:p-5 md:p-6"
           >
             {/* Header with thumbnail and title */}
-            <div className="flex gap-4 sm:gap-6 mb-4 sm:mb-5">
-              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 shadow-inner flex items-center justify-center flex-none">
+            <div className="flex gap-3 sm:gap-4 md:gap-6 mb-3 sm:mb-4 md:mb-5">
+              <div className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 shadow-inner flex items-center justify-center flex-none">
                 {isService ? (
-                  <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">{icon}</span>
+                  <span className="material-symbols-outlined text-primary text-xl sm:text-3xl">{icon}</span>
                 ) : item.propertyId?.heroImage?.url ? (
                   <Image alt={propertyTitle} fill sizes="64px" className="object-cover" src={item.propertyId.heroImage.url} />
                 ) : (
-                  <span className="material-symbols-outlined text-primary text-2xl sm:text-3xl">{icon}</span>
+                  <span className="material-symbols-outlined text-primary text-xl sm:text-3xl">{icon}</span>
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="font-heading font-black text-slate-900 text-sm sm:text-base leading-snug mb-1 line-clamp-2 hover:text-primary transition-colors">
+                <h4 className="font-heading font-black text-slate-900 text-xs sm:text-sm md:text-base leading-snug mb-1 line-clamp-2 hover:text-primary transition-colors">
                   {propertyTitle}
                 </h4>
-                <div className="flex items-center gap-2 text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-xs">calendar_today</span>
+                <div className="flex items-center gap-1.5 text-[8px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                  <span className="material-symbols-outlined text-[10px] sm:text-xs">calendar_today</span>
                   {formatDate(item.createdAt)}
                 </div>
               </div>
             </div>
 
             {/* Type and Status row */}
-            <div className="flex gap-3 sm:gap-4 mb-4 sm:mb-5 flex-wrap">
-              <span className="px-2.5 sm:px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-[8px] sm:text-[10px] font-black uppercase tracking-widest border border-slate-200 whitespace-nowrap">
+            <div className="flex gap-2 sm:gap-3 mb-3 sm:mb-4 md:mb-5 flex-wrap">
+              <span className="px-2 py-1 rounded-full bg-slate-100 text-slate-600 text-[7px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest border border-slate-200 whitespace-nowrap">
                 {leadType.replace('_', ' ')}
               </span>
-              <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest border ${themeClass} whitespace-nowrap`}>
+              <span className={`inline-flex items-center px-2 py-1 rounded-full text-[7px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest border ${themeClass} whitespace-nowrap`}>
                 {statusKey}
               </span>
             </div>
 
             {/* Message section */}
             {item.message && (
-              <div className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-slate-100 text-[13px] sm:text-sm text-slate-600 font-bold leading-relaxed">
-                <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-2">Message</p>
+              <div className="bg-slate-50 rounded-xl p-2.5 sm:p-3.5 md:p-4 border border-slate-100 text-xs sm:text-sm text-slate-600 font-bold leading-relaxed">
+                <p className="text-[7px] sm:text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1.5 sm:mb-2">Message</p>
                 {item.message}
               </div>
             )}

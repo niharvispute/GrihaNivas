@@ -12,7 +12,7 @@ export default function ListingFaq() {
     },
     {
       question: "Are there any hidden listing fees?",
-      answer: "No, listing your property on Ghar is completely transparent. We offer basic listing for free, with optional premium editorial packages for enhanced visibility."
+      answer: "No, listing your property on Grihanivas is completely transparent. We offer basic listing for free, with optional premium editorial packages for enhanced visibility."
     },
     {
       question: "Will you help with professional photography?",

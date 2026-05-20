@@ -98,10 +98,10 @@ export default async function BlogDetailPage({ params }) {
     image: post.coverImage?.url || post.coverImage || undefined,
     datePublished: post.createdAt,
     dateModified: post.updatedAt || post.createdAt,
-    author: { '@type': 'Organization', name: 'Ghar Mumbai' },
+    author: { '@type': 'Organization', name: 'Grihanivas' },
     publisher: {
       '@type': 'Organization',
-      name: 'Ghar Mumbai',
+      name: 'Grihanivas',
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
     },
   };

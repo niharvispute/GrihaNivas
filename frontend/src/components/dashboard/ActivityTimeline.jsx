@@ -44,27 +44,27 @@ export default function ActivityTimeline() {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-      <div className="p-5 border-b border-slate-50 flex justify-between items-center">
-        <h2 className="text-base font-heading font-black text-slate-900">Account Overview</h2>
-        <Link href="/account/enquiries" className="text-primary text-[10px] font-black uppercase tracking-widest hover:translate-x-1 transition-transform flex items-center gap-1">
+      <div className="p-4 sm:p-5 border-b border-slate-50 flex justify-between items-center">
+        <h2 className="text-sm sm:text-base font-heading font-black text-slate-900">Account Overview</h2>
+        <Link href="/account/enquiries" className="text-primary text-[9px] sm:text-[10px] font-black uppercase tracking-widest hover:translate-x-1 transition-transform flex items-center gap-1">
           View Enquiries
-          <span className="material-symbols-outlined text-sm">arrow_forward</span>
+          <span className="material-symbols-outlined text-xs sm:text-sm">arrow_forward</span>
         </Link>
       </div>
       <div className="divide-y divide-slate-50">
         {items.map((item, idx) => (
-          <Link key={item.id} href={item.href} className="p-5 flex gap-4 items-start hover:bg-slate-50/50 transition-colors group block">
+          <Link key={item.id} href={item.href} className="p-4 sm:p-5 flex gap-3 sm:gap-4 items-start hover:bg-slate-50/50 transition-colors group block">
             <div className="relative mt-0.5">
-              <div className={`w-9 h-9 rounded-full ${themeClasses[item.theme]} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                <span className="material-symbols-outlined text-xl">{item.icon}</span>
+              <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full ${themeClasses[item.theme]} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                <span className="material-symbols-outlined text-lg sm:text-xl">{item.icon}</span>
               </div>
               {idx !== items.length - 1 && (
-                <div className="absolute top-11 left-1/2 -translate-x-1/2 w-px h-12 bg-slate-100" />
+                <div className="absolute top-10 sm:top-11 left-1/2 -translate-x-1/2 w-px h-12 bg-slate-100" />
               )}
             </div>
             <div className="flex-1">
-              <p className="font-heading font-bold text-slate-900 text-sm mb-0.5">{item.title}</p>
-              <span className="text-[11px] text-slate-400 font-bold">{item.meta}</span>
+              <p className="font-heading font-bold text-slate-900 text-xs sm:text-sm mb-0.5">{item.title}</p>
+              <span className="text-[10px] sm:text-[11px] text-slate-400 font-bold">{item.meta}</span>
             </div>
           </Link>
         ))}

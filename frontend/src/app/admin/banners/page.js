@@ -90,7 +90,7 @@ export default function BannerManagementPage() {
           Visual <span className="text-primary ">Identity</span>
         </h1>
         <p className="text-slate-500 font-bold text-xl mt-6 max-w-2xl leading-relaxed">
-          Manage and optimize the high-impact visual banners on your platform's main entrance. Every pixel defines the "Ghar" experience.
+          Manage and optimize the high-impact visual banners on your platform's main entrance. Every pixel defines the "Grihanivas" experience.
         </p>
       </div>
 
@@ -145,7 +145,7 @@ export default function BannerManagementPage() {
       {/* Footer Branding */}
       <footer className="mt-32 py-12 text-center border-t border-slate-50">
         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300">
-           © 2026 GHAR ADMINISTRATIVE CONSOLE • Visual Engine v4.0
+           © 2026 Grihanivas ADMINISTRATIVE CONSOLE • Visual Engine v4.0
         </p>
       </footer>
     </div>

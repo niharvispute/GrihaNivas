@@ -467,7 +467,7 @@ export default function MultiStageListingForm() {
         {/* 🆕 Sticky Mobile Header & Progress Bar */}
         <div className="flex-none bg-white/95 backdrop-blur-xl border-b border-slate-100 lg:hidden h-14 flex items-center px-6 relative z-50">
           <div className="absolute top-0 left-0 h-1 bg-primary transition-all duration-500" style={{ width: `${progress}%` }}></div>
-          <span className="text-lg font-black text-slate-900 tracking-tighter">Ghar</span>
+          <span className="text-lg font-black text-slate-900 tracking-tighter">Grihanivas</span>
           <div className="ml-auto flex items-center gap-3">
              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded-full border border-slate-100">Step {step}/5</span>
              <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center">
