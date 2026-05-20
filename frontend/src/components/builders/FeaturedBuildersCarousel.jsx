@@ -79,9 +79,11 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
               {activeBuilder?.name}
             </h2>
           </div>
-          <p className="hidden sm:block text-slate-300 text-xs sm:text-sm lg:text-base mb-5 sm:mb-8 leading-relaxed font-body line-clamp-3">
-            {activeBuilder?.tagline} {heroDescription}
-          </p>
+          <div className="hidden sm:block">
+            <p className="text-slate-300 text-xs sm:text-sm lg:text-base mb-5 sm:mb-8 leading-relaxed font-body line-clamp-4">
+              {activeBuilder?.tagline} {heroDescription}
+            </p>
+          </div>
 
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-4 gap-y-3 sm:gap-8 mb-5 sm:mb-10">
             <div>

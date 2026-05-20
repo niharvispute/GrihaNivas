@@ -90,7 +90,7 @@ export default function SectionCarousel({
 
   const carouselTrack = (
     <div
-      className="relative overflow-hidden"
+      className="relative overflow-hidden -mx-4 px-4 sm:mx-0 sm:px-0"
       ref={containerRef}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}

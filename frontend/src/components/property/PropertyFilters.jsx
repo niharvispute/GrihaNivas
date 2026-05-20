@@ -31,14 +31,18 @@ const FURNISHING_OPTIONS = [
   { label: 'Furnished', value: 'furnished' },
 ];
 
-// Constants for Price Filtering (1 Cr to 5 Cr)
-const MIN_BUDGET = 10000000; // 1 Cr
-const MAX_BUDGET = 50000000; // 5 Cr
-const STEP = 500000; // 5 Lacs step
+// Constants for Price Filtering (50 Lakh to 3 Cr)
+const MIN_BUDGET = 5000000; // 50 Lakh
+const MAX_BUDGET = 30000000; // 3 Cr
+const STEP = 500000; // 5 Lakh step
 
 function formatPriceToCr(price) {
   if (!price) return '';
-  return `₹${(Number(price) / 10000000).toFixed(1)} Cr`;
+  const num = Number(price);
+  if (num < 10000000) {
+    return `₹${(num / 100000).toFixed(0)} Lakh`;
+  }
+  return `₹${(num / 10000000).toFixed(1).replace('.0', '')} Cr`;
 }
 
 function buildActiveFilterChips(currentQuery, basePath, areaOptions) {

@@ -19,7 +19,7 @@ const DEFAULT_HERO_IMAGE =
 const TRUST_SIGNALS = [
   { value: 'RERA', label: 'Verified inventory', icon: 'verified' },
   { value: '24 hr', label: 'Concierge callback', icon: 'support_agent' },
-  { value: '3,200+', label: 'Mumbai buyers advised', icon: 'groups' },
+  { value: '3,200+', label: 'Buyers advised', icon: 'groups' },
 ];
 
 const DISCOVERY_CATEGORIES = [
@@ -136,13 +136,13 @@ export default async function HomePage() {
 
           <HeroSearch />
 
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 max-w-3xl mx-auto">
+          <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3 max-w-3xl mx-auto">
             {TRUST_SIGNALS.map((item) => (
-              <div key={item.label} className="flex items-center justify-center gap-3 rounded-2xl border border-white/70 bg-white/75 px-4 py-3 text-left shadow-sm backdrop-blur-md">
-                <span className="material-symbols-outlined text-primary text-xl">{item.icon}</span>
+              <div key={item.label} className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-1.5 sm:gap-3 rounded-2xl border border-white/70 bg-white/75 p-2 sm:px-4 sm:py-3 text-center sm:text-left shadow-sm backdrop-blur-md">
+                <span className="material-symbols-outlined text-primary text-lg sm:text-xl">{item.icon}</span>
                 <div>
-                  <p className="text-sm font-black text-slate-950 leading-none">{item.value}</p>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-1">{item.label}</p>
+                  <p className="text-xs sm:text-sm font-black text-slate-950 leading-none">{item.value}</p>
+                  <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-0.5 sm:mt-1">{item.label}</p>
                 </div>
               </div>
             ))}
@@ -323,12 +323,20 @@ export default async function HomePage() {
             </Link>
           </div>
           {latestBlogs.length > 0 ? (
-            <div className="flex overflow-x-auto snap-x snap-mandatory gap-5 sm:gap-8 lg:gap-10 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-3 pb-4 sm:pb-0 scrollbar-hide pl-0.5 sm:pl-0">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-5 sm:gap-8 lg:gap-10 -mx-4 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-3 pb-4 sm:pb-0 scrollbar-hide">
               {latestBlogs.map((blog, i) => (
                 <Link
                   key={i}
                   href={`/blogs/${blog.slug}`}
-                  className="group cursor-pointer block snap-start shrink-0 w-67.5 sm:w-auto"
+                  className={`group cursor-pointer block snap-start shrink-0 sm:w-auto ${
+                    i === 0 && i === latestBlogs.length - 1
+                      ? 'w-[302px] pl-4 pr-4 sm:pl-0 sm:pr-0'
+                      : i === 0
+                        ? 'w-[286px] pl-4 sm:pl-0'
+                        : i === latestBlogs.length - 1
+                          ? 'w-[286px] pr-4 sm:pr-0'
+                          : 'w-67.5'
+                  }`}
                 >
                   <div className="aspect-11/8 sm:aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-6 relative">
                     <img
@@ -376,7 +384,7 @@ export default async function HomePage() {
               <p className="text-sm sm:text-base lg:text-lg text-white/80 mb-6 md:mb-10 leading-relaxed font-bold">
                 Tell us your budget, commute, and possession timeline. Our area experts will suggest verified projects and next steps.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+              <div className="hidden md:grid grid-cols-3 gap-3 mb-6">
                 {['Area match', 'RERA check', 'Loan assist'].map((label) => (
                   <div key={label} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                     <span className="material-symbols-outlined text-primary text-lg">check_circle</span>

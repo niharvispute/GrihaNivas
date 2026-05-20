@@ -3,13 +3,17 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '@/context/ToastContext';
 
-const MIN_BUDGET = 10000000; // 1 Cr
-const MAX_BUDGET = 50000000; // 5 Cr
-const STEP = 500000; // 5 Lacs step
+const MIN_BUDGET = 5000000; // 50 Lakh
+const MAX_BUDGET = 30000000; // 3 Cr
+const STEP = 500000; // 5 Lakh step
 
 function formatPriceToCr(price) {
   if (!price) return '';
-  return `₹${(Number(price) / 10000000).toFixed(1)} Cr`;
+  const num = Number(price);
+  if (num < 10000000) {
+    return `₹${(num / 100000).toFixed(0)} Lakh`;
+  }
+  return `₹${(num / 10000000).toFixed(1).replace('.0', '')} Cr`;
 }
 
 export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MAX_BUDGET, onChange }) {
@@ -112,8 +116,8 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
           </div>
 
           <div className="flex justify-between text-[10px] text-slate-500 font-bold">
-            <span>₹1 Cr</span>
-            <span>₹5 Cr</span>
+            <span>₹50 Lakh</span>
+            <span>₹3 Cr</span>
           </div>
         </div>
 
@@ -172,8 +176,8 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
           </div>
 
           <div className="flex justify-between text-[10px] text-slate-500 font-bold">
-            <span>₹1 Cr</span>
-            <span>₹5 Cr</span>
+            <span>₹50 Lakh</span>
+            <span>₹3 Cr</span>
           </div>
         </div>
       </div>
