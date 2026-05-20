@@ -6,6 +6,7 @@ import PropertyCard from '@/components/property/PropertyCard';
 export default function PropertiesCarousel({ properties }) {
   return (
     <SectionCarousel
+      eyebrow="Trending Now"
       title="Trending Projects in Mumbai"
       subtitle="Discover verified projects with best-value inventory and quick brochure access."
       items={properties}

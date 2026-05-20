@@ -8,6 +8,7 @@ export default function SectionCarousel({
   renderItem,
   title,
   subtitle,
+  eyebrow = 'Curated Selection',
   emptyMessage = 'Nothing listed yet — check back soon.',
   itemClassName = 'min-w-[300px] md:min-w-[400px] lg:min-w-[450px]',
   sectionClassName = 'bg-white',
@@ -127,7 +128,7 @@ export default function SectionCarousel({
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-3 md:mb-4">
               <span className="w-10 h-1 bg-gradient-to-r from-primary to-primary/60 rounded-full"></span>
-              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/80 ">Curated Selection</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/80 ">{eyebrow}</p>
             </div>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight mb-2 md:mb-3 ">
               {title}
@@ -187,7 +188,7 @@ export default function SectionCarousel({
             <div
               className={`grid gap-5 sm:gap-6 md:gap-7 mx-auto ${
                 items.length === 1
-                  ? 'max-w-sm'
+                  ? 'max-w-2xl'
                   : items.length === 2
                     ? 'max-w-4xl md:grid-cols-2'
                     : 'max-w-7xl md:grid-cols-2 lg:grid-cols-3'

@@ -31,13 +31,13 @@ export async function generateMetadata({ params }) {
       title: `${title} in ${area}`,
       description: `${title} — ${area}, Mumbai. ${price ? `Starting at ${price}.` : ''} View details, photos, floor plans and more.`.trim(),
       openGraph: {
-        title: `${title} | Ghar Mumbai`,
+        title: `${title} | GrihaNivas`,
         description: `${title} in ${area}, Mumbai. ${price ? `Price: ${price}.` : ''}`,
         ...(image && { images: [{ url: image, width: 1200, height: 630, alt: title }] }),
       },
       twitter: {
         card: 'summary_large_image',
-        title: `${title} | Ghar Mumbai`,
+        title: `${title} | GrihaNivas`,
         ...(image && { images: [image] }),
       },
     };
@@ -155,7 +155,7 @@ export default async function PropertyDetailPage({ params }) {
               {property?.category === 'rent' ? 'Monthly Rent' : 'Expected Price'}
             </p>
             <p className="text-4xl lg:text-5xl font-heading font-black text-slate-900 tracking-tighter">
-              {property.price || 'POA'}
+              {property.price ? `₹${property.price}` : 'POA'}
               {property?.category === 'rent' && <span className="text-lg ml-1 font-bold text-slate-400">/mo</span>}
             </p>
           </div>

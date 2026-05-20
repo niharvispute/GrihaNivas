@@ -5,6 +5,7 @@ import Link from 'next/link';
 import PropertiesCarousel from '@/components/home/PropertiesCarousel';
 import BuildersCarousel from '@/components/home/BuildersCarousel';
 import HomePageTestimonials from '@/components/home/HomePageTestimonials';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { mapPropertyListToCardVM } from '@/lib/mappers/propertyMapper';
 import { mapBuilderListToCardVM } from '@/lib/mappers/builderMapper';
 import { mapBlogListToCardVM } from '@/lib/mappers/blogMapper';
@@ -18,7 +19,7 @@ const DEFAULT_HERO_IMAGE =
 const TRUST_SIGNALS = [
   { value: 'RERA', label: 'Verified inventory', icon: 'verified' },
   { value: '24 hr', label: 'Concierge callback', icon: 'support_agent' },
-  { value: '3K+', label: 'Mumbai buyers guided', icon: 'groups' },
+  { value: '3,200+', label: 'Mumbai buyers advised', icon: 'groups' },
 ];
 
 const DISCOVERY_CATEGORIES = [
@@ -60,7 +61,7 @@ async function fetchHomeData() {
       fetch(`${API_BASE}/api/builders?isFeatured=true&limit=12`, {
         next: { revalidate },
       }),
-      fetch(`${API_BASE}/api/blogs?limit=3`, {
+      fetch(`${API_BASE}/api/blogs?limit=3&status=published`, {
         next: { revalidate },
       }),
       fetch(`${API_BASE}/api/banners`, {
@@ -84,7 +85,9 @@ async function fetchHomeData() {
       parseJson(bannerRes),
     ]);
 
-    const properties = mapPropertyListToCardVM(propJson?.data || []);
+    const properties = mapPropertyListToCardVM(propJson?.data || []).filter(
+      (p) => Number.isFinite(Number(p.priceValue)) && Number(p.priceValue) > 0
+    );
     const builders = mapBuilderListToCardVM(buildJson?.data || []);
     const blogs = mapBlogListToCardVM(blogJson?.data || []);
 
@@ -118,21 +121,14 @@ export default async function HomePage() {
             alt="Mumbai Skyline"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-white/35"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/55 to-white"></div>
+          <div className="absolute inset-0 bg-white/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/20 to-white"></div>
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent"></div>
         </div>
 
         <div className="relative z-10 text-center w-full max-w-5xl pt-4 md:pt-10">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/75 px-4 py-2 text-[10px] font-black uppercase tracking-[0.28em] text-primary shadow-sm backdrop-blur-md mb-4">
-            <span className="material-symbols-outlined text-sm">location_city</span>
-            Grihavastu by Ghar
-          </div>
-          <h1 className="type-large-title-32 text-slate-950 mb-3 md:mb-4 uppercase md:text-4xl lg:text-5xl">
-            Still looking a for a place which feels right… ?{' '}
-            <span className="text-secondary underline decoration-primary/30 underline-offset-8">
-              
-            </span>
+          <h1 className="type-large-title-32 text-slate-950 mb-3 md:mb-4 md:text-4xl lg:text-5xl">
+            Still Looking for a Place That Feels Right?
           </h1>
           <p className="type-body-16 font-bold text-slate-700 mb-5 md:mb-7 max-w-2xl mx-auto sm:text-sm md:text-base">
             Curated projects, trusted builders, and area-led advice for buyers, renters, and new-launch investors.
@@ -155,10 +151,33 @@ export default async function HomePage() {
       </section>
 
       {/* 2. Featured Properties Carousel */}
-      <PropertiesCarousel properties={properties} />
+      <ErrorBoundary>
+        <PropertiesCarousel properties={properties} />
+      </ErrorBoundary>
 
-      {/* 3. Featured Builders Carousel */}
-      <BuildersCarousel builders={builders} />
+      {/* 3. Mid-page Consultation CTA */}
+      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-primary">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div>
+            <p className="text-white/70 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Free Consultation</p>
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              Not sure where to start? Talk to an expert.
+            </h2>
+          </div>
+          <a
+            href="tel:+919137950050"
+            className="shrink-0 inline-flex items-center gap-3 bg-white text-primary px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-white/90 transition-all shadow-xl"
+          >
+            <span className="material-symbols-outlined">phone</span>
+            Call Now
+          </a>
+        </div>
+      </section>
+
+      {/* 4. Featured Builders Carousel */}
+      <ErrorBoundary>
+        <BuildersCarousel builders={builders} />
+      </ErrorBoundary>
 
       {/* 4. Categories */}
       <section className="py-6 md:py-10 lg:py-14 bg-white px-4 sm:px-6 lg:px-8">
@@ -180,7 +199,7 @@ export default async function HomePage() {
                   alt={cat.title}
                   className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/35 to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-slate-950/95 via-slate-900/35 to-transparent"></div>
                 <div className="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-primary shadow-sm">
                   0{i + 1}
                 </div>
@@ -221,14 +240,14 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14 lg:gap-20 items-center">
           <div>
             <span className="type-small-10 text-primary mb-4 block tracking-[0.3em]">
-              The Ghar Philosophy
+              The GrihaNivas Philosophy
             </span>
             <h2 className="type-heading-26 text-slate-900 mb-6 md:mb-8 tracking-tighter sm:text-4xl lg:text-5xl">
               We Don&apos;t Just Find Homes. We Curate{' '}
               <span className="text-primary">Lifestyles.</span>
             </h2>
             <p className="type-body-16 text-slate-500 mb-8 md:mb-12 md:text-lg">
-              Grihavastu by Ghar is more than a portal. We are a boutique real estate
+              GrihaNivas is more than a portal. We are a boutique real estate
               advisory dedicated to the city&apos;s most discerning residents.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
@@ -255,21 +274,10 @@ export default async function HomePage() {
                 },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-4">
-                  <div className="bg-primary/10 p-3 rounded-xl text-primary">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                      <polyline points="22 4 12 14.01 9 11.01" />
-                    </svg>
+                  <div className="bg-primary/10 p-3 rounded-xl text-primary shrink-0">
+                    <span className="material-symbols-outlined text-xl leading-none" style={{ fontVariationSettings: "'FILL' 1" }}>
+                      {item.icon}
+                    </span>
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-900 mb-1">{item.title}</h3>
@@ -283,9 +291,9 @@ export default async function HomePage() {
             <img
               src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80"
               alt="Premium Mumbai apartment living room"
-              className="h-full min-h-[360px] w-full object-cover"
+              className="h-full min-h-90 w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-slate-950/50 via-transparent to-transparent"></div>
             <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/20 bg-white/90 p-4 shadow-lg backdrop-blur-md">
               <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Concierge Lens</p>
               <p className="mt-1 text-sm font-black text-slate-900">Shortlists built around commute, possession, paperwork, and resale value.</p>
@@ -320,7 +328,7 @@ export default async function HomePage() {
                 <Link
                   key={i}
                   href={`/blogs/${blog.slug}`}
-                  className="group cursor-pointer block snap-start shrink-0 w-[270px] sm:w-auto"
+                  className="group cursor-pointer block snap-start shrink-0 w-67.5 sm:w-auto"
                 >
                   <div className="aspect-11/8 sm:aspect-16/10 overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-6 relative">
                     <img
@@ -388,7 +396,7 @@ export default async function HomePage() {
                   </div>
                   <div>
                     <p className="text-white/60 text-[10px] font-black uppercase tracking-widest leading-none mb-0.5">Contact Now</p>
-                    <p className="text-white font-black text-sm sm:text-base tracking-tight">+91 92224 56789</p>
+                    <p className="text-white font-black text-sm sm:text-base tracking-tight">+91 91379 50050</p>
                   </div>
                 </a>
               </div>
@@ -421,6 +429,18 @@ export default async function HomePage() {
               {
                 q: 'Are all listings RERA registered?',
                 a: 'Exclusively. We only list properties with verified RERA IDs for complete security.',
+              },
+              {
+                q: 'How do I schedule a site visit?',
+                a: 'Submit your inquiry through our consultation form or call us directly at +91 91379 50050. Our concierge team will coordinate a visit within 24 hours.',
+              },
+              {
+                q: 'Which areas of Mumbai does GrihaNivas cover?',
+                a: 'We specialise in South Mumbai, Bandra, Worli, Powai, Andheri, and all prime micro-markets. For NRI and outstation buyers, we also offer virtual tour assistance.',
+              },
+              {
+                q: 'Is there a fee for using GrihaNivas?',
+                a: 'Our advisory and shortlisting service is completely free for buyers. Standard brokerage applies only on confirmed transactions, as per industry norms.',
               },
             ].map((faq, i) => (
               <details

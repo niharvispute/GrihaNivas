@@ -415,7 +415,7 @@ export default function MultiStageListingForm() {
             <div className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center shadow-lg">
               <span className="material-symbols-outlined text-white text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>apartment</span>
             </div>
-            <span className="text-xl font-black text-slate-900 tracking-tighter">Ghar Listing</span>
+            <span className="text-xl font-black text-slate-900 tracking-tighter">GrihaNivas</span>
           </div>
           <div className="space-y-1">
             <h2 className="text-lg font-black text-slate-900">List Property</h2>
@@ -852,7 +852,7 @@ export default function MultiStageListingForm() {
               <div className="space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div>
                   <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-2 md:mb-4 ">Final Review</h1>
-                  <p className="text-slate-500 text-sm md:text-base font-bold">Review and confirm your Grihavastu feature.</p>
+                  <p className="text-slate-500 text-sm md:text-base font-bold">Review and confirm your GrihaNivas feature.</p>
                 </div>
 
                 <div className="space-y-8">

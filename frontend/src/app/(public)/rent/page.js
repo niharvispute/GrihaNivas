@@ -9,7 +9,7 @@ export const metadata = {
   title: 'Rent Property in Mumbai',
   description: 'Find furnished and unfurnished flats, apartments, and homes for rent across Mumbai. Filter by BHK, area, budget and more.',
   openGraph: {
-    title: 'Rent Property in Mumbai | Ghar',
+    title: 'Rent Property in Mumbai | GrihaNivas',
     description: 'Explore rental properties across Mumbai — 1, 2, 3 BHK flats, furnished apartments, and more.',
   },
 };

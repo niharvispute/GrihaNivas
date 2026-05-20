@@ -180,7 +180,7 @@ export default function LeadForm({
             name="message"
             rows="4"
             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none placeholder:text-slate-400"
-            placeholder="I am interested in this property..."
+            placeholder="Tell us your budget, preferred area, and possession timeline."
             value={form.message}
             onChange={handleChange('message')}
             suppressHydrationWarning

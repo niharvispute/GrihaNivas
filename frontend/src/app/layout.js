@@ -19,27 +19,27 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://bricksmumbai.com';
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Ghar — Mumbai Real Estate',
-    template: '%s | Ghar Mumbai',
+    default: 'GrihaNivas — Mumbai Real Estate',
+    template: '%s | GrihaNivas',
   },
   description:
-    'Discover flats, villas, and commercial properties across Mumbai. Buy, rent, or invest with Ghar — your trusted Mumbai real estate platform.',
+    'Discover flats, villas, and commercial properties across Mumbai. Buy, rent, or invest with GrihaNivas — your trusted Mumbai real estate platform.',
   keywords: ['Mumbai real estate', 'flats in Mumbai', 'buy property Mumbai', 'rent apartment Mumbai', 'new launch Mumbai'],
-  authors: [{ name: 'Ghar Mumbai' }],
-  creator: 'Ghar Mumbai',
+  authors: [{ name: 'GrihaNivas' }],
+  creator: 'GrihaNivas',
   openGraph: {
     type: 'website',
     locale: 'en_IN',
     url: SITE_URL,
-    siteName: 'Ghar Mumbai',
-    title: 'Ghar — Mumbai Real Estate',
+    siteName: 'GrihaNivas',
+    title: 'GrihaNivas — Mumbai Real Estate',
     description:
-      'Discover flats, villas, and commercial properties across Mumbai. Buy, rent, or invest with Ghar.',
-    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: 'Ghar Mumbai Real Estate' }],
+      'Discover flats, villas, and commercial properties across Mumbai. Buy, rent, or invest with GrihaNivas.',
+    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: 'GrihaNivas Mumbai Real Estate' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ghar — Mumbai Real Estate',
+    title: 'GrihaNivas — Mumbai Real Estate',
     description: 'Discover flats, villas, and commercial properties across Mumbai.',
     images: ['/og-default.jpg'],
   },
@@ -54,9 +54,11 @@ export default function RootLayout({ children }) {
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD@400,0..1,0&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"
         />
       </head>
       <body className="min-h-full flex flex-col font-sans">

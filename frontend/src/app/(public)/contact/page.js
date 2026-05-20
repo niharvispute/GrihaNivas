@@ -94,7 +94,7 @@ function ContactForm() {
     },
     {
       title: "Email Address",
-      desc: "shreegurudevproperties@gmail.com",
+      desc: "contact@grihanivas.in",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
       )
@@ -105,14 +105,8 @@ function ContactForm() {
     <div className="w-full">
       {/* 🏙️ Hero Section */}
       <section className="px-3 md:px-8 max-w-screen-2xl mx-auto pt-4 md:pt-20 pb-6 md:pb-16">
-        <div className="relative overflow-hidden rounded-2xl bg-slate-50 p-6 md:p-28 flex flex-col items-center text-center shadow-inner">
-          <div className="absolute top-0 right-0 w-1/3 h-full opacity-5 pointer-events-none">
-            <img 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfqT-o5cubMMfW3Rd96E_D7eazSloty3_kvSmsycyeOWkIV0FOFnhNphvkro3UIDPBbYlb_zCeAMuBbzTRdUlwBEdq8wrQs8tdykWW8wRfZoa6IRnq0VhoXF7__Ex9b01o1PyiCy519JtWzKfoixgpeHuxGsECiopUJDP7ZqRV7CX6stlx4gfdzkQnH3_msjf54YNwSh-GGDJmLYlhJepu8eE2lvSsWGfJlhe9KYst3dolP_ilmnnsmU4QUuQTPLdovb48EctzCno" 
-              alt="Architectural Abstract" 
-              className="w-full h-full object-cover"
-            />
-          </div>
+        <div className="relative overflow-hidden rounded-2xl bg-slate-50 p-6 md:p-16 flex flex-col items-center text-center shadow-inner">
+          <div className="absolute top-0 right-0 w-1/3 h-full pointer-events-none opacity-[0.04]" style={{backgroundImage: 'radial-gradient(circle at 60% 40%, #b80049 0%, transparent 70%)'}}></div>
           <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-3 md:mb-6">CONNECT WITH US</span>
           <h1 className="text-3xl md:text-8xl font-black text-slate-900 tracking-tighter mb-3 md:mb-8 leading-none">
             Let&apos;s Start a <br className="hidden md:block"/> Conversation.

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { apiFetch } from '@/lib/api';
 
@@ -66,6 +65,18 @@ const StampDutyCalculator = () => {
     {
       q: "When should I pay the stamp duty?",
       a: "Stamp duty must be paid before or at the time of executing the sale deed. Delay in payment can lead to significant penalties, often ranging from 2% to 200% of the deficit amount."
+    },
+    {
+      q: "What is the Ready Reckoner Rate and how does it affect my calculation?",
+      a: "The Ready Reckoner Rate (RRR) is the minimum property valuation fixed annually by the Maharashtra Government. Stamp duty is calculated on the higher of either your agreement value or the RRR — so even if you negotiate a lower price, duty is charged on the government's floor rate. In premium micro-markets like Worli, Bandra, and Lower Parel, RRRs are revised upward every year. Our calculator uses current market rates as a base estimate; consult our advisory team for a precise figure tied to your specific property."
+    },
+    {
+      q: "Is stamp duty applicable on under-construction properties?",
+      a: "Yes. Stamp duty on an under-construction property is calculated on the agreement value at the time of registration, not at possession. You register and pay duty upfront, even if the project delivers 3–5 years later. For MahaRERA-registered projects, this is straightforward — all properties listed on GrihaNivas carry active MahaRERA registration. Ensure the developer's RERA number is current and the project has all required NOCs before executing your agreement."
+    },
+    {
+      q: "How can I legally reduce my stamp duty liability in Mumbai?",
+      a: "Three legitimate methods: (a) Register in a woman's name — female buyers pay 5% vs 6% for male buyers, saving ₹1,00,000 on a ₹1 Cr property; (b) Claim Section 80C deduction — up to ₹1.5 Lakhs on stamp duty and registration charges paid in the year of purchase; (c) For joint registrations where the primary owner is female, the female rate of 5% applies. Our advisory team can run a tax-optimised registration scenario for your specific case."
     }
   ];
 
@@ -293,15 +304,9 @@ const StampDutyCalculator = () => {
       </section>
 
       {/* 6. Asymmetric CTA Section */}
-      <section className="mt-16 md:mt-32 relative h-80 md:h-125 rounded-2xl overflow-hidden group shadow-2xl">
-        <Image
-          fill
-          sizes="(max-width: 768px) 100vw, 800px"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtD4TRJ9ji6_8mlYVQ-HUIQTCtxeqIj8WZc69nGXstCaQ2QAG_0UPAdGy6w1JXE2Mf_DLkH_-ZRgR9MDsaDLqnJyNB-n428EosoVI3ALRF50RyUJLnIeF1EybYQJVl9zdga6j7S2GAbUtcCeUEuSeu8_o7HsgAZgj20oqOPjHsGqwf9R3YUwXFo6spqOucL0_GwoYQr9Gb6XOpTAvnTTQ13i_o87qa5rjyBQ-pkkN3zz209svQI3mmOA5iEqmZugu4U_4n4-mTzU4"
-          alt="Mumbai Luxury Real Estate"
-          className="object-cover transition-transform duration-1000 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/40 to-transparent"></div>
+      <section className="mt-16 md:mt-32 relative h-80 md:h-125 rounded-2xl overflow-hidden group shadow-2xl bg-slate-900">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-primary/20"></div>
+        <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'radial-gradient(circle at 70% 50%, #b80049 0%, transparent 60%)'}}></div>
         <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-24 md:max-w-3xl">
           <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-3 md:mb-6">Concierge Advisory</span>
           <h2 className="text-3xl md:text-6xl font-black text-white mb-4 md:mb-8 leading-tight tracking-tighter">

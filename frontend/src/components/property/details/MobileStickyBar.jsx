@@ -4,8 +4,8 @@ const WHATSAPP_NUMBER = '919137950050';
 
 export default function MobileStickyBar({ property }) {
   const whatsappMessage = property?.title
-    ? `Hi! I'm interested in "${property.title}" on Grihavastu. Can you share more details?`
-    : `Hi! I'm interested in a property on Grihavastu. Can you help me?`;
+    ? `Hi! I'm interested in "${property.title}" on GrihaNivas. Can you share more details?`
+    : `Hi! I'm interested in a property on GrihaNivas. Can you help me?`;
 
   const scrollToForm = () => {
     const el = document.getElementById('lead-form');

@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
   // Restore session on mount
   useEffect(() => {
     if (!hasSession()) {
-      Promise.resolve().then(() => setLoadingUser(false));
+      setLoadingUser(false);
       return;
     }
 

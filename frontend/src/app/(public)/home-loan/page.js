@@ -4,7 +4,7 @@ import BankPartners from '@/components/common/BankPartners';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Home Loan Assistance | Grihavastu Real Estate',
+  title: 'Home Loan Assistance',
   description: 'Get expert home loan assistance in Mumbai. Compare interest rates, check eligibility, and get fast approvals with India\'s top banks.',
 };
 
@@ -14,7 +14,7 @@ export default function HomeLoanPage() {
       <main className="pt-8 md:pt-12">
         {/* 1. Hero Section */}
         <section className="px-6 md:px-8 py-8 md:py-24 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-24">
-          <div className="md:w-1/2 space-y-6 md:space-y-8 text-center md:text-left">
+          <div className="md:w-2/5 space-y-6 md:space-y-8 text-center md:text-left">
             <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">Mortgage Solutions</span>
             <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-tight text-slate-900">
               Low Interest. <br className="hidden md:block"/>
@@ -40,7 +40,7 @@ export default function HomeLoanPage() {
             </div>
           </div>
           
-          <div className="md:w-1/2 relative w-full">
+          <div className="md:w-3/5 relative w-full">
             <div className="rounded-2xl overflow-hidden shadow-2xl group">
               <img 
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnaAyRjGb5g3qwKgviFX6pdVArwZEvtBmaRiqlUNcdpqe9cbbb-M9dDFEi9tcwN9C5jmfnclSuXJh07Fg0q5yeQ5p4r5MzSiXSVMybTJNdtfuA2N4Z2qRX7p_6OehBKbSeDGc5xknhghschF-5G0v1uQldemxWNAx0i1GASEuUPB9h_16hJaYs1PmFEbpX1FUEdDzPevpqOMO0UKGdlp9Oys3byCSVmu7nlMndS1FitGp0qPfyQr9BxoQSquyZJ3PgVKNrH5COiPY" 
@@ -60,7 +60,7 @@ export default function HomeLoanPage() {
               <p className="text-[8px] md:text-xs text-slate-400 font-bold uppercase tracking-widest mb-1 md:mb-2">Starts from</p>
               <div className="text-lg md:text-3xl font-black text-primary mb-3 md:mb-4 tracking-tighter ">₹ 42,450 <span className="text-[10px] md:text-sm font-bold text-slate-400">/mo</span></div>
               <Link href="/emi-calculator" className="text-primary text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-2 h-auto">
-                Calulate yours <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                Calculate yours <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </Link>
             </div>
           </div>
@@ -71,19 +71,31 @@ export default function HomeLoanPage() {
 
         {/* 3. Benefits Grid */}
         <section className="py-12 md:py-24 px-6 md:px-8 max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-10">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+            {/* Featured primary card */}
+            <div className="col-span-2 md:col-span-1 md:row-span-2 group p-6 md:p-10 rounded-2xl bg-primary text-white flex flex-col justify-between min-h-[180px] md:min-h-0">
+              <div className="w-10 h-10 md:w-14 md:h-14 bg-white/10 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-8">
+                <span className="material-symbols-outlined text-xl md:text-2xl text-white">percent</span>
+              </div>
+              <div>
+                <p className="text-white/60 font-black uppercase tracking-[0.3em] text-[9px] md:text-[10px] mb-2">Rates from</p>
+                <p className="text-3xl md:text-5xl font-black tracking-tighter mb-2 md:mb-4">8.35% <span className="text-base md:text-xl font-bold text-white/70">p.a.</span></p>
+                <h3 className="text-base md:text-xl font-black tracking-tight mb-2 md:mb-3">Lowest Rates</h3>
+                <p className="text-white/70 text-xs md:text-sm leading-relaxed font-bold">Exclusive interest rates reserved for GrihaNivas clients — sourced from 6 premier lenders.</p>
+              </div>
+            </div>
+            {/* 3 compact supporting cards */}
             {[
-              { icon: 'percent', title: "Lowest Rates", desc: "Access exclusive interest rates reserved for Grihavastu clients." },
-              { icon: 'bolt', title: "Fast Approval", desc: "Digital-first process with approvals in under 24 hours." },
-              { icon: 'handshake', title: "Expert Advice", desc: "Dedicated managers to guide you through complex Mumbai documentation." },
-              { icon: 'description', title: "Ease of Use", desc: "Doorstep document pickup and digital verification journey." }
+              { icon: 'flash_on', title: "Fast Approval", desc: "Digital-first process with approvals in under 24 hours." },
+              { icon: 'handshake', title: "Expert Advice", desc: "Dedicated managers for complex Mumbai documentation." },
+              { icon: 'description', title: "Ease of Use", desc: "Doorstep document pickup and digital verification." }
             ].map((benefit, i) => (
-              <div key={i} className="group p-5 md:p-10 rounded-2xl bg-white border border-slate-50 hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500">
-                <div className="w-10 h-10 md:w-14 md:h-14 bg-primary/5 rounded-xl md:rounded-2xl flex items-center justify-center text-primary mb-4 md:mb-8 transition-all scale-100 group-hover:bg-primary group-hover:text-white">
-                  <span className="font-black text-lg md:text-2xl">{benefit.icon === 'percent' ? '%' : (benefit.icon === 'bolt' ? '⚡' : (benefit.icon === 'handshake' ? '🤝' : '📄'))}</span>
+              <div key={i} className="group p-5 md:p-8 rounded-2xl bg-white border border-slate-100 hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500">
+                <div className="w-10 h-10 bg-primary/5 rounded-xl flex items-center justify-center text-primary mb-4 transition-all group-hover:bg-primary group-hover:text-white">
+                  <span className="material-symbols-outlined text-xl">{benefit.icon}</span>
                 </div>
-                <h3 className="text-sm md:text-xl font-black text-slate-900 mb-2 md:mb-4 tracking-tight">{benefit.title}</h3>
-                <p className="text-slate-500 text-[10px] md:text-sm leading-relaxed font-bold line-clamp-2 md:line-clamp-none">{benefit.desc}</p>
+                <h3 className="text-sm md:text-base font-black text-slate-900 mb-2 tracking-tight">{benefit.title}</h3>
+                <p className="text-slate-500 text-[10px] md:text-sm leading-relaxed font-bold">{benefit.desc}</p>
               </div>
             ))}
           </div>
@@ -155,8 +167,12 @@ export default function HomeLoanPage() {
           
           <div className="space-y-3 md:space-y-4">
             {[
-              { q: "What is the current interest rate?", a: "Interest rates range between 8.35% and 9.15% depending on credit score." },
-              { q: "What documents are required?", a: "Primary documents include ITR (3 years), Salary Slips, and Bank Statements." }
+              { q: "What is the current home loan interest rate in Mumbai?", a: "Rates currently range between 8.35% and 9.15% p.a. depending on your credit score, loan tenure, and the lender. Salaried applicants with a CIBIL score above 750 typically qualify for the lowest tier. GrihaNivas partners with SBI, HDFC, ICICI, Axis, Kotak, and LIC HFL." },
+              { q: "What documents are required for a home loan application?", a: "For salaried applicants: last 3 years' ITR with Form 16, last 6 months' salary slips, last 12 months' bank statements, PAN card, Aadhaar, and property documents. For self-employed: 3 years' ITR with P&L and balance sheet, GST returns, and business proof." },
+              { q: "How much loan am I eligible for?", a: "Most banks sanction up to 75–80% of the property's market value (LTV ratio). Eligibility also depends on your net monthly income — typically banks approve an EMI of up to 40–50% of your take-home pay. Our advisors run a free eligibility check before you apply." },
+              { q: "What is the typical loan processing time?", a: "With GrihaNivas's digital-first process, in-principle approval takes 24–48 hours for complete documentation. Final sanction and disbursement typically follows within 7–10 working days after property legal verification." },
+              { q: "Can I get a home loan for an under-construction property?", a: "Yes. Banks disburse in tranches linked to construction milestones. You pay pre-EMI interest on the disbursed amount until possession, after which full EMIs begin. Ensure the project is MahaRERA-registered — all properties listed on GrihaNivas meet this requirement." },
+              { q: "What is the stamp duty impact on my total purchase cost?", a: "In Mumbai, stamp duty is 6% for male buyers, 5% for female buyers, and 6% for joint (male+female) purchases, calculated on the higher of agreement value or Ready Reckoner Rate. Registration charge is a flat ₹29,000. This is separate from your loan amount and must be paid upfront." }
             ].map((faq, i) => (
               <details key={i} className="group bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 transition-all hover:bg-white">
                 <summary className="w-full flex items-center justify-between p-6 md:p-8 text-left cursor-pointer list-none font-black text-base md:text-xl text-slate-900 group-open:text-primary transition-colors">

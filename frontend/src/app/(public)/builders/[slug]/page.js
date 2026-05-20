@@ -20,13 +20,13 @@ export async function generateMetadata({ params }) {
       title: `${builder.name} — Mumbai Properties`,
       description: builder.tagline || `Explore properties by ${builder.name} in Mumbai. View portfolio, testimonials, and enquire today.`,
       openGraph: {
-        title: `${builder.name} | Ghar Mumbai`,
+        title: `${builder.name} | GrihaNivas`,
         description: builder.tagline || `Properties by ${builder.name} in Mumbai.`,
         ...(image && { images: [{ url: image, width: 1200, height: 630, alt: builder.name }] }),
       },
       twitter: {
         card: 'summary_large_image',
-        title: `${builder.name} | Ghar Mumbai`,
+        title: `${builder.name} | GrihaNivas`,
         ...(image && { images: [image] }),
       },
     };

@@ -274,6 +274,15 @@ const ensureCompareHighlights = (property = {}, highlights = []) => {
   return next;
 };
 
+const buildLocation = (locationObj) => {
+  const area = (locationObj?.area || '').trim();
+  const city = (locationObj?.city || '').trim();
+  if (!area) return city;
+  if (!city) return area;
+  if (area.toLowerCase().includes(city.toLowerCase())) return area;
+  return `${area}, ${city}`;
+};
+
 export const mapPropertyToCardVM = (property) => {
   const priceValue = getPriceValue(property);
 
@@ -281,7 +290,7 @@ export const mapPropertyToCardVM = (property) => {
     id: property?._id,
     slug: property?.slug,
     title: property?.title || '',
-    location: [property?.location?.area, property?.location?.city].filter(Boolean).join(', '),
+    location: buildLocation(property?.location),
     priceValue,
     price: priceValue > 0
       ? formatPriceShort(priceValue)
@@ -304,7 +313,7 @@ export const mapPropertyToCardVM = (property) => {
 
 export const mapPropertyToDetailVM = (property) => {
   const priceValue = getPriceValue(property);
-  const location = [property?.location?.area, property?.location?.city].filter(Boolean).join(', ');
+  const location = buildLocation(property?.location);
   const category = property?.category || property?.raw?.category;
   const isRent = category === 'rent';
 

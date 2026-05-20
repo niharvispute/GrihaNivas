@@ -4,6 +4,11 @@ import Link from 'next/link';
 import CloudinaryImage from '@/components/CloudinaryImage';
 import { listBlogs } from '@/services/blogService';
 
+export const metadata = {
+  title: 'Mumbai Real Estate Blog',
+  description: 'Expert insights, market trends, legal guides, and investment tips for Mumbai real estate buyers, sellers, and investors.',
+};
+
 const PAGE_SIZE = 9;
 
 const BLOG_CATEGORIES = [

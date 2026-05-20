@@ -26,7 +26,36 @@ export default function HomePageTestimonials() {
     return () => { mounted = false; };
   }, []);
 
-  if (loading) return null;
+  if (loading) return (
+    <section className="py-6 md:py-10 lg:py-14 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-8 md:mb-10 space-y-3">
+          <div className="h-3 w-32 bg-slate-100 rounded-full mx-auto animate-pulse" />
+          <div className="h-8 w-64 bg-slate-100 rounded-full mx-auto animate-pulse" />
+        </div>
+        <div className="hidden md:grid gap-6 md:gap-8 max-w-7xl md:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="rounded-2xl border border-slate-100 p-5 md:p-6 space-y-4 animate-pulse">
+              <div className="flex gap-1">{[1,2,3,4,5].map((s) => <div key={s} className="h-4 w-4 bg-slate-100 rounded" />)}</div>
+              <div className="space-y-2">
+                <div className="h-3 bg-slate-100 rounded-full w-full" />
+                <div className="h-3 bg-slate-100 rounded-full w-5/6" />
+                <div className="h-3 bg-slate-100 rounded-full w-4/6" />
+              </div>
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
+                <div className="w-12 h-12 rounded-full bg-slate-100 shrink-0" />
+                <div className="space-y-1 flex-1">
+                  <div className="h-3 bg-slate-100 rounded-full w-24" />
+                  <div className="h-2 bg-slate-100 rounded-full w-16" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+  if (!testimonials.length) return null;
 
   const prev = () => setCurrentSlide((i) => (i === 0 ? testimonials.length - 1 : i - 1));
   const next = () => setCurrentSlide((i) => (i === testimonials.length - 1 ? 0 : i + 1));
@@ -35,7 +64,7 @@ export default function HomePageTestimonials() {
     <section className="py-6 md:py-10 lg:py-14 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 md:mb-10 space-y-3">
-          <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px]">Social Proof</span>
+          <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px]">From Our Community</span>
           <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-slate-900 leading-tight">
             What Our Users Say
           </h2>
@@ -44,17 +73,8 @@ export default function HomePageTestimonials() {
           </p>
         </div>
 
-        {/* Empty state */}
-        {!testimonials.length && (
-          <div className="flex flex-col items-center justify-center py-16 md:py-20 rounded-2xl border-2 border-dashed border-slate-200 bg-white">
-            <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">rate_review</span>
-            <p className="text-slate-500 font-bold text-sm md:text-base">No testimonials yet — client reviews coming soon.</p>
-          </div>
-        )}
-
         {/* Mobile slider — single card with prev/next */}
-        {testimonials.length > 0 && (
-          <div className="md:hidden">
+        <div className="md:hidden">
             <div className="relative">
               <div className="overflow-hidden">
                 <div
@@ -99,34 +119,31 @@ export default function HomePageTestimonials() {
                 <span className="material-symbols-outlined text-base">east</span>
               </button>
             </div>
-          </div>
-        )}
+        </div>
 
         {/* Desktop grid */}
-        {testimonials.length > 0 && (
-          <div
-            className={`hidden md:grid gap-6 md:gap-8 mx-auto ${
-              testimonials.length === 1
-                ? 'max-w-md'
-                : testimonials.length === 2
-                  ? 'max-w-4xl md:grid-cols-2'
-                  : 'max-w-7xl md:grid-cols-2 lg:grid-cols-3'
-            }`}
-          >
-            {testimonials.map((testimonial) => (
-              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-            ))}
-          </div>
-        )}
+        <div
+          className={`hidden md:grid gap-6 md:gap-8 mx-auto ${
+            testimonials.length === 1
+              ? 'max-w-md'
+              : testimonials.length === 2
+                ? 'max-w-4xl md:grid-cols-2'
+                : 'max-w-7xl md:grid-cols-2 lg:grid-cols-3'
+          }`}
+        >
+          {testimonials.map((testimonial) => (
+            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+          ))}
+        </div>
 
         {/* CTA */}
         <div className="mt-8 md:mt-10 text-center">
-          <p className="text-slate-600 font-bold mb-4">Ready to compare verified options?</p>
+          <p className="text-slate-600 font-bold mb-4">Ready to find your home in Mumbai?</p>
           <Link
-            href="/buy"
+            href="/contact"
             className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white font-black text-sm rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all"
           >
-            Explore Properties
+            Book a Free Consultation
             <span className="material-symbols-outlined text-lg">arrow_forward</span>
           </Link>
         </div>

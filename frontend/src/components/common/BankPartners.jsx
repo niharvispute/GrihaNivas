@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function BankPartners() {
-  const partners = ['SBI', 'HDFC BANK', 'ICICI BANK', 'AXIS BANK', 'KOTAK', 'LD LUXE'];
+  const partners = ['SBI', 'HDFC BANK', 'ICICI BANK', 'AXIS BANK', 'KOTAK', 'LIC HFL'];
 
   return (
     <section className="bg-slate-50 py-16 border-y border-slate-100">

@@ -1,9 +1,15 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
 import WishlistButton from '@/components/property/WishlistButton';
 import { SYSTEM_DEFAULT_CITY } from '@/lib/system/defaults';
 
+const PLACEHOLDER = '/images/property-placeholder.svg';
+
 export default function TrendingProjectCard({ property }) {
+  const [imgErrored, setImgErrored] = useState(false);
   const detailKey = property?.slug || property?.id;
   const detailHref = detailKey ? `/property/${detailKey}` : '/buy';
   const locationLabel = property?.location || SYSTEM_DEFAULT_CITY;
@@ -25,7 +31,7 @@ export default function TrendingProjectCard({ property }) {
     <article className="group rounded-2xl overflow-hidden">
       <div className="relative h-44 rounded-2xl overflow-hidden mb-2.5">
         <Link href={detailHref} className="block w-full h-full">
-        {property?.image ? (
+        {property?.image && !imgErrored ? (
           <Image
             src={property.image}
             alt={projectTitle}
@@ -33,9 +39,17 @@ export default function TrendingProjectCard({ property }) {
             unoptimized
             sizes="(max-width: 768px) 100vw, 300px"
             className="object-cover transition-transform duration-700 group-hover:scale-105"
+            onError={() => setImgErrored(true)}
           />
         ) : (
-          <div className="w-full h-full bg-slate-100" />
+          <Image
+            src={PLACEHOLDER}
+            alt={projectTitle}
+            fill
+            unoptimized
+            sizes="(max-width: 768px) 100vw, 300px"
+            className="object-cover"
+          />
         )}
 
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/25 via-slate-900/0 to-transparent" />

@@ -69,7 +69,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 mb-1">
-               <h3 className={`${isHorizontal ? 'text-lg sm:text-xl font-extrabold' : 'text-[11px] sm:text-[13px] font-black'} text-slate-900 leading-tight line-clamp-1 uppercase tracking-tight`}>
+               <h3 className={`${isHorizontal ? 'text-lg sm:text-xl font-extrabold' : 'text-[11px] sm:text-[13px] font-black'} text-slate-900 leading-tight line-clamp-1 tracking-tight`}>
                 {property.title}
               </h3>
               <span className="flex-shrink-0 px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[8px] sm:text-[9px] font-black uppercase tracking-tighter">
@@ -100,9 +100,13 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
           </span>
           <span className="min-w-0 border-l border-slate-100 pl-3">
             <span className="block text-[9px] sm:text-[10px] uppercase font-bold text-slate-400 tracking-wider">Area</span>
-            <span className="mt-1 flex items-center gap-1 text-xs sm:text-sm font-black text-slate-900 truncate">
+            <span className="mt-1 flex items-center gap-1 text-xs sm:text-sm">
               <span className="material-symbols-outlined text-primary text-sm sm:text-base">square_foot</span>
-              {areaLabel}
+              {areaLabel === 'Area on request' ? (
+                <span className="text-[9px] bg-slate-100 text-slate-400 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">On request</span>
+              ) : (
+                <span className="font-black text-slate-900 truncate">{areaLabel}</span>
+              )}
             </span>
           </span>
         </div>

@@ -5,7 +5,7 @@ import FeaturedBuildersCarousel from '@/components/builders/FeaturedBuildersCaro
 import { listBuilders } from '@/services/builderService';
 
 export const metadata = {
-  title: 'Explore Builders | Ghar - Grihavastu',
+  title: 'Explore Builders',
   description: 'Discover trusted real estate developers crafting the future of modern living across Mumbai.',
 };
 
@@ -67,6 +67,14 @@ export default async function ExploreBuildersPage({ searchParams }) {
           <div className="flex flex-col items-center justify-center py-16 md:py-20 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 mt-6">
             <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">domain</span>
             <p className="text-slate-500 font-bold text-sm md:text-base">No builders match this search yet.</p>
+          </div>
+        )}
+
+        {builders.length > 0 && builders.length < 4 && (
+          <div className="flex flex-col items-center justify-center p-8 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 text-center">
+            <span className="material-symbols-outlined text-4xl text-slate-300 mb-3">add_business</span>
+            <p className="text-slate-500 font-black text-sm tracking-tight">More builders coming soon</p>
+            <p className="text-slate-400 text-xs font-bold mt-1">New partnerships added regularly</p>
           </div>
         )}
 

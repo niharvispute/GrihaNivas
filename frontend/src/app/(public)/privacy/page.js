@@ -16,7 +16,7 @@ export default function PrivacyPolicyPage() {
             Privacy <span className="text-primary">Policy</span>
           </h1>
           <p className="text-slate-500 font-bold text-lg max-w-2xl mx-auto leading-relaxed">
-            How we protect your data and curate your digital experience within the Grihavastu ecosystem.
+            How we protect your data and curate your digital experience within the GrihaNivas ecosystem.
           </p>
           <div className="mt-8 inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-slate-200 text-[10px] font-black uppercase tracking-widest text-slate-400">
             <span className="material-symbols-outlined text-sm">update</span>
@@ -33,7 +33,7 @@ export default function PrivacyPolicyPage() {
             <div className="bg-[#f8f7f5] p-8 rounded-2xl border border-slate-100 mb-12">
               <h2 className="text-2xl font-black text-slate-900 mt-0 mb-4 tracking-tight uppercase">Introduction</h2>
               <p className="text-slate-600 font-bold leading-relaxed mb-0">
-                At Grihavastu by Ghar, we believe transparency is the foundation of trust. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you navigate our platform or engage with our concierge services.
+                At GrihaNivas, we believe transparency is the foundation of trust. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you navigate our platform or engage with our concierge services.
               </p>
             </div>
 

@@ -18,6 +18,7 @@ export default function SimilarPropertiesCarousel({ properties = [] }) {
   return (
     <div className="mt-6 sm:mt-10">
       <SectionCarousel
+        eyebrow="Similar Properties"
         title="You May Also Like"
         subtitle="Similar homes curated by location, category, and lifestyle fit."
         items={properties}

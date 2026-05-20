@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import KPISection from '@/components/dashboard/KPISection';
 import ActivityTimeline from '@/components/dashboard/ActivityTimeline';
 import DashboardQuickActions from '@/components/dashboard/DashboardQuickActions';
@@ -15,12 +16,15 @@ export default function UserDashboardPage() {
 
   const firstName = user?.name?.split(' ')[0] || 'There';
 
-  const currentDate = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const [currentDate, setCurrentDate] = useState('');
+  useEffect(() => {
+    setCurrentDate(new Date().toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }));
+  }, []);
 
   const savedCount = user?.savedProperties?.length ?? 0;
   const compareCount = user?.comparedProperties?.length ?? 0;

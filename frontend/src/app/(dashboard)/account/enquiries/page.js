@@ -2,7 +2,7 @@ import EnquiryHeader from '@/components/dashboard/enquiries/EnquiryHeader';
 import EnquiryTable from '@/components/dashboard/enquiries/EnquiryTable';
 
 export const metadata = {
-  title: 'My Enquiries | Ghar Tracker',
+  title: 'My Enquiries | GrihaNivas',
   description: 'Monitor your property and service enquiries in real-time.',
 };
 

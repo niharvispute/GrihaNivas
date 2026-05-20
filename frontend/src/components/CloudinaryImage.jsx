@@ -15,6 +15,8 @@ function buildBlurUrl(src) {
  *
  * Props mirror Next.js <Image>. Use eager={true} for hero/above-fold images.
  */
+const PLACEHOLDER = '/images/property-placeholder.svg';
+
 export default function CloudinaryImage({
   src,
   alt,
@@ -27,15 +29,17 @@ export default function CloudinaryImage({
   ...rest
 }) {
   const [loaded, setLoaded] = useState(false);
+  const [errored, setErrored] = useState(false);
   const isCloudinary = typeof src === 'string' && src.includes('res.cloudinary.com');
-  const optimizedSrc = isCloudinary
+  const activeSrc = errored ? PLACEHOLDER : src;
+  const optimizedSrc = !errored && isCloudinary
     ? optimizeCloudinaryUrl(src, fill ? {} : { width, height })
-    : src;
-  const blurSrc = fill && isCloudinary ? buildBlurUrl(src) : null;
+    : activeSrc;
+  const blurSrc = fill && isCloudinary && !errored ? buildBlurUrl(src) : null;
 
   const imgEl = (
     <Image
-      src={optimizedSrc || src}
+      src={optimizedSrc || activeSrc}
       alt={alt}
       fill={fill}
       width={!fill ? width : undefined}
@@ -46,6 +50,7 @@ export default function CloudinaryImage({
       priority={!!eager}
       className={className}
       onLoad={() => setLoaded(true)}
+      onError={() => setErrored(true)}
       {...rest}
     />
   );
@@ -53,7 +58,7 @@ export default function CloudinaryImage({
   if (!blurSrc) return imgEl;
 
   return (
-    <div className="contents">
+    <>
       <div
         aria-hidden="true"
         className={`absolute inset-0 bg-cover bg-center pointer-events-none transition-opacity duration-500 ${
@@ -62,6 +67,6 @@ export default function CloudinaryImage({
         style={{ backgroundImage: `url("${blurSrc}")` }}
       />
       {imgEl}
-    </div>
+    </>
   );
 }
