@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { updateMyProfile } from '@/services/userService';
+import { validateName } from '@/lib/validation/formValidation';
 
 export default function ProfileForm({ user, onUpdate }) {
   const [name, setName] = useState('');
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState('');
+  const [nameError, setNameError] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -16,6 +18,12 @@ export default function ProfileForm({ user, onUpdate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const nameErr = validateName(name);
+    if (nameErr) {
+      setNameError(nameErr);
+      return;
+    }
+    setNameError('');
     setSaving(true);
     setFeedback('');
     try {
@@ -42,13 +50,13 @@ export default function ProfileForm({ user, onUpdate }) {
             <div className="space-y-1.5 sm:space-y-2">
               <label className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Full Name</label>
               <input
-                className="w-full px-4 py-2.5 sm:py-3 md:py-3.5 rounded-xl border border-slate-100 focus:ring-4 focus:ring-primary/5 focus:border-primary transition-all bg-slate-50 focus:bg-white font-sans text-slate-700 font-bold text-xs sm:text-sm"
+                className={`w-full px-4 py-2.5 sm:py-3 md:py-3.5 rounded-xl border focus:ring-4 transition-all bg-slate-50 focus:bg-white font-sans text-slate-700 font-bold text-xs sm:text-sm ${nameError ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-100 focus:ring-primary/5 focus:border-primary'}`}
                 placeholder="Enter your full name"
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
+                onChange={(e) => { setName(e.target.value); if (nameError) setNameError(''); }}
               />
+              {nameError && <p className="mt-1 text-xs font-bold text-red-600">{nameError}</p>}
             </div>
 
             {/* Mobile Number (Locked) */}

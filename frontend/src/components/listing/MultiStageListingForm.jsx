@@ -5,6 +5,20 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
+import {
+  validateOwnerName,
+  validatePhone,
+  validateEmail,
+  validateLocality,
+  validateCarpetArea,
+  validateTotalArea,
+  validatePrice,
+  validateRent,
+  validateNumericOptional,
+  validatePropertyTitle,
+  validatePropertyDescription,
+  collectErrors,
+} from '@/lib/validation/formValidation';
 import { invalidateMyListingsSummary } from '@/hooks/useMyListingsSummary';
 import { createPropertySubmission } from '@/services/propertySubmissionService';
 import { getSystemBootstrap } from '@/services/systemService';
@@ -29,7 +43,8 @@ export default function MultiStageListingForm() {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [queuedSubmit, setQueuedSubmit] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
-  
+  const [stepErrors, setStepErrors] = useState({});
+
   // 🆕 Upload Status States
   const [uploadStage, setUploadStage] = useState(''); // 'Preparing...', 'Uploading...', 'Finalizing...'
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -119,22 +134,62 @@ export default function MultiStageListingForm() {
   ];
 
   const handleNext = () => {
-    if (step === 3 && form.images.length < MIN_PROPERTY_IMAGES) {
-      setFeedback({
-        type: 'error',
-        message: `Please upload at least ${MIN_PROPERTY_IMAGES} property images before continuing.`,
-      });
+    let validation = {};
+
+    if (step === 1) {
+      validation = {
+        ownerName: validateOwnerName(form.ownerName),
+        phone: validatePhone(form.phone),
+        email: validateEmail(form.email),
+      };
+    } else if (step === 2) {
+      validation = {
+        locality: validateLocality(form.locality),
+        carpetArea: validateCarpetArea(form.carpetArea),
+        totalArea: validateTotalArea(form.carpetArea, form.totalArea),
+      };
+    } else if (step === 3) {
+      if (form.images.length < MIN_PROPERTY_IMAGES) {
+        setFeedback({
+          type: 'error',
+          message: `Please upload at least ${MIN_PROPERTY_IMAGES} property images before continuing.`,
+        });
+        return;
+      }
+    } else if (step === 4) {
+      if (form.listingType === 'Sale') {
+        validation = { price: validatePrice(form.price) };
+      } else {
+        validation = {
+          rentPerMonth: validateRent(form.rentPerMonth),
+          deposit: validateNumericOptional(form.deposit, 'Security deposit'),
+          maintenanceCharges: validateNumericOptional(form.maintenanceCharges, 'Maintenance charges'),
+        };
+      }
+    } else if (step === 5) {
+      validation = {
+        title: validatePropertyTitle(form.title),
+        description: validatePropertyDescription(form.description),
+      };
+    }
+
+    const { errors, hasError } = collectErrors(validation);
+    if (hasError) {
+      setStepErrors(errors);
+      setFeedback({ type: '', message: '' });
       return;
     }
 
+    setStepErrors({});
     setFeedback((prev) => (prev.type === 'error' ? { type: '', message: '' } : prev));
     setStep((s) => Math.min(s + 1, 5));
   };
   
-  const handleBack = () => setStep((s) => Math.max(s - 1, 1));
+  const handleBack = () => { setStepErrors({}); setStep((s) => Math.max(s - 1, 1)); };
 
   const handleChange = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
+    if (stepErrors[field]) setStepErrors((se) => ({ ...se, [field]: null }));
   };
 
   const handleToggle = (field, value) => {
@@ -554,11 +609,13 @@ export default function MultiStageListingForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                   <div className="space-y-3 md:space-y-4">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Owner Name</label>
-                      <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="Full Name" value={form.ownerName} onChange={handleChange('ownerName')} />
+                      <input className={`w-full bg-white border-2 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 outline-none transition-all ${stepErrors.ownerName ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-50 focus:ring-primary/5 focus:border-primary'}`} placeholder="Full Name" value={form.ownerName} onChange={handleChange('ownerName')} />
+                      {stepErrors.ownerName && <p className="text-xs font-bold text-red-600">{stepErrors.ownerName}</p>}
                   </div>
                   <div className="space-y-3 md:space-y-4">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Contact Number</label>
-                      <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="+91 00000 00000" value={form.phone} onChange={handleChange('phone')} />
+                      <input className={`w-full bg-white border-2 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 outline-none transition-all ${stepErrors.phone ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-50 focus:ring-primary/5 focus:border-primary'}`} placeholder="+91 00000 00000" value={form.phone} onChange={handleChange('phone')} />
+                      {stepErrors.phone && <p className="text-xs font-bold text-red-600">{stepErrors.phone}</p>}
                   </div>
                 </div>
 
@@ -592,8 +649,9 @@ export default function MultiStageListingForm() {
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Pin Your Locality</label>
                   <div className="relative group">
                       <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors">location_on</span>
-                      <input className="w-full bg-white border-2 border-slate-100 rounded-2xl p-4 pl-12 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="Locality or Building Name (e.g. Worli Sea Face)" value={form.locality} onChange={handleChange('locality')} />
+                      <input className={`w-full bg-white border-2 rounded-2xl p-4 pl-12 font-black placeholder:text-slate-200 text-sm focus:ring-4 outline-none transition-all ${stepErrors.locality ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-100 focus:ring-primary/5 focus:border-primary'}`} placeholder="Locality or Building Name (e.g. Worli Sea Face)" value={form.locality} onChange={handleChange('locality')} />
                   </div>
+                  {stepErrors.locality && <p className="text-xs font-bold text-red-600">{stepErrors.locality}</p>}
                   {/* <div className="aspect-16/9 md:aspect-21/9 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-100 flex flex-col items-center justify-center p-6 group cursor-pointer hover:border-primary/20 transition-all">
                       <div className="w-12 h-12 rounded-full bg-white shadow-xl flex items-center justify-center text-primary mb-3 group-hover:scale-110 transition-transform">
                         <span className="material-symbols-outlined text-2xl">map</span>
@@ -667,11 +725,13 @@ export default function MultiStageListingForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                   <div className="space-y-3 md:space-y-4">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Carpet Area (sq.ft)</label>
-                    <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. 650" value={form.carpetArea} onChange={handleChange('carpetArea')} type="number" />
+                    <input className={`w-full bg-white border-2 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 outline-none transition-all ${stepErrors.carpetArea ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-50 focus:ring-primary/5 focus:border-primary'}`} placeholder="e.g. 650" value={form.carpetArea} onChange={handleChange('carpetArea')} type="number" />
+                    {stepErrors.carpetArea && <p className="text-xs font-bold text-red-600">{stepErrors.carpetArea}</p>}
                   </div>
                   <div className="space-y-3 md:space-y-4">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Total Area (sq.ft)</label>
-                    <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. 950" value={form.totalArea} onChange={handleChange('totalArea')} type="number" />
+                    <input className={`w-full bg-white border-2 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 outline-none transition-all ${stepErrors.totalArea ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-50 focus:ring-primary/5 focus:border-primary'}`} placeholder="e.g. 950" value={form.totalArea} onChange={handleChange('totalArea')} type="number" />
+                    {stepErrors.totalArea && <p className="text-xs font-bold text-red-600">{stepErrors.totalArea}</p>}
                   </div>
                 </div>
               </div>
@@ -781,8 +841,9 @@ export default function MultiStageListingForm() {
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Expected Price (₹)</label>
                     <div className="relative group max-w-md">
                         <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-2xl text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
-                        <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-6 md:p-8 pl-12 md:pl-14 font-black text-2xl md:text-4xl tracking-tighter placeholder:text-slate-100 focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.price} onChange={handleChange('price')} />
+                        <input className={`w-full bg-white border-2 rounded-2xl p-6 md:p-8 pl-12 md:pl-14 font-black text-2xl md:text-4xl tracking-tighter placeholder:text-slate-100 focus:ring-8 outline-none transition-all ${stepErrors.price ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-50 focus:ring-primary/5 focus:border-primary'}`} placeholder="0.00" value={form.price} onChange={handleChange('price')} />
                     </div>
+                    {stepErrors.price && <p className="text-xs font-bold text-red-600">{stepErrors.price}</p>}
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
@@ -790,22 +851,25 @@ export default function MultiStageListingForm() {
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Rent Per Month (₹)</label>
                       <div className="relative group">
                           <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-lg text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
-                          <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 pl-10 font-black text-lg placeholder:text-slate-100 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.rentPerMonth} onChange={handleChange('rentPerMonth')} />
+                          <input className={`w-full bg-white border-2 rounded-2xl p-4 pl-10 font-black text-lg placeholder:text-slate-100 focus:ring-4 outline-none transition-all ${stepErrors.rentPerMonth ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-50 focus:ring-primary/5 focus:border-primary'}`} placeholder="0.00" value={form.rentPerMonth} onChange={handleChange('rentPerMonth')} />
                       </div>
+                      {stepErrors.rentPerMonth && <p className="text-xs font-bold text-red-600">{stepErrors.rentPerMonth}</p>}
                     </div>
                     <div className="space-y-4">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Security Deposit (₹)</label>
                       <div className="relative group">
                           <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-lg text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
-                          <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 pl-10 font-black text-lg placeholder:text-slate-100 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.deposit} onChange={handleChange('deposit')} />
+                          <input className={`w-full bg-white border-2 rounded-2xl p-4 pl-10 font-black text-lg placeholder:text-slate-100 focus:ring-4 outline-none transition-all ${stepErrors.deposit ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-50 focus:ring-primary/5 focus:border-primary'}`} placeholder="0.00" value={form.deposit} onChange={handleChange('deposit')} />
                       </div>
+                      {stepErrors.deposit && <p className="text-xs font-bold text-red-600">{stepErrors.deposit}</p>}
                     </div>
                     <div className="space-y-4">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Maintenance (₹/month)</label>
                       <div className="relative group">
                           <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-lg text-slate-300 group-focus-within:text-primary transition-colors">₹</span>
-                          <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 pl-10 font-black text-lg placeholder:text-slate-100 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="0.00" value={form.maintenanceCharges} onChange={handleChange('maintenanceCharges')} />
+                          <input className={`w-full bg-white border-2 rounded-2xl p-4 pl-10 font-black text-lg placeholder:text-slate-100 focus:ring-4 outline-none transition-all ${stepErrors.maintenanceCharges ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-50 focus:ring-primary/5 focus:border-primary'}`} placeholder="0.00" value={form.maintenanceCharges} onChange={handleChange('maintenanceCharges')} />
                       </div>
+                      {stepErrors.maintenanceCharges && <p className="text-xs font-bold text-red-600">{stepErrors.maintenanceCharges}</p>}
                     </div>
                   </div>
                 )}
@@ -907,12 +971,14 @@ export default function MultiStageListingForm() {
 
                     <div className="space-y-4">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Editorial Title</label>
-                      <input className="w-full bg-white border-2 border-slate-50 rounded-xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. Luxury Sea-Facing Sky Villa" value={form.title} onChange={handleChange('title')} />
+                      <input className={`w-full bg-white border-2 rounded-xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 outline-none transition-all ${stepErrors.title ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-50 focus:ring-primary/5 focus:border-primary'}`} placeholder="e.g. Luxury Sea-Facing Sky Villa" value={form.title} onChange={handleChange('title')} />
+                      {stepErrors.title && <p className="text-xs font-bold text-red-600">{stepErrors.title}</p>}
                     </div>
-                    
+
                     <div className="space-y-4">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Description</label>
-                      <textarea rows="5" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-6 font-bold placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all resize-none" placeholder="Draft a high-end description..." value={form.description} onChange={handleChange('description')} />
+                      <textarea rows="5" className={`w-full bg-white border-2 rounded-2xl p-6 font-bold placeholder:text-slate-200 text-sm focus:ring-4 outline-none transition-all resize-none ${stepErrors.description ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-50 focus:ring-primary/5 focus:border-primary'}`} placeholder="Draft a high-end description..." value={form.description} onChange={handleChange('description')} />
+                      {stepErrors.description && <p className="text-xs font-bold text-red-600">{stepErrors.description}</p>}
                     </div>
 
                     <label className="flex items-center gap-4 group cursor-pointer p-5 bg-slate-50 rounded-2xl border border-slate-100 hover:border-primary/20 transition-all">

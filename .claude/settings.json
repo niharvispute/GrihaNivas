@@ -1,4 +1,12 @@
 {
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"d:\\\\GrihaNivas\\\\frontend\\\\src\" -Recurse | Where-Object { $_.Name -match \"header|nav|navbar\" -and $_.Name -match \"\\\\.\\(tsx|jsx|ts|js\\)$\" } | Select-Object FullName)",
+      "Bash(Get-ChildItem d:\\\\GrihaNivas\\\\frontend\\\\src -Recurse -Name)",
+      "Bash(Select-String -Pattern \"\\(form|auth|register|login|contact|listing|property\\)\" -AllMatches)",
+      "Bash(Select-Object -First 50)"
+    ]
+  },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true
   }

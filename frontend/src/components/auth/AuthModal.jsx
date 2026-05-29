@@ -15,6 +15,14 @@ import {
   normalizeAuthIdentifier,
   toIndianPhoneE164,
 } from '@/lib/validation/phone';
+import {
+  validateName,
+  validateEmail,
+  validatePhone,
+  validatePassword,
+  validateConfirmPassword,
+  collectErrors,
+} from '@/lib/validation/formValidation';
 import { getErrorMessage } from '@/lib/api';
 
 // ── OTP Boxes ─────────────────────────────────────────────────────────────────
@@ -76,7 +84,7 @@ function OtpBoxes({ onChange, disabled }) {
 
 // ── Field ─────────────────────────────────────────────────────────────────────
 
-function Field({ label, type = 'text', value, onChange, placeholder, disabled, autoComplete, labelRight }) {
+function Field({ label, type = 'text', value, onChange, placeholder, disabled, autoComplete, labelRight, error }) {
   const [showPw, setShowPw] = useState(false);
   const isPassword = type === 'password';
 
@@ -94,9 +102,13 @@ function Field({ label, type = 'text', value, onChange, placeholder, disabled, a
           placeholder={placeholder}
           disabled={disabled}
           autoComplete={autoComplete}
-          className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm
-                     focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10
-                     disabled:bg-gray-50 transition-all"
+          className={`w-full px-4 py-3 rounded-xl border text-sm
+                     focus:outline-none focus:ring-2 transition-all
+                     disabled:bg-gray-50
+                     ${error
+                       ? 'border-red-400 focus:border-red-400 focus:ring-red-100'
+                       : 'border-gray-200 focus:border-primary focus:ring-primary/10'
+                     }`}
         />
         {isPassword && (
           <button
@@ -111,6 +123,7 @@ function Field({ label, type = 'text', value, onChange, placeholder, disabled, a
           </button>
         )}
       </div>
+      {error && <p className="mt-1 text-xs font-bold text-red-600">{error}</p>}
     </div>
   );
 }
@@ -281,18 +294,35 @@ function LoginView({ ctx }) {
 function RegisterView({ ctx }) {
   const { loading, setLoading, error, setError, setView, setFlowData, onAuthSuccess, closeModal } = ctx;
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '' });
-  const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+  const [fieldErrors, setFieldErrors] = useState({});
+  const set = (key) => (e) => {
+    setForm((f) => ({ ...f, [key]: e.target.value }));
+    if (fieldErrors[key]) setFieldErrors((fe) => ({ ...fe, [key]: null }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const { errors, hasError } = collectErrors({
+      name: validateName(form.name),
+      email: validateEmail(form.email, { required: true }),
+      phone: validatePhone(form.phone),
+      password: validatePassword(form.password),
+    });
+
+    if (hasError) {
+      setFieldErrors(errors);
+      return;
+    }
+
     const phone = toIndianPhoneE164(form.phone);
     if (!phone) {
-      setError('Enter a valid Indian mobile number in +91 format.');
+      setFieldErrors((fe) => ({ ...fe, phone: 'Please enter a valid Indian mobile number.' }));
       return;
     }
 
     setError('');
+    setFieldErrors({});
     setLoading(true);
     try {
       await signupRequest({
@@ -320,10 +350,10 @@ function RegisterView({ ctx }) {
         <ErrorAlert message={error} />
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Field label="Full Name" value={form.name} onChange={set('name')} placeholder="Rahul Sharma" disabled={loading} autoComplete="name" />
-          <Field label="Email Address" type="email" value={form.email} onChange={set('email')} placeholder="rahul@example.com" disabled={loading} autoComplete="email" />
-          <Field label="Phone Number" value={form.phone} onChange={set('phone')} placeholder="+91XXXXXXXXXX" disabled={loading} autoComplete="tel" />
-          <Field label="Password" type="password" value={form.password} onChange={set('password')} placeholder="Min. 8 characters with A-Z, a-z, 0-9" disabled={loading} autoComplete="new-password" />
+          <Field label="Full Name" value={form.name} onChange={set('name')} placeholder="Rahul Sharma" disabled={loading} autoComplete="name" error={fieldErrors.name} />
+          <Field label="Email Address" type="email" value={form.email} onChange={set('email')} placeholder="rahul@example.com" disabled={loading} autoComplete="email" error={fieldErrors.email} />
+          <Field label="Phone Number" value={form.phone} onChange={set('phone')} placeholder="+91XXXXXXXXXX" disabled={loading} autoComplete="tel" error={fieldErrors.phone} />
+          <Field label="Password" type="password" value={form.password} onChange={set('password')} placeholder="Min. 8 characters with A-Z, a-z, 0-9, symbols" disabled={loading} autoComplete="new-password" error={fieldErrors.password} />
           <div className="pt-1">
             <SubmitButton loading={loading}>Create Account</SubmitButton>
           </div>
@@ -527,13 +557,19 @@ function ForgotResetView({ ctx }) {
   const [newPassword, setNewPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [done, setDone] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (newPassword !== confirm) {
-      setError('Passwords do not match.');
+    const { errors, hasError } = collectErrors({
+      newPassword: validatePassword(newPassword),
+      confirm: validateConfirmPassword(newPassword, confirm),
+    });
+    if (hasError) {
+      setFieldErrors(errors);
       return;
     }
+    setFieldErrors({});
     setError('');
     setLoading(true);
     try {
@@ -580,19 +616,21 @@ function ForgotResetView({ ctx }) {
             label="New Password"
             type="password"
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="Min. 8 characters with A-Z, a-z, 0-9"
+            onChange={(e) => { setNewPassword(e.target.value); if (fieldErrors.newPassword) setFieldErrors((fe) => ({ ...fe, newPassword: null })); }}
+            placeholder="Min. 8 characters with A-Z, a-z, 0-9, symbols"
             disabled={loading}
             autoComplete="new-password"
+            error={fieldErrors.newPassword}
           />
           <Field
             label="Confirm Password"
             type="password"
             value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
+            onChange={(e) => { setConfirm(e.target.value); if (fieldErrors.confirm) setFieldErrors((fe) => ({ ...fe, confirm: null })); }}
             placeholder="Repeat your new password"
             disabled={loading}
             autoComplete="new-password"
+            error={fieldErrors.confirm}
           />
           <div className="pt-1">
             <SubmitButton loading={loading}>Update Password</SubmitButton>

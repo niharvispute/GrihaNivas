@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
+import { validateName, validateEmail, validatePhone, validateMessage, collectErrors } from '@/lib/validation/formValidation';
 import { createLead } from '@/services/leadService';
 
 const DRAFT_KEY = 'lead_draft:generic';
@@ -29,6 +30,7 @@ export default function LeadForm({
   const [queuedSubmit, setQueuedSubmit] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
+  const [fieldErrors, setFieldErrors] = useState({});
 
   // Load session draft
   useEffect(() => {
@@ -63,18 +65,28 @@ export default function LeadForm({
 
   const handleChange = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
+    if (fieldErrors[field]) setFieldErrors((fe) => ({ ...fe, [field]: null }));
   };
 
   const submitLead = useCallback(async () => {
-    const phone = toIndianPhoneE164(form.phone);
-    if (!phone) {
-      setFeedback({
-        type: 'error',
-        message: 'Please enter a valid Indian mobile number (e.g. 98765 43210).',
-      });
+    const { errors, hasError } = collectErrors({
+      name: validateName(form.name),
+      email: validateEmail(form.email),
+      phone: validatePhone(form.phone),
+      message: validateMessage(form.message),
+    });
+    if (hasError) {
+      setFieldErrors(errors);
       return;
     }
 
+    const phone = toIndianPhoneE164(form.phone);
+    if (!phone) {
+      setFieldErrors((fe) => ({ ...fe, phone: 'Please enter a valid Indian mobile number.' }));
+      return;
+    }
+
+    setFieldErrors({});
     setIsSubmitting(true);
     setFeedback({ type: '', message: '' });
 
@@ -133,14 +145,14 @@ export default function LeadForm({
             id={nameInputId}
             name="name"
             type="text"
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-slate-400"
+            className={`w-full bg-slate-50 border rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 transition-all placeholder:text-slate-400 ${fieldErrors.name ? 'border-red-400 focus:ring-red-100' : 'border-slate-200 focus:ring-primary/20 focus:border-primary/30'}`}
             placeholder="John Doe"
             value={form.name}
             onChange={handleChange('name')}
-            required
             autoComplete="name"
             suppressHydrationWarning
           />
+          {fieldErrors.name && <p className="mt-1 text-xs font-bold text-red-600">{fieldErrors.name}</p>}
         </div>
         <div>
           <label htmlFor={emailInputId} className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Email Address</label>
@@ -148,13 +160,14 @@ export default function LeadForm({
             id={emailInputId}
             name="email"
             type="email"
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-slate-400"
+            className={`w-full bg-slate-50 border rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 transition-all placeholder:text-slate-400 ${fieldErrors.email ? 'border-red-400 focus:ring-red-100' : 'border-slate-200 focus:ring-primary/20 focus:border-primary/30'}`}
             placeholder="john@example.com"
             value={form.email}
             onChange={handleChange('email')}
             autoComplete="email"
             suppressHydrationWarning
           />
+          {fieldErrors.email && <p className="mt-1 text-xs font-bold text-red-600">{fieldErrors.email}</p>}
         </div>
         <div>
           <label htmlFor={phoneInputId} className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">
@@ -164,14 +177,14 @@ export default function LeadForm({
             id={phoneInputId}
             name="phone"
             type="tel"
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all placeholder:text-slate-400"
+            className={`w-full bg-slate-50 border rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 transition-all placeholder:text-slate-400 ${fieldErrors.phone ? 'border-red-400 focus:ring-red-100' : 'border-slate-200 focus:ring-primary/20 focus:border-primary/30'}`}
             placeholder="98765 43210"
             value={form.phone}
             onChange={handleChange('phone')}
-            required
             autoComplete="tel"
             suppressHydrationWarning
           />
+          {fieldErrors.phone && <p className="mt-1 text-xs font-bold text-red-600">{fieldErrors.phone}</p>}
         </div>
         <div>
           <label htmlFor={messageInputId} className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wide">Message</label>
@@ -179,12 +192,13 @@ export default function LeadForm({
             id={messageInputId}
             name="message"
             rows="4"
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none placeholder:text-slate-400"
+            className={`w-full bg-slate-50 border rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 transition-all resize-none placeholder:text-slate-400 ${fieldErrors.message ? 'border-red-400 focus:ring-red-100' : 'border-slate-200 focus:ring-primary/20 focus:border-primary/30'}`}
             placeholder="Tell us your budget, preferred area, and possession timeline."
             value={form.message}
             onChange={handleChange('message')}
             suppressHydrationWarning
           />
+          {fieldErrors.message && <p className="mt-1 text-xs font-bold text-red-600">{fieldErrors.message}</p>}
         </div>
 
         {feedback.message && (

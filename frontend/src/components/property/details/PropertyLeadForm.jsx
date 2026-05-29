@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
+import { validateName, validateEmail, validatePhone, collectErrors } from '@/lib/validation/formValidation';
 import { createLead } from '@/services/leadService';
 
 const DRAFT_KEY = 'lead_draft:property_interest';
@@ -16,6 +17,7 @@ export default function PropertyLeadForm({ property }) {
   const [queuedSubmit, setQueuedSubmit] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const propertyType = property?.raw?.category === 'rent' ? 'rent' : 'buy';
 
@@ -51,18 +53,27 @@ export default function PropertyLeadForm({ property }) {
 
   const handleChange = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
+    if (fieldErrors[field]) setFieldErrors((fe) => ({ ...fe, [field]: null }));
   };
 
   const submitLead = useCallback(async () => {
-    const phone = toIndianPhoneE164(form.phone);
-    if (!phone) {
-      setFeedback({
-        type: 'error',
-        message: 'Please enter a valid Indian mobile number (e.g. 98765 43210).',
-      });
+    const { errors, hasError } = collectErrors({
+      name: validateName(form.name),
+      phone: validatePhone(form.phone),
+      email: validateEmail(form.email),
+    });
+    if (hasError) {
+      setFieldErrors(errors);
       return;
     }
 
+    const phone = toIndianPhoneE164(form.phone);
+    if (!phone) {
+      setFieldErrors((fe) => ({ ...fe, phone: 'Please enter a valid Indian mobile number.' }));
+      return;
+    }
+
+    setFieldErrors({});
     setIsSubmitting(true);
     setFeedback({ type: '', message: '' });
 
@@ -126,20 +137,20 @@ export default function PropertyLeadForm({ property }) {
         <div>
           <label className="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5 px-1">Full Name</label>
           <input
-            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm text-slate-700 font-medium transition-all placeholder:text-slate-400"
+            className={`w-full bg-white border rounded-xl py-3 px-4 focus:ring-2 focus:border-transparent shadow-sm text-slate-700 font-medium transition-all placeholder:text-slate-400 ${fieldErrors.name ? 'border-red-400 focus:ring-red-200' : 'border-slate-200 focus:ring-primary'}`}
             placeholder="e.g. Rohit Sharma"
             type="text"
             autoComplete="name"
             enterKeyHint="next"
             value={form.name}
             onChange={handleChange('name')}
-            required
           />
+          {fieldErrors.name && <p className="mt-1 text-xs font-bold text-red-600">{fieldErrors.name}</p>}
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5 px-1">Phone Number</label>
           <input
-            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm text-slate-700 font-medium transition-all placeholder:text-slate-400"
+            className={`w-full bg-white border rounded-xl py-3 px-4 focus:ring-2 focus:border-transparent shadow-sm text-slate-700 font-medium transition-all placeholder:text-slate-400 ${fieldErrors.phone ? 'border-red-400 focus:ring-red-200' : 'border-slate-200 focus:ring-primary'}`}
             placeholder="98765 43210"
             type="tel"
             inputMode="numeric"
@@ -147,13 +158,13 @@ export default function PropertyLeadForm({ property }) {
             enterKeyHint="next"
             value={form.phone}
             onChange={handleChange('phone')}
-            required
           />
+          {fieldErrors.phone && <p className="mt-1 text-xs font-bold text-red-600">{fieldErrors.phone}</p>}
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5 px-1">Email Address</label>
           <input
-            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm text-slate-700 font-medium transition-all placeholder:text-slate-400"
+            className={`w-full bg-white border rounded-xl py-3 px-4 focus:ring-2 focus:border-transparent shadow-sm text-slate-700 font-medium transition-all placeholder:text-slate-400 ${fieldErrors.email ? 'border-red-400 focus:ring-red-200' : 'border-slate-200 focus:ring-primary'}`}
             placeholder="rohit@example.com"
             type="email"
             inputMode="email"
@@ -162,6 +173,7 @@ export default function PropertyLeadForm({ property }) {
             value={form.email}
             onChange={handleChange('email')}
           />
+          {fieldErrors.email && <p className="mt-1 text-xs font-bold text-red-600">{fieldErrors.email}</p>}
         </div>
 
         {feedback.message && (
