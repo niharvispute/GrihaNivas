@@ -60,28 +60,32 @@ export default function AdminDashboardPage() {
       value: loading ? '…' : (stats?.leads?.total ?? '—'),
       icon: "person_add",
       color: "text-blue-600",
-      bg: "bg-blue-50"
+      bg: "bg-blue-50",
+      href: "/admin/leads",
     },
     {
       label: "Properties Listed",
       value: loading ? '…' : (stats?.properties?.total ?? '—'),
       icon: "home_work",
       color: "text-pink-600",
-      bg: "bg-pink-50"
+      bg: "bg-pink-50",
+      href: "/admin/properties",
     },
     {
       label: "New Leads",
       value: loading ? '…' : (stats?.leads?.new ?? '—'),
       icon: "mark_email_unread",
       color: "text-purple-600",
-      bg: "bg-purple-50"
+      bg: "bg-purple-50",
+      href: "/admin/leads",
     },
     {
       label: "Leads Closed",
       value: loading ? '…' : (stats?.leads?.closed ?? '—'),
       icon: "assignment_turned_in",
       color: "text-emerald-600",
-      bg: "bg-emerald-50"
+      bg: "bg-emerald-50",
+      href: "/admin/leads",
     },
   ];
 
@@ -98,17 +102,18 @@ export default function AdminDashboardPage() {
       {/* KPI Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {kpis.map((stat, i) => (
-          <div key={i} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-4 hover:shadow-lg hover:shadow-slate-200/80 transition-all duration-500 group">
+          <Link key={i} href={stat.href} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-4 hover:shadow-lg hover:shadow-slate-200/80 hover:border-primary/20 transition-all duration-500 group cursor-pointer">
             <div className="flex justify-between items-start">
-              <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-xl flex items-center justify-center shadow-inner`}>
+              <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-300`}>
                 <span className="material-symbols-outlined text-xl">{stat.icon}</span>
               </div>
+              <span className="material-symbols-outlined text-slate-300 text-base group-hover:text-primary transition-colors">arrow_forward</span>
             </div>
             <div>
               <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">{stat.label}</p>
               <h3 className="text-xl font-black text-slate-900 mt-1 tracking-tighter">{stat.value}</h3>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
@@ -199,20 +204,20 @@ export default function AdminDashboardPage() {
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Total Users', value: stats.users?.total ?? '—', icon: 'group' },
-            { label: 'Active Blogs', value: stats.blogs?.total ?? '—', icon: 'article' },
-            { label: 'Total Banners', value: stats.banners?.total ?? '—', icon: 'panorama' },
-            { label: 'Testimonials', value: stats.testimonials?.total ?? '—', icon: 'star' },
+            { label: 'Total Users', value: stats.users?.total ?? '—', icon: 'group', href: '/admin/users' },
+            { label: 'Active Blogs', value: stats.blogs?.total ?? '—', icon: 'article', href: '/admin/blogs' },
+            { label: 'Total Banners', value: stats.banners?.total ?? '—', icon: 'panorama', href: '/admin/banners' },
+            { label: 'Testimonials', value: stats.testimonials?.total ?? '—', icon: 'star', href: '/admin/testimonials' },
           ].map((c, i) => (
-            <div key={i} className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center gap-4">
-              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+            <Link key={i} href={c.href} className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-lg hover:border-primary/20 hover:bg-primary/5 transition-all duration-300 group cursor-pointer">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300">
                 <span className="material-symbols-outlined text-xl">{c.icon}</span>
               </div>
               <div>
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{c.label}</p>
                 <h4 className="text-lg font-black text-slate-900">{c.value}</h4>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

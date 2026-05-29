@@ -71,11 +71,9 @@ export default function PropertyGallery({ images, property }) {
   }
 
   const categoryLabel =
-    property?.raw?.category === 'new_launch'
-      ? 'New Launch'
-      : property?.raw?.category
-        ? String(property.raw.category).replace('_', ' ')
-        : 'Property';
+    property?.raw?.category
+      ? String(property.raw.category).replace('_', ' ').toUpperCase()
+      : 'PROPERTY';
   const typeLabel = property?.bhk && property?.bhk !== '-' ? `${property.bhk} BHK` : categoryLabel;
   const areaLabel = property?.area && property?.area !== 'N/A' ? `${property.area} sq.ft` : 'Area pending';
   const formatAreaChip = (value) => {

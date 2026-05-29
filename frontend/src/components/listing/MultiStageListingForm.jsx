@@ -1085,7 +1085,7 @@ export default function MultiStageListingForm() {
             </div>
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tighter mb-4 ">Listing Received!</h2>
-          <p className="text-slate-500 font-bold mb-10 leading-relaxed text-sm md:text-base">Your Mumbai estate is now in review. We&apos;ll notify you within 24 hours.</p>
+          <p className="text-slate-500 font-bold mb-10 leading-relaxed text-sm md:text-base">Your Property is now in review. We&apos;ll notify you within 24 hours.</p>
           <button onClick={() => router.push('/')} className="w-full py-5 bg-primary text-white rounded-full font-black text-sm uppercase tracking-widest shadow-2xl">
             Continue Exploring
           </button>

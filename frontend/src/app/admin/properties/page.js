@@ -40,6 +40,9 @@ export default function PropertyManagementPage() {
   const [togglingActive, setTogglingActive] = useState(null);
   const [imageModalProperty, setImageModalProperty] = useState(null);
   const [loadingImageModal, setLoadingImageModal] = useState(false);
+  const [editingProperty, setEditingProperty] = useState(null);
+  const [editForm, setEditForm] = useState({});
+  const [savingEdit, setSavingEdit] = useState(false);
 
   const fetchProperties = useCallback(async () => {
     setLoading(true);
@@ -97,6 +100,75 @@ export default function PropertyManagementPage() {
       alert('Failed to load property images.');
     } finally {
       setLoadingImageModal(false);
+    }
+  };
+
+  const handleOpenEdit = async (id) => {
+    setOpenActionFor(null);
+    setLoadingPropertyDetail(true);
+    try {
+      const property = await getPropertyById(id, { map: false });
+      setEditForm({
+        title: property.title || '',
+        category: property.category || 'buy',
+        price: property.price || '',
+        rentPerMonth: property.rentPerMonth || '',
+        bhk: property.bhk || '',
+        bathrooms: property.bathrooms || '',
+        areaSqft: property.areaSqft || '',
+        carpetArea: property.carpetArea || '',
+        furnishing: property.furnishing || '',
+        reraNumber: property.reraNumber || '',
+        reraUrl: property.reraUrl || '',
+        locationArea: property.location?.area || '',
+        locationCity: property.location?.city || '',
+        locationAddress: property.location?.address || '',
+        description: property.description || '',
+      });
+      setEditingProperty(property);
+    } catch {
+      alert('Failed to load property for editing.');
+    } finally {
+      setLoadingPropertyDetail(false);
+    }
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingProperty) return;
+    setSavingEdit(true);
+    try {
+      const payload = {
+        title: editForm.title.trim(),
+        category: editForm.category,
+        price: editForm.price !== '' ? Number(editForm.price) : undefined,
+        rentPerMonth: editForm.rentPerMonth !== '' ? Number(editForm.rentPerMonth) : undefined,
+        bhk: editForm.bhk !== '' ? Number(editForm.bhk) : undefined,
+        bathrooms: editForm.bathrooms !== '' ? Number(editForm.bathrooms) : undefined,
+        areaSqft: editForm.areaSqft !== '' ? Number(editForm.areaSqft) : undefined,
+        carpetArea: editForm.carpetArea !== '' ? Number(editForm.carpetArea) : undefined,
+        furnishing: editForm.furnishing || undefined,
+        reraNumber: editForm.reraNumber.trim() || undefined,
+        reraUrl: editForm.reraUrl.trim() || undefined,
+        location: {
+          area: editForm.locationArea.trim(),
+          city: editForm.locationCity.trim(),
+          address: editForm.locationAddress.trim(),
+        },
+        description: editForm.description.trim(),
+      };
+      await updateProperty(editingProperty._id, payload);
+      setProperties((prev) =>
+        prev.map((p) =>
+          p._id === editingProperty._id
+            ? { ...p, title: payload.title, category: payload.category, price: payload.price, location: payload.location }
+            : p
+        )
+      );
+      setEditingProperty(null);
+    } catch {
+      alert('Failed to save property changes.');
+    } finally {
+      setSavingEdit(false);
     }
   };
 
@@ -340,6 +412,14 @@ export default function PropertyManagementPage() {
                                 </button>
                                 <button
                                   type="button"
+                                  onClick={() => handleOpenEdit(prop._id)}
+                                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all"
+                                >
+                                  <span className="material-symbols-outlined text-lg text-amber-500">edit</span>
+                                  <span>Edit</span>
+                                </button>
+                                <button
+                                  type="button"
                                   onClick={() => handleManageImages(prop._id)}
                                   disabled={loadingImageModal}
                                   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all disabled:opacity-40"
@@ -420,7 +500,62 @@ export default function PropertyManagementPage() {
         />
       )}
 
-      {(loadingPropertyDetail || viewingProperty) && (
+      {editingProperty && (
+        <div className="fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-3xl bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="px-8 py-5 border-b border-slate-100 flex items-center justify-between shrink-0">
+              <h3 className="text-xl font-black text-slate-900 tracking-tight">Edit Property</h3>
+              <button type="button" onClick={() => setEditingProperty(null)} className="w-9 h-9 rounded-xl bg-slate-50 text-slate-500 hover:text-slate-900 transition-colors flex items-center justify-center">
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div className="p-8 overflow-y-auto flex-1">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <EditField label="Title" value={editForm.title} onChange={(v) => setEditForm((f) => ({ ...f, title: v }))} full />
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Category</label>
+                  <select className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" value={editForm.category} onChange={(e) => setEditForm((f) => ({ ...f, category: e.target.value }))}>
+                    <option value="buy">Buy</option>
+                    <option value="rent">Rent</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="new_launch">New Launch</option>
+                  </select>
+                </div>
+                <EditField label="Price (₹)" type="number" value={editForm.price} onChange={(v) => setEditForm((f) => ({ ...f, price: v }))} />
+                <EditField label="Rent / Month (₹)" type="number" value={editForm.rentPerMonth} onChange={(v) => setEditForm((f) => ({ ...f, rentPerMonth: v }))} />
+                <EditField label="BHK" type="number" value={editForm.bhk} onChange={(v) => setEditForm((f) => ({ ...f, bhk: v }))} />
+                <EditField label="Bathrooms" type="number" value={editForm.bathrooms} onChange={(v) => setEditForm((f) => ({ ...f, bathrooms: v }))} />
+                <EditField label="Total Area (sq.ft)" type="number" value={editForm.areaSqft} onChange={(v) => setEditForm((f) => ({ ...f, areaSqft: v }))} />
+                <EditField label="Carpet Area (sq.ft)" type="number" value={editForm.carpetArea} onChange={(v) => setEditForm((f) => ({ ...f, carpetArea: v }))} />
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Furnishing</label>
+                  <select className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" value={editForm.furnishing} onChange={(e) => setEditForm((f) => ({ ...f, furnishing: e.target.value }))}>
+                    <option value="">— Select —</option>
+                    <option value="unfurnished">Unfurnished</option>
+                    <option value="semi_furnished">Semi Furnished</option>
+                    <option value="fully_furnished">Fully Furnished</option>
+                  </select>
+                </div>
+                <EditField label="RERA Number" value={editForm.reraNumber} onChange={(v) => setEditForm((f) => ({ ...f, reraNumber: v }))} />
+                <EditField label="RERA URL" value={editForm.reraUrl} onChange={(v) => setEditForm((f) => ({ ...f, reraUrl: v }))} full />
+                <EditField label="Location Area" value={editForm.locationArea} onChange={(v) => setEditForm((f) => ({ ...f, locationArea: v }))} />
+                <EditField label="City" value={editForm.locationCity} onChange={(v) => setEditForm((f) => ({ ...f, locationCity: v }))} />
+                <EditField label="Address" value={editForm.locationAddress} onChange={(v) => setEditForm((f) => ({ ...f, locationAddress: v }))} full />
+                <EditField label="Description" value={editForm.description} onChange={(v) => setEditForm((f) => ({ ...f, description: v }))} full textarea />
+              </div>
+            </div>
+            <div className="px-8 py-5 border-t border-slate-100 flex justify-end gap-3 shrink-0">
+              <button type="button" onClick={() => setEditingProperty(null)} className="px-6 py-2.5 rounded-xl border border-slate-200 text-sm font-black text-slate-600 hover:bg-slate-50 transition-all">Cancel</button>
+              <button type="button" onClick={handleSaveEdit} disabled={savingEdit} className="px-8 py-2.5 rounded-xl bg-primary text-white text-sm font-black hover:bg-primary/90 transition-all disabled:opacity-60 flex items-center gap-2">
+                {savingEdit && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />}
+                {savingEdit ? 'Saving…' : 'Save Changes'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {(loadingPropertyDetail && !editingProperty || viewingProperty) && (
         <div className="fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="w-full max-w-3xl bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden">
             <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
@@ -477,6 +612,19 @@ export default function PropertyManagementPage() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function EditField({ label, value, onChange, type = 'text', full = false, textarea = false }) {
+  const cls = `w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none resize-none`;
+  return (
+    <div className={`${full ? 'md:col-span-2' : ''} space-y-1.5`}>
+      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{label}</label>
+      {textarea
+        ? <textarea rows={4} className={cls} value={value} onChange={(e) => onChange(e.target.value)} />
+        : <input type={type} className={cls} value={value} onChange={(e) => onChange(e.target.value)} />
+      }
     </div>
   );
 }

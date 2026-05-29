@@ -248,12 +248,13 @@ const ensureCompareHighlights = (property = {}, highlights = []) => {
 
   const hasPossession = next.some((item) => item?.label === 'Possession');
   if (!hasPossession) {
+    const isRentCategory = property?.category === 'rent';
     const possessionValue =
       property?.possession ||
       property?.possessionStatus ||
-      (property?.status === 'approved' ? 'Ready to Move' : null) ||
-      (property?.category === 'new_launch' ? 'Under Construction' : null) ||
-      'Ready to Move';
+      (!isRentCategory && property?.status === 'approved' ? 'Ready to Move' : null) ||
+      (!isRentCategory && property?.category === 'new_launch' ? 'Under Construction' : null) ||
+      'Not Provided';
 
     next.push({
       icon: 'schedule',
