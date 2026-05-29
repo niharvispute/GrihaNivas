@@ -129,6 +129,22 @@ export default function ListedPropertyCard({ property, onDeactivate, onReactivat
             </div>
           </div>
 
+          {Array.isArray(property.appliances) && property.appliances.length > 0 && (
+            <div className="mt-3 sm:mt-4 flex flex-wrap gap-2">
+              {property.appliances.slice(0, 4).map((a) => (
+                <span key={a} className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-50 border border-slate-100 rounded-full text-[9px] sm:text-[10px] font-bold text-slate-500">
+                  <span className="material-symbols-outlined text-xs text-primary" style={{ fontSize: '12px' }}>electrical_services</span>
+                  {a}
+                </span>
+              ))}
+              {property.appliances.length > 4 && (
+                <span className="inline-flex items-center px-2.5 py-1 bg-slate-50 border border-slate-100 rounded-full text-[9px] sm:text-[10px] font-bold text-slate-400">
+                  +{property.appliances.length - 4} more
+                </span>
+              )}
+            </div>
+          )}
+
           <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-slate-50 flex items-center justify-between gap-4">
             <div className="flex items-center gap-1.5 sm:gap-2">
               {property.status === 'closed' && property.closedByOwner ? (

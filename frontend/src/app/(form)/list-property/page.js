@@ -1,10 +1,11 @@
-import MultiStageListingForm from '@/components/listing/MultiStageListingForm';
+'use client';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Showcase Your Property',
-  description: 'Submit your estate for a premium editorial feature. Professional evaluation and global exposure in 5 steps.',
-};
+const MultiStageListingForm = dynamic(
+  () => import('@/components/listing/MultiStageListingForm'),
+  { ssr: false, loading: () => <div className="h-screen flex items-center justify-center"><span className="text-slate-300 text-sm font-bold animate-pulse">Loading form...</span></div> }
+);
 
 export default function ListPropertyPage() {
   return (

@@ -5,6 +5,7 @@ import PropertyStickyInfo from '@/components/property/details/PropertyStickyInfo
 import PropertyHighlights from '@/components/property/details/PropertyHighlights';
 import PropertyAbout from '@/components/property/details/PropertyAbout';
 import PropertyAmenities from '@/components/property/details/PropertyAmenities';
+import PropertyAppliances from '@/components/property/details/PropertyAppliances';
 import PropertyFloorPlans from '@/components/property/details/PropertyFloorPlans';
 import PropertyLeadForm from '@/components/property/details/PropertyLeadForm';
 import PropertyBuilderProfile from '@/components/property/details/PropertyBuilderProfile';
@@ -85,6 +86,7 @@ export default async function PropertyDetailPage({ params }) {
   const gallery = property?.gallery || [];
   const highlights = property?.highlights || [];
   const amenities = property?.amenities || [];
+  const appliances = property?.appliances || [];
   const floorPlans = property?.floorPlans || [];
   const locationQuery =
     [property?.raw?.location?.address, property?.raw?.location?.area, property?.raw?.location?.city]
@@ -169,6 +171,7 @@ export default async function PropertyDetailPage({ params }) {
         <div className="lg:col-span-8 space-y-8 sm:space-y-16 lg:space-y-20">
           <PropertyHighlights highlights={highlights} />
           <PropertyAbout description={property.longDescription || property.description} />
+          <PropertyAppliances appliances={appliances} />
           <PropertyAmenities amenities={amenities} />
           <PropertyFloorPlans floorPlans={floorPlans} brochureUrl={property?.brochureUrl} />
           

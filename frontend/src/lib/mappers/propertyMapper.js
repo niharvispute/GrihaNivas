@@ -271,6 +271,34 @@ const normalizeAmenitiesVM = (property = {}) =>
     };
   });
 
+const APPLIANCE_ICON_MAP = {
+  tv: 'tv',
+  television: 'tv',
+  refrigerator: 'kitchen',
+  fridge: 'kitchen',
+  ac: 'ac_unit',
+  'air conditioner': 'ac_unit',
+  'air conditioning': 'ac_unit',
+  'washing machine': 'local_laundry_service',
+  washer: 'local_laundry_service',
+  microwave: 'microwave',
+  'microwave oven': 'microwave',
+  geyser: 'water_heater',
+  'water heater': 'water_heater',
+};
+
+const getApplianceIcon = (name) => {
+  const key = String(name).toLowerCase().trim();
+  return APPLIANCE_ICON_MAP[key] || 'electrical_services';
+};
+
+const normalizeAppliancesVM = (property = {}) =>
+  (property?.appliances || []).map((item) => {
+    if (typeof item === 'object' && item) return item;
+    const label = String(item);
+    return { icon: getApplianceIcon(label), label };
+  });
+
 const ensureCompareHighlights = (property = {}, highlights = []) => {
   const next = [...highlights];
 
@@ -364,6 +392,14 @@ export const mapPropertyToDetailVM = (property) => {
     }
   }
 
+  // 🔌 Appliances
+  const rawAppliances = property?.appliances || [];
+  if (!hasLabel('Appliances') && rawAppliances.length > 0) {
+    const preview = rawAppliances.slice(0, 2).join(', ');
+    const extra = rawAppliances.length > 2 ? ` +${rawAppliances.length - 2}` : '';
+    enrichedHighlights.push({ icon: 'electrical_services', label: 'Appliances', value: `${preview}${extra}` });
+  }
+
   // 📅 Possession / Availability
   if (!hasLabel('Possession') && !hasLabel('Availability')) {
     const possessionLabel = getPossessionLabel(property);
@@ -415,6 +451,7 @@ export const mapPropertyToDetailVM = (property) => {
     maintenanceCharges: property?.maintenanceCharges || property?.raw?.maintenanceCharges,
     possession: getPossessionLabel(property),
     availableFrom: property?.availableFrom || null,
+    appliances: normalizeAppliancesVM(property),
     category,
     raw: property,
   };

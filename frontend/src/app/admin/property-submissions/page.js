@@ -466,6 +466,13 @@ export default function PropertySubmissionsPage() {
                         value: Array.isArray(viewingItem.amenities) ? viewingItem.amenities.join(', ') : null,
                         full: true,
                       },
+                      {
+                        label: 'Appliances',
+                        value: Array.isArray(viewingItem.appliances) && viewingItem.appliances.length > 0
+                          ? viewingItem.appliances.join(', ')
+                          : null,
+                        full: true,
+                      },
                       { label: 'Title', value: viewingItem.title, full: true },
                       { label: 'Description', value: viewingItem.description, full: true },
                       {

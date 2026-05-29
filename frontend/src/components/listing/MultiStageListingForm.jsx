@@ -64,6 +64,8 @@ export default function MultiStageListingForm() {
     // Step 2: Basics
     possession: 'Ready to Move',
     availableFrom: '',
+    appliances: [],
+    customAppliances: '',
     age: '2-4',
     bathrooms: '2',
     balconies: 'Connected',
@@ -204,6 +206,19 @@ export default function MultiStageListingForm() {
         ? prev.amenities.filter(a => a !== amenity)
         : [...prev.amenities, amenity]
     }));
+  };
+
+  const handleApplianceToggle = (appliance) => {
+    setForm(prev => {
+      const isSelected = prev.appliances.includes(appliance);
+      return {
+        ...prev,
+        appliances: isSelected
+          ? prev.appliances.filter(a => a !== appliance)
+          : [...prev.appliances, appliance],
+        ...(appliance === 'Other' && isSelected ? { customAppliances: '' } : {}),
+      };
+    });
   };
 
   const handleImagesSelected = (event) => {
@@ -371,6 +386,14 @@ export default function MultiStageListingForm() {
 
       if (form.amenities.length > 0) {
         payload.append('amenities', JSON.stringify(form.amenities));
+      }
+
+      const selectedAppliances = form.appliances.filter(a => a !== 'Other');
+      if (form.appliances.includes('Other') && form.customAppliances.trim()) {
+        form.customAppliances.split(',').map(s => s.trim()).filter(Boolean).forEach(s => selectedAppliances.push(s));
+      }
+      if (selectedAppliances.length > 0) {
+        payload.append('appliances', JSON.stringify(selectedAppliances));
       }
 
       const features = parseFeatureLines(form.featureText);
@@ -739,6 +762,46 @@ export default function MultiStageListingForm() {
                       </button>
                     ))}
                   </div>
+                </div>
+
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Appliances Included</label>
+                  <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+                    {[
+                      { key: 'TV', label: 'TV', icon: 'tv' },
+                      { key: 'Refrigerator', label: 'Refrigerator', icon: 'kitchen' },
+                      { key: 'AC', label: 'AC', icon: 'ac_unit' },
+                      { key: 'Washing Machine', label: 'Washing Machine', icon: 'local_laundry_service' },
+                      { key: 'Microwave', label: 'Microwave', icon: 'microwave' },
+                      { key: 'Geyser', label: 'Geyser', icon: 'water_heater' },
+                      { key: 'Other', label: 'Other', icon: 'add_circle' },
+                    ].map(({ key, label, icon }) => {
+                      const selected = form.appliances.includes(key);
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() => handleApplianceToggle(key)}
+                          className={`flex flex-col items-center justify-center gap-2 py-4 px-2 rounded-2xl border-2 font-black text-[9px] md:text-[10px] uppercase tracking-widest transition-all ${selected ? 'border-primary bg-primary/5 text-primary' : 'border-slate-50 bg-white text-slate-400 hover:border-slate-100'}`}
+                        >
+                          <span className={`material-symbols-outlined text-xl md:text-2xl ${selected ? 'text-primary' : 'text-slate-300'}`}>{icon}</span>
+                          {label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {form.appliances.includes('Other') && (
+                    <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                      <input
+                        type="text"
+                        value={form.customAppliances}
+                        onChange={handleChange('customAppliances')}
+                        placeholder="e.g. Dishwasher, Iron, Chimney, Water Purifier"
+                        className="w-full bg-white border-2 border-slate-100 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all"
+                      />
+                      <p className="text-[10px] text-slate-400 font-bold px-1 mt-2">Separate multiple items with commas</p>
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
