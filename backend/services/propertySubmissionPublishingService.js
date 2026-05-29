@@ -107,15 +107,10 @@ const buildPropertyPayloadFromSubmission = (submission, options = {}) => {
     ? (Number.isFinite(submission.rentPerMonth) ? submission.rentPerMonth : 0)
     : (Number.isFinite(submission.price) ? submission.price : 0);
 
-  const highlights = [
-    `${submission.listingType} ${submission.buildingType}`,
-    submission.possession
-  ].filter(Boolean);
-
-  if (isRent) {
-    if (submission.deposit) highlights.push(`Deposit: ₹${submission.deposit.toLocaleString('en-IN')}`);
-    if (submission.maintenanceCharges) highlights.push(`Maintenance: ₹${submission.maintenanceCharges.toLocaleString('en-IN')}/mo`);
-  }
+  // highlights is intentionally kept empty here — the frontend mapper derives
+  // possession, deposit, maintenance, appliances etc. from the actual typed fields.
+  // Storing them as raw strings here causes duplicate chips in the UI.
+  const highlights = [];
 
   return {
     title,
@@ -144,10 +139,12 @@ const buildPropertyPayloadFromSubmission = (submission, options = {}) => {
     areaSqft: submission.totalArea || submission.carpetArea || null,
     parking: totalParking,
     possession: submission.possession || null,
+    availableFrom: submission.availableFrom || null,
     age: submission.age || null,
     furnishing: submission.furnishing || null,
     reraUrl: submission.reraUrl || null,
     amenities: toStringArray(submission.amenities),
+    appliances: toStringArray(submission.appliances),
     feature: toStringArray(submission.feature),
     highlights,
     heroImage: mediaItems[0] || null,
@@ -225,6 +222,9 @@ const ensureSubmissionPublished = async (submission, options = {}) => {
     if (!hasAmenities && Array.isArray(payload.amenities) && payload.amenities.length > 0) {
       property.amenities = payload.amenities;
     }
+
+    property.appliances = payload.appliances;
+    if (payload.availableFrom) property.availableFrom = payload.availableFrom;
 
     const hasFeatures = Array.isArray(property.feature) && property.feature.length > 0;
     if (!hasFeatures && Array.isArray(payload.feature) && payload.feature.length > 0) {

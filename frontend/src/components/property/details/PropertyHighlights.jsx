@@ -12,7 +12,7 @@ export default function PropertyHighlights({ highlights }) {
             </div>
             <div className="min-w-0">
               <p className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-0.5 sm:mb-1">{item.label}</p>
-              <p className="font-heading font-bold text-slate-800 text-xs sm:text-base leading-tight truncate">{item.value}</p>
+              <p className="font-heading font-bold text-slate-800 text-xs sm:text-base leading-snug break-words">{item.value}</p>
             </div>
           </div>
         ))}

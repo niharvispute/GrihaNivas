@@ -103,7 +103,10 @@
       "WebFetch(domain:api.grihanivas.in)",
       "WebFetch(domain:griha-nivas.vercel.app)",
       "mcp__hostinger-mcp__VPS_getFirewallListV1",
-      "mcp__hostinger-mcp__hosting_listWebsitesV1"
+      "mcp__hostinger-mcp__hosting_listWebsitesV1",
+      "Bash(grep -E \"\\\\.\\(js|ts\\)$\")",
+      "mcp__hostinger-mcp__VPS_getVirtualMachinesV1",
+      "mcp__hostinger-mcp__VPS_getProjectListV1"
     ]
   }
 }

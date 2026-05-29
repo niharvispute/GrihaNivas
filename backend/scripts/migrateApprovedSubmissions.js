@@ -26,8 +26,15 @@ const needsDataSync = (submission, property) => {
     Number.isFinite(submission?.price) &&
     submission.price > 0;
   const needsBhk = !property?.bhk && /\bbhk\b/i.test(String(submission?.title || ''));
+  const needsAppliances =
+    Array.isArray(submission?.appliances) &&
+    submission.appliances.length > 0 &&
+    (!Array.isArray(property?.appliances) || property.appliances.length === 0);
+  const needsAvailableFrom =
+    submission?.availableFrom &&
+    !property?.availableFrom;
 
-  return needsPrice || needsBhk;
+  return needsPrice || needsBhk || needsAppliances || needsAvailableFrom;
 };
 
 const parseLimit = () => {

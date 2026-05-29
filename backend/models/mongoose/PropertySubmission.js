@@ -173,6 +173,14 @@ const propertySubmissionSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    appliances: {
+      type: [String],
+      default: [],
+    },
+    availableFrom: {
+      type: Date,
+      default: null,
+    },
     feature: {
       type: [String],
       default: [],

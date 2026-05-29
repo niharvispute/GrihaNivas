@@ -293,6 +293,8 @@ const schemas = {
       carpetArea: z.coerce.number().min(0).optional(),
       totalArea: z.coerce.number().min(0).optional(),
       amenities: propertySubmissionAmenitiesSchema.optional(),
+      appliances: z.preprocess(parseJsonIfString, z.array(z.string().trim().min(1).max(120)).max(30)).optional(),
+      availableFrom: z.coerce.date().optional(),
       feature: propertySubmissionStringArraySchema.optional(),
       reraUrl: z.string().trim().url().max(500).optional(),
       reraNumber: z.string().trim().max(100).optional(),

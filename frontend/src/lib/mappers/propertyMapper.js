@@ -181,7 +181,7 @@ const getPossessionLabel = (property = {}) => {
     if (possession === 'Available Now' || possession === 'Ready to Move') return 'Available Now';
     if (possession === 'Available Soon' || possession === 'Under Construction') {
       const formattedDate = formatAvailableFrom(availableFrom);
-      return formattedDate ? `Available from ${formattedDate}` : 'Available Soon';
+      return formattedDate || 'Available Soon';
     }
     return possession || 'Contact Owner';
   }
