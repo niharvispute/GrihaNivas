@@ -122,7 +122,7 @@ export default function Header() {
   return (
     <>
       <header className="sticky top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-gray-100/50 shadow-sm">
-        <div className="grid grid-cols-2 nav:grid-cols-3 items-center px-5 md:px-8 py-4 max-w-screen-2xl mx-auto">
+        <div className="grid grid-cols-2 nav:grid-cols-[auto_1fr_auto] items-center gap-x-4 lg:gap-x-6 px-5 md:px-8 py-4 max-w-screen-2xl mx-auto">
           {/* Brand Logo */}
           <div className="flex justify-start min-w-0">
             <Link href="/" className="text-lg nav:text-2xl font-black tracking-tighter text-slate-900 shrink-0 font-heading truncate">
@@ -131,7 +131,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation Links (Column 2) */}
-          <nav className="hidden nav:flex items-center justify-center gap-4 lg:gap-6 font-bold text-[11px] lg:text-xs text-slate-600 uppercase tracking-widest whitespace-nowrap font-body">
+          <nav className="hidden nav:flex items-center justify-center gap-4 lg:gap-6 font-bold text-[11px] lg:text-xs text-slate-600 uppercase tracking-widest whitespace-nowrap font-body min-w-0 overflow-visible">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -209,7 +209,7 @@ export default function Header() {
           </nav>
 
           {/* Desktop Actions (Column 3) */}
-          <div className="hidden nav:flex justify-end items-center gap-3 lg:gap-4">
+          <div className="hidden nav:flex justify-end items-center gap-3 lg:gap-4 shrink-0">
             {loadingUser ? (
               <div className="w-24 h-8 rounded-full bg-slate-100 animate-pulse" />
             ) : user ? (

@@ -436,6 +436,12 @@ export default function PropertySubmissionsPage() {
                       { label: 'City', value: viewingItem.city },
                       { label: 'Locality', value: viewingItem.locality },
                       { label: 'Possession', value: viewingItem.possession },
+                      {
+                        label: 'Available From',
+                        value: viewingItem.availableFrom
+                          ? new Date(viewingItem.availableFrom).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+                          : null,
+                      },
                       { label: 'Age', value: viewingItem.age },
                       { label: 'Bathrooms', value: viewingItem.bathrooms },
                       { label: 'Balconies', value: viewingItem.balconies },

@@ -109,10 +109,23 @@ export default function ListedPropertyCard({ property, onDeactivate, onReactivat
                   {new Date(property.createdAt).toLocaleDateString()}
                 </p>
               </div>
-              <div className="bg-slate-50 rounded-xl sm:rounded-2xl p-2 sm:p-3 border border-slate-100">
-                <p className="text-[7px] sm:text-[8px] font-black text-slate-400 uppercase tracking-widest mb-0.5 sm:mb-1">Ref ID</p>
-                <p className="text-[9px] sm:text-[10px] font-bold text-slate-500 truncate">#{property._id?.slice(-8).toUpperCase()}</p>
-              </div>
+              {property.listingType === 'Rent' ? (
+                <div className={`rounded-xl sm:rounded-2xl p-2 sm:p-3 border ${property.possession === 'Available Soon' ? 'bg-amber-50 border-amber-100' : 'bg-emerald-50 border-emerald-100'}`}>
+                  <p className="text-[7px] sm:text-[8px] font-black text-slate-400 uppercase tracking-widest mb-0.5 sm:mb-1">Availability</p>
+                  <p className={`text-[10px] sm:text-xs font-bold ${property.possession === 'Available Soon' ? 'text-amber-700' : 'text-emerald-700'}`}>
+                    {property.possession === 'Available Soon' && property.availableFrom
+                      ? `From ${new Date(property.availableFrom).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}`
+                      : property.possession === 'Available Soon'
+                        ? 'Available Soon'
+                        : 'Available Now'}
+                  </p>
+                </div>
+              ) : (
+                <div className="bg-slate-50 rounded-xl sm:rounded-2xl p-2 sm:p-3 border border-slate-100">
+                  <p className="text-[7px] sm:text-[8px] font-black text-slate-400 uppercase tracking-widest mb-0.5 sm:mb-1">Ref ID</p>
+                  <p className="text-[9px] sm:text-[10px] font-bold text-slate-500 truncate">#{property._id?.slice(-8).toUpperCase()}</p>
+                </div>
+              )}
             </div>
           </div>
 

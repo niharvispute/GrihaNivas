@@ -63,6 +63,7 @@ export default function MultiStageListingForm() {
 
     // Step 2: Basics
     possession: 'Ready to Move',
+    availableFrom: '',
     age: '2-4',
     bathrooms: '2',
     balconies: 'Connected',
@@ -334,10 +335,10 @@ export default function MultiStageListingForm() {
       payload.append('propertyType', form.propertyType);
       payload.append('city', form.city || 'Mumbai');
       payload.append('locality', form.locality);
-      let possessionValue = form.possession;
-      if (possessionValue === 'Available Now') possessionValue = 'Ready to Move';
-      if (possessionValue === 'Available Soon') possessionValue = 'Under Construction';
-      payload.append('possession', possessionValue);
+      payload.append('possession', form.possession);
+      if (form.listingType === 'Rent' && form.possession === 'Available Soon' && form.availableFrom) {
+        payload.append('availableFrom', form.availableFrom);
+      }
       if (form.age) payload.append('age', form.age);
       payload.append('bathrooms', form.bathrooms);
       if (form.bhk) payload.append('bhk', form.bhk);
@@ -667,13 +668,31 @@ export default function MultiStageListingForm() {
                     {(form.listingType === 'Rent' ? ['Available Now', 'Available Soon'] : ['Ready to Move', 'Under Construction']).map(stat => (
                       <button
                         key={stat}
-                        onClick={() => handleToggle('possession', stat)}
+                        onClick={() => {
+                          handleToggle('possession', stat);
+                          if (stat !== 'Available Soon') setForm(prev => ({ ...prev, availableFrom: '' }));
+                        }}
                         className={`flex-1 py-4 rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest border-2 transition-all ${form.possession === stat ? 'border-primary bg-primary/5 text-primary' : 'border-slate-50 bg-white text-slate-400 hover:border-slate-100'}`}
                       >
                         {stat}
                       </button>
                     ))}
                   </div>
+                  {form.listingType === 'Rent' && form.possession === 'Available Soon' && (
+                    <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 mb-3 block">Available From (Expected Date)</label>
+                      <div className="relative group">
+                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors text-xl pointer-events-none">calendar_month</span>
+                        <input
+                          type="date"
+                          min={new Date(Date.now() + 86400000).toISOString().split('T')[0]}
+                          value={form.availableFrom}
+                          onChange={handleChange('availableFrom')}
+                          className="w-full bg-white border-2 border-slate-100 rounded-2xl p-4 pl-12 font-black text-sm text-slate-700 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">

@@ -161,6 +161,34 @@ const deriveBhkDisplay = (property) => {
   return '-';
 };
 
+const formatAvailableFrom = (dateStr) => {
+  if (!dateStr) return null;
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return null;
+    return d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+  } catch {
+    return null;
+  }
+};
+
+const getPossessionLabel = (property = {}) => {
+  const isRent = property?.category === 'rent';
+  const possession = property?.possession || property?.possessionStatus || '';
+  const availableFrom = property?.availableFrom;
+
+  if (isRent) {
+    if (possession === 'Available Now' || possession === 'Ready to Move') return 'Available Now';
+    if (possession === 'Available Soon' || possession === 'Under Construction') {
+      const formattedDate = formatAvailableFrom(availableFrom);
+      return formattedDate ? `Available from ${formattedDate}` : 'Available Soon';
+    }
+    return possession || 'Contact Owner';
+  }
+
+  return possession || 'Ready to Move';
+};
+
 const getFurnishingLabel = (furnishing) => {
   if (!furnishing) return 'N/A';
 
@@ -246,19 +274,14 @@ const normalizeAmenitiesVM = (property = {}) =>
 const ensureCompareHighlights = (property = {}, highlights = []) => {
   const next = [...highlights];
 
-  const hasPossession = next.some((item) => item?.label === 'Possession');
+  const isRentCategory = property?.category === 'rent';
+  const possessionLabel = isRentCategory ? 'Availability' : 'Possession';
+  const hasPossession = next.some((item) => item?.label === 'Possession' || item?.label === 'Availability');
   if (!hasPossession) {
-    const isRentCategory = property?.category === 'rent';
-    const possessionValue =
-      property?.possession ||
-      property?.possessionStatus ||
-      (!isRentCategory && property?.status === 'approved' ? 'Ready to Move' : null) ||
-      (!isRentCategory && property?.category === 'new_launch' ? 'Under Construction' : null) ||
-      'Not Provided';
-
+    const possessionValue = getPossessionLabel(property) || 'Not Provided';
     next.push({
-      icon: 'schedule',
-      label: 'Possession',
+      icon: 'calendar_month',
+      label: possessionLabel,
       value: String(possessionValue),
     });
   }
@@ -341,6 +364,14 @@ export const mapPropertyToDetailVM = (property) => {
     }
   }
 
+  // 📅 Possession / Availability
+  if (!hasLabel('Possession') && !hasLabel('Availability')) {
+    const possessionLabel = getPossessionLabel(property);
+    if (possessionLabel) {
+      enrichedHighlights.push({ icon: 'calendar_month', label: isRent ? 'Availability' : 'Possession', value: possessionLabel });
+    }
+  }
+
   // 📐 Area Metrics (Prioritized)
   if (!hasLabel('Total Area') && (property?.totalArea || property?.raw?.totalArea || property?.areaSqft || property?.raw?.areaSqft || getAreaValue(property))) {
     const val = property?.totalArea || property?.raw?.totalArea || property?.areaSqft || property?.raw?.areaSqft || getAreaValue(property);
@@ -382,6 +413,8 @@ export const mapPropertyToDetailVM = (property) => {
     rentPerMonth: property?.rentPerMonth || property?.raw?.rentPerMonth,
     deposit: property?.deposit || property?.raw?.deposit,
     maintenanceCharges: property?.maintenanceCharges || property?.raw?.maintenanceCharges,
+    possession: getPossessionLabel(property),
+    availableFrom: property?.availableFrom || null,
     category,
     raw: property,
   };

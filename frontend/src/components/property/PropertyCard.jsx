@@ -30,6 +30,24 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
       ? `${property.area} sq.ft`
       : 'Area on request';
   const locationLabel = property?.location || SYSTEM_DEFAULT_CITY;
+  const isRent = property?.raw?.category === 'rent';
+  const possession = property?.raw?.possession || '';
+  const availableFrom = property?.raw?.availableFrom;
+  const showAvailabilitySoon = isRent && (possession === 'Available Soon' || possession === 'Under Construction');
+  const availabilityLabel = (() => {
+    if (!isRent) return null;
+    if (possession === 'Available Now' || possession === 'Ready to Move') return 'Available Now';
+    if (showAvailabilitySoon) {
+      if (availableFrom) {
+        try {
+          const d = new Date(availableFrom);
+          if (!isNaN(d.getTime())) return `Avail. ${d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}`;
+        } catch { /* ignore */ }
+      }
+      return 'Available Soon';
+    }
+    return null;
+  })();
 
   return (
     <article className={`group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-lg transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full'}`}>
@@ -50,12 +68,20 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
             </div>
           </div>
         )}
-        {property.isFeatured && (
-          <span className="absolute top-2 left-2 bg-gradient-to-r from-primary to-primary/80 text-white px-2 sm:px-3 py-1 rounded-full text-[8px] sm:text-[9px] font-black tracking-wider uppercase flex items-center gap-1 shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            Featured
-          </span>
-        )}
+        <div className="absolute top-2 left-2 flex flex-col gap-1">
+          {property.isFeatured && (
+            <span className="bg-gradient-to-r from-primary to-primary/80 text-white px-2 sm:px-3 py-1 rounded-full text-[8px] sm:text-[9px] font-black tracking-wider uppercase flex items-center gap-1 shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Featured
+            </span>
+          )}
+          {availabilityLabel && (
+            <span className={`px-2 sm:px-3 py-1 rounded-full text-[8px] sm:text-[9px] font-black tracking-wider uppercase flex items-center gap-1 shadow-lg ${showAvailabilitySoon ? 'bg-amber-500 text-white' : 'bg-emerald-500 text-white'}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              {availabilityLabel}
+            </span>
+          )}
+        </div>
         <WishlistButton
           propertyId={property.id || property._id}
           initialSaved={property.isSaved}
