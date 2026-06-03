@@ -153,7 +153,7 @@ export default function PropertyGallery({ images, property }) {
   };
 
   const getPossessionStatus = () => {
-    return property?.raw?.possession || property?.possession || 'Ready to Move';
+    return property?.possession || property?.raw?.possession || 'Ready to Move';
   };
 
   const reraId = property?.reraNumber || property?.raw?.reraNumber || '';
