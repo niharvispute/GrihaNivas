@@ -1,5 +1,5 @@
 export default function PropertyAmenities({ amenities }) {
-  if (!amenities) return null;
+  if (!amenities?.length) return null;
 
   return (
     <section>
