@@ -173,7 +173,9 @@ export default async function PropertyDetailPage({ params }) {
           <PropertyAbout description={property.longDescription || property.description} />
           <PropertyAppliances appliances={appliances} />
           <PropertyAmenities amenities={amenities} />
-          <PropertyFloorPlans floorPlans={floorPlans} brochureUrl={property?.brochureUrl} />
+          {property?.raw?.category !== 'rent' && (
+            <PropertyFloorPlans floorPlans={floorPlans} brochureUrl={property?.brochureUrl} />
+          )}
           
           {/* Neighborhood Placeholder */}
           <section>

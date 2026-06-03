@@ -28,19 +28,14 @@ export default function BuilderCard({ builder }) {
         )}
 
         {/* Badges */}
-        <div className="absolute top-2 left-2 flex gap-1.5">
-          {builder.isFeatured && (
+        {builder.isFeatured && (
+          <div className="absolute top-2 left-2">
             <span className="bg-primary text-white px-2 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase flex items-center gap-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               Featured
             </span>
-          )}
-          {builder.tier && (
-            <span className="bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase text-primary">
-              {builder.tier}
-            </span>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Content */}

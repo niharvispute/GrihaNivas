@@ -110,9 +110,6 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
             >
               View Portfolio
             </Link>
-            <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-primary/20 text-white/70 border border-primary/20 text-[9px] font-black uppercase tracking-widest">
-              Featured Partner
-            </span>
           </div>
         </div>
 

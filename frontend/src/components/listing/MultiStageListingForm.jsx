@@ -874,27 +874,29 @@ export default function MultiStageListingForm() {
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Floor Plans (Optional)</label>
-                  <div className="border-4 border-dashed border-slate-100 rounded-2xl p-8 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white" onClick={() => document.getElementById('floor-plans-upload').click()}>
-                    <input id="floor-plans-upload" type="file" className="hidden" accept="image/*,application/pdf" multiple onChange={handleFloorPlansSelected} />
-                    <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
-                      <span className="material-symbols-outlined text-2xl text-slate-300 group-hover:text-primary transition-colors">grid_view</span>
+                {form.listingType !== 'Rent' && (
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Floor Plans (Optional)</label>
+                    <div className="border-4 border-dashed border-slate-100 rounded-2xl p-8 text-center flex flex-col items-center group hover:border-primary/20 transition-all cursor-pointer bg-white" onClick={() => document.getElementById('floor-plans-upload').click()}>
+                      <input id="floor-plans-upload" type="file" className="hidden" accept="image/*,application/pdf" multiple onChange={handleFloorPlansSelected} />
+                      <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-primary/5 transition-all">
+                        <span className="material-symbols-outlined text-2xl text-slate-300 group-hover:text-primary transition-colors">grid_view</span>
+                      </div>
+                      <h3 className="text-lg md:text-xl font-black text-slate-900 tracking-tight">Upload Floor Plans</h3>
+                      <p className="text-slate-400 font-bold text-[10px] md:text-sm mt-2 max-w-xs mx-auto">Max 5 files. PNG, JPG, PDF up to 5MB each.</p>
+                      {form.floorPlans.length > 0 && (
+                        <p className={`font-black text-[10px] mt-4 uppercase tracking-widest ${form.floorPlans.length > 0 ? 'text-emerald-600' : 'text-primary'}`}>
+                          {form.floorPlans.length} file{form.floorPlans.length > 1 ? 's' : ''} selected
+                        </p>
+                      )}
+                      {form.floorPlans.length > 0 && (
+                        <button type="button" onClick={clearFloorPlans} className="mt-4 px-6 py-2.5 border-2 border-slate-200 text-slate-500 rounded-xl font-black text-[10px] uppercase tracking-widest hover:border-primary/30 transition-all">
+                          Clear All
+                        </button>
+                      )}
                     </div>
-                    <h3 className="text-lg md:text-xl font-black text-slate-900 tracking-tight">Upload Floor Plans</h3>
-                    <p className="text-slate-400 font-bold text-[10px] md:text-sm mt-2 max-w-xs mx-auto">Max 5 files. PNG, JPG, PDF up to 5MB each.</p>
-                    {form.floorPlans.length > 0 && (
-                      <p className={`font-black text-[10px] mt-4 uppercase tracking-widest ${form.floorPlans.length > 0 ? 'text-emerald-600' : 'text-primary'}`}>
-                        {form.floorPlans.length} file{form.floorPlans.length > 1 ? 's' : ''} selected
-                      </p>
-                    )}
-                    {form.floorPlans.length > 0 && (
-                      <button type="button" onClick={clearFloorPlans} className="mt-4 px-6 py-2.5 border-2 border-slate-200 text-slate-500 rounded-xl font-black text-[10px] uppercase tracking-widest hover:border-primary/30 transition-all">
-                        Clear All
-                      </button>
-                    )}
                   </div>
-                </div>
+                )}
 
                 <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Brochure (Optional)</label>
