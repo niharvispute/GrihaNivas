@@ -166,7 +166,7 @@ const formatAvailableFrom = (dateStr) => {
   try {
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return null;
-    return d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
   } catch {
     return null;
   }

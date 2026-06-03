@@ -63,50 +63,50 @@ export default function FeaturedBuildersCarousel({ builders = [] }) {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/60 to-transparent"></div>
         </div>
 
-        <div className="relative z-10 px-4 sm:px-8 md:px-16 py-6 sm:py-10 max-w-3xl">
-          <div className="h-10 sm:h-16 flex items-center gap-2.5 sm:gap-4 mb-5 sm:mb-4 overflow-hidden">
-            <div className="w-10 h-10 sm:w-16 sm:h-16 bg-white rounded-xl sm:rounded-2xl p-1.5 flex items-center justify-center shadow-xl shrink-0">
+        <div className="relative z-10 px-4 sm:px-8 md:px-10 lg:px-16 py-6 sm:py-10 md:py-5 lg:py-10 max-w-3xl">
+          <div className="h-10 sm:h-16 md:h-11 lg:h-16 flex items-center gap-2.5 sm:gap-4 md:gap-3 lg:gap-4 mb-5 sm:mb-4 md:mb-3 overflow-hidden">
+            <div className="w-10 h-10 sm:w-16 sm:h-16 md:w-11 md:h-11 lg:w-16 lg:h-16 bg-white rounded-xl sm:rounded-2xl p-1.5 flex items-center justify-center shadow-xl shrink-0">
               {logo ? (
                 <Image width={64} height={64} className="object-contain" src={logo} alt={activeBuilder?.name || 'Builder logo'} />
               ) : (
                 <span className="text-lg font-black text-primary">{activeBuilder?.name?.[0] || 'B'}</span>
               )}
             </div>
-            <h2 className="text-xl sm:text-3xl md:text-5xl font-headline font-black text-white uppercase tracking-tight leading-none line-clamp-1">
+            <h2 className="text-xl sm:text-3xl md:text-xl lg:text-5xl font-headline font-black text-white uppercase tracking-tight leading-none line-clamp-1">
               {activeBuilder?.name}
             </h2>
           </div>
-          <div className="hidden sm:block h-[68px] lg:h-[80px] overflow-hidden mb-5 sm:mb-8">
+          <div className="relative z-[1] hidden sm:block min-h-[72px] md:min-h-[60px] lg:min-h-[84px] mb-5 sm:mb-8 md:mb-3 lg:mb-8">
             <p className="text-slate-300 text-xs sm:text-sm lg:text-base leading-relaxed font-body line-clamp-3">
               {activeBuilder?.tagline} {heroDescription}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-4 gap-y-3 sm:gap-8 mb-5 sm:mb-10">
+          <div className="relative z-[0] grid grid-cols-2 sm:flex sm:flex-wrap gap-x-4 gap-y-3 sm:gap-8 md:gap-5 lg:gap-8 mb-5 sm:mb-10 md:mb-4 lg:mb-10">
             <div>
               <p className="text-slate-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">Est. Year</p>
-              <p className="text-white text-xs sm:text-base font-bold">{activeBuilder?.establishedYear || 'N/A'}</p>
+              <p className="text-white text-xs sm:text-base md:text-sm lg:text-base font-bold">{activeBuilder?.establishedYear || 'N/A'}</p>
             </div>
             <div>
               <p className="text-slate-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">Total Projects</p>
-              <p className="text-white text-xs sm:text-base font-bold">{activeBuilder?.totalProjects || 'N/A'}</p>
+              <p className="text-white text-xs sm:text-base md:text-sm lg:text-base font-bold">{activeBuilder?.totalProjects || 'N/A'}</p>
             </div>
             <div className="col-span-2 sm:col-span-1">
               <p className="text-slate-500 text-[8px] uppercase tracking-widest font-black font-label leading-none mb-0.5 sm:mb-1">HQ Location</p>
-              <p className="text-white text-xs sm:text-base font-bold line-clamp-1">{activeBuilder?.hqLocation || 'N/A'}</p>
+              <p className="text-white text-xs sm:text-base md:text-sm lg:text-base font-bold line-clamp-1">{activeBuilder?.hqLocation || 'N/A'}</p>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-4 md:gap-3 lg:gap-4">
             <Link
               href={`/builders/${activeBuilder?.slug}`}
-              className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-8 py-2.5 sm:py-4 rounded-2xl font-black transition-all active:scale-95 shadow-lg text-[10px] sm:text-sm uppercase tracking-widest text-center"
+              className="bg-primary hover:bg-primary/90 text-white px-5 sm:px-8 md:px-5 lg:px-8 py-2.5 sm:py-4 md:py-2 lg:py-4 rounded-2xl font-black transition-all active:scale-95 shadow-lg text-[10px] sm:text-sm md:text-[10px] lg:text-sm uppercase tracking-widest text-center"
             >
               View Details
             </Link>
             <Link
               href={`/builders/${activeBuilder?.slug}#portfolio`}
-              className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-5 sm:px-8 py-2.5 sm:py-4 rounded-2xl font-black hover:bg-white/20 transition-all text-[10px] sm:text-sm uppercase tracking-widest text-center"
+              className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-5 sm:px-8 md:px-5 lg:px-8 py-2.5 sm:py-4 md:py-2 lg:py-4 rounded-2xl font-black hover:bg-white/20 transition-all text-[10px] sm:text-sm md:text-[10px] lg:text-sm uppercase tracking-widest text-center"
             >
               View Portfolio
             </Link>
