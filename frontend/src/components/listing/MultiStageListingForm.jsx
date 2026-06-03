@@ -979,16 +979,18 @@ export default function MultiStageListingForm() {
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Hero Feature Bullets</label>
                       <textarea rows="4" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-6 font-bold placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all resize-none" placeholder={"One bullet per line..."} value={form.featureText} onChange={handleChange('featureText')} />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-3">
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">RERA Number</label>
-                        <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. MahaRERA No." value={form.reraNumber} onChange={handleChange('reraNumber')} />
+                    {form.listingType !== 'Rent' && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-3">
+                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">RERA Number</label>
+                          <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. MahaRERA No." value={form.reraNumber} onChange={handleChange('reraNumber')} />
+                        </div>
+                        <div className="space-y-3">
+                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">RERA URL</label>
+                          <input type="url" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="MahaRERA link..." value={form.reraUrl} onChange={handleChange('reraUrl')} />
+                        </div>
                       </div>
-                      <div className="space-y-3">
-                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">RERA URL</label>
-                        <input type="url" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-300 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="MahaRERA link..." value={form.reraUrl} onChange={handleChange('reraUrl')} />
-                      </div>
-                    </div>
+                    )}
                 </div>
               </div>
             )}

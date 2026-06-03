@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import BuilderReraHeroBadge from './BuilderReraHeroBadge';
 
 export default function BuilderHero({ builder }) {
   const heroImage =
@@ -45,6 +46,13 @@ export default function BuilderHero({ builder }) {
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-zinc-500 font-bold font-body leading-relaxed max-w-xl">
               {builder.tagline}
             </p>
+            {builder.reraNumber && (
+              <BuilderReraHeroBadge
+                reraNumber={builder.reraNumber}
+                reraUrl={builder.reraUrl}
+                builderName={builder.name}
+              />
+            )}
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 md:gap-6 mb-6 sm:mb-10">

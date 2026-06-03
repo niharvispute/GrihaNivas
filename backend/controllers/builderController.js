@@ -105,7 +105,7 @@ const listPublic = async (req, res, next) => {
         .skip(skip)
         .limit(limit)
         .select(
-          'name slug shortDescription description logo coverImage establishedYear totalProjects ongoingProjects completedDeliveries headquarters isFeatured isActive aboutHeadline qualityStandards innovation'
+          'name slug shortDescription description logo coverImage establishedYear totalProjects ongoingProjects completedDeliveries headquarters reraNumber reraUrl isFeatured isActive aboutHeadline qualityStandards innovation'
         )
         .lean(),
       Builder.countDocuments(filter),

@@ -85,6 +85,8 @@ const mapBuilderBase = (builder = {}) => {
     tagline: getLeadTagline(builder),
     tier: builder?.isFeatured ? 'Featured Builder' : '',
     isFeatured: Boolean(builder?.isFeatured),
+    reraNumber: builder?.reraNumber || '',
+    reraUrl: builder?.reraUrl || '',
     description: normalizeDescription(builder?.description, [getLeadTagline(builder)]),
     aboutHeadline: builder?.aboutHeadline || `About ${builder?.name || 'This Builder'}`,
     qualityStandards: builder?.qualityStandards || 'RERA-aligned project governance',

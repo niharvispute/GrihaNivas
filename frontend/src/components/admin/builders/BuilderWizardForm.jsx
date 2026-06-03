@@ -33,6 +33,8 @@ const createDefaultForm = () => ({
   aboutHeadline: '',
   qualityStandards: '',
   innovation: '',
+  reraNumber: '',
+  reraUrl: '',
   isFeatured: false,
   isActive: true,
   logoFile: null,
@@ -108,6 +110,8 @@ function mapBuilderToForm(builder) {
     aboutHeadline: String(builder?.aboutHeadline || ''),
     qualityStandards: String(builder?.qualityStandards || ''),
     innovation: String(builder?.innovation || ''),
+    reraNumber: String(builder?.reraNumber || ''),
+    reraUrl: String(builder?.reraUrl || ''),
     isFeatured: Boolean(builder?.isFeatured),
     isActive: typeof builder?.isActive === 'boolean' ? builder.isActive : true,
     featuredImagesText: Array.isArray(builder?.featuredImages)
@@ -276,6 +280,8 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
       payload.append('shortDescription', form.shortDescription.trim());
       payload.append('description', form.description.trim());
       if (form.headquarters.trim()) payload.append('headquarters', form.headquarters.trim());
+      if (form.reraNumber.trim()) payload.append('reraNumber', form.reraNumber.trim());
+      if (form.reraUrl.trim()) payload.append('reraUrl', form.reraUrl.trim());
       if (form.aboutHeadline.trim()) payload.append('aboutHeadline', form.aboutHeadline.trim());
       if (form.qualityStandards.trim()) payload.append('qualityStandards', form.qualityStandards.trim());
       if (form.innovation.trim()) payload.append('innovation', form.innovation.trim());
@@ -501,6 +507,30 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                     placeholder="Trusted Mumbai developer with premium and mid-segment projects."
                   />
                 </Field>
+
+                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/40 p-5 space-y-4">
+                  <p className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">MahaRERA Registration (optional)</p>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <Field label="RERA Number">
+                      <input
+                        value={form.reraNumber}
+                        onChange={(e) => patchForm({ reraNumber: e.target.value })}
+                        className="w-full rounded-2xl bg-white border border-slate-100 px-4 py-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-200"
+                        placeholder="e.g. P51800012345"
+                      />
+                    </Field>
+                    <Field label="RERA URL">
+                      <input
+                        type="url"
+                        value={form.reraUrl}
+                        onChange={(e) => patchForm({ reraUrl: e.target.value })}
+                        className="w-full rounded-2xl bg-white border border-slate-100 px-4 py-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-200"
+                        placeholder="https://maharerait.mahaonline.gov.in/..."
+                      />
+                    </Field>
+                  </div>
+                  <p className="text-[10px] font-bold text-slate-400">Fill these for registered builders. A verified RERA badge will appear on their profile page.</p>
+                </div>
               </section>
             )}
 

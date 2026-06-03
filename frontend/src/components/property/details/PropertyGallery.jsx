@@ -156,6 +156,7 @@ export default function PropertyGallery({ images, property }) {
     return property?.possession || property?.raw?.possession || 'Ready to Move';
   };
 
+  const isRent = property?.raw?.category === 'rent';
   const reraId = property?.reraNumber || property?.raw?.reraNumber || '';
   const reraUrl = property?.reraUrl || property?.raw?.reraUrl || '';
   const qrData = reraUrl || reraId || property?.title || 'RERA';
@@ -186,7 +187,7 @@ export default function PropertyGallery({ images, property }) {
             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent opacity-80 pointer-events-none" />
-          <button
+          {!isRent && <button
             type="button"
             onClick={(event) => {
               event.stopPropagation();
@@ -212,7 +213,7 @@ export default function PropertyGallery({ images, property }) {
               </div>
               <p className="text-[8px] font-bold text-emerald-700/80 uppercase">View QR</p>
             </div>
-          </button>
+          </button>}
         </motion.div>
 
         <div className="grid grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 gap-3 sm:gap-4 lg:h-full">
@@ -396,13 +397,15 @@ export default function PropertyGallery({ images, property }) {
         </div>
       )}
 
-      <ReraQRModal
-        isOpen={isReraModalOpen}
-        onClose={() => setIsReraModalOpen(false)}
-        reraId={reraId}
-        reraUrl={reraUrl}
-        propertyName={property?.title}
-      />
+      {!isRent && (
+        <ReraQRModal
+          isOpen={isReraModalOpen}
+          onClose={() => setIsReraModalOpen(false)}
+          reraId={reraId}
+          reraUrl={reraUrl}
+          propertyName={property?.title}
+        />
+      )}
     </div>
   );
 }
