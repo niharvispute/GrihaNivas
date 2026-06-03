@@ -257,9 +257,10 @@ const EMICalculator = () => {
           <div className="h-full bg-white/80 backdrop-blur-2xl rounded-2xl p-6 md:p-8 border border-white/50 shadow-xl flex flex-col justify-between">
             <div>
               <p className="text-slate-400 font-bold text-[9px] md:text-[10px] tracking-widest uppercase mb-1 md:mb-2">Monthly EMI</p>
-              <h2 className="text-3xl md:text-6xl font-black tracking-tighter text-primary mb-6 md:mb-8  leading-none">
-                {formatCurrency(results.emi)}
-              </h2>
+              <div className="flex items-baseline gap-1 text-primary mb-6 md:mb-8 leading-none font-sans text-3xl md:text-6xl font-black tracking-tight tabular-nums">
+                <span>₹</span>
+                <span>{new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(results.emi)}</span>
+              </div>
               
               <div className="space-y-4 md:space-y-6">
                 <div className="flex justify-between items-center pb-3 md:pb-4 border-b border-slate-100">
