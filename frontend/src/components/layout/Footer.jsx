@@ -123,12 +123,12 @@ export default function Footer() {
       </div>
 
       {/* RERA Disclosure */}
-      <div className="border-t border-slate-200 px-8 py-4 max-w-screen-2xl mx-auto">
+      {/* <div className="border-t border-slate-200 px-8 py-4 max-w-screen-2xl mx-auto">
         <p className="text-[11px] text-slate-400 leading-relaxed">
           <span className="font-bold text-slate-500">RERA Reg. No.:</span> A51700000043 &nbsp;|&nbsp;
           <span className="font-bold text-slate-500">Head Office:</span> D-507, 8th Floor, Shree Sawan Knowledge Park, Turbhe, Navi Mumbai – 400703
         </p>
-      </div>
+      </div> */}
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-200 py-6 px-8 max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
