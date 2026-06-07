@@ -1,0 +1,252 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e4]:
+      - main [ref=e5]:
+        - navigation "Breadcrumb" [ref=e7]:
+          - list [ref=e8]:
+            - listitem [ref=e9]:
+              - link "Home" [ref=e10] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e11]:
+              - img [ref=e12]
+              - generic [ref=e14]: Properties for Sale
+        - generic [ref=e15]:
+          - complementary [ref=e16]:
+            - generic [ref=e17]:
+              - heading "Filters" [level=2] [ref=e20]
+              - generic [ref=e21]:
+                - generic [ref=e22]:
+                  - generic [ref=e23]:
+                    - generic [ref=e24]: location_on
+                    - text: Location
+                  - button "All Locations expand_more" [ref=e26] [cursor=pointer]:
+                    - generic [ref=e27]: All Locations
+                    - generic [ref=e28]: expand_more
+                - generic [ref=e29]:
+                  - generic [ref=e30]:
+                    - generic [ref=e31]:
+                      - generic [ref=e32]:
+                        - generic [ref=e33]: Min Budget
+                        - generic [ref=e34]: ₹1.0 Cr
+                      - slider [ref=e36]: "10000000"
+                      - generic [ref=e37]:
+                        - generic [ref=e38]: ₹1 Cr
+                        - generic [ref=e39]: ₹5 Cr
+                    - generic [ref=e40]:
+                      - generic [ref=e41]:
+                        - generic [ref=e42]: Max Budget
+                        - generic [ref=e43]: ₹5.0 Cr
+                      - slider [ref=e45]: "50000000"
+                      - generic [ref=e46]:
+                        - generic [ref=e47]: ₹1 Cr
+                        - generic [ref=e48]: ₹5 Cr
+                  - generic [ref=e50]:
+                    - generic [ref=e51]:
+                      - paragraph [ref=e52]: From
+                      - paragraph [ref=e53]: ₹1.0 Cr
+                    - generic [ref=e54]: →
+                    - generic [ref=e55]:
+                      - paragraph [ref=e56]: To
+                      - paragraph [ref=e57]: ₹5.0 Cr
+                - generic [ref=e58]:
+                  - generic [ref=e59]:
+                    - generic [ref=e60]: home
+                    - text: BHK Type
+                  - button "Any expand_more" [ref=e62] [cursor=pointer]:
+                    - generic [ref=e63]: Any
+                    - generic [ref=e64]: expand_more
+                - generic [ref=e65]:
+                  - generic [ref=e66]:
+                    - generic [ref=e67]: chair
+                    - text: Furnishing
+                  - button "Any expand_more" [ref=e69] [cursor=pointer]:
+                    - generic [ref=e70]: Any
+                    - generic [ref=e71]: expand_more
+                - generic [ref=e72]:
+                  - button "Update Results" [ref=e73]
+                  - link "Reset All" [ref=e74] [cursor=pointer]:
+                    - /url: /buy
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e77]:
+                - generic [ref=e78]: "Sort by:"
+                - generic [ref=e79]:
+                  - link "Newest" [ref=e80] [cursor=pointer]:
+                    - /url: /buy
+                  - link "Price Low-High" [ref=e81] [cursor=pointer]:
+                    - /url: /buy?sortBy=price_asc
+                  - link "Price High-Low" [ref=e82] [cursor=pointer]:
+                    - /url: /buy?sortBy=price_desc
+              - generic [ref=e84]:
+                - link "Grid View" [ref=e85] [cursor=pointer]:
+                  - /url: /buy
+                  - img [ref=e86]
+                - link "List View" [ref=e91] [cursor=pointer]:
+                  - /url: /buy?view=list
+                  - img [ref=e92]
+            - generic [ref=e93]:
+              - article [ref=e94]:
+                - generic [ref=e95]:
+                  - img "Lodha Marquise" [ref=e96]
+                  - generic [ref=e97]:
+                    - img [ref=e98]
+                    - text: Featured
+                  - button "Save to Wishlist" [ref=e100]:
+                    - img [ref=e101]
+                - generic [ref=e103]:
+                  - generic [ref=e105]:
+                    - generic [ref=e106]:
+                      - heading "Lodha Marquise" [level=3] [ref=e107]
+                      - generic [ref=e108]: Residential
+                    - paragraph [ref=e109]:
+                      - img [ref=e110]
+                      - generic [ref=e113]: Worli, Mumbai
+                  - generic [ref=e114]:
+                    - generic [ref=e115]:
+                      - generic [ref=e116]: Cost
+                      - generic [ref=e117]:
+                        - generic [ref=e118]: payments
+                        - text: ₹2 Cr
+                    - generic [ref=e119]:
+                      - generic [ref=e120]: Area
+                      - generic [ref=e121]:
+                        - generic [ref=e122]: square_foot
+                        - text: Area on request
+                  - generic [ref=e123]:
+                    - link "View Property" [ref=e124] [cursor=pointer]:
+                      - /url: /property/lodha-marquise-1777110491004
+                    - button "Add to Compare" [ref=e125]:
+                      - img [ref=e126]
+                      - generic [ref=e128]: Compare
+              - article [ref=e129]:
+                - generic [ref=e130]:
+                  - img "Lodha Marquise" [ref=e131]
+                  - generic [ref=e132]:
+                    - img [ref=e133]
+                    - text: Featured
+                  - button "Save to Wishlist" [ref=e135]:
+                    - img [ref=e136]
+                - generic [ref=e138]:
+                  - generic [ref=e140]:
+                    - generic [ref=e141]:
+                      - heading "Lodha Marquise" [level=3] [ref=e142]
+                      - generic [ref=e143]: Residential
+                    - paragraph [ref=e144]:
+                      - img [ref=e145]
+                      - generic [ref=e148]: Worli, Mumbai
+                  - generic [ref=e149]:
+                    - generic [ref=e150]:
+                      - generic [ref=e151]: Cost
+                      - generic [ref=e152]:
+                        - generic [ref=e153]: payments
+                        - text: ₹1.2 Cr
+                    - generic [ref=e154]:
+                      - generic [ref=e155]: Area
+                      - generic [ref=e156]:
+                        - generic [ref=e157]: square_foot
+                        - text: Area on request
+                  - generic [ref=e158]:
+                    - link "View Property" [ref=e159] [cursor=pointer]:
+                      - /url: /property/lodha-marquise-1777106921262
+                    - button "Add to Compare" [ref=e160]:
+                      - img [ref=e161]
+                      - generic [ref=e163]: Compare
+            - generic [ref=e164]:
+              - img [ref=e166]
+              - link "1" [ref=e168] [cursor=pointer]:
+                - /url: /buy
+              - img [ref=e170]
+    - contentinfo [ref=e172]:
+      - generic [ref=e173]:
+        - generic [ref=e174]:
+          - generic [ref=e175]: GrihaNivas
+          - paragraph [ref=e176]: Mumbai's concierge real estate advisory.
+          - generic [ref=e177]:
+            - link "Instagram" [ref=e178] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e179]
+            - link "WhatsApp" [ref=e182] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e183]
+            - link "LinkedIn" [ref=e185] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e186]
+            - link "YouTube" [ref=e190] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e191]
+        - generic [ref=e194]:
+          - heading "Properties" [level=3] [ref=e195]
+          - list [ref=e196]:
+            - listitem [ref=e197]:
+              - link "Buy" [ref=e198] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e199]:
+              - link "Rent" [ref=e200] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e201]:
+              - link "Builders" [ref=e202] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e203]:
+              - link "New Launch" [ref=e204] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e205]:
+          - heading "Services" [level=3] [ref=e206]
+          - list [ref=e207]:
+            - listitem [ref=e208]:
+              - link "Home Loan" [ref=e209] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e210]:
+              - link "EMI Calculator" [ref=e211] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e212]:
+              - link "Stamp Duty" [ref=e213] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e214]:
+              - link "Rent Agreement" [ref=e215] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e216]:
+              - link "Comparison" [ref=e217] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e218]:
+          - heading "Resources" [level=3] [ref=e219]
+          - list [ref=e220]:
+            - listitem [ref=e221]:
+              - link "Blogs" [ref=e222] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e223]:
+              - link "FAQs" [ref=e224] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e225]:
+              - link "About Us" [ref=e226] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e227]:
+              - link "Contact" [ref=e228] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e229]:
+          - heading "Contact" [level=3] [ref=e230]
+          - list [ref=e231]:
+            - listitem [ref=e232]:
+              - img [ref=e233]
+              - generic [ref=e236]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e237]:
+              - img [ref=e238]
+              - link "+91 91379 50050" [ref=e240] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e241]:
+        - generic [ref=e242]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e243]:
+          - link "Privacy Policy" [ref=e244] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e245] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e246]:
+      - link "Call us" [ref=e247] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e248]
+      - link "Chat on WhatsApp" [ref=e250] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e251]
+  - button "Open Next.js Dev Tools" [ref=e258] [cursor=pointer]:
+    - img [ref=e259]

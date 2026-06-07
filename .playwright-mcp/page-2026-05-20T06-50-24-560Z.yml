@@ -1,0 +1,255 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - heading "Stamp Duty & Registration" [level=1] [ref=e25]
+          - paragraph [ref=e26]: Calculate precise property charges for your Mumbai real estate investment based on the latest rates.
+        - generic [ref=e27]:
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - generic [ref=e31]: Property Value (INR)
+              - generic [ref=e32]:
+                - generic [ref=e33]: ₹
+                - textbox "50,000,000" [ref=e34]: 5,00,00,000
+            - generic [ref=e35]:
+              - generic [ref=e36]: Property Type
+              - generic [ref=e37]:
+                - button "Buy" [ref=e38]
+                - button "Rent" [ref=e39]
+            - generic [ref=e40]:
+              - generic [ref=e41]: Buyer Type
+              - generic [ref=e42]:
+                - button "Male" [ref=e43]
+                - button "Female" [ref=e44]
+                - button "Joint" [ref=e45]
+            - generic [ref=e46]:
+              - paragraph [ref=e47]: Current Rates — Buy
+              - generic [ref=e48]:
+                - generic [ref=e49]:
+                  - paragraph [ref=e50]: Male
+                  - paragraph [ref=e51]: 6%
+                - generic [ref=e52]:
+                  - paragraph [ref=e53]: Female
+                  - paragraph [ref=e54]: 5%
+                - generic [ref=e55]:
+                  - paragraph [ref=e56]: Joint
+                  - paragraph [ref=e57]: 7%
+              - paragraph [ref=e58]: "Registration charge: ₹29,000 flat"
+          - generic [ref=e59]:
+            - generic [ref=e61]:
+              - heading "Summary of Charges" [level=3] [ref=e62]
+              - generic [ref=e63]:
+                - generic [ref=e64]:
+                  - generic [ref=e65]:
+                    - generic [ref=e66]: Stamp Duty
+                    - generic [ref=e67]: at 6% Rate
+                  - generic [ref=e68]: ₹30,00,000
+                - generic [ref=e69]:
+                  - generic [ref=e70]:
+                    - generic [ref=e71]: Registration
+                    - text: Flat Charge
+                  - generic [ref=e72]: ₹29,000
+                - generic [ref=e74]:
+                  - generic [ref=e75]: Total Payable
+                  - generic [ref=e76]: ₹30,29,000
+            - generic [ref=e77]:
+              - link "Apply for Home Loan" [ref=e78] [cursor=pointer]:
+                - /url: /home-loan
+              - link "Contact Expert" [ref=e79] [cursor=pointer]:
+                - /url: /contact?message=I would like to consult an expert regarding stamp duty and registration for a property valued at ₹5.00 Cr.
+        - paragraph [ref=e80]: "* Estimates based on current Mumbai municipal rates. Ready Reckoner Rates may apply."
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - heading "Understanding Stamp Duty" [level=2] [ref=e83]
+            - generic [ref=e84]:
+              - paragraph [ref=e85]: Stamp duty is a mandatory legal tax paid for asset acquisition. In Mumbai, these are set by the State Government of Maharashtra.
+              - paragraph [ref=e86]: Calculations are based on the higher value between the transaction price and the Ready Reckoner Rate.
+          - generic [ref=e87]:
+            - heading "Key Considerations" [level=3] [ref=e88]
+            - list [ref=e89]:
+              - listitem [ref=e90]:
+                - img [ref=e92]
+                - generic [ref=e95]: Calculations apply to the higher of sale value or govt rate.
+              - listitem [ref=e96]:
+                - img [ref=e98]
+                - generic [ref=e101]: Rates differ slightly across various Mumbai sectors.
+              - listitem [ref=e102]:
+                - img [ref=e104]
+                - generic [ref=e107]: Women buyers receive a 1% concession in Maharashtra.
+        - generic [ref=e108]:
+          - heading "Expert Insights & FAQs" [level=2] [ref=e109]
+          - generic [ref=e110]:
+            - group [ref=e111] [cursor=pointer]:
+              - generic "What are the current stamp duty rates in Mumbai?" [ref=e112]:
+                - text: What are the current stamp duty rates in Mumbai?
+                - img [ref=e114]
+            - group [ref=e116] [cursor=pointer]:
+              - generic "Are there any tax benefits on stamp duty?" [ref=e117]:
+                - text: Are there any tax benefits on stamp duty?
+                - img [ref=e119]
+            - group [ref=e121] [cursor=pointer]:
+              - generic "When should I pay the stamp duty?" [ref=e122]:
+                - text: When should I pay the stamp duty?
+                - img [ref=e124]
+            - group [ref=e126] [cursor=pointer]:
+              - generic "What is the Ready Reckoner Rate and how does it affect my calculation?" [ref=e127]:
+                - text: What is the Ready Reckoner Rate and how does it affect my calculation?
+                - img [ref=e129]
+            - group [ref=e131] [cursor=pointer]:
+              - generic "Is stamp duty applicable on under-construction properties?" [ref=e132]:
+                - text: Is stamp duty applicable on under-construction properties?
+                - img [ref=e134]
+            - group [ref=e136] [cursor=pointer]:
+              - generic "How can I legally reduce my stamp duty liability in Mumbai?" [ref=e137]:
+                - text: How can I legally reduce my stamp duty liability in Mumbai?
+                - img [ref=e139]
+        - generic [ref=e144]:
+          - generic [ref=e145]: Concierge Advisory
+          - heading "Complexity, Simplified." [level=2] [ref=e146]:
+            - text: Complexity,
+            - text: Simplified.
+          - paragraph [ref=e147]: Our experts manage the intricacies of Mumbai real estate documentation, ensuring a seamless transition.
+          - link "Get Consultation" [ref=e149] [cursor=pointer]:
+            - /url: /contact?message=I would like to request a professional consultation regarding property documentation and stamp duty for a ₹5.00 Cr investment.
+    - contentinfo [ref=e150]:
+      - generic [ref=e151]:
+        - generic [ref=e152]:
+          - generic [ref=e153]: GrihaNivas
+          - paragraph [ref=e154]: Mumbai's concierge real estate advisory.
+          - generic [ref=e155]:
+            - link "Instagram" [ref=e156] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e157]
+            - link "WhatsApp" [ref=e160] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e161]
+            - link "LinkedIn" [ref=e163] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e164]
+            - link "YouTube" [ref=e168] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e169]
+        - generic [ref=e172]:
+          - heading "Properties" [level=3] [ref=e173]
+          - list [ref=e174]:
+            - listitem [ref=e175]:
+              - link "Buy" [ref=e176] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e177]:
+              - link "Rent" [ref=e178] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e179]:
+              - link "Builders" [ref=e180] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e181]:
+              - link "New Launch" [ref=e182] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e183]:
+          - heading "Services" [level=3] [ref=e184]
+          - list [ref=e185]:
+            - listitem [ref=e186]:
+              - link "Home Loan" [ref=e187] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e188]:
+              - link "EMI Calculator" [ref=e189] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e190]:
+              - link "Stamp Duty" [ref=e191] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e192]:
+              - link "Rent Agreement" [ref=e193] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e194]:
+              - link "Comparison" [ref=e195] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e196]:
+          - heading "Resources" [level=3] [ref=e197]
+          - list [ref=e198]:
+            - listitem [ref=e199]:
+              - link "Blogs" [ref=e200] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e201]:
+              - link "FAQs" [ref=e202] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e203]:
+              - link "About Us" [ref=e204] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e205]:
+              - link "Contact" [ref=e206] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e207]:
+          - heading "Contact" [level=3] [ref=e208]
+          - list [ref=e209]:
+            - listitem [ref=e210]:
+              - img [ref=e211]
+              - generic [ref=e214]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e215]:
+              - img [ref=e216]
+              - link "+91 91379 50050" [ref=e218] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e219]:
+        - generic [ref=e220]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e221]:
+          - link "Privacy Policy" [ref=e222] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e223] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e224]:
+      - button "View current offer" [ref=e225]:
+        - generic [ref=e226]: local_offer
+      - link "Call us" [ref=e227] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e228]
+      - link "Chat on WhatsApp" [ref=e230] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e231]
+  - button "Open Next.js Dev Tools" [ref=e238] [cursor=pointer]:
+    - img [ref=e239]
+  - alert [ref=e242]

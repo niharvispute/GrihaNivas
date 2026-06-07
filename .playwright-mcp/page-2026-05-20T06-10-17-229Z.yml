@@ -1,0 +1,73 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - link "arrow_back Back to Home" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e5]: arrow_back
+      - text: Back to Home
+    - generic [ref=e6]:
+      - complementary [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]:
+            - generic [ref=e11]: apartment
+            - generic [ref=e12]: GrihaNivas
+          - generic [ref=e13]:
+            - heading "List Property" [level=2] [ref=e14]
+            - paragraph [ref=e15]: Step 1 of 5
+          - generic [ref=e17]:
+            - generic [ref=e18]: Progress
+            - generic [ref=e19]: 20%
+        - navigation [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: home_work
+            - generic [ref=e25]: Property Details
+          - generic [ref=e26]:
+            - generic [ref=e27]: location_on
+            - generic [ref=e28]: Location & Basics
+          - generic [ref=e29]:
+            - generic [ref=e30]: image
+            - generic [ref=e31]: Media
+          - generic [ref=e32]:
+            - generic [ref=e33]: payments
+            - generic [ref=e34]: Pricing
+          - generic [ref=e35]:
+            - generic [ref=e36]: fact_check
+            - generic [ref=e37]: Review
+      - main [ref=e38]:
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - heading "Basic Information" [level=1] [ref=e43]
+            - paragraph [ref=e44]: Start with the fundamental details of your Mumbai estate.
+          - generic [ref=e46]:
+            - text: Listing Type
+            - generic [ref=e47]:
+              - button "Sale" [ref=e48]
+              - button "Rent" [ref=e49]
+          - generic [ref=e50]:
+            - text: Property Type
+            - generic [ref=e51]:
+              - button "Apartment" [ref=e52]
+              - button "Penthouse" [ref=e53]
+              - button "Villa" [ref=e54]
+              - button "Bungalow" [ref=e55]
+              - button "Commercial" [ref=e56]
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - text: Owner Name
+              - textbox "Full Name" [ref=e59]
+            - generic [ref=e60]:
+              - text: Contact Number
+              - textbox "+91 00000 00000" [ref=e61]
+          - generic [ref=e62]:
+            - text: BHK
+            - generic [ref=e63]:
+              - button "1" [ref=e64]
+              - button "2" [ref=e65]
+              - button "3" [ref=e66]
+              - button "4" [ref=e67]
+              - button "5+" [ref=e68]
+        - button "Next Phase arrow_forward" [ref=e72]:
+          - text: Next Phase
+          - generic [ref=e73]: arrow_forward
+  - button "Open Next.js Dev Tools" [ref=e79] [cursor=pointer]:
+    - img [ref=e80]
+  - alert [ref=e83]

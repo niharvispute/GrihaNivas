@@ -17,6 +17,7 @@ const stampDutyConfigSchema = new mongoose.Schema(
       type: rateSetSchema,
       default: () => ({ maleRate: 2, femaleRate: 2, jointRate: 2, registrationCharge: 1000 }),
     },
+    dhc: { type: Number, default: 300, min: 0 },
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   },
   { timestamps: true, versionKey: false }

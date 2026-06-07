@@ -1,0 +1,203 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e24]:
+          - generic [ref=e25]: Legal Framework
+          - heading "Privacy Policy" [level=1] [ref=e26]
+          - paragraph [ref=e27]: How we protect your data and curate your digital experience within the GrihaNivas ecosystem.
+          - generic [ref=e28]:
+            - generic [ref=e29]: update
+            - text: "Last Updated: May 03, 2026"
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - heading "Introduction" [level=2] [ref=e34]
+            - paragraph [ref=e35]: At GrihaNivas, we believe transparency is the foundation of trust. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you navigate our platform or engage with our concierge services.
+          - article [ref=e36]:
+            - heading "01 Information We Collect" [level=3] [ref=e37]:
+              - generic [ref=e38]: "01"
+              - text: Information We Collect
+            - paragraph [ref=e39]: "When you use our platform, we may collect the following types of information:"
+            - list [ref=e40]:
+              - listitem [ref=e41]:
+                - generic [ref=e42]: check_circle
+                - generic [ref=e43]: "Personal Identifiers: Name, email address, phone number, and residential preferences."
+              - listitem [ref=e44]:
+                - generic [ref=e45]: check_circle
+                - generic [ref=e46]: "Property Interest: Saved listings, search history, and budget parameters."
+              - listitem [ref=e47]:
+                - generic [ref=e48]: check_circle
+                - generic [ref=e49]: "Technical Data: IP address, browser type, and usage patterns through cookies."
+          - article [ref=e50]:
+            - heading "02 How We Use Your Data" [level=3] [ref=e51]:
+              - generic [ref=e52]: "02"
+              - text: How We Use Your Data
+            - paragraph [ref=e53]: "Your data is used exclusively to refine your Mumbai real estate journey:"
+            - generic [ref=e54]:
+              - generic [ref=e55]:
+                - generic [ref=e56]: person_search
+                - heading "Concierge Shortlists" [level=4] [ref=e57]
+                - paragraph [ref=e58]: To provide personalized property recommendations based on your commute and lifestyle.
+              - generic [ref=e59]:
+                - generic [ref=e60]: notifications_active
+                - heading "Market Alerts" [level=4] [ref=e61]
+                - paragraph [ref=e62]: To notify you of fresh listings, price drops, or new launches in your preferred pockets.
+          - article [ref=e63]:
+            - heading "03 Data Security" [level=3] [ref=e64]:
+              - generic [ref=e65]: "03"
+              - text: Data Security
+            - paragraph [ref=e66]: We implement industry-standard encryption and security protocols (SSL/TLS) to ensure your data is protected from unauthorized access. Our database is audited periodically to maintain the highest levels of integrity.
+          - article [ref=e67]:
+            - heading "04 Third-Party Sharing" [level=3] [ref=e68]:
+              - generic [ref=e69]: "04"
+              - text: Third-Party Sharing
+            - paragraph [ref=e70]: We do not sell your personal information. However, we may share data with verified builder partners or financial institutions (like banks for home loans) only when you explicitly request an inquiry or consultation through our platform.
+          - generic [ref=e71]:
+            - heading "Contact Legal Desk" [level=3] [ref=e72]
+            - generic [ref=e73]:
+              - paragraph [ref=e75]: If you have any questions regarding your data or wish to exercise your right to be forgotten, please reach out to our privacy officer.
+              - link "Contact Privacy Officer mail" [ref=e76] [cursor=pointer]:
+                - /url: mailto:privacy@mumbaieditorial.com
+                - text: Contact Privacy Officer
+                - generic [ref=e77]: mail
+    - contentinfo [ref=e78]:
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e81]: GrihaNivas
+          - paragraph [ref=e82]: Mumbai's concierge real estate advisory.
+          - generic [ref=e83]:
+            - link "Instagram" [ref=e84] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e85]
+            - link "WhatsApp" [ref=e88] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e89]
+            - link "LinkedIn" [ref=e91] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e92]
+            - link "YouTube" [ref=e96] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e97]
+        - generic [ref=e100]:
+          - heading "Properties" [level=3] [ref=e101]
+          - list [ref=e102]:
+            - listitem [ref=e103]:
+              - link "Buy" [ref=e104] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e105]:
+              - link "Rent" [ref=e106] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e107]:
+              - link "Builders" [ref=e108] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e109]:
+              - link "New Launch" [ref=e110] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e111]:
+          - heading "Services" [level=3] [ref=e112]
+          - list [ref=e113]:
+            - listitem [ref=e114]:
+              - link "Home Loan" [ref=e115] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e116]:
+              - link "EMI Calculator" [ref=e117] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e118]:
+              - link "Stamp Duty" [ref=e119] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e120]:
+              - link "Rent Agreement" [ref=e121] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e122]:
+              - link "Comparison" [ref=e123] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e124]:
+          - heading "Resources" [level=3] [ref=e125]
+          - list [ref=e126]:
+            - listitem [ref=e127]:
+              - link "Blogs" [ref=e128] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e129]:
+              - link "FAQs" [ref=e130] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e131]:
+              - link "About Us" [ref=e132] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e133]:
+              - link "Contact" [ref=e134] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e135]:
+          - heading "Contact" [level=3] [ref=e136]
+          - list [ref=e137]:
+            - listitem [ref=e138]:
+              - img [ref=e139]
+              - generic [ref=e142]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e143]:
+              - img [ref=e144]
+              - link "+91 91379 50050" [ref=e146] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e147]:
+        - generic [ref=e148]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e149]:
+          - link "Privacy Policy" [ref=e150] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e151] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e152]:
+      - link "Call us" [ref=e153] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e154]
+      - link "Chat on WhatsApp" [ref=e156] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e157]
+  - button "Open Next.js Dev Tools" [ref=e164] [cursor=pointer]:
+    - img [ref=e165]
+  - alert [ref=e168]

@@ -1,0 +1,233 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - img "Mumbai Marine Drive" [ref=e25]
+          - generic [ref=e26]:
+            - generic [ref=e27]: ABOUT US
+            - heading "Redefining Mumbai's Luxury Real Estate Landscape." [level=1] [ref=e28]:
+              - text: Redefining Mumbai's Luxury
+              - text: Real Estate Landscape.
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - heading "A Legacy of Excellence" [level=2] [ref=e32]
+            - generic [ref=e33]:
+              - paragraph [ref=e34]: Founded at the intersection of architecture and heritage, Ghar began as a specialized boutique focused exclusively on South Mumbai's historic mansions. We believed then, as we do now, that luxury is not just a price point—it's a narrative of space and craftsmanship.
+              - paragraph [ref=e35]: "Over the last twelve years, we have evolved into a market leader, curating the city's most prestigious skyline silhouettes. Our journey is defined by a commitment to the \"Editorial\" standard: every listing is vetted for its architectural significance, lifestyle potential, and investment integrity."
+          - img "Luxury Penthouse" [ref=e38] [cursor=pointer]
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - img [ref=e43]
+            - heading "Our Mission" [level=3] [ref=e46]
+            - paragraph [ref=e47]: To curate the most exclusive living experiences by blending deep local market insights with a world-class standard of service and discretion.
+          - generic [ref=e48]:
+            - img [ref=e50]
+            - heading "Our Vision" [level=3] [ref=e52]
+            - paragraph [ref=e53]: To be the gold standard for luxury real estate in India, recognized for transforming property acquisition into an art form.
+        - generic [ref=e54]:
+          - heading "Why Ghar?" [level=2] [ref=e55]
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - img [ref=e59]
+              - heading "Verified Listings" [level=4] [ref=e63]
+              - paragraph [ref=e64]: Every square foot authenticated by our rigorous internal audit team.
+            - generic [ref=e65]:
+              - img [ref=e67]
+              - heading "Expert Guidance" [level=4] [ref=e71]
+              - paragraph [ref=e72]: Access to the city's top legal, architectural, and financial consultants.
+            - generic [ref=e73]:
+              - img [ref=e75]
+              - heading "Transparent Deals" [level=4] [ref=e79]
+              - paragraph [ref=e80]: A no-hidden-clause philosophy ensuring peace of mind for all stakeholders.
+            - generic [ref=e81]:
+              - img [ref=e83]
+              - heading "Trusted by Thousands" [level=4] [ref=e87]
+              - paragraph [ref=e88]: Serving Mumbai's most discerning families and HNI individuals.
+        - generic [ref=e92]:
+          - generic [ref=e93]:
+            - generic [ref=e94]: 10k+
+            - generic [ref=e95]: Properties Listed
+          - generic [ref=e96]:
+            - generic [ref=e97]: 5k+
+            - generic [ref=e98]: Happy Clients
+          - generic [ref=e99]:
+            - generic [ref=e100]: 15+
+            - generic [ref=e101]: Cities Covered
+          - generic [ref=e102]:
+            - generic [ref=e103]: "12"
+            - generic [ref=e104]: Years of Excellence
+        - generic [ref=e105]:
+          - generic [ref=e106]:
+            - heading "The Leadership Console" [level=2] [ref=e107]
+            - paragraph [ref=e108]: Curating Mumbai's luxury future.
+          - generic [ref=e109]:
+            - generic [ref=e110]:
+              - img "Vikram Oberoi" [ref=e112]
+              - heading "Vikram Oberoi" [level=4] [ref=e113]
+              - paragraph [ref=e114]: CEO & Founder
+            - generic [ref=e115]:
+              - img "Ananya Deshmukh" [ref=e117]
+              - heading "Ananya Deshmukh" [level=4] [ref=e118]
+              - paragraph [ref=e119]: Head of Sales
+            - generic [ref=e120]:
+              - img "Rohan Mehta" [ref=e122]
+              - heading "Rohan Mehta" [level=4] [ref=e123]
+              - paragraph [ref=e124]: Lead Architect
+        - generic [ref=e126]:
+          - paragraph [ref=e127]: STRATEGIC DEVELOPERS
+          - generic [ref=e128]:
+            - generic [ref=e129]: GODREJ
+            - generic [ref=e130]: LODHA
+            - generic [ref=e131]: OBEROI
+            - generic [ref=e132]: PIRAMAL
+            - generic [ref=e133]: TATA
+        - generic [ref=e137]:
+          - heading "Ready to find your masterpiece?" [level=2] [ref=e138]:
+            - text: Ready to find your
+            - text: masterpiece?
+          - link "Browse Properties" [ref=e139] [cursor=pointer]:
+            - /url: /buy
+    - contentinfo [ref=e140]:
+      - generic [ref=e141]:
+        - generic [ref=e142]:
+          - generic [ref=e143]: GrihaNivas
+          - paragraph [ref=e144]: Mumbai's concierge real estate advisory.
+          - generic [ref=e145]:
+            - link "Instagram" [ref=e146] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e147]
+            - link "WhatsApp" [ref=e150] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e151]
+            - link "LinkedIn" [ref=e153] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e154]
+            - link "YouTube" [ref=e158] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e159]
+        - generic [ref=e162]:
+          - heading "Properties" [level=3] [ref=e163]
+          - list [ref=e164]:
+            - listitem [ref=e165]:
+              - link "Buy" [ref=e166] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e167]:
+              - link "Rent" [ref=e168] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e169]:
+              - link "Builders" [ref=e170] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e171]:
+              - link "New Launch" [ref=e172] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e173]:
+          - heading "Services" [level=3] [ref=e174]
+          - list [ref=e175]:
+            - listitem [ref=e176]:
+              - link "Home Loan" [ref=e177] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e178]:
+              - link "EMI Calculator" [ref=e179] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e180]:
+              - link "Stamp Duty" [ref=e181] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e182]:
+              - link "Rent Agreement" [ref=e183] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e184]:
+              - link "Comparison" [ref=e185] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e186]:
+          - heading "Resources" [level=3] [ref=e187]
+          - list [ref=e188]:
+            - listitem [ref=e189]:
+              - link "Blogs" [ref=e190] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e191]:
+              - link "FAQs" [ref=e192] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e193]:
+              - link "About Us" [ref=e194] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e195]:
+              - link "Contact" [ref=e196] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e197]:
+          - heading "Contact" [level=3] [ref=e198]
+          - list [ref=e199]:
+            - listitem [ref=e200]:
+              - img [ref=e201]
+              - generic [ref=e204]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e205]:
+              - img [ref=e206]
+              - link "+91 91379 50050" [ref=e208] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e209]:
+        - generic [ref=e210]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e211]:
+          - link "Privacy Policy" [ref=e212] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e213] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e214]:
+      - button "View current offer" [ref=e215]:
+        - generic [ref=e216]: local_offer
+      - link "Call us" [ref=e217] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e218]
+      - link "Chat on WhatsApp" [ref=e220] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e221]
+  - button "Open Next.js Dev Tools" [ref=e228] [cursor=pointer]:
+    - img [ref=e229]
+  - alert [ref=e232]

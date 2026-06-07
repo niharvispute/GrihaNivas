@@ -1,0 +1,273 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: PREMIUM LEGAL SERVICE
+            - heading "Rent Agreement & E-Registration" [level=1] [ref=e27]:
+              - text: Rent Agreement &
+              - text: E-Registration
+            - paragraph [ref=e28]: Secure your tenancy legally from the comfort of your home. We handle the biometric verification and registration with the Mumbai sub-registrar office.
+            - generic [ref=e29]:
+              - button "Start Now" [ref=e30]
+              - button "How it works" [ref=e31]:
+                - img [ref=e32]
+                - text: How it works
+            - generic [ref=e35]:
+              - generic [ref=e36]:
+                - img "User" [ref=e38]
+                - img "User" [ref=e40]
+                - img "User" [ref=e42]
+              - paragraph [ref=e43]: Trusted by 2,500+ Mumbai Landlords
+          - generic [ref=e47]:
+            - img "Luxury Interior" [ref=e48]
+            - generic [ref=e50]:
+              - img [ref=e52]
+              - generic [ref=e54]:
+                - paragraph [ref=e55]: Legal Compliance
+                - paragraph [ref=e56]: MS Rent Control Act, 1999
+        - generic [ref=e58]:
+          - heading "Professional Real Estate Compliance" [level=2] [ref=e59]
+          - paragraph [ref=e60]: In the fast-paced Mumbai real estate market, a verbal agreement is a liability. Under Section 55 of the Maharashtra Rent Control Act, 1999, it is mandatory to have a registered written agreement. Our service bridges the gap between traditional legal complexities and modern convenience, offering a secure, government-approved e-registration platform for landlords and tenants across Mumbai and MMR.
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - heading "Streamlined Registration" [level=2] [ref=e65]
+              - paragraph [ref=e66]: From drafting to delivery, we manage every step of your Mumbai rental agreement.
+            - generic [ref=e67]: PROCESS FLOW
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - generic [ref=e71]: "1"
+              - heading "Submit Details" [level=3] [ref=e73]
+              - paragraph [ref=e74]: Fill out a simple form with landlord, tenant, and property details securely on our portal.
+            - generic [ref=e75]:
+              - generic [ref=e77]: "2"
+              - heading "Drafting" [level=3] [ref=e79]
+              - paragraph [ref=e80]: Our legal experts draft a comprehensive agreement including all standard Mumbai rental clauses.
+            - generic [ref=e81]:
+              - generic [ref=e83]: "3"
+              - heading "Verification" [level=3] [ref=e85]
+              - paragraph [ref=e86]: Execute biometric verification through our doorstep executive or via Aadhaar OTP service.
+            - generic [ref=e87]:
+              - generic [ref=e89]: "4"
+              - heading "Delivery" [level=3] [ref=e90]
+              - paragraph [ref=e91]: Receive your government-registered PDF agreement directly in your inbox within 3-5 days.
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - img [ref=e96]
+            - heading "Legal Compliance" [level=3] [ref=e99]
+            - paragraph [ref=e100]: Fully valid in the court of law, adhering to Maharashtra registration norms.
+          - generic [ref=e101]:
+            - img [ref=e103]
+            - heading "Fast Processing" [level=3] [ref=e106]
+            - paragraph [ref=e107]: Skip the long queues at the sub-registrar office. Digital filing in under 48 hours.
+          - generic [ref=e108]:
+            - img [ref=e110]
+            - heading "Doorstep Service" [level=3] [ref=e113]
+            - paragraph [ref=e114]: Our executives visit your location for biometric authentication at your convenience.
+          - generic [ref=e115]:
+            - img [ref=e117]
+            - heading "Affordable Pricing" [level=3] [ref=e120]
+            - paragraph [ref=e121]: Transparent fee structure with no hidden charges. Starting from just ₹999.
+        - generic [ref=e123]:
+          - generic [ref=e124]:
+            - heading "Ready to register your agreement?" [level=2] [ref=e125]
+            - paragraph [ref=e126]: Leave your details and our legal consultant will call you within 15 minutes to guide you through the process.
+            - generic [ref=e127]:
+              - generic [ref=e128]:
+                - img [ref=e130]
+                - generic [ref=e132]:
+                  - generic [ref=e133]: BEST VALUE
+                  - paragraph [ref=e134]: ₹999 + Stamp Duty
+                  - paragraph [ref=e135]: Starting service fee for E-Registration
+              - generic [ref=e136]:
+                - paragraph [ref=e138]: INCLUDED IN ALL PLANS
+                - list [ref=e139]:
+                  - listitem [ref=e140]:
+                    - img [ref=e141]
+                    - text: Standard Legal Drafting
+                  - listitem [ref=e143]:
+                    - img [ref=e144]
+                    - text: E-filing with Sub-Registrar
+                  - listitem [ref=e146]:
+                    - img [ref=e147]
+                    - text: Police Verification Assistance
+          - generic [ref=e150]:
+            - generic [ref=e151]:
+              - generic [ref=e152]:
+                - text: Full Name
+                - textbox "John Doe" [ref=e153]
+              - generic [ref=e154]:
+                - text: Phone Number
+                - textbox "+91 98XXX XXXXX" [ref=e155]
+            - generic [ref=e156]:
+              - text: Email Address
+              - textbox "john@example.com" [ref=e157]
+            - generic [ref=e158]:
+              - generic [ref=e159]:
+                - text: Property Location
+                - textbox "E.g. Worli, Andheri" [ref=e160]
+              - generic [ref=e161]:
+                - text: I am a...
+                - generic [ref=e162]:
+                  - button "Landlord" [ref=e163]
+                  - button "Tenant" [ref=e164]
+                  - button "Other" [ref=e165]
+            - button "Submit Request" [ref=e166]
+            - paragraph [ref=e167]: By submitting, you agree to our privacy policy and terms.
+        - generic [ref=e169]:
+          - heading "Frequently Asked Questions" [level=2] [ref=e170]
+          - generic [ref=e171]:
+            - generic [ref=e173] [cursor=pointer]:
+              - heading "Is E-Registration as valid as offline registration?" [level=3] [ref=e174]
+              - img [ref=e175]
+            - generic [ref=e178] [cursor=pointer]:
+              - heading "How is the stamp duty calculated?" [level=3] [ref=e179]
+              - img [ref=e180]
+            - generic [ref=e183] [cursor=pointer]:
+              - heading "What documents do I need for registration?" [level=3] [ref=e184]
+              - img [ref=e185]
+    - contentinfo [ref=e187]:
+      - generic [ref=e188]:
+        - generic [ref=e189]:
+          - generic [ref=e190]: GrihaNivas
+          - paragraph [ref=e191]: Mumbai's concierge real estate advisory.
+          - generic [ref=e192]:
+            - link "Instagram" [ref=e193] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e194]
+            - link "WhatsApp" [ref=e197] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e198]
+            - link "LinkedIn" [ref=e200] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e201]
+            - link "YouTube" [ref=e205] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e206]
+        - generic [ref=e209]:
+          - heading "Properties" [level=3] [ref=e210]
+          - list [ref=e211]:
+            - listitem [ref=e212]:
+              - link "Buy" [ref=e213] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e214]:
+              - link "Rent" [ref=e215] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e216]:
+              - link "Builders" [ref=e217] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e218]:
+              - link "New Launch" [ref=e219] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e220]:
+          - heading "Services" [level=3] [ref=e221]
+          - list [ref=e222]:
+            - listitem [ref=e223]:
+              - link "Home Loan" [ref=e224] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e225]:
+              - link "EMI Calculator" [ref=e226] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e227]:
+              - link "Stamp Duty" [ref=e228] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e229]:
+              - link "Rent Agreement" [ref=e230] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e231]:
+              - link "Comparison" [ref=e232] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e233]:
+          - heading "Resources" [level=3] [ref=e234]
+          - list [ref=e235]:
+            - listitem [ref=e236]:
+              - link "Blogs" [ref=e237] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e238]:
+              - link "FAQs" [ref=e239] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e240]:
+              - link "About Us" [ref=e241] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e242]:
+              - link "Contact" [ref=e243] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e244]:
+          - heading "Contact" [level=3] [ref=e245]
+          - list [ref=e246]:
+            - listitem [ref=e247]:
+              - img [ref=e248]
+              - generic [ref=e251]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e252]:
+              - img [ref=e253]
+              - link "+91 91379 50050" [ref=e255] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e256]:
+        - generic [ref=e257]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e258]:
+          - link "Privacy Policy" [ref=e259] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e260] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e261]:
+      - button "View current offer" [ref=e262]:
+        - generic [ref=e263]: local_offer
+      - link "Call us" [ref=e264] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e265]
+      - link "Chat on WhatsApp" [ref=e267] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e268]
+  - button "Open Next.js Dev Tools" [ref=e275] [cursor=pointer]:
+    - img [ref=e276]
+  - alert [ref=e279]

@@ -1,0 +1,359 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - main [ref=e22]:
+        - navigation "Breadcrumb" [ref=e24]:
+          - list [ref=e25]:
+            - listitem [ref=e26]:
+              - link "Home" [ref=e27] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e28]:
+              - img [ref=e29]
+              - generic [ref=e31]: Properties for Rent
+        - generic [ref=e32]:
+          - complementary [ref=e33]:
+            - generic [ref=e34]:
+              - heading "Filters" [level=2] [ref=e37]
+              - generic [ref=e38]:
+                - generic [ref=e39]:
+                  - generic [ref=e40]:
+                    - generic [ref=e41]: location_on
+                    - text: Location
+                  - button "All Locations expand_more" [ref=e43] [cursor=pointer]:
+                    - generic [ref=e44]: All Locations
+                    - generic [ref=e45]: expand_more
+                - generic [ref=e46]:
+                  - generic [ref=e47]:
+                    - generic [ref=e48]:
+                      - generic [ref=e49]:
+                        - generic [ref=e50]: Min Budget
+                        - generic [ref=e51]: ₹1.0 Cr
+                      - slider [ref=e53]: "10000000"
+                      - generic [ref=e54]:
+                        - generic [ref=e55]: ₹1 Cr
+                        - generic [ref=e56]: ₹5 Cr
+                    - generic [ref=e57]:
+                      - generic [ref=e58]:
+                        - generic [ref=e59]: Max Budget
+                        - generic [ref=e60]: ₹5.0 Cr
+                      - slider [ref=e62]: "50000000"
+                      - generic [ref=e63]:
+                        - generic [ref=e64]: ₹1 Cr
+                        - generic [ref=e65]: ₹5 Cr
+                  - generic [ref=e67]:
+                    - generic [ref=e68]:
+                      - paragraph [ref=e69]: From
+                      - paragraph [ref=e70]: ₹1.0 Cr
+                    - generic [ref=e71]: →
+                    - generic [ref=e72]:
+                      - paragraph [ref=e73]: To
+                      - paragraph [ref=e74]: ₹5.0 Cr
+                - generic [ref=e75]:
+                  - generic [ref=e76]:
+                    - generic [ref=e77]: home
+                    - text: BHK Type
+                  - button "Any expand_more" [ref=e79] [cursor=pointer]:
+                    - generic [ref=e80]: Any
+                    - generic [ref=e81]: expand_more
+                - generic [ref=e82]:
+                  - generic [ref=e83]:
+                    - generic [ref=e84]: chair
+                    - text: Furnishing
+                  - button "Any expand_more" [ref=e86] [cursor=pointer]:
+                    - generic [ref=e87]: Any
+                    - generic [ref=e88]: expand_more
+                - generic [ref=e89]:
+                  - button "Update Results" [ref=e90]
+                  - link "Reset All" [ref=e91] [cursor=pointer]:
+                    - /url: /rent
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - generic [ref=e94]:
+                - generic [ref=e95]: "Sort by:"
+                - generic [ref=e96]:
+                  - link "Newest" [ref=e97] [cursor=pointer]:
+                    - /url: /rent
+                  - link "Price Low-High" [ref=e98] [cursor=pointer]:
+                    - /url: /rent?sortBy=price_asc
+                  - link "Price High-Low" [ref=e99] [cursor=pointer]:
+                    - /url: /rent?sortBy=price_desc
+              - generic [ref=e101]:
+                - link "Grid View" [ref=e102] [cursor=pointer]:
+                  - /url: /rent
+                  - img [ref=e103]
+                - link "List View" [ref=e108] [cursor=pointer]:
+                  - /url: /rent?view=list
+                  - img [ref=e109]
+            - generic [ref=e110]:
+              - article [ref=e111]:
+                - generic [ref=e112]:
+                  - img "Penthouse in Wakad" [ref=e113]
+                  - button "Save to Wishlist" [ref=e114]:
+                    - img [ref=e115]
+                - generic [ref=e117]:
+                  - generic [ref=e119]:
+                    - generic [ref=e120]:
+                      - heading "Penthouse in Wakad" [level=3] [ref=e121]
+                      - generic [ref=e122]: Rental
+                    - paragraph [ref=e123]:
+                      - img [ref=e124]
+                      - generic [ref=e127]: Wakad, Mumbai
+                  - generic [ref=e128]:
+                    - generic [ref=e129]:
+                      - generic [ref=e130]: Cost
+                      - generic [ref=e131]:
+                        - generic [ref=e132]: payments
+                        - text: Price on Request
+                    - generic [ref=e133]:
+                      - generic [ref=e134]: Area
+                      - generic [ref=e135]:
+                        - generic [ref=e136]: square_foot
+                        - text: Area on request
+                  - generic [ref=e137]:
+                    - link "View Property" [ref=e138] [cursor=pointer]:
+                      - /url: /property/penthouse-in-wakad-1777219922616
+                    - button "Add to Compare" [ref=e139]:
+                      - img [ref=e140]
+                      - generic [ref=e142]: Compare
+              - article [ref=e143]:
+                - generic [ref=e144]:
+                  - img "Apartment in Sangvi" [ref=e145]
+                  - generic [ref=e146]:
+                    - img [ref=e147]
+                    - text: Featured
+                  - button "Save to Wishlist" [ref=e149]:
+                    - img [ref=e150]
+                - generic [ref=e152]:
+                  - generic [ref=e154]:
+                    - generic [ref=e155]:
+                      - heading "Apartment in Sangvi" [level=3] [ref=e156]
+                      - generic [ref=e157]: Rental
+                    - paragraph [ref=e158]:
+                      - img [ref=e159]
+                      - generic [ref=e162]: Sangvi, Mumbai
+                  - generic [ref=e163]:
+                    - generic [ref=e164]:
+                      - generic [ref=e165]: Cost
+                      - generic [ref=e166]:
+                        - generic [ref=e167]: payments
+                        - text: Price on Request
+                    - generic [ref=e168]:
+                      - generic [ref=e169]: Area
+                      - generic [ref=e170]:
+                        - generic [ref=e171]: square_foot
+                        - text: Area on request
+                  - generic [ref=e172]:
+                    - link "View Property" [ref=e173] [cursor=pointer]:
+                      - /url: /property/apartment-in-sangvi-1777218429795
+                    - button "Add to Compare" [ref=e174]:
+                      - img [ref=e175]
+                      - generic [ref=e177]: Compare
+              - article [ref=e178]:
+                - generic [ref=e179]:
+                  - img "Apartment in Wakad" [ref=e180]
+                  - generic [ref=e181]:
+                    - img [ref=e182]
+                    - text: Featured
+                  - button "Save to Wishlist" [ref=e184]:
+                    - img [ref=e185]
+                - generic [ref=e187]:
+                  - generic [ref=e189]:
+                    - generic [ref=e190]:
+                      - heading "Apartment in Wakad" [level=3] [ref=e191]
+                      - generic [ref=e192]: Rental
+                    - paragraph [ref=e193]:
+                      - img [ref=e194]
+                      - generic [ref=e197]: Wakad, Mumbai
+                  - generic [ref=e198]:
+                    - generic [ref=e199]:
+                      - generic [ref=e200]: Cost
+                      - generic [ref=e201]:
+                        - generic [ref=e202]: payments
+                        - text: Price on Request
+                    - generic [ref=e203]:
+                      - generic [ref=e204]: Area
+                      - generic [ref=e205]:
+                        - generic [ref=e206]: square_foot
+                        - text: Area on request
+                  - generic [ref=e207]:
+                    - link "View Property" [ref=e208] [cursor=pointer]:
+                      - /url: /property/apartment-in-wakad-1777217805039
+                    - button "Add to Compare" [ref=e209]:
+                      - img [ref=e210]
+                      - generic [ref=e212]: Compare
+              - article [ref=e213]:
+                - generic [ref=e214]:
+                  - img "Edmont Aurelia" [ref=e215]
+                  - generic [ref=e216]:
+                    - img [ref=e217]
+                    - text: Featured
+                  - button "Save to Wishlist" [ref=e219]:
+                    - img [ref=e220]
+                - generic [ref=e222]:
+                  - generic [ref=e224]:
+                    - generic [ref=e225]:
+                      - heading "Edmont Aurelia" [level=3] [ref=e226]
+                      - generic [ref=e227]: Rental
+                    - paragraph [ref=e228]:
+                      - img [ref=e229]
+                      - generic [ref=e232]: Kandivali West, Mumbai
+                  - generic [ref=e233]:
+                    - generic [ref=e234]:
+                      - generic [ref=e235]: Cost
+                      - generic [ref=e236]:
+                        - generic [ref=e237]: payments
+                        - text: ₹2.25 Cr
+                    - generic [ref=e238]:
+                      - generic [ref=e239]: Area
+                      - generic [ref=e240]:
+                        - generic [ref=e241]: square_foot
+                        - text: Area on request
+                  - generic [ref=e242]:
+                    - link "View Property" [ref=e243] [cursor=pointer]:
+                      - /url: /property/edmont-aurelia-1777099056111
+                    - button "Add to Compare" [ref=e244]:
+                      - img [ref=e245]
+                      - generic [ref=e247]: Compare
+            - generic [ref=e248]:
+              - img [ref=e250]
+              - link "1" [ref=e252] [cursor=pointer]:
+                - /url: /rent
+              - img [ref=e254]
+    - contentinfo [ref=e256]:
+      - generic [ref=e257]:
+        - generic [ref=e258]:
+          - generic [ref=e259]: GrihaNivas
+          - paragraph [ref=e260]: Mumbai's concierge real estate advisory.
+          - generic [ref=e261]:
+            - link "Instagram" [ref=e262] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e263]
+            - link "WhatsApp" [ref=e266] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e267]
+            - link "LinkedIn" [ref=e269] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e270]
+            - link "YouTube" [ref=e274] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e275]
+        - generic [ref=e278]:
+          - heading "Properties" [level=3] [ref=e279]
+          - list [ref=e280]:
+            - listitem [ref=e281]:
+              - link "Buy" [ref=e282] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e283]:
+              - link "Rent" [ref=e284] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e285]:
+              - link "Builders" [ref=e286] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e287]:
+              - link "New Launch" [ref=e288] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e289]:
+          - heading "Services" [level=3] [ref=e290]
+          - list [ref=e291]:
+            - listitem [ref=e292]:
+              - link "Home Loan" [ref=e293] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e294]:
+              - link "EMI Calculator" [ref=e295] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e296]:
+              - link "Stamp Duty" [ref=e297] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e298]:
+              - link "Rent Agreement" [ref=e299] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e300]:
+              - link "Comparison" [ref=e301] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e302]:
+          - heading "Resources" [level=3] [ref=e303]
+          - list [ref=e304]:
+            - listitem [ref=e305]:
+              - link "Blogs" [ref=e306] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e307]:
+              - link "FAQs" [ref=e308] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e309]:
+              - link "About Us" [ref=e310] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e311]:
+              - link "Contact" [ref=e312] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e313]:
+          - heading "Contact" [level=3] [ref=e314]
+          - list [ref=e315]:
+            - listitem [ref=e316]:
+              - img [ref=e317]
+              - generic [ref=e320]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e321]:
+              - img [ref=e322]
+              - link "+91 91379 50050" [ref=e324] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e325]:
+        - generic [ref=e326]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e327]:
+          - link "Privacy Policy" [ref=e328] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e329] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e330]:
+      - link "Call us" [ref=e331] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e332]
+      - link "Chat on WhatsApp" [ref=e334] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e335]
+  - button "Open Next.js Dev Tools" [ref=e342] [cursor=pointer]:
+    - img [ref=e343]

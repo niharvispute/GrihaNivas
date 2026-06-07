@@ -1,0 +1,248 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - main [ref=e23]:
+        - heading "Mumbai Real Estate Blogs" [level=1] [ref=e24]
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - link "All" [ref=e27] [cursor=pointer]:
+              - /url: /blogs
+            - link "Market Trends" [ref=e28] [cursor=pointer]:
+              - /url: /blogs?category=market_trends
+            - link "Buying Guide" [ref=e29] [cursor=pointer]:
+              - /url: /blogs?category=buying_guide
+            - link "Legal" [ref=e30] [cursor=pointer]:
+              - /url: /blogs?category=legal
+            - link "Investment" [ref=e31] [cursor=pointer]:
+              - /url: /blogs?category=investment
+            - link "Lifestyle" [ref=e32] [cursor=pointer]:
+              - /url: /blogs?category=lifestyle
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - generic [ref=e35]: Search blogs by keyword
+              - img [ref=e36]
+              - textbox "Search blogs by keyword" [ref=e39]
+            - button "Search" [ref=e40]
+        - generic [ref=e42]:
+          - generic [ref=e43]:
+            - img "Testing for publish" [ref=e44]
+            - generic [ref=e45]: Investment
+          - generic [ref=e46]:
+            - generic [ref=e47]:
+              - generic [ref=e48]: 01 May 2026
+              - generic [ref=e50]: 1 min read
+            - heading "Testing for publish" [level=2] [ref=e51]
+            - paragraph
+            - link "Read Full Insight" [ref=e52] [cursor=pointer]:
+              - /url: /blogs/testing-for-publish-1777639244146
+              - text: Read Full Insight
+              - img [ref=e53]
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - article [ref=e59]:
+                - generic [ref=e60]:
+                  - img "Properties in Mumbai – A Complete Guide for Buyers and Investors" [ref=e61]
+                  - generic [ref=e62]: Buying Guide
+                - generic [ref=e63]:
+                  - generic [ref=e64]:
+                    - generic [ref=e65]: 25 Apr 2026
+                    - generic [ref=e67]: 1 min read
+                  - heading "Properties in Mumbai – A Complete Guide for Buyers and Investors" [level=3] [ref=e68]
+                  - paragraph
+                  - link "Read More" [ref=e69] [cursor=pointer]:
+                    - /url: /blogs/properties-in-mumbai-a-complete-guide-for-buyers-and-investors-1777100707737
+                    - text: Read More
+                    - img [ref=e70]
+              - article [ref=e73]:
+                - generic [ref=e74]:
+                  - img "Builders in Mumbai – Shaping the City’s Skyline" [ref=e75]
+                  - generic [ref=e76]: Lifestyle
+                - generic [ref=e77]:
+                  - generic [ref=e78]:
+                    - generic [ref=e79]: 25 Apr 2026
+                    - generic [ref=e81]: 1 min read
+                  - heading "Builders in Mumbai – Shaping the City’s Skyline" [level=3] [ref=e82]
+                  - paragraph
+                  - link "Read More" [ref=e83] [cursor=pointer]:
+                    - /url: /blogs/builders-in-mumbai-shaping-the-citys-skyline-1777100415765
+                    - text: Read More
+                    - img [ref=e84]
+            - generic [ref=e86]:
+              - img [ref=e88]
+              - link "1" [ref=e90] [cursor=pointer]:
+                - /url: /blogs
+              - generic [ref=e91]:
+                - text: Next
+                - img [ref=e92]
+          - complementary [ref=e94]:
+            - generic [ref=e95]:
+              - generic [ref=e96]:
+                - heading "Trending Now" [level=4] [ref=e97]
+                - generic [ref=e98]:
+                  - link "Properties in Mumbai – A Complete Guide for Buyers and Investors Properties in Mumbai – A Complete Guide for Buyers and Investors 1 min read" [ref=e99] [cursor=pointer]:
+                    - /url: /blogs/properties-in-mumbai-a-complete-guide-for-buyers-and-investors-1777100707737
+                    - img "Properties in Mumbai – A Complete Guide for Buyers and Investors" [ref=e101]
+                    - generic [ref=e102]:
+                      - heading "Properties in Mumbai – A Complete Guide for Buyers and Investors" [level=5] [ref=e103]
+                      - generic [ref=e104]: 1 min read
+                  - link "Builders in Mumbai – Shaping the City’s Skyline Builders in Mumbai – Shaping the City’s Skyline 1 min read" [ref=e105] [cursor=pointer]:
+                    - /url: /blogs/builders-in-mumbai-shaping-the-citys-skyline-1777100415765
+                    - img "Builders in Mumbai – Shaping the City’s Skyline" [ref=e107]
+                    - generic [ref=e108]:
+                      - heading "Builders in Mumbai – Shaping the City’s Skyline" [level=5] [ref=e109]
+                      - generic [ref=e110]: 1 min read
+              - generic [ref=e111]:
+                - img [ref=e113]
+                - heading "Subscribe for Insights" [level=3] [ref=e116]:
+                  - text: Subscribe for
+                  - text: Insights
+                - paragraph [ref=e117]: Join 5,000+ investors receiving our weekly analysis.
+                - generic [ref=e118]:
+                  - generic [ref=e119]: Email address
+                  - textbox "Email address" [ref=e120]:
+                    - /placeholder: Your email address
+                  - button "Subscribe Now" [ref=e121]
+    - contentinfo [ref=e122]:
+      - generic [ref=e123]:
+        - generic [ref=e124]:
+          - generic [ref=e125]: GrihaNivas
+          - paragraph [ref=e126]: Mumbai's concierge real estate advisory.
+          - generic [ref=e127]:
+            - link "Instagram" [ref=e128] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e129]
+            - link "WhatsApp" [ref=e132] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e133]
+            - link "LinkedIn" [ref=e135] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e136]
+            - link "YouTube" [ref=e140] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e141]
+        - generic [ref=e144]:
+          - heading "Properties" [level=3] [ref=e145]
+          - list [ref=e146]:
+            - listitem [ref=e147]:
+              - link "Buy" [ref=e148] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e149]:
+              - link "Rent" [ref=e150] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e151]:
+              - link "Builders" [ref=e152] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e153]:
+              - link "New Launch" [ref=e154] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e155]:
+          - heading "Services" [level=3] [ref=e156]
+          - list [ref=e157]:
+            - listitem [ref=e158]:
+              - link "Home Loan" [ref=e159] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e160]:
+              - link "EMI Calculator" [ref=e161] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e162]:
+              - link "Stamp Duty" [ref=e163] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e164]:
+              - link "Rent Agreement" [ref=e165] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e166]:
+              - link "Comparison" [ref=e167] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e168]:
+          - heading "Resources" [level=3] [ref=e169]
+          - list [ref=e170]:
+            - listitem [ref=e171]:
+              - link "Blogs" [ref=e172] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e173]:
+              - link "FAQs" [ref=e174] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e175]:
+              - link "About Us" [ref=e176] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e177]:
+              - link "Contact" [ref=e178] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e179]:
+          - heading "Contact" [level=3] [ref=e180]
+          - list [ref=e181]:
+            - listitem [ref=e182]:
+              - img [ref=e183]
+              - generic [ref=e186]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e187]:
+              - img [ref=e188]
+              - link "+91 91379 50050" [ref=e190] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e191]:
+        - generic [ref=e192]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e193]:
+          - link "Privacy Policy" [ref=e194] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e195] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e196]:
+      - button "View current offer" [ref=e197]:
+        - generic [ref=e198]: local_offer
+      - link "Call us" [ref=e199] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e200]
+      - link "Chat on WhatsApp" [ref=e202] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e203]
+  - button "Open Next.js Dev Tools" [ref=e210] [cursor=pointer]:
+    - img [ref=e211]
+  - alert [ref=e214]

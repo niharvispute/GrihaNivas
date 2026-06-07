@@ -1,0 +1,239 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - main [ref=e23]:
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - generic [ref=e27]: search
+            - textbox "Search builder by name..." [ref=e28]
+          - generic [ref=e30]:
+            - generic [ref=e31] [cursor=pointer]:
+              - generic [ref=e32]: Featured Builders
+              - checkbox "Featured Builders" [ref=e34]
+            - button "Location All Locations expand_more" [ref=e38]:
+              - generic [ref=e39]:
+                - generic [ref=e40]: Location
+                - generic [ref=e41]: All Locations
+              - generic [ref=e42]: expand_more
+          - button "Search" [ref=e43]
+        - generic [ref=e45]:
+          - img "Hiranandani Group" [ref=e47]
+          - generic [ref=e49]:
+            - generic [ref=e50]: Featured Partner
+            - generic [ref=e51]:
+              - img "Hiranandani Group" [ref=e53]
+              - heading "Hiranandani Group" [level=2] [ref=e54]
+            - paragraph [ref=e55]: Hiranandani Group is a leading premium real estate developer in India, with over 40 years of experience delivering high-quality residential and commercial projects. Hiranandani Group has been one of the most premium real estate developer in India with more than 40 years of experience in this business. Since its inception in 1978, trust of the people in Hiranandani Group has been the foundation for our success and their unwavering faith motivates us to serve even more. Thousands of families who have created a future with us, will testify for the value that we have added in their lives. We acknowledge the possibilities that the technology offers, that's why we incorporate technological innovations in our real estate projects and give peopleexcellence and precision in everything. Ultimately, providing an amazing experience to the people is our endeavor.
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - paragraph [ref=e58]: Est. Year
+                - paragraph [ref=e59]: "1980"
+              - generic [ref=e60]:
+                - paragraph [ref=e61]: Total Projects
+                - paragraph [ref=e62]: "30"
+              - generic [ref=e63]:
+                - paragraph [ref=e64]: HQ Location
+                - paragraph [ref=e65]: Mumbai
+            - generic [ref=e66]:
+              - link "View Details" [ref=e67] [cursor=pointer]:
+                - /url: /builders/hiranandani-group
+              - link "View Portfolio" [ref=e68] [cursor=pointer]:
+                - /url: /builders/hiranandani-group#portfolio
+          - generic:
+            - button "Previous featured builder" [ref=e69]:
+              - generic [ref=e70]: chevron_left
+            - button "Next featured builder" [ref=e71]:
+              - generic [ref=e72]: chevron_right
+          - generic [ref=e73]:
+            - button "Go to featured builder 1" [ref=e74]
+            - button "Go to featured builder 2" [ref=e75]
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - img "Hiranandani Group" [ref=e79]
+              - generic [ref=e80]:
+                - generic [ref=e81]:
+                  - img [ref=e82]
+                  - text: Featured
+                - generic [ref=e84]: Featured Builder
+            - generic [ref=e85]:
+              - generic [ref=e86]:
+                - heading "Hiranandani Group" [level=3] [ref=e87]
+                - paragraph [ref=e88]:
+                  - img [ref=e89]
+                  - generic [ref=e92]: Mumbai
+              - generic [ref=e93]:
+                - generic [ref=e94]:
+                  - paragraph [ref=e95]: Est.
+                  - paragraph [ref=e96]: "1980"
+                - generic [ref=e98]:
+                  - paragraph [ref=e99]: Projects
+                  - paragraph [ref=e100]: 30+
+              - link "View Builder" [ref=e101] [cursor=pointer]:
+                - /url: /builders/hiranandani-group
+          - generic [ref=e102]:
+            - generic [ref=e103]:
+              - img "Lodha Developers Limited" [ref=e104]
+              - generic [ref=e105]:
+                - generic [ref=e106]:
+                  - img [ref=e107]
+                  - text: Featured
+                - generic [ref=e109]: Featured Builder
+            - generic [ref=e110]:
+              - generic [ref=e111]:
+                - heading "Lodha Developers Limited" [level=3] [ref=e112]
+                - paragraph [ref=e113]:
+                  - img [ref=e114]
+                  - generic [ref=e117]: Mumbai
+              - generic [ref=e118]:
+                - generic [ref=e119]:
+                  - paragraph [ref=e120]: Est.
+                  - paragraph [ref=e121]: "1980"
+                - generic [ref=e123]:
+                  - paragraph [ref=e124]: Projects
+                  - paragraph [ref=e125]: 30+
+              - link "View Builder" [ref=e126] [cursor=pointer]:
+                - /url: /builders/lodha-developers-limited
+    - contentinfo [ref=e127]:
+      - generic [ref=e128]:
+        - generic [ref=e129]:
+          - generic [ref=e130]: GrihaNivas
+          - paragraph [ref=e131]: Mumbai's concierge real estate advisory.
+          - generic [ref=e132]:
+            - link "Instagram" [ref=e133] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e134]
+            - link "WhatsApp" [ref=e137] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e138]
+            - link "LinkedIn" [ref=e140] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e141]
+            - link "YouTube" [ref=e145] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e146]
+        - generic [ref=e149]:
+          - heading "Properties" [level=3] [ref=e150]
+          - list [ref=e151]:
+            - listitem [ref=e152]:
+              - link "Buy" [ref=e153] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e154]:
+              - link "Rent" [ref=e155] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e156]:
+              - link "Builders" [ref=e157] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e158]:
+              - link "New Launch" [ref=e159] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e160]:
+          - heading "Services" [level=3] [ref=e161]
+          - list [ref=e162]:
+            - listitem [ref=e163]:
+              - link "Home Loan" [ref=e164] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e165]:
+              - link "EMI Calculator" [ref=e166] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e167]:
+              - link "Stamp Duty" [ref=e168] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e169]:
+              - link "Rent Agreement" [ref=e170] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e171]:
+              - link "Comparison" [ref=e172] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e173]:
+          - heading "Resources" [level=3] [ref=e174]
+          - list [ref=e175]:
+            - listitem [ref=e176]:
+              - link "Blogs" [ref=e177] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e178]:
+              - link "FAQs" [ref=e179] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e180]:
+              - link "About Us" [ref=e181] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e182]:
+              - link "Contact" [ref=e183] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e184]:
+          - heading "Contact" [level=3] [ref=e185]
+          - list [ref=e186]:
+            - listitem [ref=e187]:
+              - img [ref=e188]
+              - generic [ref=e191]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e192]:
+              - img [ref=e193]
+              - link "+91 91379 50050" [ref=e195] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e196]:
+        - generic [ref=e197]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e198]:
+          - link "Privacy Policy" [ref=e199] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e200] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e201]:
+      - button "View current offer" [ref=e202]:
+        - generic [ref=e203]: local_offer
+      - link "Call us" [ref=e204] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e205]
+      - link "Chat on WhatsApp" [ref=e207] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e208]
+  - button "Open Next.js Dev Tools" [ref=e215] [cursor=pointer]:
+    - img [ref=e216]
+  - alert [ref=e219]

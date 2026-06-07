@@ -1,0 +1,211 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e24]:
+          - generic:
+            - img "Architectural Abstract"
+          - generic [ref=e25]: CONNECT WITH US
+          - heading "Let's Start a Conversation." [level=1] [ref=e26]:
+            - text: Let's Start a
+            - text: Conversation.
+          - paragraph [ref=e27]: We’re here to help you find your masterpiece. Expertise at your service.
+        - generic [ref=e28]:
+          - generic [ref=e30]:
+            - generic [ref=e32]:
+              - img [ref=e35]
+              - generic [ref=e38]:
+                - heading "Office Address" [level=3] [ref=e39]
+                - paragraph [ref=e40]: The Pavilion, Worli Sea Face, South Mumbai, Maharashtra 400018
+            - generic [ref=e42]:
+              - img [ref=e45]
+              - generic [ref=e47]:
+                - heading "Phone Number" [level=3] [ref=e48]
+                - paragraph [ref=e49]: +91 91379 50050
+            - generic [ref=e51]:
+              - img [ref=e54]
+              - generic [ref=e57]:
+                - heading "Email Address" [level=3] [ref=e58]
+                - paragraph [ref=e59]: contact@grihanivas.in
+            - generic [ref=e60]:
+              - heading "Operations Hours" [level=3] [ref=e62]:
+                - img [ref=e63]
+                - text: Operations Hours
+              - generic [ref=e66]:
+                - generic [ref=e67]:
+                  - generic [ref=e68]: Mon - Fri
+                  - generic [ref=e69]: 09:00 AM - 07:00 PM
+                - generic [ref=e70]:
+                  - generic [ref=e71]: Saturday
+                  - generic [ref=e72]: 10:00 AM - 05:00 PM
+                - generic [ref=e73]:
+                  - generic [ref=e74]: Sunday
+                  - generic [ref=e75]: By Appointment
+          - generic [ref=e76]:
+            - heading "Send us a message" [level=2] [ref=e78]
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - generic [ref=e81]:
+                  - text: Full Name
+                  - textbox "John Doe" [ref=e82]
+                - generic [ref=e83]:
+                  - text: Phone Number
+                  - textbox "+91 00000 00000" [ref=e84]
+              - generic [ref=e85]:
+                - text: Email Address
+                - textbox "john@example.com" [ref=e86]
+              - generic [ref=e87]:
+                - text: Message
+                - textbox "How can we assist you today?" [ref=e88]
+              - button "Send Message" [ref=e89]:
+                - text: Send Message
+                - img [ref=e90]
+        - generic [ref=e94]:
+          - generic [ref=e96]:
+            - heading "Have more questions?" [level=2] [ref=e97]
+            - paragraph [ref=e98]: Browse our frequently asked questions about listing and investment processes.
+          - link "Go to FAQs" [ref=e99] [cursor=pointer]:
+            - /url: /faq
+    - contentinfo [ref=e100]:
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - generic [ref=e103]: GrihaNivas
+          - paragraph [ref=e104]: Mumbai's concierge real estate advisory.
+          - generic [ref=e105]:
+            - link "Instagram" [ref=e106] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e107]
+            - link "WhatsApp" [ref=e110] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e111]
+            - link "LinkedIn" [ref=e113] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e114]
+            - link "YouTube" [ref=e118] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e119]
+        - generic [ref=e122]:
+          - heading "Properties" [level=3] [ref=e123]
+          - list [ref=e124]:
+            - listitem [ref=e125]:
+              - link "Buy" [ref=e126] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e127]:
+              - link "Rent" [ref=e128] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e129]:
+              - link "Builders" [ref=e130] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e131]:
+              - link "New Launch" [ref=e132] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e133]:
+          - heading "Services" [level=3] [ref=e134]
+          - list [ref=e135]:
+            - listitem [ref=e136]:
+              - link "Home Loan" [ref=e137] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e138]:
+              - link "EMI Calculator" [ref=e139] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e140]:
+              - link "Stamp Duty" [ref=e141] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e142]:
+              - link "Rent Agreement" [ref=e143] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e144]:
+              - link "Comparison" [ref=e145] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e146]:
+          - heading "Resources" [level=3] [ref=e147]
+          - list [ref=e148]:
+            - listitem [ref=e149]:
+              - link "Blogs" [ref=e150] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e151]:
+              - link "FAQs" [ref=e152] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e153]:
+              - link "About Us" [ref=e154] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e155]:
+              - link "Contact" [ref=e156] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e157]:
+          - heading "Contact" [level=3] [ref=e158]
+          - list [ref=e159]:
+            - listitem [ref=e160]:
+              - img [ref=e161]
+              - generic [ref=e164]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e165]:
+              - img [ref=e166]
+              - link "+91 91379 50050" [ref=e168] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e169]:
+        - generic [ref=e170]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e171]:
+          - link "Privacy Policy" [ref=e172] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e173] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e174]:
+      - button "View current offer" [ref=e175]:
+        - generic [ref=e176]: local_offer
+      - link "Call us" [ref=e177] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e178]
+      - link "Chat on WhatsApp" [ref=e180] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e181]
+  - button "Open Next.js Dev Tools" [ref=e188] [cursor=pointer]:
+    - img [ref=e189]
+  - alert [ref=e192]

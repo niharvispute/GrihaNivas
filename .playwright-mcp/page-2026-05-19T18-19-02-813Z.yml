@@ -1,0 +1,289 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - main [ref=e23]:
+        - generic [ref=e24]:
+          - img "Lodha Developers Limited" [ref=e26]
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - img "Lodha Developers Limited Logo" [ref=e33]
+              - heading "Lodha Developers Limited" [level=1] [ref=e34]
+              - paragraph [ref=e35]: Lodha is India's leading real estate developer, delivering thoughtfully designed, premium properties that shape urban lifestyle. At Lodha, we understand the responsibility that comes with creating homes today for an ever-changing tomorrow and promote the harmony between luxury and sustainability.
+            - generic [ref=e36]:
+              - generic [ref=e37]:
+                - generic [ref=e38]: calendar_today
+                - generic [ref=e39]:
+                  - paragraph [ref=e40]: Est. Year
+                  - paragraph [ref=e41]: "1980"
+              - generic [ref=e42]:
+                - generic [ref=e43]: apartment
+                - generic [ref=e44]:
+                  - paragraph [ref=e45]: Total Assets
+                  - paragraph [ref=e46]: "30"
+              - generic [ref=e47]:
+                - generic [ref=e48]: location_city
+                - generic [ref=e49]:
+                  - paragraph [ref=e50]: HQ Location
+                  - paragraph [ref=e51]: Mumbai
+            - generic [ref=e52]:
+              - link "View All Properties arrow_downward" [ref=e53] [cursor=pointer]:
+                - /url: "#portfolio"
+                - text: View All Properties
+                - generic [ref=e54]: arrow_downward
+              - link "Contact Expert call" [ref=e55] [cursor=pointer]:
+                - /url: "#builder-contact-form"
+                - text: Contact Expert
+                - generic [ref=e56]: call
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - generic [ref=e60]: The Legacy
+            - heading "Lodha Developers Limited" [level=2] [ref=e61]
+            - generic [ref=e62]:
+              - paragraph [ref=e63]: Lodha is India's leading real estate developer, delivering thoughtfully designed, premium properties that shape urban lifestyle. At Lodha, we understand the responsibility that comes with creating homes today for an ever-changing tomorrow and promote the harmony between luxury and sustainability.
+              - generic [ref=e64]:
+                - generic [ref=e65]:
+                  - heading "Quality Standards" [level=4] [ref=e66]
+                  - paragraph [ref=e67]: RERA-aligned project governance
+                - generic [ref=e68]:
+                  - heading "Innovation" [level=4] [ref=e69]
+                  - paragraph [ref=e70]: Urban planning and execution expertise
+          - img "Architecture 1" [ref=e73]
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - heading "30" [level=3] [ref=e78]
+            - paragraph [ref=e79]: Total Projects
+          - generic [ref=e80]:
+            - heading "25" [level=3] [ref=e81]
+            - paragraph [ref=e82]: Ongoing
+          - generic [ref=e83]:
+            - heading "5" [level=3] [ref=e84]
+            - paragraph [ref=e85]: Completed Deliveries
+        - generic [ref=e87]:
+          - generic [ref=e88]:
+            - generic [ref=e89]:
+              - heading "Portfolio Showcase" [level=2] [ref=e90]
+              - paragraph [ref=e91]: Explore our current residential masterpieces across the Mumbai Metropolitan Region.
+            - generic [ref=e92]:
+              - button "Configuration" [ref=e94] [cursor=pointer]:
+                - generic [ref=e95]: Configuration
+                - img [ref=e97]
+              - button "Price Range" [ref=e100] [cursor=pointer]:
+                - generic [ref=e101]: Price Range
+                - img [ref=e103]
+              - button "Status" [ref=e106] [cursor=pointer]:
+                - generic [ref=e107]: Status
+                - img [ref=e109]
+              - button "Reset" [ref=e111]:
+                - img [ref=e112]
+                - text: Reset
+          - generic [ref=e115]:
+            - button "Previous" [disabled]:
+              - generic: west
+            - button "Next" [disabled]:
+              - generic: east
+            - generic [ref=e117]:
+              - generic [ref=e118]:
+                - generic [ref=e119]:
+                  - img "Lodha Marquise" [ref=e120]
+                  - generic [ref=e121]: buy
+                - generic [ref=e122]:
+                  - heading "Lodha Marquise" [level=3] [ref=e123]
+                  - paragraph [ref=e124]: ₹1.2 Cr
+                  - generic [ref=e125]:
+                    - generic [ref=e126]: location_on
+                    - text: Worli, Mumbai
+                  - generic [ref=e127]:
+                    - generic [ref=e128]:
+                      - paragraph [ref=e129]: Config
+                      - paragraph [ref=e130]: Configuration on request
+                    - generic [ref=e131]:
+                      - paragraph [ref=e132]: Ready
+                      - paragraph [ref=e133]: For Sale
+                  - link "View Detail" [ref=e134] [cursor=pointer]:
+                    - /url: /property/lodha-marquise-1777106921262
+              - generic [ref=e135]:
+                - generic [ref=e136]:
+                  - img "Edmont Aurelia" [ref=e137]
+                  - generic [ref=e138]: rent
+                - generic [ref=e139]:
+                  - heading "Edmont Aurelia" [level=3] [ref=e140]
+                  - paragraph [ref=e141]: ₹2.25 Cr
+                  - generic [ref=e142]:
+                    - generic [ref=e143]: location_on
+                    - text: Kandivali West, Mumbai
+                  - generic [ref=e144]:
+                    - generic [ref=e145]:
+                      - paragraph [ref=e146]: Config
+                      - paragraph [ref=e147]: Configuration on request
+                    - generic [ref=e148]:
+                      - paragraph [ref=e149]: Ready
+                      - paragraph [ref=e150]: For Sale
+                  - link "View Detail" [ref=e151] [cursor=pointer]:
+                    - /url: /property/edmont-aurelia-1777099056111
+        - generic [ref=e159]:
+          - heading "Enquire with Lodha Developers Limited" [level=3] [ref=e160]
+          - generic [ref=e161]:
+            - generic [ref=e162]:
+              - generic [ref=e163]: Full Name
+              - textbox "Full Name" [ref=e164]:
+                - /placeholder: John Doe
+            - generic [ref=e165]:
+              - generic [ref=e166]: Email Address
+              - textbox "Email Address" [ref=e167]:
+                - /placeholder: john@example.com
+            - generic [ref=e168]:
+              - generic [ref=e169]: Phone Number *
+              - textbox "Phone Number *" [ref=e170]:
+                - /placeholder: 98765 43210
+            - generic [ref=e171]:
+              - generic [ref=e172]: Message
+              - textbox "Message" [ref=e173]:
+                - /placeholder: Tell us your budget, preferred area, and possession timeline.
+            - button "Send Inquiry" [ref=e174]
+            - paragraph [ref=e175]:
+              - text: By submitting, you agree to our
+              - link "Terms" [ref=e176] [cursor=pointer]:
+                - /url: /terms
+              - text: and
+              - link "Privacy Policy" [ref=e177] [cursor=pointer]:
+                - /url: /privacy
+              - text: .
+    - contentinfo [ref=e179]:
+      - generic [ref=e180]:
+        - generic [ref=e181]:
+          - generic [ref=e182]: GrihaNivas
+          - paragraph [ref=e183]: Mumbai's concierge real estate advisory.
+          - generic [ref=e184]:
+            - link "Instagram" [ref=e185] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e186]
+            - link "WhatsApp" [ref=e189] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e190]
+            - link "LinkedIn" [ref=e192] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e193]
+            - link "YouTube" [ref=e197] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e198]
+        - generic [ref=e201]:
+          - heading "Properties" [level=3] [ref=e202]
+          - list [ref=e203]:
+            - listitem [ref=e204]:
+              - link "Buy" [ref=e205] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e206]:
+              - link "Rent" [ref=e207] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e208]:
+              - link "Builders" [ref=e209] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e210]:
+              - link "New Launch" [ref=e211] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e212]:
+          - heading "Services" [level=3] [ref=e213]
+          - list [ref=e214]:
+            - listitem [ref=e215]:
+              - link "Home Loan" [ref=e216] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e217]:
+              - link "EMI Calculator" [ref=e218] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e219]:
+              - link "Stamp Duty" [ref=e220] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e221]:
+              - link "Rent Agreement" [ref=e222] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e223]:
+              - link "Comparison" [ref=e224] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e225]:
+          - heading "Resources" [level=3] [ref=e226]
+          - list [ref=e227]:
+            - listitem [ref=e228]:
+              - link "Blogs" [ref=e229] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e230]:
+              - link "FAQs" [ref=e231] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e232]:
+              - link "About Us" [ref=e233] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e234]:
+              - link "Contact" [ref=e235] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e236]:
+          - heading "Contact" [level=3] [ref=e237]
+          - list [ref=e238]:
+            - listitem [ref=e239]:
+              - img [ref=e240]
+              - generic [ref=e243]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e244]:
+              - img [ref=e245]
+              - link "+91 91379 50050" [ref=e247] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e248]:
+        - generic [ref=e249]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e250]:
+          - link "Privacy Policy" [ref=e251] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e252] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e253]:
+      - link "Call us" [ref=e254] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e255]
+      - link "Chat on WhatsApp" [ref=e257] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e258]
+  - button "Open Next.js Dev Tools" [ref=e265] [cursor=pointer]:
+    - img [ref=e266]
+  - alert [ref=e269]

@@ -1,0 +1,622 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "Grihavastu" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e7]:
+          - button "Login" [ref=e8]
+          - button "Open menu" [ref=e9]
+    - generic:
+      - generic:
+        - generic:
+          - generic: Menu
+          - button "Close menu":
+            - img
+        - navigation:
+          - link "BUY":
+            - /url: /buy
+          - link "RENT":
+            - /url: /rent
+          - link "NEW LAUNCH":
+            - /url: /new-launch
+          - link "BUILDERS":
+            - /url: /builders
+          - link "BLOGS":
+            - /url: /blogs
+          - generic:
+            - button "apps Services expand_more":
+              - generic:
+                - generic: apps
+                - text: Services
+              - generic: expand_more
+            - generic:
+              - generic:
+                - generic:
+                  - link "account_balance Home Loan":
+                    - /url: /home-loan
+                    - generic: account_balance
+                    - generic: Home Loan
+                  - link "calculate EMI Calculator":
+                    - /url: /emi-calculator
+                    - generic: calculate
+                    - generic: EMI Calculator
+                  - link "receipt_long Stamp Duty":
+                    - /url: /stamp-duty
+                    - generic: receipt_long
+                    - generic: Stamp Duty
+                  - link "description Rent Agreement":
+                    - /url: /rent-agreement
+                    - generic: description
+                    - generic: Rent Agreement
+                  - link "compare Comparison":
+                    - /url: /compare
+                    - generic: compare
+                    - generic: Comparison
+          - link "CONTACT":
+            - /url: /contact
+        - generic:
+          - button "List Your Property"
+          - button "Login / Register"
+    - main [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - img "Mumbai Skyline" [ref=e17]
+          - generic [ref=e21]:
+            - generic [ref=e22]:
+              - generic [ref=e23]: location_city
+              - text: Grihavastu by Ghar
+            - heading "Still looking a for a place which feels right… ?" [level=1] [ref=e24]: Still looking a for a place which feels right… ?
+            - paragraph [ref=e25]: Curated projects, trusted builders, and area-led advice for buyers, renters, and new-launch investors.
+            - generic [ref=e26]:
+              - generic [ref=e28]:
+                - button "Buy" [ref=e29]
+                - button "Rent" [ref=e30]
+                - button "New Launch" [ref=e31]
+              - generic [ref=e32]:
+                - generic [ref=e33]:
+                  - generic [ref=e35]: location_on
+                  - generic [ref=e36]:
+                    - generic [ref=e37]: Location
+                    - textbox "Location" [ref=e38]:
+                      - /placeholder: Mumbai — area or locality
+                - generic [ref=e39]:
+                  - generic [ref=e41]: apartment
+                  - generic [ref=e42]:
+                    - generic [ref=e43]: BHK Type
+                    - button "Any expand_more" [ref=e44]:
+                      - generic [ref=e45]: Any
+                      - generic [ref=e46]: expand_more
+                - button "Search" [ref=e48]:
+                  - img [ref=e49]
+                  - text: Search
+              - generic [ref=e52]:
+                - generic [ref=e53]: "Popular:"
+                - button "Andheri West" [ref=e54]
+                - button "Bandra West" [ref=e55]
+                - button "Juhu" [ref=e56]
+                - button "Kandivali West, Mumbai" [ref=e57]
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - generic [ref=e60]: verified
+                - generic [ref=e61]:
+                  - paragraph [ref=e62]: RERA
+                  - paragraph [ref=e63]: Verified inventory
+              - generic [ref=e64]:
+                - generic [ref=e65]: support_agent
+                - generic [ref=e66]:
+                  - paragraph [ref=e67]: 24 hr
+                  - paragraph [ref=e68]: Concierge callback
+              - generic [ref=e69]:
+                - generic [ref=e70]: groups
+                - generic [ref=e71]:
+                  - paragraph [ref=e72]: 3K+
+                  - paragraph [ref=e73]: Mumbai buyers guided
+        - generic [ref=e74]:
+          - generic [ref=e76]:
+            - generic [ref=e77]:
+              - paragraph [ref=e80]: Curated Selection
+              - heading "Trending Projects in Mumbai" [level=2] [ref=e81]
+              - paragraph [ref=e82]: Discover verified projects with best-value inventory and quick brochure access.
+            - generic [ref=e83]:
+              - button "Previous" [disabled] [ref=e84]:
+                - generic [ref=e85]: west
+              - button "Next" [ref=e86]:
+                - generic [ref=e87]: east
+          - generic [ref=e88]:
+            - button "Previous" [disabled]:
+              - generic: west
+            - button "Next" [ref=e89]:
+              - generic [ref=e90]: east
+            - generic [ref=e92]:
+              - article [ref=e94]:
+                - generic [ref=e95]:
+                  - img "Apartment in Sangvi" [ref=e97]
+                  - generic [ref=e98]:
+                    - img [ref=e99]
+                    - text: Featured
+                  - button "Save to Wishlist" [ref=e101]:
+                    - img [ref=e102]
+                - generic [ref=e104]:
+                  - generic [ref=e106]:
+                    - generic [ref=e107]:
+                      - heading "Apartment in Sangvi" [level=3] [ref=e108]
+                      - generic [ref=e109]: Rental
+                    - paragraph [ref=e110]:
+                      - img [ref=e111]
+                      - generic [ref=e114]: Sangvi, Mumbai
+                  - generic [ref=e115]:
+                    - generic [ref=e116]:
+                      - generic [ref=e117]: Cost
+                      - generic [ref=e118]:
+                        - generic [ref=e119]: payments
+                        - text: Price on Request
+                    - generic [ref=e120]:
+                      - generic [ref=e121]: Area
+                      - generic [ref=e122]:
+                        - generic [ref=e123]: square_foot
+                        - text: Area on request
+                  - generic [ref=e124]:
+                    - link "View Property" [ref=e125] [cursor=pointer]:
+                      - /url: /property/apartment-in-sangvi-1777218429795
+                    - button "Add to Compare" [ref=e126]:
+                      - img [ref=e127]
+                      - generic [ref=e129]: Compare
+              - article [ref=e131]:
+                - generic [ref=e132]:
+                  - img "Apartment in Wakad" [ref=e134]
+                  - generic [ref=e135]:
+                    - img [ref=e136]
+                    - text: Featured
+                  - button "Save to Wishlist" [ref=e138]:
+                    - img [ref=e139]
+                - generic [ref=e141]:
+                  - generic [ref=e143]:
+                    - generic [ref=e144]:
+                      - heading "Apartment in Wakad" [level=3] [ref=e145]
+                      - generic [ref=e146]: Rental
+                    - paragraph [ref=e147]:
+                      - img [ref=e148]
+                      - generic [ref=e151]: Wakad, Mumbai
+                  - generic [ref=e152]:
+                    - generic [ref=e153]:
+                      - generic [ref=e154]: Cost
+                      - generic [ref=e155]:
+                        - generic [ref=e156]: payments
+                        - text: Price on Request
+                    - generic [ref=e157]:
+                      - generic [ref=e158]: Area
+                      - generic [ref=e159]:
+                        - generic [ref=e160]: square_foot
+                        - text: Area on request
+                  - generic [ref=e161]:
+                    - link "View Property" [ref=e162] [cursor=pointer]:
+                      - /url: /property/apartment-in-wakad-1777217805039
+                    - button "Add to Compare" [ref=e163]:
+                      - img [ref=e164]
+                      - generic [ref=e166]: Compare
+              - article [ref=e168]:
+                - generic [ref=e169]:
+                  - img "Lodha Marquise" [ref=e171]
+                  - generic [ref=e172]:
+                    - img [ref=e173]
+                    - text: Featured
+                  - button "Save to Wishlist" [ref=e175]:
+                    - img [ref=e176]
+                - generic [ref=e178]:
+                  - generic [ref=e180]:
+                    - generic [ref=e181]:
+                      - heading "Lodha Marquise" [level=3] [ref=e182]
+                      - generic [ref=e183]: Residential
+                    - paragraph [ref=e184]:
+                      - img [ref=e185]
+                      - generic [ref=e188]: Worli, Mumbai, Mumbai
+                  - generic [ref=e189]:
+                    - generic [ref=e190]:
+                      - generic [ref=e191]: Cost
+                      - generic [ref=e192]:
+                        - generic [ref=e193]: payments
+                        - text: ₹2 Cr
+                    - generic [ref=e194]:
+                      - generic [ref=e195]: Area
+                      - generic [ref=e196]:
+                        - generic [ref=e197]: square_foot
+                        - text: Area on request
+                  - generic [ref=e198]:
+                    - link "View Property" [ref=e199] [cursor=pointer]:
+                      - /url: /property/lodha-marquise-1777110491004
+                    - button "Add to Compare" [ref=e200]:
+                      - img [ref=e201]
+                      - generic [ref=e203]: Compare
+              - article [ref=e205]:
+                - generic [ref=e206]:
+                  - img "Lodha Marquise" [ref=e208]
+                  - generic [ref=e209]:
+                    - img [ref=e210]
+                    - text: Featured
+                  - button "Save to Wishlist" [ref=e212]:
+                    - img [ref=e213]
+                - generic [ref=e215]:
+                  - generic [ref=e217]:
+                    - generic [ref=e218]:
+                      - heading "Lodha Marquise" [level=3] [ref=e219]
+                      - generic [ref=e220]: Residential
+                    - paragraph [ref=e221]:
+                      - img [ref=e222]
+                      - generic [ref=e225]: Worli, Mumbai, Mumbai
+                  - generic [ref=e226]:
+                    - generic [ref=e227]:
+                      - generic [ref=e228]: Cost
+                      - generic [ref=e229]:
+                        - generic [ref=e230]: payments
+                        - text: ₹1.2 Cr
+                    - generic [ref=e231]:
+                      - generic [ref=e232]: Area
+                      - generic [ref=e233]:
+                        - generic [ref=e234]: square_foot
+                        - text: Area on request
+                  - generic [ref=e235]:
+                    - link "View Property" [ref=e236] [cursor=pointer]:
+                      - /url: /property/lodha-marquise-1777106921262
+                    - button "Add to Compare" [ref=e237]:
+                      - img [ref=e238]
+                      - generic [ref=e240]: Compare
+              - article [ref=e242]:
+                - generic [ref=e243]:
+                  - img "Edmont Aurelia" [ref=e245]
+                  - generic [ref=e246]:
+                    - img [ref=e247]
+                    - text: Featured
+                  - button "Save to Wishlist" [ref=e249]:
+                    - img [ref=e250]
+                - generic [ref=e252]:
+                  - generic [ref=e254]:
+                    - generic [ref=e255]:
+                      - heading "Edmont Aurelia" [level=3] [ref=e256]
+                      - generic [ref=e257]: Rental
+                    - paragraph [ref=e258]:
+                      - img [ref=e259]
+                      - generic [ref=e262]: Kandivali West, Mumbai, Mumbai
+                  - generic [ref=e263]:
+                    - generic [ref=e264]:
+                      - generic [ref=e265]: Cost
+                      - generic [ref=e266]:
+                        - generic [ref=e267]: payments
+                        - text: ₹2.25 Cr
+                    - generic [ref=e268]:
+                      - generic [ref=e269]: Area
+                      - generic [ref=e270]:
+                        - generic [ref=e271]: square_foot
+                        - text: Area on request
+                  - generic [ref=e272]:
+                    - link "View Property" [ref=e273] [cursor=pointer]:
+                      - /url: /property/edmont-aurelia-1777099056111
+                    - button "Add to Compare" [ref=e274]:
+                      - img [ref=e275]
+                      - generic [ref=e277]: Compare
+        - generic [ref=e282]:
+          - generic [ref=e285]:
+            - paragraph [ref=e288]: Curated Selection
+            - heading "The Master Builders" [level=2] [ref=e289]
+            - paragraph [ref=e290]: Discover the visionaries behind Mumbai's most iconic skylines and architectural marvels.
+          - article [ref=e294]:
+            - generic [ref=e295]:
+              - img "Lodha Developers Limited" [ref=e297]
+              - generic [ref=e298]:
+                - generic [ref=e299]:
+                  - img [ref=e300]
+                  - text: Featured
+                - generic [ref=e302]: Trending
+            - generic [ref=e303]:
+              - generic [ref=e304]:
+                - heading "Lodha Developers Limited" [level=3] [ref=e305]
+                - paragraph [ref=e306]:
+                  - img [ref=e307]
+                  - generic [ref=e310]: Mumbai
+              - generic [ref=e311]:
+                - generic [ref=e312]:
+                  - paragraph [ref=e313]: Est.
+                  - paragraph [ref=e314]: "1980"
+                - generic [ref=e315]:
+                  - paragraph [ref=e316]: Projects
+                  - paragraph [ref=e317]: 30+
+              - paragraph [ref=e318]: Lodha is India's leading real estate developer, delivering thoughtfully designed, premium properties that shape urban lifestyle. At Lodha, we understand the responsibility that comes with creating homes today for an ever-changing tomorrow and promote the harmony between luxury and sustainability.
+              - link "View Builder" [ref=e319] [cursor=pointer]:
+                - /url: /builders/lodha-developers-limited
+        - generic [ref=e321]:
+          - generic [ref=e322]:
+            - heading "Choose Your Property Path" [level=2] [ref=e323]
+            - paragraph [ref=e324]: Jump into the Mumbai journey that matches your intent.
+          - generic [ref=e325]:
+            - link "Buy 01 Buy Ready homes and resale apartments Explore" [ref=e326] [cursor=pointer]:
+              - /url: /buy
+              - img "Buy" [ref=e327]
+              - generic [ref=e329]: "01"
+              - generic [ref=e330]:
+                - heading "Buy" [level=3] [ref=e331]
+                - paragraph [ref=e332]: Ready homes and resale apartments
+                - generic [ref=e333]:
+                  - text: Explore
+                  - img [ref=e334]
+            - link "Rent 02 Rent Move-in rentals across prime pockets Explore" [ref=e336] [cursor=pointer]:
+              - /url: /rent
+              - img "Rent" [ref=e337]
+              - generic [ref=e339]: "02"
+              - generic [ref=e340]:
+                - heading "Rent" [level=3] [ref=e341]
+                - paragraph [ref=e342]: Move-in rentals across prime pockets
+                - generic [ref=e343]:
+                  - text: Explore
+                  - img [ref=e344]
+            - link "Builders 03 Builders Trusted names shaping Mumbai Explore" [ref=e346] [cursor=pointer]:
+              - /url: /builders
+              - img "Builders" [ref=e347]
+              - generic [ref=e349]: "03"
+              - generic [ref=e350]:
+                - heading "Builders" [level=3] [ref=e351]
+                - paragraph [ref=e352]: Trusted names shaping Mumbai
+                - generic [ref=e353]:
+                  - text: Explore
+                  - img [ref=e354]
+            - link "New Launch 04 New Launch Fresh projects and early access Explore" [ref=e356] [cursor=pointer]:
+              - /url: /new-launch
+              - img "New Launch" [ref=e357]
+              - generic [ref=e359]: "04"
+              - generic [ref=e360]:
+                - heading "New Launch" [level=3] [ref=e361]
+                - paragraph [ref=e362]: Fresh projects and early access
+                - generic [ref=e363]:
+                  - text: Explore
+                  - img [ref=e364]
+        - generic [ref=e368]:
+          - generic [ref=e369]:
+            - generic [ref=e370]: The Ghar Philosophy
+            - heading "We Don't Just Find Homes. We Curate Lifestyles." [level=2] [ref=e371]
+            - paragraph [ref=e372]: Grihavastu by Ghar is more than a portal. We are a boutique real estate advisory dedicated to the city's most discerning residents.
+            - generic [ref=e373]:
+              - generic [ref=e374]:
+                - img [ref=e376]
+                - generic [ref=e379]:
+                  - heading "Verified Listings" [level=3] [ref=e380]
+                  - paragraph [ref=e381]: Every home is physically inspected by our concierge.
+              - generic [ref=e382]:
+                - img [ref=e384]
+                - generic [ref=e387]:
+                  - heading "Trusted Network" [level=3] [ref=e388]
+                  - paragraph [ref=e389]: 10,000+ happy residents across the island city.
+              - generic [ref=e390]:
+                - img [ref=e392]
+                - generic [ref=e395]:
+                  - heading "Expert Guidance" [level=3] [ref=e396]
+                  - paragraph [ref=e397]: 24/7 dedicated advisory for your property journey.
+              - generic [ref=e398]:
+                - img [ref=e400]
+                - generic [ref=e403]:
+                  - heading "Legal Support" [level=3] [ref=e404]
+                  - paragraph [ref=e405]: End-to-end paperwork and registration assistance.
+          - generic [ref=e406]:
+            - img "Premium Mumbai apartment living room" [ref=e407]
+            - generic [ref=e409]:
+              - paragraph [ref=e410]: Concierge Lens
+              - paragraph [ref=e411]: Shortlists built around commute, possession, paperwork, and resale value.
+        - generic [ref=e413]:
+          - generic [ref=e414]:
+            - generic [ref=e415]:
+              - heading "Inside Mumbai Real Estate" [level=2] [ref=e416]
+              - paragraph [ref=e417]: Expert analysis, neighborhood deep-dives, and market forecasts.
+            - link "Read All Articles" [ref=e418] [cursor=pointer]:
+              - /url: /blogs
+          - generic [ref=e419]:
+            - link "Testing for publish Investment Testing for publish" [ref=e420] [cursor=pointer]:
+              - /url: /blogs/testing-for-publish-1777639244146
+              - generic [ref=e421]:
+                - img "Testing for publish" [ref=e422]
+                - generic [ref=e423]: Investment
+              - heading "Testing for publish" [level=3] [ref=e424]
+              - paragraph
+            - link "Properties in Mumbai – A Complete Guide for Buyers and Investors Buying Guide Properties in Mumbai – A Complete Guide for Buyers and Investors" [ref=e425] [cursor=pointer]:
+              - /url: /blogs/properties-in-mumbai-a-complete-guide-for-buyers-and-investors-1777100707737
+              - generic [ref=e426]:
+                - img "Properties in Mumbai – A Complete Guide for Buyers and Investors" [ref=e427]
+                - generic [ref=e428]: Buying Guide
+              - heading "Properties in Mumbai – A Complete Guide for Buyers and Investors" [level=3] [ref=e429]
+              - paragraph
+            - link "Builders in Mumbai – Shaping the City’s Skyline Lifestyle Builders in Mumbai – Shaping the City’s Skyline" [ref=e430] [cursor=pointer]:
+              - /url: /blogs/builders-in-mumbai-shaping-the-citys-skyline-1777100415765
+              - generic [ref=e431]:
+                - img "Builders in Mumbai – Shaping the City’s Skyline" [ref=e432]
+                - generic [ref=e433]: Lifestyle
+              - heading "Builders in Mumbai – Shaping the City’s Skyline" [level=3] [ref=e434]
+              - paragraph
+        - generic [ref=e436]:
+          - generic [ref=e437]:
+            - text: Social Proof
+            - heading "What Our Users Say" [level=2] [ref=e438]
+            - paragraph [ref=e439]: Real conversations, cleaner shortlists, and calmer decisions.
+          - generic [ref=e441]:
+            - generic [ref=e442]:
+              - generic [ref=e443]: star
+              - generic [ref=e444]: star
+              - generic [ref=e445]: star
+              - generic [ref=e446]: star
+              - generic [ref=e447]: star
+            - paragraph [ref=e448]: “It was great buying from Bricks I am completely fascinated with it”
+            - generic [ref=e449]:
+              - img "Rashmika" [ref=e451]
+              - generic [ref=e452]:
+                - paragraph [ref=e453]: Rashmika
+                - paragraph [ref=e454]: Home Buyer
+          - generic [ref=e455]:
+            - paragraph [ref=e456]: Ready to compare verified options?
+            - link "Explore Properties arrow_forward" [ref=e457] [cursor=pointer]:
+              - /url: /buy
+              - text: Explore Properties
+              - generic [ref=e458]: arrow_forward
+        - generic [ref=e461]:
+          - generic [ref=e463]:
+            - paragraph [ref=e464]: Private Advisory
+            - heading "Get a sharper shortlist before you spend weekends visiting." [level=2] [ref=e465]
+            - paragraph [ref=e466]: Tell us your budget, commute, and possession timeline. Our area experts will suggest verified projects and next steps.
+            - generic [ref=e467]:
+              - generic [ref=e468]:
+                - generic [ref=e469]: check_circle
+                - paragraph [ref=e470]: Area match
+              - generic [ref=e471]:
+                - generic [ref=e472]: check_circle
+                - paragraph [ref=e473]: RERA check
+              - generic [ref=e474]:
+                - generic [ref=e475]: check_circle
+                - paragraph [ref=e476]: Loan assist
+            - link "Contact Now +91 92224 56789" [ref=e478] [cursor=pointer]:
+              - /url: tel:+919137950050
+              - img [ref=e480]
+              - generic [ref=e482]:
+                - paragraph [ref=e483]: Contact Now
+                - paragraph [ref=e484]: +91 92224 56789
+          - generic [ref=e486]:
+            - heading "Get Free Consultation" [level=3] [ref=e487]
+            - generic [ref=e488]:
+              - generic [ref=e489]:
+                - generic [ref=e490]: Full Name
+                - textbox "Full Name" [ref=e491]:
+                  - /placeholder: John Doe
+              - generic [ref=e492]:
+                - generic [ref=e493]: Email Address
+                - textbox "Email Address" [ref=e494]:
+                  - /placeholder: john@example.com
+              - generic [ref=e495]:
+                - generic [ref=e496]: Phone Number *
+                - textbox "Phone Number *" [ref=e497]:
+                  - /placeholder: 98765 43210
+              - generic [ref=e498]:
+                - generic [ref=e499]: Message
+                - textbox "Message" [ref=e500]:
+                  - /placeholder: I am interested in this property...
+              - button "Send Inquiry" [ref=e501]
+              - paragraph [ref=e502]:
+                - text: By submitting, you agree to our
+                - link "Terms" [ref=e503] [cursor=pointer]:
+                  - /url: /terms
+                - text: and
+                - link "Privacy Policy" [ref=e504] [cursor=pointer]:
+                  - /url: /privacy
+                - text: .
+        - generic [ref=e506]:
+          - generic [ref=e507]:
+            - heading "FAQs" [level=2] [ref=e508]
+            - paragraph [ref=e509]: Everything you need to know about properties in Mumbai.
+          - generic [ref=e510]:
+            - group [ref=e511] [cursor=pointer]:
+              - generic "What are the current luxury rates in Worli?" [ref=e512]:
+                - text: What are the current luxury rates in Worli?
+                - img [ref=e513]
+            - group [ref=e515] [cursor=pointer]:
+              - generic "Do you provide home loan assistance?" [ref=e516]:
+                - text: Do you provide home loan assistance?
+                - img [ref=e517]
+            - group [ref=e519] [cursor=pointer]:
+              - generic "Are all listings RERA registered?" [ref=e520]:
+                - text: Are all listings RERA registered?
+                - img [ref=e521]
+    - contentinfo [ref=e523]:
+      - generic [ref=e524]:
+        - generic [ref=e525]:
+          - generic [ref=e526]: Grihavastu
+          - paragraph [ref=e527]: Curating Mumbai's most exclusive real estate opportunities with an architectural lens.
+          - generic [ref=e528]:
+            - link "Instagram" [ref=e529] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e530]
+            - link "WhatsApp" [ref=e533] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e534]
+            - link "LinkedIn" [ref=e536] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e537]
+            - link "YouTube" [ref=e541] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e542]
+        - generic [ref=e545]:
+          - heading "Properties" [level=3] [ref=e546]
+          - list [ref=e547]:
+            - listitem [ref=e548]:
+              - link "Buy" [ref=e549] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e550]:
+              - link "Rent" [ref=e551] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e552]:
+              - link "Builders" [ref=e553] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e554]:
+              - link "New Launch" [ref=e555] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e556]:
+          - heading "Services" [level=3] [ref=e557]
+          - list [ref=e558]:
+            - listitem [ref=e559]:
+              - link "Home Loan" [ref=e560] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e561]:
+              - link "EMI Calculator" [ref=e562] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e563]:
+              - link "Stamp Duty" [ref=e564] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e565]:
+              - link "Rent Agreement" [ref=e566] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e567]:
+              - link "Comparison" [ref=e568] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e569]:
+          - heading "Resources" [level=3] [ref=e570]
+          - list [ref=e571]:
+            - listitem [ref=e572]:
+              - link "Blogs" [ref=e573] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e574]:
+              - link "FAQs" [ref=e575] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e576]:
+              - link "About Us" [ref=e577] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e578]:
+              - link "Contact" [ref=e579] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e580]:
+          - heading "Contact" [level=3] [ref=e581]
+          - list [ref=e582]:
+            - listitem [ref=e583]:
+              - img [ref=e584]
+              - generic [ref=e587]:
+                - text: Level 4, Maker Maxity,
+                - text: BKC, Mumbai 400051
+            - listitem [ref=e588]:
+              - img [ref=e589]
+              - link "+91 91379 50050" [ref=e591] [cursor=pointer]:
+                - /url: tel:+919137950050
+            - listitem [ref=e592]:
+              - img [ref=e593]
+              - link "shreegurudevproperties@gmail.com" [ref=e596] [cursor=pointer]:
+                - /url: mailto:shreegurudevproperties@gmail.com
+      - generic [ref=e597]:
+        - generic [ref=e598]: © 2026 Grihavastu Real Estate. All rights reserved.
+        - generic [ref=e599]:
+          - link "Privacy Policy" [ref=e600] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e601] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e602]:
+      - button "View current offer" [ref=e603]:
+        - generic [ref=e604]: local_offer
+      - button "Services" [ref=e606]:
+        - generic [ref=e607]: home_repair_service
+      - generic [ref=e608]:
+        - link "Call us" [ref=e609] [cursor=pointer]:
+          - /url: tel:+919137950050
+          - img [ref=e610]
+        - link "Chat on WhatsApp" [ref=e612] [cursor=pointer]:
+          - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20Grihavastu%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+          - img [ref=e613]
+  - alert [ref=e615]
