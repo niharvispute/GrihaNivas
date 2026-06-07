@@ -3,20 +3,35 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '@/context/ToastContext';
 
-const MIN_BUDGET = 5000000; // 50 Lakh
-const MAX_BUDGET = 30000000; // 3 Cr
-const STEP = 500000; // 5 Lakh step
+const BUY_MIN = 5000000;   // 50 Lakh
+const BUY_MAX = 30000000;  // 3 Cr
+const BUY_STEP = 500000;   // 5 Lakh
 
-function formatPriceToCr(price) {
-  if (!price) return '';
+function formatPrice(price, isRent) {
+  if (!price && price !== 0) return '';
   const num = Number(price);
-  if (num < 10000000) {
-    return `₹${(num / 100000).toFixed(0)} Lakh`;
+  if (isRent) {
+    if (num >= 100000) return `₹${(num / 100000).toFixed(1).replace('.0', '')} L`;
+    return `₹${(num / 1000).toFixed(0)}K`;
   }
+  if (num < 10000000) return `₹${(num / 100000).toFixed(0)} Lakh`;
   return `₹${(num / 10000000).toFixed(1).replace('.0', '')} Cr`;
 }
 
-export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MAX_BUDGET, onChange }) {
+export default function BudgetRangeSlider({
+  minValue,
+  maxValue,
+  onChange,
+  budgetMin = BUY_MIN,
+  budgetMax = BUY_MAX,
+  budgetStep = BUY_STEP,
+  isRent = false,
+}) {
+  const MIN_BUDGET = budgetMin;
+  const MAX_BUDGET = budgetMax;
+  const STEP = budgetStep;
+  minValue = minValue ?? MIN_BUDGET;
+  maxValue = maxValue ?? MAX_BUDGET;
   const { addToast } = useToast();
   const [min, setMin] = useState(minValue);
   const [max, setMax] = useState(maxValue);
@@ -42,8 +57,9 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
     }
   };
 
-  const minPercent = ((min - MIN_BUDGET) / (MAX_BUDGET - MIN_BUDGET)) * 100;
-  const maxPercent = ((max - MIN_BUDGET) / (MAX_BUDGET - MIN_BUDGET)) * 100;
+  const range = MAX_BUDGET - MIN_BUDGET || 1;
+  const minPercent = ((min - MIN_BUDGET) / range) * 100;
+  const maxPercent = ((max - MIN_BUDGET) / range) * 100;
 
   const validateOnSubmit = (e) => {
     if (min > max) {
@@ -66,7 +82,7 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
           <div className="flex justify-between items-center gap-3">
             <label className="text-xs font-bold text-slate-700">Min Budget</label>
             <div className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-black min-w-fit">
-              {formatPriceToCr(min)}
+              {formatPrice(min, isRent)}
             </div>
           </div>
 
@@ -116,8 +132,8 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
           </div>
 
           <div className="flex justify-between text-[10px] text-slate-500 font-bold">
-            <span>₹50 Lakh</span>
-            <span>₹3 Cr</span>
+            <span>{formatPrice(MIN_BUDGET, isRent)}</span>
+            <span>{formatPrice(MAX_BUDGET, isRent)}</span>
           </div>
         </div>
 
@@ -126,7 +142,7 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
           <div className="flex justify-between items-center gap-3">
             <label className="text-xs font-bold text-slate-700">Max Budget</label>
             <div className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-black min-w-fit">
-              {formatPriceToCr(max)}
+              {formatPrice(max, isRent)}
             </div>
           </div>
 
@@ -176,8 +192,8 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
           </div>
 
           <div className="flex justify-between text-[10px] text-slate-500 font-bold">
-            <span>₹50 Lakh</span>
-            <span>₹3 Cr</span>
+            <span>{formatPrice(MIN_BUDGET, isRent)}</span>
+            <span>{formatPrice(MAX_BUDGET, isRent)}</span>
           </div>
         </div>
       </div>
@@ -187,12 +203,12 @@ export default function BudgetRangeSlider({ minValue = MIN_BUDGET, maxValue = MA
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-slate-400 text-[9px] font-bold mb-1">From</p>
-            <p className="text-primary font-black text-base">{formatPriceToCr(min)}</p>
+            <p className="text-primary font-black text-base">{formatPrice(min, isRent)}</p>
           </div>
           <div className="text-slate-300 text-2xl">→</div>
           <div>
             <p className="text-slate-400 text-[9px] font-bold mb-1">To</p>
-            <p className="text-primary font-black text-base">{formatPriceToCr(max)}</p>
+            <p className="text-primary font-black text-base">{formatPrice(max, isRent)}</p>
           </div>
         </div>
       </div>
