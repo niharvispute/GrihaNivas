@@ -106,7 +106,8 @@
       "mcp__hostinger-mcp__hosting_listWebsitesV1",
       "Bash(grep -E \"\\\\.\\(js|ts\\)$\")",
       "mcp__hostinger-mcp__VPS_getVirtualMachinesV1",
-      "mcp__hostinger-mcp__VPS_getProjectListV1"
+      "mcp__hostinger-mcp__VPS_getProjectListV1",
+      "Bash(dir E:\\\\Bricks\\\\UIchanges *)"
     ]
   }
 }

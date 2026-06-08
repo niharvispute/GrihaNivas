@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Project Configurations</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: '#B80049', secondary: '#e61a61', tertiary: '#008c47' },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif'],
+            heading: ['Playfair Display', 'serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  </style>
+</head>
+<body class="bg-[#f8f7f5] font-sans antialiased">
+
+  <!-- SIDEBAR -->
+  <aside class="fixed left-0 top-0 h-screen w-64 flex flex-col py-8 bg-slate-900 text-white z-50">
+    <div class="px-8 mb-6">
+      <span class="text-2xl font-black text-white tracking-tighter block mb-1">Grihanivas</span>
+      <p class="text-primary font-black text-[9px] uppercase tracking-[0.3em] opacity-80">Admin Console</p>
+    </div>
+    <nav class="flex-1 px-4 space-y-1">
+      <a href="#" class="flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-500 hover:text-white hover:bg-slate-800 transition-all"><span class="material-symbols-outlined text-xl">dashboard</span><span class="font-bold text-sm">Dashboard</span></a>
+      <a href="#" class="flex items-center gap-4 px-5 py-3.5 rounded-2xl text-slate-500 hover:text-white hover:bg-slate-800 transition-all"><span class="material-symbols-outlined text-xl">real_estate_agent</span><span class="font-bold text-sm">Properties</span></a>
+      <a href="#" class="flex items-center gap-4 px-5 py-3.5 rounded-2xl bg-primary text-white shadow-lg"><span class="material-symbols-outlined text-xl">domain</span><span class="font-bold text-sm">Projects</span></a>
+    </nav>
+  </aside>
+
+  <div class="ml-64 min-h-screen">
+    <header class="fixed top-0 left-64 right-0 h-16 bg-white border-b border-slate-100 flex items-center justify-between px-8 z-40 shadow-sm">
+      <div class="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em]">
+        <a href="#" class="text-slate-400 hover:text-primary">Projects</a>
+        <svg class="w-3 h-3 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-slate-400">Lodha Palava — The Crown</span>
+        <svg class="w-3 h-3 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-primary">Configurations</span>
+      </div>
+    </header>
+
+    <main class="pt-24 px-6 pb-12">
+      <div class="max-w-7xl mx-auto space-y-8">
+
+        <!-- Page header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <div>
+            <a href="#" class="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-wider hover:text-primary transition-colors mb-3">
+              <span class="material-symbols-outlined text-sm">arrow_back</span>Back to Projects
+            </a>
+            <h1 class="text-4xl font-black text-slate-900 tracking-tighter">Configurations</h1>
+            <p class="text-slate-500 font-bold mt-1">Lodha Palava — The Crown · Dombivali East</p>
+          </div>
+          <!-- Open add config modal button -->
+          <button onclick="document.getElementById('modal').classList.remove('hidden')" class="inline-flex items-center gap-2 bg-primary text-white px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-[0.18em] hover:bg-primary/90 transition-all shadow-md shadow-primary/20">
+            <span class="material-symbols-outlined text-lg">add</span>
+            Add Configuration
+          </button>
+        </div>
+
+        <!-- BHK Summary bar -->
+        <div class="bg-white rounded-2xl border border-slate-50 shadow-sm px-6 py-4 flex flex-wrap items-center gap-3">
+          <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider">BHK Summary:</span>
+          <span class="px-3 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">1 BHK</span>
+          <span class="px-3 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">2 BHK</span>
+          <span class="px-3 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">3 BHK</span>
+          <div class="ml-auto flex items-center gap-6 text-center">
+            <div><p class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Configurations</p><p class="font-black text-slate-900 text-lg">3</p></div>
+            <div><p class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Total Units</p><p class="font-black text-slate-900 text-lg">480</p></div>
+            <div><p class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Price From</p><p class="font-black text-primary text-lg">₹45 Lac</p></div>
+          </div>
+        </div>
+
+        <!-- CONFIG CARDS GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <!-- Config 1: 1BHK -->
+          <div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg transition-all p-6 flex flex-col gap-4 group relative">
+            <div class="absolute top-4 right-4 flex gap-1.5">
+              <button onclick="document.getElementById('modal').classList.remove('hidden')" class="w-8 h-8 rounded-xl bg-slate-50 text-slate-400 hover:text-primary hover:bg-primary/10 flex items-center justify-center transition-all" title="Edit">
+                <span class="material-symbols-outlined text-sm">edit</span>
+              </button>
+              <button class="w-8 h-8 rounded-xl bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-all" title="Delete">
+                <span class="material-symbols-outlined text-sm">delete</span>
+              </button>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-black">1 BHK</span>
+              <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Apartment</span>
+              <span class="ml-auto text-[10px] font-black bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full">Active</span>
+            </div>
+            <div class="h-36 bg-slate-50 rounded-xl border border-dashed border-slate-200 flex items-center justify-center group-hover:border-primary/30 transition-all overflow-hidden relative">
+              <div class="text-center">
+                <span class="material-symbols-outlined text-4xl text-slate-300">floor_plan</span>
+                <p class="text-[10px] font-bold text-slate-400 mt-1">No floor plan uploaded</p>
+              </div>
+              <label class="absolute inset-0 flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 bg-primary/5 transition-all rounded-xl">
+                <span class="flex items-center gap-2 text-xs font-black text-primary"><span class="material-symbols-outlined text-sm">upload</span>Upload Plan</span>
+              </label>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Carpet Area</p>
+                <p class="font-black text-slate-800 text-sm">420 – 480 sq.ft</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Price Range</p>
+                <p class="font-black text-primary text-sm">₹45 – 52 Lac</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Bathrooms</p>
+                <p class="font-black text-slate-800 text-sm">1</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Total Units</p>
+                <p class="font-black text-slate-800 text-sm">120</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between border-t border-slate-100 pt-3">
+              <p class="text-[10px] font-bold text-slate-500"><span class="text-tertiary font-black">84</span> available · <span class="text-slate-400 font-black">36</span> sold/booked</p>
+              <a href="#" class="text-[10px] font-black uppercase tracking-wider text-primary hover:underline">View Units →</a>
+            </div>
+          </div>
+
+          <!-- Config 2: 2BHK -->
+          <div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg transition-all p-6 flex flex-col gap-4 group relative">
+            <div class="absolute top-4 right-4 flex gap-1.5">
+              <button onclick="document.getElementById('modal').classList.remove('hidden')" class="w-8 h-8 rounded-xl bg-slate-50 text-slate-400 hover:text-primary hover:bg-primary/10 flex items-center justify-center transition-all">
+                <span class="material-symbols-outlined text-sm">edit</span>
+              </button>
+              <button class="w-8 h-8 rounded-xl bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-all">
+                <span class="material-symbols-outlined text-sm">delete</span>
+              </button>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-black">2 BHK</span>
+              <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Apartment</span>
+              <span class="ml-auto text-[10px] font-black bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full">Active</span>
+            </div>
+            <div class="h-36 bg-slate-50 rounded-xl border border-dashed border-slate-200 flex items-center justify-center group-hover:border-primary/30 transition-all overflow-hidden relative">
+              <div class="text-center">
+                <span class="material-symbols-outlined text-4xl text-slate-300">floor_plan</span>
+                <p class="text-[10px] font-bold text-slate-400 mt-1">No floor plan uploaded</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Carpet Area</p>
+                <p class="font-black text-slate-800 text-sm">650 – 750 sq.ft</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Price Range</p>
+                <p class="font-black text-primary text-sm">₹72 – 88 Lac</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Bathrooms</p>
+                <p class="font-black text-slate-800 text-sm">2</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Total Units</p>
+                <p class="font-black text-slate-800 text-sm">240</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between border-t border-slate-100 pt-3">
+              <p class="text-[10px] font-bold text-slate-500"><span class="text-tertiary font-black">142</span> available · <span class="text-slate-400 font-black">98</span> sold/booked</p>
+              <a href="#" class="text-[10px] font-black uppercase tracking-wider text-primary hover:underline">View Units →</a>
+            </div>
+          </div>
+
+          <!-- Config 3: 3BHK -->
+          <div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg transition-all p-6 flex flex-col gap-4 group relative">
+            <div class="absolute top-4 right-4 flex gap-1.5">
+              <button onclick="document.getElementById('modal').classList.remove('hidden')" class="w-8 h-8 rounded-xl bg-slate-50 text-slate-400 hover:text-primary hover:bg-primary/10 flex items-center justify-center transition-all">
+                <span class="material-symbols-outlined text-sm">edit</span>
+              </button>
+              <button class="w-8 h-8 rounded-xl bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-all">
+                <span class="material-symbols-outlined text-sm">delete</span>
+              </button>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-black">3 BHK</span>
+              <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Apartment</span>
+              <span class="ml-auto text-[10px] font-black bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full">Active</span>
+            </div>
+            <div class="h-36 bg-slate-50 rounded-xl border border-dashed border-slate-200 flex items-center justify-center group-hover:border-primary/30 transition-all overflow-hidden relative">
+              <div class="text-center">
+                <span class="material-symbols-outlined text-4xl text-slate-300">floor_plan</span>
+                <p class="text-[10px] font-bold text-slate-400 mt-1">No floor plan uploaded</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Carpet Area</p>
+                <p class="font-black text-slate-800 text-sm">920 – 1,050 sq.ft</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Price Range</p>
+                <p class="font-black text-primary text-sm">₹1.05 – 1.2 Cr</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Bathrooms</p>
+                <p class="font-black text-slate-800 text-sm">3</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Total Units</p>
+                <p class="font-black text-slate-800 text-sm">120</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-between border-t border-slate-100 pt-3">
+              <p class="text-[10px] font-bold text-slate-500"><span class="text-amber-600 font-black">28</span> available · <span class="text-slate-400 font-black">92</span> sold/booked</p>
+              <a href="#" class="text-[10px] font-black uppercase tracking-wider text-primary hover:underline">View Units →</a>
+            </div>
+          </div>
+
+          <!-- Add new config card -->
+          <button onclick="document.getElementById('modal').classList.remove('hidden')" class="bg-white rounded-2xl border-2 border-dashed border-slate-200 hover:border-primary/40 hover:bg-primary/5 transition-all p-6 flex flex-col items-center justify-center gap-3 min-h-64 group cursor-pointer">
+            <div class="w-14 h-14 rounded-2xl bg-slate-100 group-hover:bg-primary/10 flex items-center justify-center transition-all">
+              <span class="material-symbols-outlined text-slate-400 group-hover:text-primary text-2xl transition-colors">add</span>
+            </div>
+            <div class="text-center">
+              <p class="font-black text-slate-500 group-hover:text-primary transition-colors">Add Configuration</p>
+              <p class="text-[10px] font-bold text-slate-400 mt-1">1BHK, 2BHK, 3BHK, Penthouse…</p>
+            </div>
+          </button>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ── ADD / EDIT CONFIG MODAL ── -->
+  <div id="modal" class="hidden fixed inset-0 z-70 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="px-8 py-5 border-b border-slate-100 flex items-center justify-between shrink-0">
+        <h3 class="text-xl font-black text-slate-900 tracking-tight">Add Configuration</h3>
+        <button onclick="document.getElementById('modal').classList.add('hidden')" class="w-9 h-9 rounded-xl bg-slate-50 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="p-8 overflow-y-auto flex-1">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">BHK Type *</label>
+            <select class="w-full appearance-none bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none">
+              <option>Studio</option>
+              <option>1BHK</option>
+              <option selected>2BHK</option>
+              <option>3BHK</option>
+              <option>4BHK</option>
+              <option>4+BHK</option>
+              <option>Penthouse</option>
+              <option>Commercial</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Property Type</label>
+            <select class="w-full appearance-none bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none">
+              <option>Apartment</option>
+              <option>Villa</option>
+              <option>Plot</option>
+            </select>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Title (optional)</label>
+            <input type="text" placeholder="e.g. 2BHK Premium — Type A" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Min Price (₹) *</label>
+            <input type="number" placeholder="7200000" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Max Price (₹) *</label>
+            <input type="number" placeholder="8800000" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Carpet Area Min (sq.ft)</label>
+            <input type="number" placeholder="650" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Carpet Area Max (sq.ft)</label>
+            <input type="number" placeholder="750" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Bathrooms</label>
+            <input type="number" placeholder="2" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Parking Slots</label>
+            <input type="number" placeholder="1" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Total Units</label>
+            <input type="number" placeholder="240" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">Sort Order</label>
+            <input type="number" placeholder="1" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-primary/20 outline-none" />
+          </div>
+          <!-- Floor plans upload -->
+          <div class="md:col-span-2">
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Floor Plans (up to 5)</label>
+            <div class="border-dashed border-2 border-slate-200 hover:border-primary/40 rounded-2xl p-6 text-center cursor-pointer transition-all group">
+              <span class="material-symbols-outlined text-3xl text-slate-300 group-hover:text-primary/50">upload</span>
+              <p class="text-sm font-black text-slate-500 mt-2">Upload floor plan images</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="px-8 py-5 border-t border-slate-100 flex justify-end gap-3 shrink-0">
+        <button onclick="document.getElementById('modal').classList.add('hidden')" class="px-6 py-2.5 rounded-xl border border-slate-200 text-sm font-black text-slate-600 hover:bg-slate-50 transition-all">Cancel</button>
+        <button class="px-8 py-2.5 rounded-xl bg-primary text-white text-sm font-black hover:bg-primary/90 transition-all shadow-md shadow-primary/20">Save Configuration</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

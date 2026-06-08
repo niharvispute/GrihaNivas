@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects Listing — GrihaNivas</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: '#B80049', secondary: '#e61a61', tertiary: '#008c47' },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+            heading: ['Playfair Display', 'serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  </style>
+</head>
+<body class="bg-white font-sans antialiased">
+
+  <!-- ── HEADER PLACEHOLDER ── -->
+  <header class="h-16 bg-white border-b border-slate-100 flex items-center px-8 justify-between sticky top-0 z-40 shadow-sm">
+    <span class="font-heading font-black text-2xl text-slate-900">GrihaNivas</span>
+    <nav class="flex items-center gap-8 text-sm font-bold text-slate-600">
+      <a href="#" class="hover:text-primary transition-colors">Buy</a>
+      <a href="#" class="hover:text-primary transition-colors">Rent</a>
+      <a href="#" class="text-primary border-b-2 border-primary pb-0.5">Projects</a>
+      <a href="#" class="hover:text-primary transition-colors">Builders</a>
+      <a href="#" class="bg-primary text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-primary/90 transition-all">Login</a>
+    </nav>
+  </header>
+
+  <main class="w-full">
+    <!-- ── BREADCRUMB + HERO ── -->
+    <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 lg:py-14">
+      <nav class="flex text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-3 sm:mb-4">
+        <ol class="inline-flex items-center space-x-2">
+          <li><a href="#" class="hover:text-primary transition-colors">Home</a></li>
+          <li class="flex items-center">
+            <svg class="w-3 h-3 mx-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <span class="text-primary">Projects</span>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-heading font-black tracking-tight text-slate-900 leading-tight mb-3">
+        New Launch Projects in Mumbai
+      </h1>
+      <p class="text-slate-500 font-bold text-sm md:text-base max-w-2xl">
+        Browse curated new developments across Mumbai — from premium 1BHK apartments to luxury penthouses, with early pricing and high-growth locations.
+      </p>
+    </header>
+
+    <!-- ── MAIN LAYOUT: Sidebar + Grid ── -->
+    <div class="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+
+      <!-- SIDEBAR FILTERS -->
+      <aside class="w-full lg:w-72 shrink-0">
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sticky top-24 space-y-6">
+          <div class="flex items-center justify-between">
+            <h2 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Filters</h2>
+            <button class="text-[10px] font-black uppercase tracking-wider text-primary hover:underline">Clear All</button>
+          </div>
+
+          <!-- Area -->
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Area</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">location_on</span>
+              <input type="text" placeholder="e.g. Andheri, Bandra…" class="w-full bg-slate-50 rounded-2xl py-3 pl-12 pr-5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 border border-transparent focus:border-primary/20" />
+            </div>
+          </div>
+
+          <!-- Project Status -->
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Project Status</label>
+            <div class="space-y-2">
+              <label class="flex items-center gap-3 cursor-pointer group">
+                <input type="radio" name="status" checked class="w-4 h-4 accent-primary" />
+                <span class="text-sm font-bold text-slate-700 group-hover:text-primary transition-colors">All Statuses</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer group">
+                <input type="radio" name="status" class="w-4 h-4 accent-primary" />
+                <span class="flex items-center gap-2 text-sm font-bold text-slate-700 group-hover:text-primary transition-colors">
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span> New Launch
+                </span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer group">
+                <input type="radio" name="status" class="w-4 h-4 accent-primary" />
+                <span class="flex items-center gap-2 text-sm font-bold text-slate-700 group-hover:text-primary transition-colors">
+                  <span class="w-2 h-2 rounded-full bg-primary"></span> Under Construction
+                </span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer group">
+                <input type="radio" name="status" class="w-4 h-4 accent-primary" />
+                <span class="flex items-center gap-2 text-sm font-bold text-slate-700 group-hover:text-primary transition-colors">
+                  <span class="w-2 h-2 rounded-full bg-tertiary"></span> Ready to Move
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- BHK Type -->
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">BHK Type</label>
+            <div class="flex flex-wrap gap-2">
+              <button class="px-3 py-1.5 rounded-full text-xs font-black border border-slate-200 text-slate-600 hover:border-primary hover:text-primary transition-all">Studio</button>
+              <button class="px-3 py-1.5 rounded-full text-xs font-black bg-primary/10 border border-primary/20 text-primary">1 BHK</button>
+              <button class="px-3 py-1.5 rounded-full text-xs font-black bg-primary/10 border border-primary/20 text-primary">2 BHK</button>
+              <button class="px-3 py-1.5 rounded-full text-xs font-black border border-slate-200 text-slate-600 hover:border-primary hover:text-primary transition-all">3 BHK</button>
+              <button class="px-3 py-1.5 rounded-full text-xs font-black border border-slate-200 text-slate-600 hover:border-primary hover:text-primary transition-all">4 BHK</button>
+              <button class="px-3 py-1.5 rounded-full text-xs font-black border border-slate-200 text-slate-600 hover:border-primary hover:text-primary transition-all">Penthouse</button>
+            </div>
+          </div>
+
+          <!-- Price Range -->
+          <div>
+            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Price Range</label>
+            <div class="flex items-center gap-3">
+              <input type="number" placeholder="Min (₹)" class="w-full bg-slate-50 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 border border-transparent" />
+              <span class="text-slate-300 font-bold shrink-0">—</span>
+              <input type="number" placeholder="Max (₹)" class="w-full bg-slate-50 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 border border-transparent" />
+            </div>
+          </div>
+
+          <button class="w-full bg-primary text-white rounded-2xl py-3 text-xs font-black uppercase tracking-[0.2em] hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+            Apply Filters
+          </button>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <div class="grow w-full min-w-0">
+        <!-- Sort Bar -->
+        <div class="flex items-center justify-between mb-6 bg-white rounded-2xl border border-slate-100 shadow-sm px-5 py-4">
+          <p class="text-sm font-black text-slate-700">
+            Showing <span class="text-primary">12</span> projects
+          </p>
+          <div class="flex items-center gap-3">
+            <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Sort</label>
+            <select class="appearance-none bg-slate-50 rounded-xl px-4 py-2 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 border border-transparent">
+              <option>Newest First</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Possession Date</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- PROJECT CARDS GRID -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+          <!-- Card 1 — New Launch -->
+          <article class="group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full">
+            <div class="relative h-52 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
+              <div class="w-full h-full bg-gradient-to-br from-rose-50 via-slate-100 to-slate-200 flex items-center justify-center">
+                <span class="material-symbols-outlined text-6xl text-slate-200">domain</span>
+              </div>
+              <!-- Badges -->
+              <div class="absolute top-3 left-3 flex flex-col gap-1.5">
+                <span class="bg-gradient-to-r from-primary to-secondary text-white px-3 py-1 rounded-full text-[9px] font-black tracking-wider uppercase flex items-center gap-1 shadow-lg">
+                  <span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
+                  Featured
+                </span>
+                <span class="bg-amber-500 text-white px-3 py-1 rounded-full text-[9px] font-black tracking-wider uppercase shadow-lg">
+                  New Launch
+                </span>
+              </div>
+              <!-- Wishlist -->
+              <button class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-all">
+                <span class="material-symbols-outlined text-slate-400 text-xl">favorite_border</span>
+              </button>
+            </div>
+
+            <div class="p-5 flex flex-col grow gap-3">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-primary text-sm">business</span>
+                  </div>
+                  <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Lodha Group</span>
+                </div>
+                <h3 class="text-lg font-heading font-black text-slate-900 tracking-tight leading-tight">Lodha Palava — The Crown</h3>
+                <p class="text-sm font-bold text-slate-500 flex items-center gap-1.5 mt-1">
+                  <span class="material-symbols-outlined text-base text-slate-400">location_on</span>
+                  Dombivali East, Mumbai
+                </p>
+              </div>
+
+              <!-- BHK badges -->
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">1 BHK</span>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">2 BHK</span>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">3 BHK</span>
+              </div>
+
+              <!-- Price + Area row -->
+              <div class="flex items-end justify-between gap-2 pt-1">
+                <div>
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Starting Price</p>
+                  <p class="text-xl font-black text-primary">₹45 Lac <span class="text-slate-400 text-sm font-bold">– ₹1.2 Cr</span></p>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Carpet Area</p>
+                  <p class="text-sm font-black text-slate-700">420 – 950 sq.ft</p>
+                </div>
+              </div>
+
+              <a href="#" class="mt-auto w-full bg-primary text-white rounded-2xl py-3 text-xs font-black uppercase tracking-[0.2em] hover:bg-primary/90 transition-all text-center shadow-md shadow-primary/20">
+                View Project
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 2 — Under Construction -->
+          <article class="group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full">
+            <div class="relative h-52 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
+              <div class="w-full h-full bg-gradient-to-br from-blue-50 via-slate-100 to-slate-200 flex items-center justify-center">
+                <span class="material-symbols-outlined text-6xl text-slate-200">apartment</span>
+              </div>
+              <div class="absolute top-3 left-3">
+                <span class="bg-primary/90 text-white px-3 py-1 rounded-full text-[9px] font-black tracking-wider uppercase shadow-lg">
+                  Under Construction
+                </span>
+              </div>
+              <button class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-all">
+                <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">favorite</span>
+              </button>
+            </div>
+
+            <div class="p-5 flex flex-col grow gap-3">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-primary text-sm">business</span>
+                  </div>
+                  <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Godrej Properties</span>
+                </div>
+                <h3 class="text-lg font-heading font-black text-slate-900 tracking-tight leading-tight">Godrej Horizon Thane</h3>
+                <p class="text-sm font-bold text-slate-500 flex items-center gap-1.5 mt-1">
+                  <span class="material-symbols-outlined text-base text-slate-400">location_on</span>
+                  Thane West, Mumbai
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">2 BHK</span>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">3 BHK</span>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">4 BHK</span>
+              </div>
+              <div class="flex items-end justify-between gap-2 pt-1">
+                <div>
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Starting Price</p>
+                  <p class="text-xl font-black text-primary">₹98 Lac <span class="text-slate-400 text-sm font-bold">– ₹2.4 Cr</span></p>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Possession</p>
+                  <p class="text-sm font-black text-slate-700">Dec 2026</p>
+                </div>
+              </div>
+              <a href="#" class="mt-auto w-full bg-primary text-white rounded-2xl py-3 text-xs font-black uppercase tracking-[0.2em] hover:bg-primary/90 transition-all text-center shadow-md shadow-primary/20">
+                View Project
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 3 — Ready to Move -->
+          <article class="group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full">
+            <div class="relative h-52 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
+              <div class="w-full h-full bg-gradient-to-br from-emerald-50 via-slate-100 to-slate-200 flex items-center justify-center">
+                <span class="material-symbols-outlined text-6xl text-slate-200">villa</span>
+              </div>
+              <div class="absolute top-3 left-3">
+                <span class="bg-tertiary text-white px-3 py-1 rounded-full text-[9px] font-black tracking-wider uppercase shadow-lg">
+                  Ready to Move
+                </span>
+              </div>
+              <button class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-all">
+                <span class="material-symbols-outlined text-slate-400 text-xl">favorite_border</span>
+              </button>
+            </div>
+
+            <div class="p-5 flex flex-col grow gap-3">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-primary text-sm">business</span>
+                  </div>
+                  <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Hiranandani Group</span>
+                </div>
+                <h3 class="text-lg font-heading font-black text-slate-900 tracking-tight leading-tight">Hiranandani Gardens Phase 7</h3>
+                <p class="text-sm font-bold text-slate-500 flex items-center gap-1.5 mt-1">
+                  <span class="material-symbols-outlined text-base text-slate-400">location_on</span>
+                  Powai, Mumbai
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">1 BHK</span>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">2 BHK</span>
+              </div>
+              <div class="flex items-end justify-between gap-2 pt-1">
+                <div>
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Starting Price</p>
+                  <p class="text-xl font-black text-primary">₹78 Lac <span class="text-slate-400 text-sm font-bold">– ₹1.5 Cr</span></p>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Carpet Area</p>
+                  <p class="text-sm font-black text-slate-700">560 – 1,100 sq.ft</p>
+                </div>
+              </div>
+              <a href="#" class="mt-auto w-full bg-primary text-white rounded-2xl py-3 text-xs font-black uppercase tracking-[0.2em] hover:bg-primary/90 transition-all text-center shadow-md shadow-primary/20">
+                View Project
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full">
+            <div class="relative h-52 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
+              <div class="w-full h-full bg-gradient-to-br from-purple-50 via-slate-100 to-slate-200 flex items-center justify-center">
+                <span class="material-symbols-outlined text-6xl text-slate-200">domain</span>
+              </div>
+              <div class="absolute top-3 left-3">
+                <span class="bg-amber-500 text-white px-3 py-1 rounded-full text-[9px] font-black tracking-wider uppercase shadow-lg">
+                  New Launch
+                </span>
+              </div>
+              <button class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-all">
+                <span class="material-symbols-outlined text-slate-400 text-xl">favorite_border</span>
+              </button>
+            </div>
+            <div class="p-5 flex flex-col grow gap-3">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Runwal Group</span>
+                </div>
+                <h3 class="text-lg font-heading font-black text-slate-900 tracking-tight leading-tight">Runwal Eirene — Andheri West</h3>
+                <p class="text-sm font-bold text-slate-500 flex items-center gap-1.5 mt-1">
+                  <span class="material-symbols-outlined text-base text-slate-400">location_on</span>
+                  Andheri West, Mumbai
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">2 BHK</span>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">3 BHK</span>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-primary/10 text-primary">Penthouse</span>
+              </div>
+              <div class="flex items-end justify-between gap-2 pt-1">
+                <div>
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Starting Price</p>
+                  <p class="text-xl font-black text-primary">₹1.8 Cr <span class="text-slate-400 text-sm font-bold">– ₹5.2 Cr</span></p>
+                </div>
+                <div class="text-right">
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Carpet Area</p>
+                  <p class="text-sm font-black text-slate-700">720 – 2,200 sq.ft</p>
+                </div>
+              </div>
+              <a href="#" class="mt-auto w-full bg-primary text-white rounded-2xl py-3 text-xs font-black uppercase tracking-[0.2em] hover:bg-primary/90 transition-all text-center shadow-md shadow-primary/20">
+                View Project
+              </a>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="mt-16 flex justify-center items-center gap-2">
+          <span class="w-10 h-10 rounded-full flex items-center justify-center text-slate-300 cursor-not-allowed">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          </span>
+          <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center bg-primary text-white font-black text-sm shadow-lg shadow-primary/20">1</a>
+          <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-sm text-slate-600 transition-colors">2</a>
+          <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 font-bold text-sm text-slate-600 transition-colors">3</a>
+          <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-slate-100 transition-colors">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
