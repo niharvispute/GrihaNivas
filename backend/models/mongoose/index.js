@@ -20,6 +20,9 @@ const StampDutyConfig = require('./StampDutyConfig');
 const Contact        = require('./Contact');
 const AuthOtpFlow    = require('./AuthOtpFlow');
 const SystemConfig   = require('./SystemConfig');
+const Project        = require('./Project');
+const ProjectConfiguration = require('./ProjectConfiguration');
+const ProjectUnit    = require('./ProjectUnit');
 
 module.exports = {
   User,
@@ -34,4 +37,7 @@ module.exports = {
   Contact,
   AuthOtpFlow,
   SystemConfig,
+  Project,
+  ProjectConfiguration,
+  ProjectUnit,
 };

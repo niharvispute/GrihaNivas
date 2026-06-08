@@ -179,6 +179,15 @@ const blogCategorySchema = z
   .transform((value) => BLOG_CATEGORY_MAP[value]);
 
 // ─────────────────────────────────────────────
+// PROJECT HELPERS
+// ─────────────────────────────────────────────
+
+const projectStringArraySchema = z.preprocess(
+  parseJsonIfString,
+  z.array(z.string().trim().min(1).max(120)).max(50)
+);
+
+// ─────────────────────────────────────────────
 // SCHEMAS
 // ─────────────────────────────────────────────
 
@@ -234,8 +243,12 @@ const schemas = {
       name: z.string().trim().min(2, 'Name too short').max(100),
       phone: phoneSchema,
       email: emailSchema.optional(),
-      leadType: z.enum(['buy', 'rent', 'loan', 'agreement']),
+      leadType: z.enum(['buy', 'rent', 'loan', 'agreement', 'project']),
       propertyId: objectIdSchema.optional(),
+      projectId: objectIdSchema.optional(),
+      configurationId: objectIdSchema.optional(),
+      unitId: objectIdSchema.optional(),
+      enquiryType: z.enum(['general', 'price_request', 'brochure', 'site_visit', 'callback']).optional(),
       message: z.string().trim().max(1000).optional(),
       budgetMin: z.number().min(0).optional(),
       budgetMax: z.number().min(0).optional(),
@@ -255,7 +268,7 @@ const schemas = {
       page: z.coerce.number().int().min(1).default(1),
       limit: z.coerce.number().int().min(1).max(100).default(10),
       status: z.enum(['new', 'contacted', 'qualified', 'closed']).optional(),
-      leadType: z.enum(['buy', 'rent', 'loan', 'agreement']).optional(),
+      leadType: z.enum(['buy', 'rent', 'loan', 'agreement', 'project']).optional(),
       search: z.string().trim().max(100).optional(),
     }),
   },
@@ -489,6 +502,7 @@ const schemas = {
       aboutHeadline: z.string().trim().max(200).optional(),
       qualityStandards: z.string().trim().max(250).optional(),
       innovation: z.string().trim().max(250).optional(),
+      website: z.string().trim().url().max(500).optional().or(z.literal('')),
       featuredImages: builderFeaturedImagesSchema.optional(),
       faqs: builderFaqListSchema.optional(),
       testimonials: builderTestimonialsListSchema.optional(),
@@ -522,6 +536,7 @@ const schemas = {
         aboutHeadline: z.string().trim().max(200).optional(),
         qualityStandards: z.string().trim().max(250).optional(),
         innovation: z.string().trim().max(250).optional(),
+        website: z.string().trim().url().max(500).optional().or(z.literal('')),
         featuredImages: builderFeaturedImagesSchema.optional(),
         faqs: builderFaqListSchema.optional(),
         testimonials: builderTestimonialsListSchema.optional(),
@@ -539,6 +554,261 @@ const schemas = {
       .refine((value) => Object.keys(value).length > 0, {
         message: 'At least one field must be provided',
       }),
+  },
+
+  // ── PROJECTS ──────────────────────────────
+  project: {
+    idParams: z.object({
+      id: objectIdSchema,
+    }),
+
+    slugParams: z.object({
+      slug: z.string().trim().min(1).max(250),
+    }),
+
+    configIdParams: z.object({
+      configId: objectIdSchema,
+    }),
+
+    unitIdParams: z.object({
+      unitId: objectIdSchema,
+    }),
+
+    list: z.object({
+      page: z.coerce.number().int().min(1).default(1),
+      limit: z.coerce.number().int().min(1).max(50).default(10),
+      area: z.string().trim().max(120).optional(),
+      projectStatus: z.enum(['new_launch', 'under_construction', 'ready_to_move']).optional(),
+      projectType: z.enum(['residential', 'commercial', 'mixed']).optional(),
+      builderId: objectIdSchema.optional(),
+      builderSlug: z.string().trim().max(200).optional(),
+      bhkType: z.enum(['studio', '1BHK', '2BHK', '3BHK', '4BHK', '4+BHK', 'penthouse', 'commercial']).optional(),
+      minPrice: z.coerce.number().min(0).optional(),
+      maxPrice: z.coerce.number().min(0).optional(),
+      isFeatured: z.coerce.boolean().optional(),
+      search: z.string().trim().max(150).optional(),
+      sortBy: z.enum(['newest', 'price_asc', 'price_desc', 'name_asc']).default('newest'),
+    }),
+
+    adminList: z.object({
+      page: z.coerce.number().int().min(1).default(1),
+      limit: z.coerce.number().int().min(1).max(100).default(10),
+      listingStatus: z.enum(['active', 'inactive', 'draft']).optional(),
+      builderId: objectIdSchema.optional(),
+      projectStatus: z.enum(['new_launch', 'under_construction', 'ready_to_move']).optional(),
+      search: z.string().trim().max(150).optional(),
+    }),
+
+    create: z.object({
+      builderId: objectIdSchema,
+      name: z.string().trim().min(2).max(200),
+      description: z.string().trim().max(10000).optional(),
+      shortDescription: z.string().trim().max(400).optional(),
+      projectType: z.enum(['residential', 'commercial', 'mixed']).default('residential'),
+      projectStatus: z.enum(['new_launch', 'under_construction', 'ready_to_move']).default('new_launch'),
+      listingStatus: z.enum(['active', 'inactive', 'draft']).default('draft'),
+      location: z.object({
+        area: z.string().trim().min(1).max(120),
+        address: z.string().trim().max(500).optional(),
+        city: z.string().trim().max(100).default('Mumbai'),
+        state: z.string().trim().max(100).default('Maharashtra'),
+        pincode: z.string().trim().max(20).optional(),
+        coordinates: z.object({
+          lat: z.coerce.number().min(-90).max(90).optional(),
+          lng: z.coerce.number().min(-180).max(180).optional(),
+        }).optional(),
+      }),
+      reraNumber: z.string().trim().max(120).optional(),
+      reraUrl: z.string().trim().url().max(500).optional().or(z.literal('')),
+      possessionDate: z.coerce.date().optional(),
+      launchDate: z.coerce.date().optional(),
+      totalTowers: z.coerce.number().int().min(0).optional(),
+      totalFloors: z.coerce.number().int().min(0).optional(),
+      totalUnits: z.coerce.number().int().min(0).optional(),
+      landArea: z.coerce.number().min(0).optional(),
+      priceMin: z.coerce.number().min(0).optional(),
+      priceMax: z.coerce.number().min(0).optional(),
+      areaMin: z.coerce.number().min(0).optional(),
+      areaMax: z.coerce.number().min(0).optional(),
+      bhkSummary: projectStringArraySchema.optional(),
+      videoUrl: z.string().trim().url().max(500).optional().or(z.literal('')),
+      isFeatured: stringBooleanSchema.optional(),
+      amenities: projectStringArraySchema.optional(),
+      seoTitle: z.string().trim().max(70).optional(),
+      seoDescription: z.string().trim().max(160).optional(),
+    }),
+
+    update: z
+      .object({
+        name: z.string().trim().min(2).max(200).optional(),
+        description: z.string().trim().max(10000).optional(),
+        shortDescription: z.string().trim().max(400).optional(),
+        projectType: z.enum(['residential', 'commercial', 'mixed']).optional(),
+        projectStatus: z.enum(['new_launch', 'under_construction', 'ready_to_move']).optional(),
+        listingStatus: z.enum(['active', 'inactive', 'draft']).optional(),
+        location: z
+          .object({
+            area: z.string().trim().min(1).max(120).optional(),
+            address: z.string().trim().max(500).optional(),
+            city: z.string().trim().max(100).optional(),
+            state: z.string().trim().max(100).optional(),
+            pincode: z.string().trim().max(20).optional(),
+            coordinates: z
+              .object({
+                lat: z.coerce.number().min(-90).max(90).optional(),
+                lng: z.coerce.number().min(-180).max(180).optional(),
+              })
+              .optional(),
+          })
+          .optional(),
+        reraNumber: z.string().trim().max(120).optional(),
+        reraUrl: z.string().trim().url().max(500).optional().or(z.literal('')),
+        possessionDate: z.coerce.date().optional(),
+        launchDate: z.coerce.date().optional(),
+        totalTowers: z.coerce.number().int().min(0).optional(),
+        totalFloors: z.coerce.number().int().min(0).optional(),
+        totalUnits: z.coerce.number().int().min(0).optional(),
+        landArea: z.coerce.number().min(0).optional(),
+        priceMin: z.coerce.number().min(0).optional(),
+        priceMax: z.coerce.number().min(0).optional(),
+        areaMin: z.coerce.number().min(0).optional(),
+        areaMax: z.coerce.number().min(0).optional(),
+        bhkSummary: projectStringArraySchema.optional(),
+        videoUrl: z.string().trim().url().max(500).optional().or(z.literal('')),
+        isFeatured: stringBooleanSchema.optional(),
+        amenities: projectStringArraySchema.optional(),
+        seoTitle: z.string().trim().max(70).optional(),
+        seoDescription: z.string().trim().max(160).optional(),
+      })
+      .refine((value) => Object.keys(value).length > 0, {
+        message: 'At least one field must be provided',
+      }),
+
+    setListingStatus: z.object({
+      listingStatus: z.enum(['active', 'inactive', 'draft']),
+    }),
+
+    setFeatured: z.object({
+      isFeatured: stringBooleanSchema,
+    }),
+
+    // ── Configuration schemas ──
+    configuration: z.object({
+      bhkType: z.enum(['studio', '1BHK', '2BHK', '3BHK', '4BHK', '4+BHK', 'penthouse', 'commercial']),
+      propertyType: z.enum(['apartment', 'villa', 'plot', 'commercial', 'studio']).default('apartment'),
+      title: z.string().trim().max(200).optional(),
+      description: z.string().trim().max(5000).optional(),
+      priceMin: z.coerce.number().min(0),
+      priceMax: z.coerce.number().min(0),
+      carpetAreaMin: z.coerce.number().min(0).optional(),
+      carpetAreaMax: z.coerce.number().min(0).optional(),
+      builtupAreaMin: z.coerce.number().min(0).optional(),
+      builtupAreaMax: z.coerce.number().min(0).optional(),
+      bathrooms: z.coerce.number().int().min(0).optional(),
+      balconies: z.coerce.number().int().min(0).optional(),
+      parking: z.coerce.number().int().min(0).default(0),
+      totalUnits: z.coerce.number().int().min(0).optional(),
+      sortOrder: z.coerce.number().int().default(0),
+      isActive: z.coerce.boolean().default(true),
+    }),
+
+    configurationUpdate: z
+      .object({
+        bhkType: z.enum(['studio', '1BHK', '2BHK', '3BHK', '4BHK', '4+BHK', 'penthouse', 'commercial']).optional(),
+        propertyType: z.enum(['apartment', 'villa', 'plot', 'commercial', 'studio']).optional(),
+        title: z.string().trim().max(200).optional(),
+        description: z.string().trim().max(5000).optional(),
+        priceMin: z.coerce.number().min(0).optional(),
+        priceMax: z.coerce.number().min(0).optional(),
+        carpetAreaMin: z.coerce.number().min(0).optional(),
+        carpetAreaMax: z.coerce.number().min(0).optional(),
+        builtupAreaMin: z.coerce.number().min(0).optional(),
+        builtupAreaMax: z.coerce.number().min(0).optional(),
+        bathrooms: z.coerce.number().int().min(0).optional(),
+        balconies: z.coerce.number().int().min(0).optional(),
+        parking: z.coerce.number().int().min(0).optional(),
+        totalUnits: z.coerce.number().int().min(0).optional(),
+        sortOrder: z.coerce.number().int().optional(),
+        isActive: z.coerce.boolean().optional(),
+      })
+      .refine((value) => Object.keys(value).length > 0, {
+        message: 'At least one field must be provided',
+      }),
+
+    // ── Unit schemas ──
+    unit: z.object({
+      configurationId: objectIdSchema,
+      tower: z.string().trim().max(50).optional(),
+      block: z.string().trim().max(50).optional(),
+      floor: z.coerce.number().int().optional(),
+      unitNumber: z.string().trim().max(50).optional(),
+      carpetArea: z.coerce.number().min(0).optional(),
+      builtupArea: z.coerce.number().min(0).optional(),
+      facing: z.string().trim().max(50).optional(),
+      viewType: z.string().trim().max(80).optional(),
+      price: z.coerce.number().min(0).optional(),
+      status: z.enum(['available', 'sold', 'booked', 'hold']).default('available'),
+      notes: z.string().trim().max(1000).optional(),
+    }),
+
+    unitUpdate: z
+      .object({
+        tower: z.string().trim().max(50).optional(),
+        block: z.string().trim().max(50).optional(),
+        floor: z.coerce.number().int().optional(),
+        unitNumber: z.string().trim().max(50).optional(),
+        carpetArea: z.coerce.number().min(0).optional(),
+        builtupArea: z.coerce.number().min(0).optional(),
+        facing: z.string().trim().max(50).optional(),
+        viewType: z.string().trim().max(80).optional(),
+        price: z.coerce.number().min(0).optional(),
+        status: z.enum(['available', 'sold', 'booked', 'hold']).optional(),
+        notes: z.string().trim().max(1000).optional(),
+      })
+      .refine((value) => Object.keys(value).length > 0, {
+        message: 'At least one field must be provided',
+      }),
+
+    bulkImportUnits: z.object({
+      units: z
+        .array(
+          z.object({
+            configurationId: objectIdSchema,
+            tower: z.string().trim().max(50).optional(),
+            block: z.string().trim().max(50).optional(),
+            floor: z.coerce.number().int().optional(),
+            unitNumber: z.string().trim().max(50).optional(),
+            carpetArea: z.coerce.number().min(0).optional(),
+            builtupArea: z.coerce.number().min(0).optional(),
+            facing: z.string().trim().max(50).optional(),
+            viewType: z.string().trim().max(80).optional(),
+            price: z.coerce.number().min(0).optional(),
+            status: z.enum(['available', 'sold', 'booked', 'hold']).default('available'),
+            notes: z.string().trim().max(1000).optional(),
+          })
+        )
+        .min(1)
+        .max(500),
+    }),
+
+    unitsList: z.object({
+      configurationId: objectIdSchema.optional(),
+      status: z.enum(['available', 'sold', 'booked', 'hold']).optional(),
+      tower: z.string().trim().max(50).optional(),
+      floor: z.coerce.number().int().optional(),
+      page: z.coerce.number().int().min(1).default(1),
+      limit: z.coerce.number().int().min(1).max(500).default(100),
+    }),
+
+    enquiry: z.object({
+      name: z.string().trim().min(2).max(100),
+      phone: phoneSchema,
+      email: emailSchema.optional(),
+      message: z.string().trim().max(1000).optional(),
+      configurationId: objectIdSchema.optional(),
+      unitId: objectIdSchema.optional(),
+      enquiryType: z.enum(['general', 'price_request', 'brochure', 'site_visit', 'callback']).default('general'),
+    }),
   },
 
   // ── BLOGS ─────────────────────────────────

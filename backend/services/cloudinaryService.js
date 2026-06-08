@@ -8,19 +8,25 @@ const AppError = require('../utils/AppError');
  * Files arrive as Buffer objects from Multer's memoryStorage.
  *
  * Folder structure on Cloudinary:
- *   bricks/properties/images/   → property photos
- *   bricks/properties/plans/    → floor plans
- *   bricks/properties/brochures/→ PDF brochures
- *   bricks/blogs/               → blog featured images
- *   bricks/testimonials/        → testimonial photos
- *   bricks/banners/             → banner images
- *   bricks/users/               → profile pictures
+ *   bricks/properties/images/         → property photos
+ *   bricks/properties/plans/          → floor plans
+ *   bricks/properties/brochures/      → PDF brochures
+ *   bricks/property-submissions/      → user-submitted property media
+ *   bricks/blogs/                     → blog featured images
+ *   bricks/testimonials/              → testimonial photos
+ *   bricks/banners/                   → banner images
+ *   bricks/users/                     → profile pictures
+ *   bricks/builders/                  → builder logos & covers
+ *   bricks/projects/{projectId}/      → project media
+ *   bricks/projects/{projectId}/configs/{configId}/ → configuration media
  *
  * Available methods:
  *  - uploadImage(buffer, folder, options?)      → single image → { url, publicId }
  *  - uploadImages(files, folder)                → multiple images → [{ url, publicId }]
  *  - uploadPDF(buffer, folder)                  → PDF → { url, publicId }
  *  - uploadPropertyMedia(files)                 → all property files at once
+ *  - uploadProjectMedia(files, projectId)       → all project files at once
+ *  - uploadConfigurationMedia(files, projectId, configId) → all config files at once
  *  - deleteFile(publicId)                       → delete by public_id
  *  - deleteFiles(publicIds)                     → bulk delete
  *  - extractPublicId(url)                       → get public_id from Cloudinary URL
@@ -71,6 +77,11 @@ const TRANSFORMS = {
   builderLogo: { width: 300, height: 300, crop: 'fill', gravity: 'auto', quality: 'auto', fetch_format: 'auto' },
   builderCover: { width: 1400, height: 500, crop: 'fill', gravity: 'auto', quality: 'auto:good', fetch_format: 'auto' },
   profilePicture: { width: 300, height: 300, crop: 'fill', gravity: 'face', quality: 'auto', fetch_format: 'auto' },
+  projectHero: { width: 1600, height: 900, crop: 'fill', gravity: 'auto', quality: 'auto:good', fetch_format: 'auto' },
+  projectGallery: { width: 1200, height: 800, crop: 'fill', gravity: 'auto', quality: 'auto:good', fetch_format: 'auto' },
+  projectMasterPlan: { width: 1600, quality: 'auto', fetch_format: 'auto' },
+  configFloorPlan: { width: 1200, quality: 'auto', fetch_format: 'auto' },
+  configGallery: { width: 1000, height: 700, crop: 'fill', gravity: 'auto', quality: 'auto:good', fetch_format: 'auto' },
 };
 
 // ── Public Methods ────────────────────────────────────────────────────────────
@@ -239,6 +250,95 @@ const uploadPropertySubmissionMedia = async (files = {}) => {
 };
 
 /**
+ * Upload all project media files in one call.
+ * Handles heroImage, gallery images, master plan, and brochure in parallel.
+ *
+ * Folder: bricks/projects/{projectId}/
+ *
+ * @param {object} files - req.files from projectUploadFields middleware
+ * @param {string} projectId - Project ID (used in folder path)
+ * @returns {Promise<{heroImage?, gallery, masterPlan, brochure}>}
+ */
+const uploadProjectMedia = async (files = {}, projectId) => {
+  if (!projectId) {
+    throw new AppError('projectId is required for project media upload', 400);
+  }
+
+  const baseFolder = `bricks/projects/${projectId}`;
+
+  const results = await Promise.all([
+    files.heroImage?.[0]
+      ? uploadImage(files.heroImage[0].buffer, `${baseFolder}/hero`, 'projectHero')
+      : Promise.resolve(null),
+
+    files.images?.length
+      ? uploadImages(
+          files.images.map((f) => f.buffer),
+          `${baseFolder}/gallery`,
+          'projectGallery'
+        )
+      : Promise.resolve([]),
+
+    files.masterPlan?.[0]
+      ? uploadImage(files.masterPlan[0].buffer, `${baseFolder}/masterplan`, 'projectMasterPlan')
+      : Promise.resolve(null),
+
+    files.brochure?.[0]
+      ? uploadPDF(files.brochure[0].buffer, `${baseFolder}/brochures`)
+      : Promise.resolve(null),
+  ]);
+
+  const [heroImage, images, masterPlan, brochure] = results;
+
+  return {
+    heroImage:  heroImage  ? { url: heroImage.url,  publicId: heroImage.publicId }  : null,
+    gallery:    images.map((r) => ({ url: r.url, publicId: r.publicId })),
+    masterPlan: masterPlan ? { url: masterPlan.url, publicId: masterPlan.publicId } : null,
+    brochure:   brochure   ? { url: brochure.url,   publicId: brochure.publicId }   : null,
+  };
+};
+
+/**
+ * Upload configuration-specific media (floor plans + gallery).
+ *
+ * Folder: bricks/projects/{projectId}/configs/{configId}/
+ *
+ * @param {object} files - req.files from configUploadFields middleware
+ * @param {string} projectId - Project ID
+ * @param {string} configId - Configuration ID
+ * @returns {Promise<{floorPlans, gallery}>}
+ */
+const uploadConfigurationMedia = async (files = {}, projectId, configId) => {
+  if (!projectId || !configId) {
+    throw new AppError('projectId and configId are required for configuration media upload', 400);
+  }
+
+  const baseFolder = `bricks/projects/${projectId}/configs/${configId}`;
+
+  const [floorPlans, gallery] = await Promise.all([
+    files.floorPlans?.length
+      ? uploadImages(
+          files.floorPlans.map((f) => f.buffer),
+          `${baseFolder}/plans`,
+          'configFloorPlan'
+        )
+      : Promise.resolve([]),
+    files.images?.length
+      ? uploadImages(
+          files.images.map((f) => f.buffer),
+          `${baseFolder}/gallery`,
+          'configGallery'
+        )
+      : Promise.resolve([]),
+  ]);
+
+  return {
+    floorPlans: floorPlans.map((r) => ({ url: r.url, publicId: r.publicId })),
+    gallery:    gallery.map((r) => ({ url: r.url, publicId: r.publicId })),
+  };
+};
+
+/**
  * Delete a single file from Cloudinary by its public_id.
  *
  * @param {string} publicId
@@ -282,6 +382,45 @@ const deleteFiles = async (publicIds, resourceType = 'image') => {
 };
 
 /**
+ * Delete all media under a given project (hero, gallery, masterPlan, brochure)
+ * and all of its configurations (each with its own floor plans and gallery).
+ *
+ * @param {object} project - Mongoose Project document (with configurations populated)
+ */
+const deleteProjectMediaDeep = async (project) => {
+  if (!project) return;
+
+  const projectPublicIds = [
+    project.heroImage?.publicId,
+    project.masterPlan?.publicId,
+    project.brochure?.publicId,
+    ...(project.gallery || []).map((m) => m.publicId),
+  ].filter(Boolean);
+
+  const configPublicIds = [];
+  const brochurePublicIds = [];
+
+  for (const config of project.configurations || []) {
+    for (const plan of config.floorPlans || []) {
+      if (plan.publicId) configPublicIds.push(plan.publicId);
+    }
+    for (const img of config.gallery || []) {
+      if (img.publicId) configPublicIds.push(img.publicId);
+    }
+  }
+
+  if (projectPublicIds.length) {
+    await deleteFiles(projectPublicIds, 'image').catch(() => {});
+  }
+  if (brochurePublicIds.length) {
+    await deleteFiles(brochurePublicIds, 'raw').catch(() => {});
+  }
+  if (configPublicIds.length) {
+    await deleteFiles(configPublicIds, 'image').catch(() => {});
+  }
+};
+
+/**
  * Extract the public_id from a Cloudinary secure URL.
  *
  * Example:
@@ -312,6 +451,9 @@ module.exports = {
   uploadVideo,
   uploadPropertyMedia,
   uploadPropertySubmissionMedia,
+  uploadProjectMedia,
+  uploadConfigurationMedia,
+  deleteProjectMediaDeep,
   deleteFile,
   deleteFiles,
   extractPublicId,

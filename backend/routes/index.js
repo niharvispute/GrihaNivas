@@ -4,6 +4,7 @@ router.use('/auth',         require('./auth'));
 router.use('/builders',     require('./builders'));
 router.use('/admin/builders', require('./adminBuilders'));
 router.use('/properties',   require('./properties'));
+router.use('/projects',     require('./projects'));
 router.use('/leads',        require('./leads'));
 router.use('/property-submissions', require('./propertySubmissions'));
 router.use('/users',        require('./users'));

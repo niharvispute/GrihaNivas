@@ -11,11 +11,16 @@ const mongoose = require('mongoose');
  *   rent         — looking to rent a property
  *   loan         — home loan enquiry
  *   agreement    — rent/sale agreement service
+ *   project      — project-level enquiry (brochure, site visit, price request, callback)
  *
  * Status flow (enforced in controller — one-step moves only):
  *   new ↔ contacted ↔ qualified ↔ closed
  *
  * Notes array acts as a lightweight CRM activity log.
+ *
+ * Project leads carry optional references to the originating Project,
+ * ProjectConfiguration, and ProjectUnit. enquiryType narrows down the
+ * kind of project enquiry submitted (brochure, site visit, etc.).
  */
 
 const noteSchema = new mongoose.Schema(
@@ -69,8 +74,8 @@ const leadSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Lead type is required'],
       enum: {
-        values: ['buy', 'rent', 'loan', 'agreement'],
-        message: 'Lead type must be one of: buy, rent, loan, agreement',
+        values: ['buy', 'rent', 'loan', 'agreement', 'project'],
+        message: 'Lead type must be one of: buy, rent, loan, agreement, project',
       },
     },
     status: {
@@ -94,6 +99,31 @@ const leadSchema = new mongoose.Schema(
     propertyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Property',
+      default: null,
+    },
+
+    // ── Project Enquiry Context (optional — null for non-project leads) ──
+    projectId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project',
+      default: null,
+    },
+    configurationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ProjectConfiguration',
+      default: null,
+    },
+    unitId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'ProjectUnit',
+      default: null,
+    },
+    enquiryType: {
+      type: String,
+      enum: {
+        values: ['general', 'price_request', 'brochure', 'site_visit', 'callback'],
+        message: 'Invalid enquiry type',
+      },
       default: null,
     },
 
@@ -164,6 +194,7 @@ leadSchema.index({ assignedTo: 1 });
 leadSchema.index({ userId: 1 });
 leadSchema.index({ phone: 1 });
 leadSchema.index({ createdAt: -1 });
+leadSchema.index({ projectId: 1 });
 
 // Admin dashboard: count leads created today
 leadSchema.index({ createdAt: 1 });

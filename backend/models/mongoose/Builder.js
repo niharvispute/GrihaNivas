@@ -151,6 +151,11 @@ const builderSchema = new mongoose.Schema(
       trim: true,
       default: null,
     },
+    website: {
+      type: String,
+      trim: true,
+      default: null,
+    },
     reraNumber: {
       type: String,
       trim: true,

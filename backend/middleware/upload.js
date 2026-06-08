@@ -10,10 +10,12 @@ const AppError = require('../utils/AppError');
  * folder structure, transformations, and error handling.
  *
  * Configured variants:
- *  - uploadImage   : Single image (property hero, profile pic, testimonial)
- *  - uploadImages  : Multiple images (property gallery — max 10)
- *  - uploadPDF     : Single PDF (brochure)
- *  - uploadMixed   : Images + PDF together (property creation)
+ *  - uploadImage                : Single image (property hero, profile pic, testimonial)
+ *  - uploadImages               : Multiple images (property gallery — max 10)
+ *  - uploadPDF                  : Single PDF (brochure)
+ *  - uploadMixed                : Images + PDF together (property creation)
+ *  - uploadProject              : Images + PDF (project hero, gallery, master plan, brochure)
+ *  - uploadConfiguration        : Images for configuration floor plans + gallery
  */
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024;  // 2 MB
@@ -139,6 +141,44 @@ const uploadPropertySubmission = multer({
   limits: { fileSize: MAX_VIDEO_SIZE, files: 11 },
 });
 
+/**
+ * Project upload — hero, gallery (10), master plan, brochure (PDF).
+ * Fields:
+ *   - heroImage  : 1 image
+ *   - images     : up to 10 images
+ *   - masterPlan : 1 image
+ *   - brochure   : 1 PDF
+ *
+ * Usage: projectUploadFields
+ */
+const projectUploadFields = multer({
+  storage: memoryStorage,
+  fileFilter: mixedFilter,
+  limits: { fileSize: MAX_PDF_SIZE, files: 13 }, // 1 + 10 + 1 + 1
+}).fields([
+  { name: 'heroImage',  maxCount: 1  },
+  { name: 'images',     maxCount: 10 },
+  { name: 'masterPlan', maxCount: 1  },
+  { name: 'brochure',   maxCount: 1  },
+]);
+
+/**
+ * Configuration upload — floor plans + gallery (each up to 5).
+ * Fields:
+ *   - floorPlans : up to 5 images
+ *   - images     : up to 5 images
+ *
+ * Usage: configUploadFields
+ */
+const configUploadFields = multer({
+  storage: memoryStorage,
+  fileFilter: imageFilter,
+  limits: { fileSize: MAX_IMAGE_SIZE, files: 10 },
+}).fields([
+  { name: 'floorPlans', maxCount: 5 },
+  { name: 'images',     maxCount: 5 },
+]);
+
 const propertyUploadFields = uploadMixed.fields([
   { name: 'heroImage',   maxCount: 1  },
   { name: 'images',      maxCount: 10 },
@@ -166,4 +206,6 @@ module.exports = {
   propertyUploadFields,
   builderUploadFields,
   propertySubmissionUploadFields,
+  projectUploadFields,
+  configUploadFields,
 };
