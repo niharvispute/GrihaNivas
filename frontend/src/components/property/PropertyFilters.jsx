@@ -31,10 +31,20 @@ const FURNISHING_OPTIONS = [
   { label: 'Furnished', value: 'furnished' },
 ];
 
-// Constants for Price Filtering (50 Lakh to 3 Cr)
-const MIN_BUDGET = 5000000; // 50 Lakh
-const MAX_BUDGET = 30000000; // 3 Cr
-const STEP = 500000; // 5 Lakh step
+// Buy price range
+const BUY_MIN = 5000000;   // 50 Lakh
+const BUY_MAX = 30000000;  // 3 Cr
+const BUY_STEP = 500000;   // 5 Lakh
+
+// Rent price range
+const RENT_MIN = 10000;    // ₹10K/month
+const RENT_MAX = 500000;   // ₹5 Lakh/month
+const RENT_STEP = 10000;   // ₹10K step
+
+// Backwards-compat alias used in formatPriceToCr calls below
+const MIN_BUDGET = BUY_MIN;
+const MAX_BUDGET = BUY_MAX;
+const STEP = BUY_STEP;
 
 function formatPriceToCr(price) {
   if (!price) return '';
@@ -161,9 +171,14 @@ const CustomSelect = ({ name, options, defaultValue, label, icon }) => {
 
 export default function PropertyFilters({ basePath, currentQuery }) {
   const router = useRouter();
+  const isRentPage = basePath?.includes('/rent');
+  const budgetMin = isRentPage ? RENT_MIN : BUY_MIN;
+  const budgetMax = isRentPage ? RENT_MAX : BUY_MAX;
+  const budgetStep = isRentPage ? RENT_STEP : BUY_STEP;
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [minPrice, setMinPrice] = useState(currentQuery?.minPrice || MIN_BUDGET);
-  const [maxPrice, setMaxPrice] = useState(currentQuery?.maxPrice || MAX_BUDGET);
+  const [minPrice, setMinPrice] = useState(currentQuery?.minPrice || budgetMin);
+  const [maxPrice, setMaxPrice] = useState(currentQuery?.maxPrice || budgetMax);
   const [areaOptions, setAreaOptions] = useState(DEFAULT_AREA_OPTIONS);
   const [bhkOptions, setBhkOptions] = useState(DEFAULT_BHK_OPTIONS);
   const [furnishingOptions, setFurnishingOptions] = useState(FURNISHING_OPTIONS);
@@ -186,9 +201,9 @@ export default function PropertyFilters({ basePath, currentQuery }) {
 
   // Sync state with props if they change
   useEffect(() => {
-    if (currentQuery?.minPrice) setMinPrice(Number(currentQuery.minPrice));
-    if (currentQuery?.maxPrice) setMaxPrice(Number(currentQuery.maxPrice));
-  }, [currentQuery?.minPrice, currentQuery?.maxPrice]);
+    setMinPrice(currentQuery?.minPrice ? Number(currentQuery.minPrice) : budgetMin);
+    setMaxPrice(currentQuery?.maxPrice ? Number(currentQuery.maxPrice) : budgetMax);
+  }, [currentQuery?.minPrice, currentQuery?.maxPrice, budgetMin, budgetMax]);
 
   useEffect(() => {
     if (isDrawerOpen) {
@@ -274,6 +289,10 @@ export default function PropertyFilters({ basePath, currentQuery }) {
         minValue={minPrice}
         maxValue={maxPrice}
         onChange={handleBudgetChange}
+        budgetMin={budgetMin}
+        budgetMax={budgetMax}
+        budgetStep={budgetStep}
+        isRent={isRentPage}
       />
 
       {/* BHK Type */}

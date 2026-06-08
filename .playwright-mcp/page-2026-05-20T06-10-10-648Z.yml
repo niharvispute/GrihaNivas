@@ -1,0 +1,190 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - main [ref=e22]:
+        - generic [ref=e23]:
+          - paragraph [ref=e24]: Support
+          - heading "Frequently Asked Questions" [level=1] [ref=e25]
+          - paragraph [ref=e26]: Answers to common questions about buying, renting, financing, and documentation on GrihaNivas.
+        - generic [ref=e27]:
+          - group [ref=e28]:
+            - generic "How do I schedule a property visit? expand_more" [ref=e29] [cursor=pointer]:
+              - heading "How do I schedule a property visit?" [level=2] [ref=e30]
+              - generic [ref=e32]: expand_more
+          - group [ref=e33]:
+            - generic "Are listings verified before publishing? expand_more" [ref=e34] [cursor=pointer]:
+              - heading "Are listings verified before publishing?" [level=2] [ref=e35]
+              - generic [ref=e37]: expand_more
+          - group [ref=e38]:
+            - generic "Can I get assistance for home loans? expand_more" [ref=e39] [cursor=pointer]:
+              - heading "Can I get assistance for home loans?" [level=2] [ref=e40]
+              - generic [ref=e42]: expand_more
+          - group [ref=e43]:
+            - generic "Do you support rental agreement registration? expand_more" [ref=e44] [cursor=pointer]:
+              - heading "Do you support rental agreement registration?" [level=2] [ref=e45]
+              - generic [ref=e47]: expand_more
+          - group [ref=e48]:
+            - generic "How often are new properties added? expand_more" [ref=e49] [cursor=pointer]:
+              - heading "How often are new properties added?" [level=2] [ref=e50]
+              - generic [ref=e52]: expand_more
+          - group [ref=e53]:
+            - generic "What is stamp duty in Mumbai and how is it calculated? expand_more" [ref=e54] [cursor=pointer]:
+              - heading "What is stamp duty in Mumbai and how is it calculated?" [level=2] [ref=e55]
+              - generic [ref=e57]: expand_more
+          - group [ref=e58]:
+            - generic "Is RERA registration mandatory for properties I see on GrihaNivas? expand_more" [ref=e59] [cursor=pointer]:
+              - heading "Is RERA registration mandatory for properties I see on GrihaNivas?" [level=2] [ref=e60]
+              - generic [ref=e62]: expand_more
+          - group [ref=e63]:
+            - generic "What documents should I check before buying a property in Mumbai? expand_more" [ref=e64] [cursor=pointer]:
+              - heading "What documents should I check before buying a property in Mumbai?" [level=2] [ref=e65]
+              - generic [ref=e67]: expand_more
+        - generic [ref=e68]:
+          - generic [ref=e69]:
+            - paragraph [ref=e70]: Still have questions?
+            - paragraph [ref=e71]: Our advisory team responds within one business day.
+          - link "Contact Us" [ref=e72] [cursor=pointer]:
+            - /url: /contact
+    - contentinfo [ref=e73]:
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - generic [ref=e76]: GrihaNivas
+          - paragraph [ref=e77]: Mumbai's concierge real estate advisory.
+          - generic [ref=e78]:
+            - link "Instagram" [ref=e79] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e80]
+            - link "WhatsApp" [ref=e83] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e84]
+            - link "LinkedIn" [ref=e86] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e87]
+            - link "YouTube" [ref=e91] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e92]
+        - generic [ref=e95]:
+          - heading "Properties" [level=3] [ref=e96]
+          - list [ref=e97]:
+            - listitem [ref=e98]:
+              - link "Buy" [ref=e99] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e100]:
+              - link "Rent" [ref=e101] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e102]:
+              - link "Builders" [ref=e103] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e104]:
+              - link "New Launch" [ref=e105] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e106]:
+          - heading "Services" [level=3] [ref=e107]
+          - list [ref=e108]:
+            - listitem [ref=e109]:
+              - link "Home Loan" [ref=e110] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e111]:
+              - link "EMI Calculator" [ref=e112] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e113]:
+              - link "Stamp Duty" [ref=e114] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e115]:
+              - link "Rent Agreement" [ref=e116] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e117]:
+              - link "Comparison" [ref=e118] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e119]:
+          - heading "Resources" [level=3] [ref=e120]
+          - list [ref=e121]:
+            - listitem [ref=e122]:
+              - link "Blogs" [ref=e123] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e124]:
+              - link "FAQs" [ref=e125] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e126]:
+              - link "About Us" [ref=e127] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e128]:
+              - link "Contact" [ref=e129] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e130]:
+          - heading "Contact" [level=3] [ref=e131]
+          - list [ref=e132]:
+            - listitem [ref=e133]:
+              - img [ref=e134]
+              - generic [ref=e137]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e138]:
+              - img [ref=e139]
+              - link "+91 91379 50050" [ref=e141] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e142]:
+        - generic [ref=e143]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e144]:
+          - link "Privacy Policy" [ref=e145] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e146] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e147]:
+      - button "View current offer" [ref=e148]:
+        - generic [ref=e149]: local_offer
+      - link "Call us" [ref=e150] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e151]
+      - link "Chat on WhatsApp" [ref=e153] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e154]
+  - button "Open Next.js Dev Tools" [ref=e161] [cursor=pointer]:
+    - img [ref=e162]
+  - alert [ref=e165]

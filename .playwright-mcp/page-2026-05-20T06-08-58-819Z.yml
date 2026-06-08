@@ -1,0 +1,304 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - main [ref=e23]:
+        - generic [ref=e24]:
+          - img "Hiranandani Group" [ref=e26]
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - img "Hiranandani Group Logo" [ref=e33]
+              - heading "Hiranandani Group" [level=1] [ref=e34]
+              - paragraph [ref=e35]: Hiranandani Group is a leading premium real estate developer in India, with over 40 years of experience delivering high-quality residential and commercial projects.
+            - generic [ref=e36]:
+              - generic [ref=e37]:
+                - generic [ref=e38]: calendar_today
+                - generic [ref=e39]:
+                  - paragraph [ref=e40]: Est. Year
+                  - paragraph [ref=e41]: "1980"
+              - generic [ref=e42]:
+                - generic [ref=e43]: apartment
+                - generic [ref=e44]:
+                  - paragraph [ref=e45]: Total Assets
+                  - paragraph [ref=e46]: "30"
+              - generic [ref=e47]:
+                - generic [ref=e48]: location_city
+                - generic [ref=e49]:
+                  - paragraph [ref=e50]: HQ Location
+                  - paragraph [ref=e51]: Mumbai
+            - generic [ref=e52]:
+              - link "View All Properties arrow_downward" [ref=e53] [cursor=pointer]:
+                - /url: "#portfolio"
+                - text: View All Properties
+                - generic [ref=e54]: arrow_downward
+              - link "Contact Expert call" [ref=e55] [cursor=pointer]:
+                - /url: "#builder-contact-form"
+                - text: Contact Expert
+                - generic [ref=e56]: call
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - generic [ref=e60]: The Legacy
+            - heading "Powai's Great Builder's Group" [level=2] [ref=e61]
+            - generic [ref=e62]:
+              - paragraph [ref=e63]: Hiranandani Group has been one of the most premium real estate developer in India with more than 40 years of experience in this business. Since its inception in 1978, trust of the people in Hiranandani Group has been the foundation for our success and their unwavering faith motivates us to serve even more. Thousands of families who have created a future with us, will testify for the value that we have added in their lives. We acknowledge the possibilities that the technology offers, that's why we incorporate technological innovations in our real estate projects and give peopleexcellence and precision in everything. Ultimately, providing an amazing experience to the people is our endeavor.
+              - generic [ref=e64]:
+                - generic [ref=e65]:
+                  - heading "Quality Standards" [level=4] [ref=e66]
+                  - paragraph [ref=e67]: RERA-aligned project governance
+                - generic [ref=e68]:
+                  - heading "Innovation" [level=4] [ref=e69]
+                  - paragraph [ref=e70]: Urban planning and execution expertise
+          - img "Architecture 1" [ref=e73]
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - heading "30" [level=3] [ref=e78]
+            - paragraph [ref=e79]: Total Projects
+          - generic [ref=e80]:
+            - heading "15" [level=3] [ref=e81]
+            - paragraph [ref=e82]: Ongoing
+          - generic [ref=e83]:
+            - heading "15" [level=3] [ref=e84]
+            - paragraph [ref=e85]: Completed Deliveries
+        - generic [ref=e87]:
+          - generic [ref=e88]:
+            - generic [ref=e89]:
+              - heading "Portfolio Showcase" [level=2] [ref=e90]
+              - paragraph [ref=e91]: Explore our current residential masterpieces across the Mumbai Metropolitan Region.
+            - generic [ref=e92]:
+              - button "Configuration" [ref=e94] [cursor=pointer]:
+                - generic [ref=e95]: Configuration
+                - img [ref=e97]
+              - button "Price Range" [ref=e100] [cursor=pointer]:
+                - generic [ref=e101]: Price Range
+                - img [ref=e103]
+              - button "Status" [ref=e106] [cursor=pointer]:
+                - generic [ref=e107]: Status
+                - img [ref=e109]
+              - button "Reset" [ref=e111]:
+                - img [ref=e112]
+                - text: Reset
+          - generic [ref=e115]:
+            - button "Previous" [disabled]:
+              - generic: west
+            - button "Next" [disabled]:
+              - generic: east
+            - generic [ref=e118]:
+              - generic [ref=e119]:
+                - img "Lodha Marquise" [ref=e120]
+                - generic [ref=e121]: buy
+              - generic [ref=e122]:
+                - heading "Lodha Marquise" [level=3] [ref=e123]
+                - paragraph [ref=e124]: ₹2 Cr
+                - generic [ref=e125]:
+                  - generic [ref=e126]: location_on
+                  - text: Worli, Mumbai
+                - generic [ref=e127]:
+                  - generic [ref=e128]:
+                    - paragraph [ref=e129]: Config
+                    - paragraph [ref=e130]: Configuration on request
+                  - generic [ref=e131]:
+                    - paragraph [ref=e132]: Ready
+                    - paragraph [ref=e133]: For Sale
+                - link "View Detail" [ref=e134] [cursor=pointer]:
+                  - /url: /property/lodha-marquise-1777110491004
+        - generic [ref=e137]:
+          - heading "What Our Residents Say" [level=2] [ref=e138]
+          - generic [ref=e140]:
+            - img "Nihar" [ref=e142]
+            - generic [ref=e143]:
+              - generic [ref=e144]:
+                - generic [ref=e145]: star
+                - generic [ref=e146]: star
+                - generic [ref=e147]: star
+                - generic [ref=e148]: star
+                - generic [ref=e149]: star
+              - paragraph [ref=e150]: "\"Great Builder\""
+              - generic [ref=e151]:
+                - paragraph [ref=e152]: Nihar
+                - paragraph [ref=e153]: Buyer
+        - generic [ref=e156]:
+          - generic [ref=e157]:
+            - heading "Common Inquiries" [level=2] [ref=e158]
+            - group [ref=e160]:
+              - generic "Where the headquaters are located? expand_more" [ref=e161] [cursor=pointer]:
+                - text: Where the headquaters are located?
+                - generic [ref=e162]: expand_more
+          - generic [ref=e166]:
+            - heading "Enquire with Hiranandani Group" [level=3] [ref=e167]
+            - generic [ref=e168]:
+              - generic [ref=e169]:
+                - generic [ref=e170]: Full Name
+                - textbox "Full Name" [ref=e171]:
+                  - /placeholder: John Doe
+              - generic [ref=e172]:
+                - generic [ref=e173]: Email Address
+                - textbox "Email Address" [ref=e174]:
+                  - /placeholder: john@example.com
+              - generic [ref=e175]:
+                - generic [ref=e176]: Phone Number *
+                - textbox "Phone Number *" [ref=e177]:
+                  - /placeholder: 98765 43210
+              - generic [ref=e178]:
+                - generic [ref=e179]: Message
+                - textbox "Message" [ref=e180]:
+                  - /placeholder: Tell us your budget, preferred area, and possession timeline.
+              - button "Send Inquiry" [ref=e181]
+              - paragraph [ref=e182]:
+                - text: By submitting, you agree to our
+                - link "Terms" [ref=e183] [cursor=pointer]:
+                  - /url: /terms
+                - text: and
+                - link "Privacy Policy" [ref=e184] [cursor=pointer]:
+                  - /url: /privacy
+                - text: .
+    - contentinfo [ref=e186]:
+      - generic [ref=e187]:
+        - generic [ref=e188]:
+          - generic [ref=e189]: GrihaNivas
+          - paragraph [ref=e190]: Mumbai's concierge real estate advisory.
+          - generic [ref=e191]:
+            - link "Instagram" [ref=e192] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e193]
+            - link "WhatsApp" [ref=e196] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e197]
+            - link "LinkedIn" [ref=e199] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e200]
+            - link "YouTube" [ref=e204] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e205]
+        - generic [ref=e208]:
+          - heading "Properties" [level=3] [ref=e209]
+          - list [ref=e210]:
+            - listitem [ref=e211]:
+              - link "Buy" [ref=e212] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e213]:
+              - link "Rent" [ref=e214] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e215]:
+              - link "Builders" [ref=e216] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e217]:
+              - link "New Launch" [ref=e218] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e219]:
+          - heading "Services" [level=3] [ref=e220]
+          - list [ref=e221]:
+            - listitem [ref=e222]:
+              - link "Home Loan" [ref=e223] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e224]:
+              - link "EMI Calculator" [ref=e225] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e226]:
+              - link "Stamp Duty" [ref=e227] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e228]:
+              - link "Rent Agreement" [ref=e229] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e230]:
+              - link "Comparison" [ref=e231] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e232]:
+          - heading "Resources" [level=3] [ref=e233]
+          - list [ref=e234]:
+            - listitem [ref=e235]:
+              - link "Blogs" [ref=e236] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e237]:
+              - link "FAQs" [ref=e238] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e239]:
+              - link "About Us" [ref=e240] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e241]:
+              - link "Contact" [ref=e242] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e243]:
+          - heading "Contact" [level=3] [ref=e244]
+          - list [ref=e245]:
+            - listitem [ref=e246]:
+              - img [ref=e247]
+              - generic [ref=e250]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e251]:
+              - img [ref=e252]
+              - link "+91 91379 50050" [ref=e254] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e255]:
+        - generic [ref=e256]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e257]:
+          - link "Privacy Policy" [ref=e258] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e259] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e260]:
+      - button "View current offer" [ref=e261]:
+        - generic [ref=e262]: local_offer
+      - link "Call us" [ref=e263] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e264]
+      - link "Chat on WhatsApp" [ref=e266] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e267]
+  - generic [ref=e273] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e274]:
+      - img [ref=e275]
+    - generic [ref=e278]:
+      - button "Open issues overlay" [ref=e279]:
+        - generic [ref=e280]:
+          - generic [ref=e281]: "0"
+          - generic [ref=e282]: "1"
+        - generic [ref=e283]: Issue
+      - button "Collapse issues badge" [ref=e284]:
+        - img [ref=e285]
+  - alert [ref=e287]

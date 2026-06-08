@@ -1,0 +1,338 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - main [ref=e22]:
+        - navigation "Breadcrumb" [ref=e23]:
+          - list [ref=e24]:
+            - listitem [ref=e25]:
+              - link "Home" [ref=e26] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e27]:
+              - img [ref=e28]
+              - link "Listings" [ref=e30] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e31]:
+              - img [ref=e32]
+              - generic [ref=e34]: Lodha Marquise
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]:
+              - heading "Lodha Marquise" [level=1] [ref=e38]
+              - paragraph [ref=e39]:
+                - img [ref=e40]
+                - generic [ref=e43]: Worli, Mumbai
+            - generic [ref=e44]:
+              - paragraph [ref=e45]: Expected Price
+              - paragraph [ref=e46]: ₹2 Cr
+          - generic [ref=e47]:
+            - generic [ref=e48]:
+              - generic [ref=e49] [cursor=pointer]:
+                - img "Main Property View" [ref=e50]
+                - button "Open RERA verification" [ref=e51]:
+                  - img "RERA QR" [ref=e53]
+                  - generic [ref=e54]:
+                    - generic [ref=e55]:
+                      - generic [ref=e56]: verified
+                      - generic [ref=e57]: RERA
+                    - paragraph [ref=e58]: View QR
+              - generic [ref=e59]:
+                - img "Property Angle 2" [ref=e61] [cursor=pointer]
+                - generic [ref=e62] [cursor=pointer]:
+                  - img "Property Gallery More" [ref=e63]
+                  - generic [ref=e64]:
+                    - generic [ref=e65]: "+1"
+                    - generic [ref=e66]: Remaining Images
+                    - generic [ref=e67]:
+                      - generic [ref=e68]: photo_library
+                      - text: View All
+            - generic [ref=e69]:
+              - generic [ref=e70]:
+                - generic [ref=e72]: Price
+                - generic [ref=e73]: 2 Cr Price
+              - generic [ref=e74]:
+                - generic [ref=e76]: Type
+                - generic [ref=e77]: buy
+              - generic [ref=e78]:
+                - generic [ref=e80]: Carpet Area
+                - generic [ref=e81]: On request
+              - generic [ref=e82]:
+                - generic [ref=e84]: Area
+                - generic [ref=e85]: Area pending
+              - generic [ref=e86]:
+                - generic [ref=e88]: Property Age
+                - generic [ref=e89]: 0-1
+              - generic [ref=e90]:
+                - generic [ref=e92]: Bathrooms
+                - generic [ref=e93]: 2 Bathrooms
+              - generic [ref=e94]:
+                - generic [ref=e96]: Covered Parking
+                - generic [ref=e97]: 1 Covered Parking
+              - generic [ref=e98]:
+                - generic [ref=e100]: Possession
+                - generic [ref=e101]: Under Construction
+        - generic [ref=e102]:
+          - generic [ref=e103]:
+            - generic [ref=e104]:
+              - heading "Property Highlights" [level=2] [ref=e105]
+              - generic [ref=e106]:
+                - generic [ref=e107]:
+                  - generic [ref=e109]: sell
+                  - generic [ref=e110]:
+                    - paragraph [ref=e111]: Price
+                    - paragraph [ref=e112]: ₹2 Cr
+                - generic [ref=e113]:
+                  - generic [ref=e115]: check_circle
+                  - generic [ref=e116]:
+                    - paragraph [ref=e117]: Highlight
+                    - paragraph [ref=e118]: Sale Residential
+                - generic [ref=e119]:
+                  - generic [ref=e121]: check_circle
+                  - generic [ref=e122]:
+                    - paragraph [ref=e123]: Highlight
+                    - paragraph [ref=e124]: Under Construction
+            - generic [ref=e125]:
+              - heading "About the Property" [level=2] [ref=e126]
+              - generic [ref=e127]:
+                - paragraph [ref=e128]: 4 BHK Investor Flat for Sale in one of Worlis most sought after residential addresses, this ready to move in apartment is part of a landmark gated development spread across 17 acres of land. The project offers an exceptional lifestyle with world class amenities, including clubhouse, swimming pool, gym and multiple recreational facilities. Situated on a higher floor, the apartment enjoys pleasant partial sea and city views. The residence features a well planned layout, ensuring efficient space utilization along with ample natural light and ventilation throughout the day.
+                - button "Read More" [ref=e129]:
+                  - text: Read More
+                  - img [ref=e130]
+            - generic [ref=e132]:
+              - heading "World-Class Amenities" [level=2] [ref=e133]
+              - generic [ref=e134]:
+                - generic [ref=e135]:
+                  - generic [ref=e136]: done
+                  - paragraph [ref=e137]: Infinity Pool
+                - generic [ref=e138]:
+                  - generic [ref=e139]: done
+                  - paragraph [ref=e140]: Home Automation
+                - generic [ref=e141]:
+                  - generic [ref=e142]: done
+                  - paragraph [ref=e143]: Vastu Compliant
+                - generic [ref=e144]:
+                  - generic [ref=e145]: done
+                  - paragraph [ref=e146]: Private Gym
+            - generic [ref=e147]:
+              - generic [ref=e148]:
+                - heading "Floor Plans" [level=2] [ref=e149]
+                - generic [ref=e150]: No layouts uploaded
+              - generic [ref=e152]:
+                - generic [ref=e153]:
+                  - generic [ref=e154]: grid_view
+                  - paragraph [ref=e155]: Floor plans not uploaded yet
+                - generic [ref=e157]:
+                  - img [ref=e159]
+                  - heading "Awaiting Upload" [level=3] [ref=e162]
+                  - paragraph [ref=e163]: Owner has not uploaded floor plans yet. Contact us for updated documents.
+                  - button "Brochure Not Uploaded" [disabled] [ref=e164]:
+                    - img [ref=e165]
+                    - text: Brochure Not Uploaded
+            - generic [ref=e168]:
+              - heading "Neighborhood & Location" [level=2] [ref=e169]
+              - iframe [ref=e171]:
+                
+          - generic [ref=e172]:
+            - generic [ref=e173]:
+              - heading "Inquire for Details" [level=3] [ref=e174]
+              - paragraph [ref=e175]: Our consultants will contact you within 2 hours.
+              - generic [ref=e176]:
+                - generic [ref=e177]:
+                  - generic [ref=e178]: Full Name
+                  - textbox "e.g. Rohit Sharma" [ref=e179]
+                - generic [ref=e180]:
+                  - generic [ref=e181]: Phone Number
+                  - textbox "98765 43210" [ref=e182]
+                - generic [ref=e183]:
+                  - generic [ref=e184]: Email Address
+                  - textbox "rohit@example.com" [ref=e185]
+                - button "I'm Interested" [ref=e186]
+              - link "Chat on WhatsApp" [ref=e188] [cursor=pointer]:
+                - /url: https://wa.me/919137950050?text=Hi!%20I'm%20interested%20in%20%22Lodha%20Marquise%22%20on%20GrihaNivas.%20Can%20you%20share%20more%20details%3F
+                - img [ref=e189]
+                - text: Chat on WhatsApp
+              - paragraph [ref=e192]:
+                - img [ref=e193]
+                - text: Your data is secure and confidential
+            - generic [ref=e196]:
+              - generic [ref=e197]:
+                - img "Hiranandani Group" [ref=e199]
+                - generic [ref=e200]:
+                  - heading "Hiranandani Group" [level=4] [ref=e201]
+                  - paragraph [ref=e202]: Est. 1990 • Multiple Projects Delivered
+              - paragraph [ref=e203]: Project delivered by a trusted Mumbai developer.
+              - generic [ref=e204]:
+                - generic [ref=e205]:
+                  - img [ref=e206]
+                  - text: Trusted Builder
+                - generic [ref=e208]:
+                  - img [ref=e209]
+                  - text: Established Brand Experience
+        - generic [ref=e212]:
+          - generic [ref=e215]:
+            - paragraph [ref=e218]: Curated Selection
+            - heading "You May Also Like" [level=2] [ref=e219]
+            - paragraph [ref=e220]: Similar homes curated by location, category, and lifestyle fit.
+          - article [ref=e224]:
+            - generic [ref=e225]:
+              - link "Lodha Marquise ₹ 1.2 Cr" [ref=e226] [cursor=pointer]:
+                - /url: /property/lodha-marquise-1777106921262
+                - img "Lodha Marquise" [ref=e227]
+                - generic [ref=e229]: ₹ 1.2 Cr
+              - button "Save to Wishlist" [ref=e230]:
+                - img [ref=e231]
+            - generic [ref=e234]: Trending
+            - heading "Lodha Marquise" [level=3] [ref=e236]
+            - paragraph [ref=e237]: Apartment for Sale in
+            - paragraph [ref=e238]: Worli, Mumbai
+            - generic [ref=e239]:
+              - link "Quick Call" [ref=e240] [cursor=pointer]:
+                - /url: tel:+919137950050
+                - img [ref=e241]
+                - text: Quick Call
+              - link "Download Brochure" [ref=e243] [cursor=pointer]:
+                - /url: /property/lodha-marquise-1777106921262
+                - img [ref=e244]
+                - text: Download Brochure
+    - contentinfo [ref=e247]:
+      - generic [ref=e248]:
+        - generic [ref=e249]:
+          - generic [ref=e250]: GrihaNivas
+          - paragraph [ref=e251]: Mumbai's concierge real estate advisory.
+          - generic [ref=e252]:
+            - link "Instagram" [ref=e253] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e254]
+            - link "WhatsApp" [ref=e257] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e258]
+            - link "LinkedIn" [ref=e260] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e261]
+            - link "YouTube" [ref=e265] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e266]
+        - generic [ref=e269]:
+          - heading "Properties" [level=3] [ref=e270]
+          - list [ref=e271]:
+            - listitem [ref=e272]:
+              - link "Buy" [ref=e273] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e274]:
+              - link "Rent" [ref=e275] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e276]:
+              - link "Builders" [ref=e277] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e278]:
+              - link "New Launch" [ref=e279] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e280]:
+          - heading "Services" [level=3] [ref=e281]
+          - list [ref=e282]:
+            - listitem [ref=e283]:
+              - link "Home Loan" [ref=e284] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e285]:
+              - link "EMI Calculator" [ref=e286] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e287]:
+              - link "Stamp Duty" [ref=e288] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e289]:
+              - link "Rent Agreement" [ref=e290] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e291]:
+              - link "Comparison" [ref=e292] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e293]:
+          - heading "Resources" [level=3] [ref=e294]
+          - list [ref=e295]:
+            - listitem [ref=e296]:
+              - link "Blogs" [ref=e297] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e298]:
+              - link "FAQs" [ref=e299] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e300]:
+              - link "About Us" [ref=e301] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e302]:
+              - link "Contact" [ref=e303] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e304]:
+          - heading "Contact" [level=3] [ref=e305]
+          - list [ref=e306]:
+            - listitem [ref=e307]:
+              - img [ref=e308]
+              - generic [ref=e311]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e312]:
+              - img [ref=e313]
+              - link "+91 91379 50050" [ref=e315] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e316]:
+        - generic [ref=e317]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e318]:
+          - link "Privacy Policy" [ref=e319] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e320] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e321]:
+      - button "View current offer" [ref=e322]:
+        - generic [ref=e323]: local_offer
+      - link "Call us" [ref=e324] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e325]
+      - link "Chat on WhatsApp" [ref=e327] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e328]
+  - button "Open Next.js Dev Tools" [ref=e335] [cursor=pointer]:
+    - img [ref=e336]
+  - alert [ref=e339]

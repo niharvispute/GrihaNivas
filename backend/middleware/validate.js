@@ -657,6 +657,7 @@ const schemas = {
         jointRate: z.number().min(0).max(100),
         registrationCharge: z.number().min(0),
       }),
+      dhc: z.number().min(0).optional(),
     }),
   },
 
@@ -672,6 +673,41 @@ const schemas = {
       propertyValue: z.number().min(0),
       ownershipType: z.enum(['male', 'female', 'joint']),
     }),
+
+    rentStampDuty: z
+      .object({
+        licensePeriodMonths: z.number().int().min(1).max(120),
+        rentType: z.enum(['fixed', 'varying']),
+        fixedMonthlyRent: z.number().min(0).optional(),
+        varyingRentRows: z
+          .array(
+            z.object({
+              fromMonth: z.number().int().min(1),
+              toMonth: z.number().int().min(1),
+              monthlyRent: z.number().min(0),
+            })
+          )
+          .max(60)
+          .optional(),
+        refundableDeposit: z.number().min(0).default(0),
+        nonRefundableDeposit: z.number().min(0).default(0),
+        propertyArea: z.enum(['urban', 'rural']),
+        fromDate: z.string().optional(),
+        toDate: z.string().optional(),
+      })
+      .refine(
+        (data) => {
+          if (data.rentType === 'fixed') return data.fixedMonthlyRent != null && data.fixedMonthlyRent >= 0;
+          return Array.isArray(data.varyingRentRows) && data.varyingRentRows.length > 0;
+        },
+        (data) => ({
+          message:
+            data.rentType === 'fixed'
+              ? 'fixedMonthlyRent is required for fixed rent type'
+              : 'varyingRentRows (non-empty) is required for varying rent type',
+          path: data.rentType === 'fixed' ? ['fixedMonthlyRent'] : ['varyingRentRows'],
+        })
+      ),
   },
 
   // ── USER ──────────────────────────────────

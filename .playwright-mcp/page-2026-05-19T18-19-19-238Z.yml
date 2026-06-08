@@ -1,0 +1,235 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - img "Properties in Mumbai – A Complete Guide for Buyers and Investors" [ref=e25]
+          - generic [ref=e28]:
+            - generic [ref=e29]: Buying Guide
+            - heading "Properties in Mumbai – A Complete Guide for Buyers and Investors" [level=1] [ref=e30]
+            - paragraph [ref=e32]: 25 Apr 2026 • 1 min read
+        - main [ref=e33]:
+          - navigation [ref=e34]:
+            - link "Home" [ref=e35] [cursor=pointer]:
+              - /url: /
+            - generic [ref=e36]: /
+            - link "Insights" [ref=e37] [cursor=pointer]:
+              - /url: /blogs
+            - generic [ref=e38]: /
+            - generic [ref=e39]: Properties in Mumbai – A Complete Guide for Buyers and Investors
+          - generic [ref=e40]:
+            - article [ref=e41]:
+              - generic [ref=e42]:
+                - heading "Navigating the New Standard of Mumbai Opulence" [level=2] [ref=e43]
+                - paragraph [ref=e44]: As we move further into 2024, the South Mumbai real estate landscape is witnessing a seismic shift. No longer are "standard" luxury apartments enough for the city's elite.
+                - generic [ref=e45]: "Types of Properties in Mumbai Mumbai offers a wide variety of property options: 1. Residential Properties Apartments (1BHK, 2BHK, 3BHK, luxury flats) Villas and bungalows (limited but premium) Affordable housing in suburban areas 2. Commercial Properties Office spaces Retail shops Co-working spaces 3. Luxury Properties Areas like South Mumbai, Bandra, and Juhu offer high-end luxury homes with world-class amenities. Popular Locations to Buy Property South Mumbai – Premium and heritage properties Bandra & Andheri – Modern lifestyle and connectivity Thane & Navi Mumbai – Affordable and fast-developing regions Powai – IT hub with premium housing Property Price Trends Mumbai is known for high real estate prices, but there are variations: Central areas → Very high prices Suburbs → Moderate pricing Peripheral areas → Affordable options Factors influencing pricing include connectivity, infrastructure, amenities, and builder reputation. Why Invest in Mumbai Properties? High return on investment (ROI) Strong rental demand Continuous infrastructure development Status and lifestyle upgrade Things to Check Before Buying Legal clearances and documentation RERA registration Builder credibility Location and future growth potential Loan eligibility and financing options Future Outlook With ongoing developments like metro lines, business hubs, and smart infrastructure, Mumbai’s real estate market is expected to grow steadily. Areas on the outskirts are becoming the next investment hotspots."
+                - generic [ref=e46]:
+                  - generic [ref=e48]:
+                    - heading "Ready to find your piece of the sky?" [level=4] [ref=e49]:
+                      - text: Ready to find your
+                      - text: piece of the sky?
+                    - paragraph [ref=e50]: Access our exclusive, Property listings.
+                  - button "Browse Property" [ref=e51]
+                - generic [ref=e52]:
+                  - generic [ref=e53] [cursor=pointer]: South Mumbai
+                  - generic [ref=e54] [cursor=pointer]: Luxury Real Estate
+                  - generic [ref=e55] [cursor=pointer]: Investment
+                  - generic [ref=e56] [cursor=pointer]: Penthouse Market
+            - complementary [ref=e57]:
+              - generic [ref=e58]:
+                - heading "Related Insights" [level=4] [ref=e59]: Related Insights
+                - paragraph [ref=e62]: Related insights will appear here shortly.
+              - generic [ref=e63]:
+                - heading "Trending Assets" [level=4] [ref=e65]
+                - generic [ref=e66]:
+                  - link "Sangvi, Mumbai Apartment in Sangvi Price on request" [ref=e67] [cursor=pointer]:
+                    - /url: /property/apartment-in-sangvi-1777218429795
+                    - paragraph [ref=e68]: Sangvi, Mumbai
+                    - paragraph [ref=e69]: Apartment in Sangvi
+                    - paragraph [ref=e70]: Price on request
+                  - link "Wakad, Mumbai Apartment in Wakad Price on request" [ref=e71] [cursor=pointer]:
+                    - /url: /property/apartment-in-wakad-1777217805039
+                    - paragraph [ref=e72]: Wakad, Mumbai
+                    - paragraph [ref=e73]: Apartment in Wakad
+                    - paragraph [ref=e74]: Price on request
+                  - link "View All Listings" [ref=e75] [cursor=pointer]:
+                    - /url: /buy
+        - generic [ref=e78]:
+          - heading "Discussions (1)" [level=3] [ref=e79]:
+            - text: Discussions
+            - generic [ref=e80]: (1)
+          - generic [ref=e82]:
+            - generic [ref=e83]: R
+            - generic [ref=e84]:
+              - generic [ref=e85]:
+                - generic [ref=e86]: Rohit Huge
+                - generic [ref=e87]: 1 May 2026
+              - paragraph [ref=e88]: This is very good
+          - generic [ref=e89]:
+            - heading "add_comment Join the Dialogue" [level=4] [ref=e90]:
+              - generic [ref=e91]: add_comment
+              - text: Join the Dialogue
+            - generic [ref=e92]:
+              - generic [ref=e93]:
+                - text: Share your perspective
+                - textbox "What are your thoughts on this market outlook?" [ref=e94]
+              - generic [ref=e95]:
+                - generic [ref=e96]:
+                  - text: Your Identity
+                  - textbox "Full Name" [ref=e97]
+                - generic [ref=e98]:
+                  - text: Credential Email
+                  - textbox "Email Address" [ref=e99]
+              - button "Submit Comment" [ref=e100]
+        - generic [ref=e104]:
+          - generic [ref=e105]:
+            - heading "Subscribe to Mumbai Insights" [level=3] [ref=e106]:
+              - text: Subscribe to
+              - text: Mumbai Insights
+            - paragraph [ref=e107]: Get the latest market analysis and exclusive penthouse listings delivered to your inbox weekly.
+          - generic [ref=e109]:
+            - textbox "Email address" [ref=e111]
+            - button "Subscribe" [ref=e112]
+    - contentinfo [ref=e113]:
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - generic [ref=e116]: GrihaNivas
+          - paragraph [ref=e117]: Mumbai's concierge real estate advisory.
+          - generic [ref=e118]:
+            - link "Instagram" [ref=e119] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e120]
+            - link "WhatsApp" [ref=e123] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e124]
+            - link "LinkedIn" [ref=e126] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e127]
+            - link "YouTube" [ref=e131] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e132]
+        - generic [ref=e135]:
+          - heading "Properties" [level=3] [ref=e136]
+          - list [ref=e137]:
+            - listitem [ref=e138]:
+              - link "Buy" [ref=e139] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e140]:
+              - link "Rent" [ref=e141] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e142]:
+              - link "Builders" [ref=e143] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e144]:
+              - link "New Launch" [ref=e145] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e146]:
+          - heading "Services" [level=3] [ref=e147]
+          - list [ref=e148]:
+            - listitem [ref=e149]:
+              - link "Home Loan" [ref=e150] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e151]:
+              - link "EMI Calculator" [ref=e152] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e153]:
+              - link "Stamp Duty" [ref=e154] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e155]:
+              - link "Rent Agreement" [ref=e156] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e157]:
+              - link "Comparison" [ref=e158] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e159]:
+          - heading "Resources" [level=3] [ref=e160]
+          - list [ref=e161]:
+            - listitem [ref=e162]:
+              - link "Blogs" [ref=e163] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e164]:
+              - link "FAQs" [ref=e165] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e166]:
+              - link "About Us" [ref=e167] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e168]:
+              - link "Contact" [ref=e169] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e170]:
+          - heading "Contact" [level=3] [ref=e171]
+          - list [ref=e172]:
+            - listitem [ref=e173]:
+              - img [ref=e174]
+              - generic [ref=e177]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e178]:
+              - img [ref=e179]
+              - link "+91 91379 50050" [ref=e181] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e182]:
+        - generic [ref=e183]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e184]:
+          - link "Privacy Policy" [ref=e185] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e186] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e187]:
+      - button "View current offer" [ref=e188]:
+        - generic [ref=e189]: local_offer
+      - link "Call us" [ref=e190] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e191]
+      - link "Chat on WhatsApp" [ref=e193] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e194]
+  - button "Open Next.js Dev Tools" [ref=e201] [cursor=pointer]:
+    - img [ref=e202]
+  - alert [ref=e205]

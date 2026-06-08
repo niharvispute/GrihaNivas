@@ -1,0 +1,343 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "BUILDERS" [ref=e11] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e12] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e13]:
+            - button "SERVICES expand_more" [ref=e14]:
+              - generic [ref=e15]: SERVICES
+              - generic [ref=e16]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e17] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e18]:
+          - button "Login / Register" [ref=e19]
+          - button "List Property" [ref=e20]
+    - main [ref=e21]:
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - heading "EMI Calculator" [level=1] [ref=e25]
+          - paragraph [ref=e26]: Plan your home ownership journey with precision. Calculate monthly payments and view your interest breakdown instantly.
+        - generic [ref=e27]:
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - generic [ref=e31]:
+                - generic [ref=e32]: Loan Amount
+                - generic [ref=e33]:
+                  - generic [ref=e34]: ₹
+                  - textbox [ref=e35]: 75,00,000
+              - slider [ref=e36] [cursor=pointer]: "7500000"
+              - generic [ref=e37]:
+                - generic [ref=e38]: ₹ 1L
+                - generic [ref=e39]: ₹ 5Cr
+            - generic [ref=e40]:
+              - generic [ref=e41]:
+                - generic [ref=e42]: Interest Rate (%)
+                - generic [ref=e43]:
+                  - spinbutton [ref=e44]: "8.5"
+                  - generic [ref=e45]: "%"
+              - slider [ref=e46] [cursor=pointer]: "8.5"
+              - generic [ref=e47]:
+                - generic [ref=e48]: 5%
+                - generic [ref=e49]: 20%
+            - generic [ref=e50]:
+              - generic [ref=e51]:
+                - generic [ref=e52]: Loan Tenure
+                - generic [ref=e53]:
+                  - spinbutton [ref=e54]: "20"
+                  - generic [ref=e55]: Yrs
+              - slider [ref=e56] [cursor=pointer]: "20"
+              - generic [ref=e57]:
+                - generic [ref=e58]: 1 Yr
+                - generic [ref=e59]: 30 Yrs
+          - generic [ref=e62]:
+            - generic [ref=e63]:
+              - paragraph [ref=e64]: Monthly EMI
+              - heading "₹65,087" [level=2] [ref=e65]
+              - generic [ref=e66]:
+                - generic [ref=e67]:
+                  - generic [ref=e70]: Principal Amount
+                  - generic [ref=e71]: ₹75,00,000
+                - generic [ref=e72]:
+                  - generic [ref=e75]: Total Interest
+                  - generic [ref=e76]: ₹81,20,818
+                - generic [ref=e77]:
+                  - generic [ref=e78]: Total Payable
+                  - generic [ref=e79]: ₹1,56,20,818
+            - generic [ref=e81]:
+              - img [ref=e83]
+              - generic [ref=e88]:
+                - generic [ref=e89]: Interest
+                - generic [ref=e90]: 52%
+        - generic [ref=e91]:
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - heading "Amortization Schedule" [level=3] [ref=e94]
+              - paragraph [ref=e95]: Yearly breakdown of your loan repayment journey.
+            - button "Download Report" [ref=e96]:
+              - text: Download Report
+              - img [ref=e97]
+          - table [ref=e101]:
+            - rowgroup [ref=e102]:
+              - row "Year Principal Interest Total Balance" [ref=e103]:
+                - columnheader "Year" [ref=e104]
+                - columnheader "Principal" [ref=e105]
+                - columnheader "Interest" [ref=e106]
+                - columnheader "Total" [ref=e107]
+                - columnheader "Balance" [ref=e108]
+            - rowgroup [ref=e109]:
+              - row "2026 ₹1,49,270 ₹6,31,774 ₹7,81,044 ₹73,50,730" [ref=e110]:
+                - cell "2026" [ref=e111]
+                - cell "₹1,49,270" [ref=e112]
+                - cell "₹6,31,774" [ref=e113]
+                - cell "₹7,81,044" [ref=e114]
+                - cell "₹73,50,730" [ref=e115]
+              - row "2027 ₹1,62,465 ₹6,18,579 ₹7,81,044 ₹71,88,265" [ref=e116]:
+                - cell "2027" [ref=e117]
+                - cell "₹1,62,465" [ref=e118]
+                - cell "₹6,18,579" [ref=e119]
+                - cell "₹7,81,044" [ref=e120]
+                - cell "₹71,88,265" [ref=e121]
+              - row "2028 ₹1,76,825 ₹6,04,219 ₹7,81,044 ₹70,11,440" [ref=e122]:
+                - cell "2028" [ref=e123]
+                - cell "₹1,76,825" [ref=e124]
+                - cell "₹6,04,219" [ref=e125]
+                - cell "₹7,81,044" [ref=e126]
+                - cell "₹70,11,440" [ref=e127]
+              - row "2029 ₹1,92,455 ₹5,88,589 ₹7,81,044 ₹68,18,985" [ref=e128]:
+                - cell "2029" [ref=e129]
+                - cell "₹1,92,455" [ref=e130]
+                - cell "₹5,88,589" [ref=e131]
+                - cell "₹7,81,044" [ref=e132]
+                - cell "₹68,18,985" [ref=e133]
+              - row "2030 ₹2,09,466 ₹5,71,578 ₹7,81,044 ₹66,09,520" [ref=e134]:
+                - cell "2030" [ref=e135]
+                - cell "₹2,09,466" [ref=e136]
+                - cell "₹5,71,578" [ref=e137]
+                - cell "₹7,81,044" [ref=e138]
+                - cell "₹66,09,520" [ref=e139]
+              - row "2031 ₹2,27,981 ₹5,53,063 ₹7,81,044 ₹63,81,539" [ref=e140]:
+                - cell "2031" [ref=e141]
+                - cell "₹2,27,981" [ref=e142]
+                - cell "₹5,53,063" [ref=e143]
+                - cell "₹7,81,044" [ref=e144]
+                - cell "₹63,81,539" [ref=e145]
+              - row "2032 ₹2,48,132 ₹5,32,912 ₹7,81,044 ₹61,33,407" [ref=e146]:
+                - cell "2032" [ref=e147]
+                - cell "₹2,48,132" [ref=e148]
+                - cell "₹5,32,912" [ref=e149]
+                - cell "₹7,81,044" [ref=e150]
+                - cell "₹61,33,407" [ref=e151]
+              - row "2033 ₹2,70,065 ₹5,10,979 ₹7,81,044 ₹58,63,342" [ref=e152]:
+                - cell "2033" [ref=e153]
+                - cell "₹2,70,065" [ref=e154]
+                - cell "₹5,10,979" [ref=e155]
+                - cell "₹7,81,044" [ref=e156]
+                - cell "₹58,63,342" [ref=e157]
+              - row "2034 ₹2,93,936 ₹4,87,108 ₹7,81,044 ₹55,69,406" [ref=e158]:
+                - cell "2034" [ref=e159]
+                - cell "₹2,93,936" [ref=e160]
+                - cell "₹4,87,108" [ref=e161]
+                - cell "₹7,81,044" [ref=e162]
+                - cell "₹55,69,406" [ref=e163]
+              - row "2035 ₹3,19,917 ₹4,61,127 ₹7,81,044 ₹52,49,488" [ref=e164]:
+                - cell "2035" [ref=e165]
+                - cell "₹3,19,917" [ref=e166]
+                - cell "₹4,61,127" [ref=e167]
+                - cell "₹7,81,044" [ref=e168]
+                - cell "₹52,49,488" [ref=e169]
+              - row "2036 ₹3,48,195 ₹4,32,849 ₹7,81,044 ₹49,01,293" [ref=e170]:
+                - cell "2036" [ref=e171]
+                - cell "₹3,48,195" [ref=e172]
+                - cell "₹4,32,849" [ref=e173]
+                - cell "₹7,81,044" [ref=e174]
+                - cell "₹49,01,293" [ref=e175]
+              - row "2037 ₹3,78,972 ₹4,02,072 ₹7,81,044 ₹45,22,321" [ref=e176]:
+                - cell "2037" [ref=e177]
+                - cell "₹3,78,972" [ref=e178]
+                - cell "₹4,02,072" [ref=e179]
+                - cell "₹7,81,044" [ref=e180]
+                - cell "₹45,22,321" [ref=e181]
+              - row "2038 ₹4,12,470 ₹3,68,574 ₹7,81,044 ₹41,09,850" [ref=e182]:
+                - cell "2038" [ref=e183]
+                - cell "₹4,12,470" [ref=e184]
+                - cell "₹3,68,574" [ref=e185]
+                - cell "₹7,81,044" [ref=e186]
+                - cell "₹41,09,850" [ref=e187]
+              - row "2039 ₹4,48,929 ₹3,32,115 ₹7,81,044 ₹36,60,922" [ref=e188]:
+                - cell "2039" [ref=e189]
+                - cell "₹4,48,929" [ref=e190]
+                - cell "₹3,32,115" [ref=e191]
+                - cell "₹7,81,044" [ref=e192]
+                - cell "₹36,60,922" [ref=e193]
+              - row "2040 ₹4,88,610 ₹2,92,434 ₹7,81,044 ₹31,72,312" [ref=e194]:
+                - cell "2040" [ref=e195]
+                - cell "₹4,88,610" [ref=e196]
+                - cell "₹2,92,434" [ref=e197]
+                - cell "₹7,81,044" [ref=e198]
+                - cell "₹31,72,312" [ref=e199]
+              - row "2041 ₹5,31,799 ₹2,49,245 ₹7,81,044 ₹26,40,513" [ref=e200]:
+                - cell "2041" [ref=e201]
+                - cell "₹5,31,799" [ref=e202]
+                - cell "₹2,49,245" [ref=e203]
+                - cell "₹7,81,044" [ref=e204]
+                - cell "₹26,40,513" [ref=e205]
+              - row "2042 ₹5,78,805 ₹2,02,239 ₹7,81,044 ₹20,61,708" [ref=e206]:
+                - cell "2042" [ref=e207]
+                - cell "₹5,78,805" [ref=e208]
+                - cell "₹2,02,239" [ref=e209]
+                - cell "₹7,81,044" [ref=e210]
+                - cell "₹20,61,708" [ref=e211]
+              - row "2043 ₹6,29,966 ₹1,51,078 ₹7,81,044 ₹14,31,742" [ref=e212]:
+                - cell "2043" [ref=e213]
+                - cell "₹6,29,966" [ref=e214]
+                - cell "₹1,51,078" [ref=e215]
+                - cell "₹7,81,044" [ref=e216]
+                - cell "₹14,31,742" [ref=e217]
+              - row "2044 ₹6,85,649 ₹95,395 ₹7,81,044 ₹7,46,093" [ref=e218]:
+                - cell "2044" [ref=e219]
+                - cell "₹6,85,649" [ref=e220]
+                - cell "₹95,395" [ref=e221]
+                - cell "₹7,81,044" [ref=e222]
+                - cell "₹7,46,093" [ref=e223]
+              - row "2045 ₹7,46,254 ₹34,790 ₹7,81,044 ₹0" [ref=e224]:
+                - cell "2045" [ref=e225]
+                - cell "₹7,46,254" [ref=e226]
+                - cell "₹34,790" [ref=e227]
+                - cell "₹7,81,044" [ref=e228]
+                - cell "₹0" [ref=e229]
+        - generic [ref=e233]:
+          - heading "Ready to Lock in Your Rate?" [level=2] [ref=e234]
+          - paragraph [ref=e235]: Get exclusive pre-approved home loan offers from our banking partners at competitive rates specifically for Mumbai's premium properties.
+          - link "Speak to Advisor" [ref=e237] [cursor=pointer]:
+            - /url: /contact?message=I would like to speak to an advisor regarding my home loan EMI calculation for a loan amount of ₹75.0 Lacs at 8.5% interest for 20 years.
+    - contentinfo [ref=e238]:
+      - generic [ref=e239]:
+        - generic [ref=e240]:
+          - generic [ref=e241]: GrihaNivas
+          - paragraph [ref=e242]: Mumbai's concierge real estate advisory.
+          - generic [ref=e243]:
+            - link "Instagram" [ref=e244] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e245]
+            - link "WhatsApp" [ref=e248] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e249]
+            - link "LinkedIn" [ref=e251] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e252]
+            - link "YouTube" [ref=e256] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e257]
+        - generic [ref=e260]:
+          - heading "Properties" [level=3] [ref=e261]
+          - list [ref=e262]:
+            - listitem [ref=e263]:
+              - link "Buy" [ref=e264] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e265]:
+              - link "Rent" [ref=e266] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e267]:
+              - link "Builders" [ref=e268] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e269]:
+              - link "New Launch" [ref=e270] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e271]:
+          - heading "Services" [level=3] [ref=e272]
+          - list [ref=e273]:
+            - listitem [ref=e274]:
+              - link "Home Loan" [ref=e275] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e276]:
+              - link "EMI Calculator" [ref=e277] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e278]:
+              - link "Stamp Duty" [ref=e279] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e280]:
+              - link "Rent Agreement" [ref=e281] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e282]:
+              - link "Comparison" [ref=e283] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e284]:
+          - heading "Resources" [level=3] [ref=e285]
+          - list [ref=e286]:
+            - listitem [ref=e287]:
+              - link "Blogs" [ref=e288] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e289]:
+              - link "FAQs" [ref=e290] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e291]:
+              - link "About Us" [ref=e292] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e293]:
+              - link "Contact" [ref=e294] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e295]:
+          - heading "Contact" [level=3] [ref=e296]
+          - list [ref=e297]:
+            - listitem [ref=e298]:
+              - img [ref=e299]
+              - generic [ref=e302]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e303]:
+              - img [ref=e304]
+              - link "+91 91379 50050" [ref=e306] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e307]:
+        - generic [ref=e308]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e309]:
+          - link "Privacy Policy" [ref=e310] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e311] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e312]:
+      - button "View current offer" [ref=e313]:
+        - generic [ref=e314]: local_offer
+      - link "Call us" [ref=e315] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e316]
+      - link "Chat on WhatsApp" [ref=e318] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e319]
+  - button "Open Next.js Dev Tools" [ref=e326] [cursor=pointer]:
+    - img [ref=e327]
+  - alert [ref=e330]

@@ -1,0 +1,150 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: Legal Framework
+          - heading "Privacy Policy" [level=1] [ref=e9]
+          - paragraph [ref=e10]: How we protect your data and curate your digital experience within the GrihaNivas ecosystem.
+          - generic [ref=e11]:
+            - generic [ref=e12]: update
+            - text: "Last Updated: May 03, 2026"
+        - generic [ref=e15]:
+          - generic [ref=e16]:
+            - heading "Introduction" [level=2] [ref=e17]
+            - paragraph [ref=e18]: At GrihaNivas, we believe transparency is the foundation of trust. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you navigate our platform or engage with our concierge services.
+          - article [ref=e19]:
+            - heading "01 Information We Collect" [level=3] [ref=e20]:
+              - generic [ref=e21]: "01"
+              - text: Information We Collect
+            - paragraph [ref=e22]: "When you use our platform, we may collect the following types of information:"
+            - list [ref=e23]:
+              - listitem [ref=e24]:
+                - generic [ref=e25]: check_circle
+                - generic [ref=e26]: "Personal Identifiers: Name, email address, phone number, and residential preferences."
+              - listitem [ref=e27]:
+                - generic [ref=e28]: check_circle
+                - generic [ref=e29]: "Property Interest: Saved listings, search history, and budget parameters."
+              - listitem [ref=e30]:
+                - generic [ref=e31]: check_circle
+                - generic [ref=e32]: "Technical Data: IP address, browser type, and usage patterns through cookies."
+          - article [ref=e33]:
+            - heading "02 How We Use Your Data" [level=3] [ref=e34]:
+              - generic [ref=e35]: "02"
+              - text: How We Use Your Data
+            - paragraph [ref=e36]: "Your data is used exclusively to refine your Mumbai real estate journey:"
+            - generic [ref=e37]:
+              - generic [ref=e38]:
+                - generic [ref=e39]: person_search
+                - heading "Concierge Shortlists" [level=4] [ref=e40]
+                - paragraph [ref=e41]: To provide personalized property recommendations based on your commute and lifestyle.
+              - generic [ref=e42]:
+                - generic [ref=e43]: notifications_active
+                - heading "Market Alerts" [level=4] [ref=e44]
+                - paragraph [ref=e45]: To notify you of fresh listings, price drops, or new launches in your preferred pockets.
+          - article [ref=e46]:
+            - heading "03 Data Security" [level=3] [ref=e47]:
+              - generic [ref=e48]: "03"
+              - text: Data Security
+            - paragraph [ref=e49]: We implement industry-standard encryption and security protocols (SSL/TLS) to ensure your data is protected from unauthorized access. Our database is audited periodically to maintain the highest levels of integrity.
+          - article [ref=e50]:
+            - heading "04 Third-Party Sharing" [level=3] [ref=e51]:
+              - generic [ref=e52]: "04"
+              - text: Third-Party Sharing
+            - paragraph [ref=e53]: We do not sell your personal information. However, we may share data with verified builder partners or financial institutions (like banks for home loans) only when you explicitly request an inquiry or consultation through our platform.
+          - generic [ref=e54]:
+            - heading "Contact Legal Desk" [level=3] [ref=e55]
+            - generic [ref=e56]:
+              - paragraph [ref=e58]: If you have any questions regarding your data or wish to exercise your right to be forgotten, please reach out to our privacy officer.
+              - link "Contact Privacy Officer mail" [ref=e59] [cursor=pointer]:
+                - /url: mailto:privacy@mumbaieditorial.com
+                - text: Contact Privacy Officer
+                - generic [ref=e60]: mail
+    - contentinfo [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - generic [ref=e64]: GrihaNivas
+          - paragraph [ref=e65]: Mumbai's concierge real estate advisory.
+          - generic [ref=e66]:
+            - link "Instagram" [ref=e67] [cursor=pointer]:
+              - /url: https://instagram.com/mumbaieditorial
+              - img [ref=e68]
+            - link "WhatsApp" [ref=e71] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e72]
+            - link "LinkedIn" [ref=e74] [cursor=pointer]:
+              - /url: https://linkedin.com/company/mumbaieditorial
+              - img [ref=e75]
+            - link "YouTube" [ref=e79] [cursor=pointer]:
+              - /url: https://youtube.com/@mumbaieditorial
+              - img [ref=e80]
+        - generic [ref=e83]:
+          - heading "Properties" [level=3] [ref=e84]
+          - list [ref=e85]:
+            - listitem [ref=e86]:
+              - link "Buy" [ref=e87] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e88]:
+              - link "Rent" [ref=e89] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e90]:
+              - link "Builders" [ref=e91] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e92]:
+              - link "New Launch" [ref=e93] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e94]:
+          - heading "Services" [level=3] [ref=e95]
+          - list [ref=e96]:
+            - listitem [ref=e97]:
+              - link "Home Loan" [ref=e98] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e99]:
+              - link "EMI Calculator" [ref=e100] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e101]:
+              - link "Stamp Duty" [ref=e102] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e103]:
+              - link "Rent Agreement" [ref=e104] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e105]:
+              - link "Comparison" [ref=e106] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e107]:
+          - heading "Resources" [level=3] [ref=e108]
+          - list [ref=e109]:
+            - listitem [ref=e110]:
+              - link "Blogs" [ref=e111] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e112]:
+              - link "FAQs" [ref=e113] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e114]:
+              - link "About Us" [ref=e115] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e116]:
+              - link "Contact" [ref=e117] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e118]:
+          - heading "Contact" [level=3] [ref=e119]
+          - list [ref=e120]:
+            - listitem [ref=e121]:
+              - img [ref=e122]
+              - generic [ref=e125]:
+                - text: Worli Sea Face,
+                - text: South Mumbai, Maharashtra 400018
+            - listitem [ref=e126]:
+              - img [ref=e127]
+              - link "+91 91379 50050" [ref=e129] [cursor=pointer]:
+                - /url: tel:+919137950050
+      - generic [ref=e130]:
+        - generic [ref=e131]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e132]:
+          - link "Privacy Policy" [ref=e133] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e134] [cursor=pointer]:
+            - /url: /terms
+  - button "Open Next.js Dev Tools" [ref=e140] [cursor=pointer]:
+    - img [ref=e141]
+  - alert [ref=e144]

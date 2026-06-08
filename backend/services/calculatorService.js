@@ -80,4 +80,84 @@ const calculateStampDuty = (propertyValue, ownershipType, rates) => {
   };
 };
 
-module.exports = { calculateEMI, calculateStampDuty };
+/**
+ * Calculate stamp duty for a Leave & License (rental) agreement.
+ *
+ * Formula (Maharashtra):
+ *   totalRent        = fixedRent × months  OR  Σ(slabRent × slabMonths)
+ *   notionalInterest = refundableDeposit × 10% × (months / 12)
+ *   stampableAmount  = totalRent + nonRefundableDeposit + notionalInterest
+ *   stampDuty        = Math.ceil(stampableAmount × 0.25%)
+ *   registrationFee  = 1000 (urban) | 500 (rural)
+ *   totalPayable     = stampDuty + registrationFee + dhc
+ *
+ * @param {object} params
+ * @param {number} params.licensePeriodMonths
+ * @param {'fixed'|'varying'} params.rentType
+ * @param {number} [params.fixedMonthlyRent]
+ * @param {Array<{fromMonth:number, toMonth:number, monthlyRent:number}>} [params.varyingRentRows]
+ * @param {number} [params.refundableDeposit=0]
+ * @param {number} [params.nonRefundableDeposit=0]
+ * @param {'urban'|'rural'} params.propertyArea
+ * @param {number} [dhc=300] - Document Handling Charges (configurable)
+ * @returns {object}
+ */
+const calculateRentStampDuty = (params, dhc = 300) => {
+  const {
+    licensePeriodMonths,
+    rentType,
+    fixedMonthlyRent,
+    varyingRentRows,
+    refundableDeposit = 0,
+    nonRefundableDeposit = 0,
+    propertyArea,
+  } = params;
+
+  // 1. Total rent
+  let totalRent;
+  if (rentType === 'fixed') {
+    totalRent = fixedMonthlyRent * licensePeriodMonths;
+  } else {
+    totalRent = varyingRentRows.reduce((sum, row) => {
+      const months = row.toMonth - row.fromMonth + 1;
+      return sum + row.monthlyRent * months;
+    }, 0);
+  }
+
+  // 2. Period in years
+  const periodYears = licensePeriodMonths / 12;
+
+  // 3. Notional interest on refundable deposit @ 10% p.a.
+  const notionalInterest = refundableDeposit * 0.1 * periodYears;
+
+  // 4. Stampable amount
+  const stampableAmount = totalRent + nonRefundableDeposit + notionalInterest;
+
+  // 5. Stamp duty @ 0.25%, rounded up to nearest rupee
+  const stampDuty = Math.ceil(stampableAmount * 0.0025);
+
+  // 6. Registration fee (flat)
+  const registrationFee = propertyArea === 'urban' ? 1000 : 500;
+
+  // 7. Total payable
+  const totalPayable = stampDuty + registrationFee + dhc;
+
+  return {
+    licensePeriodMonths,
+    rentType,
+    periodYears,
+    totalRent: Math.round(totalRent),
+    refundableDeposit,
+    nonRefundableDeposit,
+    notionalInterest: Math.round(notionalInterest),
+    stampableAmount: Math.round(stampableAmount),
+    stampDutyRate: '0.25%',
+    stampDuty,
+    propertyArea,
+    registrationFee,
+    dhc,
+    totalPayable,
+  };
+};
+
+module.exports = { calculateEMI, calculateStampDuty, calculateRentStampDuty };

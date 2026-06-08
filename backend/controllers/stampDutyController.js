@@ -16,6 +16,7 @@ const getConfig = async (req, res, next) => {
     return sendSuccess(res, 200, 'Stamp duty config fetched', {
       buy: config.buy,
       rent: config.rent,
+      dhc: config.dhc,
       updatedAt: config.updatedAt,
     });
   } catch (err) {
@@ -27,17 +28,21 @@ const getConfig = async (req, res, next) => {
 
 const updateConfig = async (req, res, next) => {
   try {
-    const { buy, rent } = req.body;
+    const { buy, rent, dhc } = req.body;
+
+    const updatePayload = { buy, rent, updatedBy: req.user?._id };
+    if (dhc !== undefined) updatePayload.dhc = dhc;
 
     const config = await StampDutyConfig.findOneAndUpdate(
       {},
-      { buy, rent, updatedBy: req.user?._id },
+      updatePayload,
       { upsert: true, returnDocument: 'after', runValidators: true, new: true }
     );
 
     return sendSuccess(res, 200, 'Stamp duty config updated', {
       buy: config.buy,
       rent: config.rent,
+      dhc: config.dhc,
       updatedAt: config.updatedAt,
     });
   } catch (err) {
