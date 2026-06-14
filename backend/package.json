@@ -19,6 +19,8 @@
     "pm2:logs": "npx pm2 logs bricks-backend",
     "seed:admin": "node scripts/seedAdmin.js",
     "seed:builders": "node scripts/seedBuilders.js",
+    "seed:properties": "node scripts/seedProperties.js",
+    "seed:blogs": "node scripts/seedBlogs.js",
     "test:apis": "node scripts/test-apis.js",
     "test:builders": "node scripts/test-apis.js --scope=builders",
     "smoke:builders-admin": "node scripts/smoke-builder-admin.js",

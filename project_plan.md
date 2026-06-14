@@ -606,7 +606,7 @@ schemas.project = {
   idParam:        z.object({ id: z.string().regex(/^[a-f\d]{24}$/i) }),
   configuration:  z.object({ bhkType, priceMin, priceMax, carpetAreaMin, ... }),
   unit:           z.object({ configurationId, tower, floor, unitNumber, status, ... }),
-  bulkImportUnits: z.array(unitSchema).max(500),
+  bulkImportUnits: z.array(unitSchema).max(500), // parsed from .xlsx rows before Zod validation
   enquiry:        z.object({ name, phone, email, message, configurationId, unitId, enquiryType }),
 };
 ```
@@ -660,8 +660,9 @@ Export: `projectUploadFields`, `configUploadFields`
 - `createUnit` — POST /api/projects/:id/units
 - `updateUnit` — PUT /api/project-units/:id
 - `deleteUnit` — DELETE /api/project-units/:id
-- `bulkImportUnits` — POST /api/projects/:id/bulk-import (parse JSON array, insert many)
-- `exportUnits` — GET /api/projects/:id/units/export (returns .xlsx using existing `excelExport.js`)
+- `bulkImportUnits` — POST /api/projects/:id/bulk-import (receives `.xlsx` file, parses with `xlsx` package, validates each row via Zod, bulk inserts via `insertMany`, returns `{ inserted, failed, errors[] }`)
+- `downloadImportTemplate` — GET /api/projects/units/import-template (returns a pre-built `.xlsx` template file with correct column headers and a sample row — admin fills this and re-uploads)
+- `exportUnits` — GET /api/projects/:id/units/export (returns current unit inventory as `.xlsx` using existing `excelExport.js`)
 
 Controller pattern to follow (identical to `propertyController.js`):
 - Use `sendSuccess`, `sendCreated`, `sendError`, `sendNotFound` from `utils/apiResponse.js`
@@ -695,8 +696,9 @@ DELETE /api/project-configurations/:id      protect + adminOnly
 POST   /api/projects/:id/units              protect + adminOnly
 PUT    /api/project-units/:id               protect + adminOnly
 DELETE /api/project-units/:id               protect + adminOnly
-POST   /api/projects/:id/bulk-import        protect + adminOnly (JSON body, max 500 units)
-GET    /api/projects/:id/units/export       protect + adminOnly (.xlsx download)
+POST   /api/projects/:id/bulk-import        protect + adminOnly (multipart .xlsx upload, max 500 rows)
+GET    /api/projects/units/import-template  protect + adminOnly (.xlsx template download — no auth on id)
+GET    /api/projects/:id/units/export       protect + adminOnly (.xlsx export of current inventory)
 ```
 
 **`backend/routes/index.js`** — add:
@@ -717,7 +719,74 @@ router.use('/project-units', require('./projectUnits'));
 
 ---
 
-### Step 7 — Data Migration / Seed Script
+### Step 7 — Excel Bulk Import Service
+
+**New dependency:** `xlsx` (SheetJS community edition — zero native deps, MIT license)
+
+```
+npm install xlsx --save   # backend only
+```
+
+**New file:** `backend/services/unitImportService.js`
+
+Responsibilities:
+1. Receive `Buffer` from Multer (single `.xlsx` file, `memoryStorage`)
+2. Parse workbook: `xlsx.read(buffer, { type: 'buffer' })`
+3. Read first sheet: `xlsx.utils.sheet_to_json(sheet, { defval: null })`
+4. Map column headers → unit fields. Expected template columns:
+
+| Column header (exact) | Maps to field | Required |
+|---|---|---|
+| `configurationId` | `configurationId` | Yes |
+| `tower` | `tower` | No |
+| `block` | `block` | No |
+| `floor` | `floor` (Number) | No |
+| `unitNumber` | `unitNumber` | Yes |
+| `carpetArea` | `carpetArea` (Number) | No |
+| `builtupArea` | `builtupArea` (Number) | No |
+| `facing` | `facing` | No |
+| `viewType` | `viewType` | No |
+| `price` | `price` (Number) | No |
+| `status` | `status` (available/sold/booked/hold, default: available) | No |
+| `notes` | `notes` | No |
+
+5. Validate each row via Zod `schemas.project.unit` — collect `errors[]` per row index
+6. Bulk insert valid rows: `ProjectUnit.insertMany(validRows, { ordered: false })`
+7. Return `{ total, inserted, failed, errors: [{ row, field, message }] }`
+
+**Template generation** (`downloadImportTemplate` controller action):
+- Build a workbook with `xlsx.utils.book_new()`
+- Add one header row + one sample data row (Tower A, Floor 1, unit 101, available)
+- Freeze top row, set column widths
+- Stream buffer as response:
+  ```
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-Disposition', 'attachment; filename="units-import-template.xlsx"');
+  res.send(buffer);
+  ```
+
+**Upload field config** — add to `backend/middleware/upload.js`:
+```js
+const uploadXlsx = multer({
+  storage: memoryStorage,
+  fileFilter: (req, file, cb) => {
+    const allowed = [
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/vnd.ms-excel',
+    ];
+    allowed.includes(file.mimetype) ? cb(null, true) : cb(new AppError('Only .xlsx files allowed', 400), false);
+  },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+});
+
+const unitImportUpload = uploadXlsx.single('file');
+```
+
+Export: `unitImportUpload`
+
+---
+
+### Step 9 — Data Migration / Seed Script
 
 Create `backend/scripts/seedProjects.js`:
 - Creates 2-3 sample projects linked to existing builders
@@ -771,8 +840,18 @@ POST   /api/projects/:id/units            Body: single unit JSON
 PUT    /api/project-units/:id             Body: partial unit fields
 DELETE /api/project-units/:id
 
-POST   /api/projects/:id/bulk-import      Body: { units: [...] }  (JSON array, max 500)
-GET    /api/projects/:id/units/export     Response: .xlsx file download
+POST   /api/projects/:id/bulk-import
+  Content-Type: multipart/form-data
+  Field: file (.xlsx, max 5 MB, max 500 data rows)
+  Response: { data: { total, inserted, failed, errors: [{ row, field, message }] } }
+
+GET    /api/projects/units/import-template
+  Response: .xlsx file download (pre-built template with headers + 1 sample row)
+  Content-Disposition: attachment; filename="units-import-template.xlsx"
+
+GET    /api/projects/:id/units/export
+  Response: .xlsx file download of current unit inventory for that project
+  Content-Disposition: attachment; filename="units-{projectId}.xlsx"
 ```
 
 ---
@@ -813,7 +892,7 @@ GET    /api/projects/:id/units/export     Response: .xlsx file download
 - `components/admin/ProjectForm.js` — full project create/edit form
 - `components/admin/ConfigurationForm.js` — add/edit configuration modal
 - `components/admin/UnitForm.js` — add/edit unit modal
-- `components/admin/BulkUnitImport.js` — JSON/CSV import interface with preview table
+- `components/admin/BulkUnitImport.js` — Excel import UI: "Download Template" button → file picker (`.xlsx` only) → upload → shows result table (`inserted N / failed M`) with per-row error details if any rows failed
 
 ---
 
@@ -834,7 +913,13 @@ export const adminCreateProject = (formData) => api.post('/projects', formData, 
 export const adminUpdateProject = (id, formData) => api.put(`/projects/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 export const adminDeleteProject = (id) => api.delete(`/projects/${id}`);
 export const adminCreateConfiguration = (projectId, formData) => api.post(`/projects/${projectId}/configurations`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-export const adminBulkImportUnits = (projectId, units) => api.post(`/projects/${projectId}/bulk-import`, { units });
+export const downloadImportTemplate = () => api.get('/projects/units/import-template', { responseType: 'blob' });
+export const adminBulkImportUnits = (projectId, file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  return api.post(`/projects/${projectId}/bulk-import`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+};
+export const exportProjectUnits = (projectId) => api.get(`/projects/${projectId}/units/export`, { responseType: 'blob' });
 ```
 
 ---
@@ -859,12 +944,13 @@ Phase 1 — Backend Models & APIs (do first, unblocks frontend)
 2. Update `Lead.js` (add project fields, extend enum)
 3. Update `models/index.js` exports
 4. Create validation schemas in `validate.js`
-5. Add `projectUploadFields` and `configUploadFields` to `upload.js`
-6. Create `projectController.js` (public read endpoints + enquiry)
-7. Create `adminProjectController.js` (full CRUD + bulk import + export)
-8. Create `routes/projects.js` and mount in `routes/index.js`
-9. Add project stats to `dashboardController.js`
-10. Create `scripts/seedProjects.js`
+5. Add `projectUploadFields`, `configUploadFields`, `unitImportUpload` to `upload.js`; install `xlsx` package
+6. Create `services/unitImportService.js` (xlsx parse → Zod validate → insertMany → result summary)
+7. Create `projectController.js` (public read endpoints + enquiry)
+8. Create `adminProjectController.js` (full CRUD + Excel bulk import + template download + inventory export)
+9. Create `routes/projects.js` and mount in `routes/index.js`
+10. Add project stats to `dashboardController.js`
+11. Create `scripts/seedProjects.js`
 
 Phase 2 — Admin UI
 11. `admin/projects/page.js` — list with status filter
@@ -925,6 +1011,7 @@ backend/models/mongoose/ProjectUnit.js
 backend/controllers/projectController.js
 backend/controllers/adminProjectController.js
 backend/routes/projects.js
+backend/services/unitImportService.js
 backend/scripts/seedProjects.js
 ```
 

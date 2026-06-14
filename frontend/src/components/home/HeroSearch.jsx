@@ -222,7 +222,12 @@ export default function HeroSearch() {
           <button
             key={area}
             type="button"
-            onClick={() => setLocation(area)}
+            onClick={() => {
+              const selected = INTENT_OPTIONS.find((o) => o.value === intent) || INTENT_OPTIONS[0];
+              const params = new URLSearchParams({ area });
+              if (bhk) params.set('bhk', bhk);
+              router.push(`${selected.route}?${params.toString()}`);
+            }}
             className="text-slate-600 hover:text-primary text-xs font-bold bg-white/70 hover:bg-white backdrop-blur-sm border border-white/80 hover:border-primary/20 px-4 py-1.5 rounded-full shadow-sm transition-all duration-200"
           >
             {area}

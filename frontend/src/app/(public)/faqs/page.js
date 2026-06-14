@@ -34,7 +34,7 @@ const FAQS = [
   {
     question: 'What is stamp duty in Mumbai and how is it calculated?',
     answer:
-      'Stamp duty in Mumbai is a government tax on property transactions. Male buyers pay 6%, female buyers pay 5%, and joint purchases are charged at 5%. It is calculated on the higher of the agreement value or the Ready Reckoner Rate (RRR) set by the Maharashtra government. Registration charges are a flat ₹29,000 for buy transactions.',
+      'Stamp duty in Mumbai is a government tax on property transactions. Male buyers pay 6%, female buyers pay 5%, and joint purchases are charged at 5%. It is calculated on the higher of the agreement value or the Ready Reckoner Rate (RRR) set by the Maharashtra government. Registration charges are a flat ₹30,000 for buy transactions.',
   },
   {
     question: 'Is RERA registration mandatory for properties I see on GrihaNivas?',
