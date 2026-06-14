@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrihaNivas - List Property (Basic Information)</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts for Serif Look (Basic Information Header) -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'maroon-primary': '#80002A', // Approximate maroon color from image
+            'maroon-light': '#F8F1F3',
+            'border-gray': '#E5E7EB',
+            'text-dark': '#1F2937',
+            'text-muted': '#6B7280',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-layout">
+    /* Custom scrollbar for sidebar if content overflows */
+    .sidebar-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+      background: #E5E7EB;
+      border-radius: 10px;
+    }
+    
+    /* Input focus styles */
+    input:focus, select:focus {
+      outline: none;
+      border-color: #80002A !important;
+      ring: 1px;
+      ring-color: #80002A !important;
+    }
+
+    /* Radio/Checkbox button styling simulation */
+    .toggle-btn-selected {
+      background-color: #80002A;
+      color: white;
+      border-color: #80002A;
+    }
+
+    .toggle-btn-outline-selected {
+      border-color: #80002A;
+      color: #80002A;
+      background-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-[#F9FAFB] font-sans text-text-dark antialiased">
+<div class="flex min-h-screen">
+<!-- BEGIN: Sidebar Navigation -->
+<aside class="w-64 bg-white border-r border-border-gray flex flex-col fixed h-full z-10" data-purpose="sidebar">
+<!-- Logo -->
+<div class="p-6">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-maroon-primary rounded-full flex items-center justify-center overflow-hidden">
+<!-- Simulated Logo Icon -->
+<svg class="w-5 h-5 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M12 3L4 9v12h16V9l-8-6zm0 2.2l6 4.5V19h-3v-6H9v6H6v-7.3l6-4.5z"></path></svg>
+</div>
+<span class="text-xl font-bold font-serif tracking-tight">GrihaNivas</span>
+</div>
+</div>
+<div class="px-6 py-4">
+<h2 class="text-lg font-bold mb-4">List Property</h2>
+<div class="mb-8">
+<div class="flex justify-between text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">
+<span>Step 1 of 5</span>
+<span class="text-maroon-primary">20%</span>
+</div>
+<div class="w-full bg-gray-200 h-1.5 rounded-full">
+<div class="bg-maroon-primary h-1.5 rounded-full" style="width: 20%"></div>
+</div>
+</div>
+<nav class="space-y-4">
+<!-- Step 1 (Active) -->
+<div class="flex items-center gap-3 relative">
+<div class="w-8 h-8 rounded-full bg-maroon-primary text-white flex items-center justify-center text-sm font-bold z-10">1</div>
+<span class="font-semibold text-maroon-primary">Basic Details</span>
+<!-- Active Indicator Line -->
+<div class="absolute -right-6 top-0 bottom-0 w-1 bg-maroon-primary"></div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-center gap-3 text-text-muted">
+<div class="w-8 h-8 rounded-full border border-border-gray flex items-center justify-center text-sm font-semibold bg-white">2</div>
+<span class="font-medium">Location &amp; Config</span>
+</div>
+<!-- Step 3 -->
+<div class="flex items-center gap-3 text-text-muted">
+<div class="w-8 h-8 rounded-full border border-border-gray flex items-center justify-center text-sm font-semibold bg-white">3</div>
+<span class="font-medium">Media</span>
+</div>
+<!-- Step 4 -->
+<div class="flex items-center gap-3 text-text-muted">
+<div class="w-8 h-8 rounded-full border border-border-gray flex items-center justify-center text-sm font-semibold bg-white">4</div>
+<span class="font-medium">Pricing</span>
+</div>
+<!-- Step 5 -->
+<div class="flex items-center gap-3 text-text-muted">
+<div class="w-8 h-8 rounded-full border border-border-gray flex items-center justify-center text-sm font-semibold bg-white">5</div>
+<span class="font-medium">Review</span>
+</div>
+</nav>
+</div>
+<!-- Support Box -->
+<div class="mt-auto p-4 mx-4 mb-6 bg-white border border-gray-100 rounded-xl shadow-sm">
+<div class="flex items-start gap-3">
+<div class="mt-1">
+<svg class="w-5 h-5 text-maroon-primary" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<p class="text-sm font-bold">Need Help?</p>
+<p class="text-xs text-text-muted leading-relaxed">Our support team is available 9 AM - 8 PM</p>
+</div>
+</div>
+<button class="mt-3 w-full flex items-center justify-between text-xs font-bold text-maroon-primary group">
+          Contact Support
+          <svg class="w-3 h-3 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</aside>
+<!-- END: Sidebar Navigation -->
+<!-- BEGIN: Main Content -->
+<main class="flex-1 ml-64 min-h-screen flex flex-col" data-purpose="main-content">
+<!-- Content Area -->
+<div class="flex-1 p-12 max-w-5xl">
+<header class="mb-10">
+<h1 class="text-4xl font-serif font-bold text-text-dark mb-2">Basic Information</h1>
+<p class="text-text-muted">Start with the fundamental details of your Mumbai estate.</p>
+</header>
+<!-- BEGIN: Form Section -->
+<section class="space-y-8 pb-32">
+<!-- Listing Mode Row -->
+<div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100" data-purpose="form-block-listing-mode">
+<h3 class="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Listing Mode</h3>
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-3 py-3 border border-border-gray rounded-lg hover:border-maroon-primary transition-colors text-text-muted font-medium">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Single Property
+              </button>
+<button class="flex items-center justify-center gap-3 py-3 border toggle-btn-outline-selected rounded-lg font-bold">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Project / Bulk Units
+              </button>
+</div>
+</div>
+<!-- Listing Type Row -->
+<div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100" data-purpose="form-block-listing-type">
+<h3 class="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Listing Type</h3>
+<div class="grid grid-cols-4 gap-4">
+<button class="flex items-center justify-center gap-2 py-3 border border-border-gray rounded-lg hover:border-maroon-primary transition-colors text-text-muted font-medium">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Sale
+              </button>
+<button class="flex items-center justify-center gap-2 py-3 border border-border-gray rounded-lg hover:border-maroon-primary transition-colors text-text-muted font-medium">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Rent
+              </button>
+<button class="flex items-center justify-center gap-2 py-3 border toggle-btn-outline-selected rounded-lg font-bold">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                New Launch
+              </button>
+<button class="flex items-center justify-center gap-2 py-3 border border-border-gray rounded-lg hover:border-maroon-primary transition-colors text-text-muted font-medium">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Commercial
+              </button>
+</div>
+</div>
+<!-- Project Details Form Grid -->
+<div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100" data-purpose="form-block-project-details">
+<div class="grid grid-cols-2 gap-x-8 gap-y-6">
+<!-- Project Name -->
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-text-muted mb-2">Project Name</label>
+<input class="w-full px-4 py-3 border border-border-gray rounded-lg text-sm bg-[#FCFCFC]" placeholder="e.g. Nahar Amrit Shakti" type="text"/>
+</div>
+<!-- Builder/Developer -->
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-text-muted mb-2">Builder / Developer</label>
+<select class="w-full px-4 py-3 border border-border-gray rounded-lg text-sm bg-[#FCFCFC] appearance-none">
+<option>Select Builder</option>
+</select>
+</div>
+<!-- Contact Person Name -->
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-text-muted mb-2">Contact Person Name</label>
+<input class="w-full px-4 py-3 border border-border-gray rounded-lg text-sm bg-[#FCFCFC]" placeholder="Enter contact person name" type="text"/>
+</div>
+<!-- Contact Number -->
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-text-muted mb-2">Contact Number</label>
+<input class="w-full px-4 py-3 border border-border-gray rounded-lg text-sm bg-[#FCFCFC]" placeholder="Enter 10 digit mobile number" type="tel"/>
+</div>
+<!-- RERA Number -->
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-text-muted mb-2">RERA Number</label>
+<input class="w-full px-4 py-3 border border-border-gray rounded-lg text-sm bg-[#FCFCFC]" placeholder="Enter RERA number" type="text"/>
+</div>
+<!-- RERA URL -->
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-text-muted mb-2">RERA URL</label>
+<input class="w-full px-4 py-3 border border-border-gray rounded-lg text-sm bg-[#FCFCFC]" placeholder="https://maharera.mahaonline.gov.in" type="url"/>
+</div>
+</div>
+</div>
+<!-- Project Type -->
+<div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100" data-purpose="form-block-project-type">
+<h3 class="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Project Type</h3>
+<div class="flex flex-wrap gap-4">
+<button class="flex items-center gap-3 px-6 py-2.5 toggle-btn-selected rounded-full text-sm font-semibold">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Residential
+              </button>
+<button class="flex items-center gap-3 px-6 py-2.5 border border-border-gray rounded-full text-sm font-medium text-text-muted hover:border-maroon-primary transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Commercial
+              </button>
+<button class="flex items-center gap-3 px-6 py-2.5 border border-border-gray rounded-full text-sm font-medium text-text-muted hover:border-maroon-primary transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Mixed Use
+              </button>
+<button class="flex items-center gap-3 px-6 py-2.5 border border-border-gray rounded-full text-sm font-medium text-text-muted hover:border-maroon-primary transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 20l-5.447-2.724A2 2 0 013 15.492V4.508a2 2 0 011.553-1.948L9 1l5.447 2.724A2 2 0 0115 5.67v10.822a2 2 0 01-1.553 1.948L9 21z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Plotting
+              </button>
+</div>
+</div>
+<!-- Project Status -->
+<div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100" data-purpose="form-block-project-status">
+<h3 class="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Project Status</h3>
+<div class="flex flex-wrap gap-4">
+<button class="flex items-center gap-3 px-6 py-2.5 toggle-btn-selected rounded-full text-sm font-semibold">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                New Launch
+              </button>
+<button class="flex items-center gap-3 px-6 py-2.5 border border-border-gray rounded-full text-sm font-medium text-text-muted hover:border-maroon-primary transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Under Construction
+              </button>
+<button class="flex items-center gap-3 px-6 py-2.5 border border-border-gray rounded-full text-sm font-medium text-text-muted hover:border-maroon-primary transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                Ready To Move
+              </button>
+</div>
+</div>
+<!-- Configurations Available -->
+<div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100" data-purpose="form-block-configurations">
+<h3 class="text-xs font-bold uppercase tracking-widest text-text-muted mb-4">Configurations Available</h3>
+<div class="flex flex-wrap gap-3">
+<button class="px-6 py-2.5 border border-border-gray rounded-full text-sm font-medium text-text-muted hover:border-maroon-primary transition-colors">Studio</button>
+<!-- Selected Item: 1 BHK -->
+<button class="flex items-center gap-2 px-6 py-2.5 toggle-btn-selected rounded-full text-sm font-semibold">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                1 BHK
+              </button>
+<!-- Selected Item: 2 BHK -->
+<button class="flex items-center gap-2 px-6 py-2.5 toggle-btn-selected rounded-full text-sm font-semibold">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                2 BHK
+              </button>
+<!-- Selected Item: 3 BHK -->
+<button class="flex items-center gap-2 px-6 py-2.5 toggle-btn-selected rounded-full text-sm font-semibold">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                3 BHK
+              </button>
+<button class="px-6 py-2.5 border border-border-gray rounded-full text-sm font-medium text-text-muted hover:border-maroon-primary transition-colors">4 BHK</button>
+<button class="px-6 py-2.5 border border-border-gray rounded-full text-sm font-medium text-text-muted hover:border-maroon-primary transition-colors">4+ BHK</button>
+<button class="px-6 py-2.5 border border-border-gray rounded-full text-sm font-medium text-text-muted hover:border-maroon-primary transition-colors">Penthouse</button>
+</div>
+</div>
+</section>
+<!-- END: Form Section -->
+</div>
+<!-- BEGIN: Sticky Bottom Bar -->
+<footer class="fixed bottom-0 left-64 right-0 bg-white border-t border-border-gray p-6 flex justify-between items-center z-20" data-purpose="footer-actions">
+<button class="px-8 py-3.5 border border-maroon-primary text-maroon-primary rounded-lg font-bold hover:bg-maroon-light transition-colors">
+          Save as Draft
+        </button>
+<button class="px-12 py-3.5 bg-maroon-primary text-white rounded-lg font-bold flex items-center gap-6 hover:bg-opacity-90 transition-all">
+          NEXT PHASE
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</footer>
+<!-- END: Sticky Bottom Bar -->
+</main>
+<!-- END: Main Content -->
+</div>
+</body></html>
