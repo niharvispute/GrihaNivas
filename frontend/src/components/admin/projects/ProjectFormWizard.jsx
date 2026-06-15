@@ -264,7 +264,7 @@ export default function ProjectFormWizard() {
       if (s3.masterPlan instanceof File) fd.append('masterPlan', s3.masterPlan);
       if (s3.brochure instanceof File) fd.append('brochure', s3.brochure);
       (s3.gallery || []).forEach((g) => {
-        if (g instanceof File) fd.append('gallery', g);
+        if (g instanceof File) fd.append('images', g);
       });
       if (s3.videoUrl) fd.append('videoUrl', s3.videoUrl);
       // Include gallery removals (publicIds of already-uploaded images to delete)
