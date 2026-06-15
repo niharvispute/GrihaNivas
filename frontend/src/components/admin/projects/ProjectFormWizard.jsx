@@ -69,6 +69,8 @@ function mapProjectToFormData(p) {
       projectName: p.name || '',
       builderId: builder?._id || p.builderId || '',
       builderName: builder?.name || '',
+      contactPerson: p.contactPerson || '',
+      contactPhone: p.contactPhone || '',
       reraNumber: p.reraNumber || '',
       reraUrl: p.reraUrl || '',
       projectType: p.projectType || 'residential',
@@ -108,6 +110,13 @@ function mapProjectToFormData(p) {
       seoTitle: p.seoTitle || '',
       seoDescription: p.seoDescription || '',
       slug: p.slug || '',
+      leadCapture: {
+        enablePriceRequest: p.enablePriceRequest !== false,
+        enableCallback: p.enableCallback !== false,
+        enableBrochureDownload: p.enableBrochureDownload !== false,
+        whatsappCtaEnabled: p.whatsappCtaEnabled !== false,
+        enableSiteVisit: p.enableSiteVisit !== false,
+      },
     },
   };
 }
@@ -213,6 +222,8 @@ export default function ProjectFormWizard() {
         reraUrl: s1.reraUrl || undefined,
         projectType: s1.projectType,
         projectStatus: s1.projectStatus,
+        contactPerson: s1.contactPerson || undefined,
+        contactPhone: s1.contactPhone || undefined,
       };
       if (!id) {
         const created = await createProject({
@@ -256,8 +267,27 @@ export default function ProjectFormWizard() {
         if (g instanceof File) fd.append('gallery', g);
       });
       if (s3.videoUrl) fd.append('videoUrl', s3.videoUrl);
+      // Include gallery removals (publicIds of already-uploaded images to delete)
+      const removedIds = s3.removedGalleryPublicIds || [];
+      if (removedIds.length) fd.append('removeGalleryIds', JSON.stringify(removedIds));
       // Only call if there is something to send
       if (Array.from(fd.keys()).length > 0) await updateProject(id, fd);
+      // Clear the removal queue now that the backend has processed it
+      updateFormData('step3', { removedGalleryPublicIds: [] });
+
+      // Per-config floor plan uploads (P1-5b)
+      const configs = s2.configurations || [];
+      for (const [bhkType, plans] of Object.entries(s3.configFloorPlans || {})) {
+        const newFiles = (plans || []).filter((f) => f instanceof File);
+        if (!newFiles.length) continue;
+        const cfg = configs.find((c) => c.bhkType === bhkType);
+        if (!cfg?._id) continue; // config not yet persisted — skip
+        const cfgFd = new FormData();
+        newFiles.forEach((f) => cfgFd.append('floorPlans', f));
+        // sortOrder makes the body non-empty so Zod's "at least one field" passes
+        cfgFd.append('sortOrder', String(cfg.sortOrder ?? 0));
+        await updateConfiguration(cfg._id, cfgFd);
+      }
       return id;
     }
 
@@ -265,6 +295,8 @@ export default function ProjectFormWizard() {
       await updateProject(id, {
         priceMin: numOrUndef(s4.priceMin),
         priceMax: numOrUndef(s4.priceMax),
+        pricePerSqft: numOrUndef(s4.pricePerSqft),
+        maintenanceCharges: s4.maintenanceCharges || undefined,
       });
       // Persist per-config pricing edits
       const pricing = s4.configPricing || {};
@@ -282,10 +314,17 @@ export default function ProjectFormWizard() {
     }
 
     if (currentStep === 5) {
+      const lc = s5.leadCapture || {};
       await updateProject(id, {
         seoTitle: s5.seoTitle || undefined,
         seoDescription: s5.seoDescription || undefined,
         slug: s5.slug || slugify(s1.projectName) || undefined,
+        reraVerified: s5.reraVerified,
+        enablePriceRequest: lc.enablePriceRequest,
+        enableCallback: lc.enableCallback,
+        enableBrochureDownload: lc.enableBrochureDownload,
+        whatsappCtaEnabled: lc.whatsappCtaEnabled,
+        enableSiteVisit: lc.enableSiteVisit,
       });
       return id;
     }

@@ -1,81 +1,13 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { bulkImportUnits } from '@/services/projectService';
-
-const EXPECTED_HEADERS = [
-  'configurationId', 'tower', 'block', 'floor', 'unitNumber',
-  'carpetArea', 'builtupArea', 'facing', 'viewType', 'price', 'status', 'notes',
-];
-
-const NUMERIC_FIELDS = new Set(['floor', 'carpetArea', 'builtupArea', 'price']);
-
-/**
- * Minimal CSV parser (handles quoted fields and commas inside quotes).
- * XLSX is intentionally not parsed client-side in Phase 1 — that arrives in
- * Phase 3 via the dedicated file-upload endpoint (P3-3c). CSV only for now.
- */
-function parseCsv(text) {
-  const rows = [];
-  let row = [];
-  let field = '';
-  let inQuotes = false;
-  for (let i = 0; i < text.length; i += 1) {
-    const ch = text[i];
-    if (inQuotes) {
-      if (ch === '"') {
-        if (text[i + 1] === '"') { field += '"'; i += 1; }
-        else inQuotes = false;
-      } else field += ch;
-    } else if (ch === '"') {
-      inQuotes = true;
-    } else if (ch === ',') {
-      row.push(field); field = '';
-    } else if (ch === '\n' || ch === '\r') {
-      if (field !== '' || row.length) { row.push(field); rows.push(row); row = []; field = ''; }
-      if (ch === '\r' && text[i + 1] === '\n') i += 1;
-    } else field += ch;
-  }
-  if (field !== '' || row.length) { row.push(field); rows.push(row); }
-  return rows;
-}
-
-function rowsToUnits(rows) {
-  if (!rows.length) return { units: [], errors: ['File is empty'] };
-  const header = rows[0].map((h) => h.trim());
-  const units = [];
-  const errors = [];
-  for (let r = 1; r < rows.length; r += 1) {
-    const cells = rows[r];
-    if (cells.every((c) => c.trim() === '')) continue;
-    const obj = {};
-    header.forEach((key, idx) => {
-      if (!EXPECTED_HEADERS.includes(key)) return;
-      let val = (cells[idx] ?? '').trim();
-      if (val === '') return;
-      if (NUMERIC_FIELDS.has(key)) {
-        const n = Number(val);
-        if (Number.isNaN(n)) { errors.push(`Row ${r + 1}: "${key}" must be a number`); return; }
-        obj[key] = n;
-      } else {
-        obj[key] = val;
-      }
-    });
-    if (!obj.configurationId) {
-      errors.push(`Row ${r + 1}: configurationId is required`);
-      continue;
-    }
-    units.push(obj);
-  }
-  return { units, errors };
-}
+import { bulkImportUnitsFromFile } from '@/services/projectService';
 
 export default function BulkImportPanel({ projectId, onImported }) {
   const inputRef = useRef(null);
   const [dragOver, setDragOver] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [result, setResult] = useState(null); // { inserted, failed, errors[] }
-  const [parseErrors, setParseErrors] = useState([]);
+  const [result, setResult] = useState(null); // { total, inserted, failed, errors[] }
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState(null);
 
@@ -85,14 +17,9 @@ export default function BulkImportPanel({ projectId, onImported }) {
       setMessage('Only CSV and XLSX files are supported');
       return;
     }
-    if (ext !== 'csv') {
-      setMessage('XLSX import arrives in Phase 3 — please use CSV for now.');
-    } else {
-      setMessage(null);
-    }
     setSelectedFile(file);
     setResult(null);
-    setParseErrors([]);
+    setMessage(null);
   };
 
   const handleDrop = (e) => {
@@ -105,23 +32,14 @@ export default function BulkImportPanel({ projectId, onImported }) {
   const handleImport = async () => {
     if (!selectedFile) return;
     if (!projectId) { setMessage('Save earlier steps first so the project exists.'); return; }
-    const ext = selectedFile.name.split('.').pop().toLowerCase();
-    if (ext !== 'csv') { setMessage('XLSX import arrives in Phase 3 — please use CSV.'); return; }
 
     setBusy(true);
     setMessage(null);
     try {
-      const text = await selectedFile.text();
-      const { units, errors } = rowsToUnits(parseCsv(text));
-      setParseErrors(errors);
-      if (!units.length) {
-        setMessage('No valid rows found to import.');
-        setBusy(false);
-        return;
-      }
-      const res = await bulkImportUnits(projectId, units);
+      const res = await bulkImportUnitsFromFile(projectId, selectedFile);
       setResult({
-        inserted: res?.inserted ?? units.length,
+        total: res?.total ?? 0,
+        inserted: res?.inserted ?? 0,
         failed: res?.failed ?? 0,
         errors: res?.errors || [],
       });
@@ -138,7 +56,7 @@ export default function BulkImportPanel({ projectId, onImported }) {
       <div className="flex items-center justify-between mb-3">
         <div>
           <h4 className="text-sm font-bold text-slate-700">Bulk Import Units</h4>
-          <p className="text-xs text-slate-400 mt-0.5">Import units from CSV · Max 500 units per import</p>
+          <p className="text-xs text-slate-400 mt-0.5">Import units from CSV or XLSX · Max 500 units per import</p>
         </div>
         <a
           href="/templates/unit-import-template.csv"
@@ -170,7 +88,7 @@ export default function BulkImportPanel({ projectId, onImported }) {
           <>
             <span className="material-symbols-outlined text-3xl text-slate-400">upload_file</span>
             <p className="text-sm font-semibold text-slate-600">Drag &amp; drop file here or click to browse</p>
-            <p className="text-xs text-slate-400">CSV files (XLSX in Phase 3)</p>
+            <p className="text-xs text-slate-400">CSV or XLSX · Max 5 MB</p>
           </>
         )}
       </div>
@@ -211,11 +129,10 @@ export default function BulkImportPanel({ projectId, onImported }) {
         </div>
       )}
 
-      {(parseErrors.length > 0 || (result?.errors?.length > 0)) && (
+      {result?.errors?.length > 0 && (
         <div className="mt-3 max-h-32 overflow-y-auto bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-red-700 space-y-1">
-          {parseErrors.map((e, i) => <p key={`p${i}`}>{e}</p>)}
-          {(result?.errors || []).map((e, i) => (
-            <p key={`s${i}`}>{typeof e === 'string' ? e : JSON.stringify(e)}</p>
+          {result.errors.map((e, i) => (
+            <p key={i}>{typeof e === 'string' ? e : (e.message || JSON.stringify(e))}</p>
           ))}
         </div>
       )}

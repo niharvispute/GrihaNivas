@@ -36,6 +36,7 @@ const INITIAL_FORM_DATA = {
   step3: {
     heroImage: null,              // File object (pre-upload) | {url,publicId} (post-upload)
     gallery: [],                  // [File | {url,publicId}]
+    removedGalleryPublicIds: [],  // publicIds of already-uploaded gallery images queued for deletion
     masterPlan: null,
     brochure: null,
     videoUrl: '',

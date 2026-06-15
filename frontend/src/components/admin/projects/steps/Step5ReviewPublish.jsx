@@ -122,7 +122,12 @@ export default function Step5ReviewPublish() {
                 Pending
               </span>
             )}
-            <span className="text-xs text-slate-400">(wired in Phase 3)</span>
+            <button
+              onClick={() => set5('reraVerified', !d5.reraVerified)}
+              className="text-xs text-primary underline underline-offset-2 hover:no-underline"
+            >
+              {d5.reraVerified ? 'Mark Pending' : 'Mark Verified'}
+            </button>
           </div>
         </div>
       </div>
@@ -217,7 +222,6 @@ export default function Step5ReviewPublish() {
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-slate-400 text-lg">{icon}</span>
                 <span className="text-sm text-slate-700">{label}</span>
-                <span className="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded font-semibold">Wired in Phase 3</span>
               </div>
               <button
                 onClick={() => setLead(key, !d5.leadCapture?.[key])}

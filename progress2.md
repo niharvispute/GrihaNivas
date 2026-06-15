@@ -184,10 +184,10 @@ The wizard uses a **save-on-advance** pattern, not a hold-all-in-memory-until-pu
 ### P1-5 — Step 3 Wiring (Media & Docs)
 
 - [x] **P1-5a** On "Next Phase" from Step 3: build `FormData` object, append `heroImage`, `gallery[]`, `masterPlan`, `brochure`, `videoUrl`; call `updateProject(projectId, formData)` with `Content-Type: multipart/form-data`
-- [ ] **P1-5b** ⏸️ DEFERRED — Configuration Floor Plans per-config upload not yet wired (config media multipart). See timeline. for each config tab, on floor plan image select, call `updateConfiguration(configId, formData)` with `floorPlans[]` files; each tab save is immediate (not waiting for Next Phase)
+- [x] **P1-5b** Configuration Floor Plans per-config upload: on Step 3 "Next Phase", loops `s3.configFloorPlans`, filters File objects, calls `updateConfiguration(cfg._id, formData)` with `floorPlans[]`; `sortOrder` always appended so Zod "at least one field" refine passes
 - [x] **P1-5c** Hero image, gallery, masterPlan, brochure: show upload preview immediately using `URL.createObjectURL()` — do not upload until Next Phase
 - [x] **P1-5d** On Step 3 mount in edit flow: show existing Cloudinary URLs in preview slots (use `<CloudinaryImage>` component for images, filename + size for PDF brochure)
-- [ ] **P1-5e** ⏸️ DEFERRED — Gallery delete of already-uploaded images needs backend `removeGalleryIds[]` support (not in update schema). See timeline. if image already uploaded (has `publicId`), note it for removal — pass `removeGalleryIds[]` in PUT body; if not yet uploaded, just remove from local state
+- [x] **P1-5e** Gallery delete of already-uploaded images: frontend queues removed publicIds into `removedGalleryPublicIds[]` in `step3` context; Step 3 save JSON-stringifies the array into FormData → `removeGalleryIds` field; backend merges (existing minus removed plus new uploads) and deletes from Cloudinary fire-and-forget
 
 ### P1-6 — Step 4 Wiring (Pricing & Inventory)
 
@@ -267,26 +267,26 @@ The wizard uses a **save-on-advance** pattern, not a hold-all-in-memory-until-pu
 
 ### P3-1 — Step 1: New fields
 
-- [ ] **P3-1a** Wire Contact Person Name → `contactPerson` field in `createProject` / `updateProject` call
-- [ ] **P3-1b** Wire Contact Number → `contactPhone` field
-- [ ] **P3-1c** Add `"Plotting"` to Project Type pills in Step 1 UI (now valid enum in backend)
+- [x] **P3-1a** Wired `contactPerson` → added to `base` payload in Step 1 `saveCurrentStep` in `ProjectFormWizard.jsx`; also added to `mapProjectToFormData` for edit-flow hydration
+- [x] **P3-1b** Wired `contactPhone` → same as P3-1a
+- [x] **P3-1c** Already done — `PROJECT_TYPES` in `Step1BasicInfo.jsx` already included `'plotting'` (no change needed)
 
 ### P3-2 — Step 3: Gallery + Brochure
 
-- [ ] **P3-2a** Update gallery upload logic to allow up to **20** images (previously capped at 10 by Multer, now fixed in P2-3a)
-- [ ] **P3-2b** Update brochure `FileUploadZone` accept prop to include `application/pdf` — now works since P2-3b allows PDF
+- [x] **P3-2a** Already done — `Step3MediaDocs.jsx` already capped gallery at 20; `handleGalleryAdd` checks `current.length + files.length > 20` (no change needed)
+- [x] **P3-2b** Already done — `Step3MediaDocs.jsx` already had `accept="application/pdf,image/*"` on brochure zone (no change needed)
 
 ### P3-3 — Step 4: Pricing fields + file-based bulk import
 
-- [ ] **P3-3a** Wire Price per Sq.Ft input → `pricePerSqft` in `updateProject` call
-- [ ] **P3-3b** Wire Maintenance/Other Charges input → `maintenanceCharges` in `updateProject` call
-- [ ] **P3-3c** Update `BulkImportPanel` to call new `POST /api/projects/:id/bulk-import-file` with `FormData` containing the dropped CSV/XLSX file (replaces client-side papaparse parsing from P1-6l)
-- [ ] **P3-3d** Remove `papaparse` dependency added in Phase 1 if P3-3c replaces it
+- [x] **P3-3a** Wired `pricePerSqft` → added to Step 4 `updateProject` call in `ProjectFormWizard.jsx`; `mapProjectToFormData` already mapped it
+- [x] **P3-3b** Wired `maintenanceCharges` → same as P3-3a
+- [x] **P3-3c** `BulkImportPanel.jsx` rewritten — removes inline CSV parser, imports `bulkImportUnitsFromFile` from `projectService.js`, sends `FormData` with file to `POST /api/projects/:id/bulk-import-file`; supports CSV + XLSX
+- [x] **P3-3d** No papaparse was installed (Phase 1 used a built-in parser) — inline CSV parser removed from `BulkImportPanel.jsx` as part of P3-3c rewrite; `bulkImportUnitsFromFile` added to `projectService.js`
 
 ### P3-4 — Step 5: Remaining fields
 
-- [ ] **P3-4a** Wire all 5 Lead Capture toggle switches → `enablePriceRequest`, `enableCallback`, `enableBrochureDownload`, `whatsappCtaEnabled`, `enableSiteVisit` in `updateProject` call; remove "Coming Soon" tooltip
-- [ ] **P3-4b** RERA Verification badge: show "Verified" (green) if `reraVerified === true`, show "Pending" (amber) otherwise; admin toggle button calls `updateProject(projectId, { reraVerified: true/false })`
+- [x] **P3-4a** All 5 lead capture toggles (`enablePriceRequest`, `enableCallback`, `enableBrochureDownload`, `whatsappCtaEnabled`, `enableSiteVisit`) wired in Step 5 `saveCurrentStep` in `ProjectFormWizard.jsx`; "Wired in Phase 3" badge removed from `Step5ReviewPublish.jsx`; `mapProjectToFormData` now hydrates `leadCapture` from backend data
+- [x] **P3-4b** `reraVerified` wired in Step 5 `saveCurrentStep`; "Mark Verified / Mark Pending" toggle button added to RERA badge in `Step5ReviewPublish.jsx`; "(wired in Phase 3)" text removed
 
 ---
 
@@ -313,10 +313,10 @@ P3 requires P1 + P2 both done.
 | Phase | Tasks | Done | Status |
 |---|---|---|---|
 | Phase 0 — UI Replication | 22 | 22 | ✅ Complete |
-| Phase 1 — Wire Compatible | 32 | 30 | ✅ Frontend done (2 deferred to Phase 2; backend blockers fixed) |
+| Phase 1 — Wire Compatible | 32 | 32 | ✅ Complete (2 deferred tasks completed alongside Phase 2/3) |
 | Phase 2 — Backend Changes | 11 | 11 | ✅ Complete |
-| Phase 3 — Wire New Fields | 11 | 0  | 🔴 Not Started (unblocked) |
-| **Total** | **76** | **52** | |
+| Phase 3 — Wire New Fields | 11 | 11 | ✅ Complete |
+| **Total** | **76** | **76** | ✅ All complete |
 
 ### Backend blockers discovered during Phase 1 — status as of 2026-06-14
 

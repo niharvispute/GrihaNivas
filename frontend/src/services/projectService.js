@@ -190,6 +190,19 @@ export const bulkImportUnits = async (projectId, units) => {
   return res.data;
 };
 
+export const bulkImportUnitsFromFile = async (projectId, file) => {
+  const fd = new FormData();
+  fd.append('file', file);
+  const res = await authedApiFetch(
+    `/api/projects/${projectId}/bulk-import-file`,
+    {
+      method: 'POST',
+      body: fd,
+    }
+  );
+  return res.data;
+};
+
 export const exportUnits = async (projectId, params = {}) => {
   return downloadAuthedFile(`/api/projects/${projectId}/units/export`, {
     query: params,

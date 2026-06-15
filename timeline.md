@@ -447,3 +447,116 @@ Backend is mid-refactor by another dev; these are Phase-2-shaped changes. Fronte
 `npx eslint` on all changed files → 0 errors (only pre-existing setState-in-effect / unescaped-quote warnings).
 
 ---
+
+### [P2-1/P2-2] — Project model + Zod schema additions
+**Date:** 2026-06-15  
+**Phase:** P2  
+**Status:** done  
+**Files changed:** `backend/models/mongoose/Project.js`, `backend/middleware/validate.js`
+
+**What was done:**  
+Added 10 new fields to the Project Mongoose model: `contactPerson`, `contactPhone`, `pricePerSqft`, `maintenanceCharges`, `reraVerified`, and 5 lead capture Boolean toggles (`enablePriceRequest`, `enableCallback`, `enableBrochureDownload`, `whatsappCtaEnabled`, `enableSiteVisit`). Added `'plotting'` to the `projectType` enum.
+
+Extended all three Zod schemas (`create`, `update`, `list`) to accept the new fields. Boolean model fields use a `stringBooleanSchema` helper (already present in validate.js) that coerces `'true'`/`'false'` strings from multipart FormData to real booleans. Added `removeGalleryIds: z.preprocess(parseJsonIfString, z.array(z.string()).max(20)).optional()` to the update schema.
+
+**Why this approach:**  
+Zod `safeParse` strips unknown fields — every new model field must be explicitly listed in the schema or it is silently dropped before reaching the controller. `stringBooleanSchema` is required because FormData can only carry strings, so boolean toggles arrive as `"true"`/`"false"` text.
+
+**Gotchas / errors hit:**  
+- First Edit attempt on validate.js accidentally targeted the `list` schema's `projectType` line instead of the `update` schema's — identical indentation pattern. Fixed by using a longer anchor string unique to the `update` block.
+- The `projectType` enum needed updating in all three schemas (`create`, `update`, `list`) independently — one missed schema would cause filter/create to reject the `'plotting'` value.
+
+---
+
+### [P2-3/P2-4] — Upload middleware + XLSX bulk import endpoint
+**Date:** 2026-06-15  
+**Phase:** P2  
+**Status:** done  
+**Files changed:** `backend/middleware/upload.js`, `backend/controllers/adminProjectController.js`, `backend/routes/projects.js`
+
+**What was done:**  
+- Changed gallery `maxCount: 10 → 20` and `files: 13 → 23` in `projectUploadFields` to match the UI's 20-image cap.
+- Added `csvXlsxFilter` (mime-type allowlist for CSV and XLSX) and `bulkImportUpload` (memoryStorage, 5MB, `.single('file')`) to upload.js; exported both.
+- Added `bulkImportUnitsFromFile` controller: reads `req.file.buffer` via `XLSX.read(..., { type: 'buffer' })` + `sheet_to_json()`, maps both camelCase and Title Case column name variants, validates that `configurationId` values belong to the project, then runs the same `insertMany` partial-success pattern as the JSON endpoint.
+- Added `POST /:id/bulk-import-file` route protected by `protect` + `adminOnly` + `bulkImportUpload` + param validation.
+
+**Why this approach:**  
+Used `xlsx` package (already in ecosystem) with `memoryStorage` so the buffer is available in-memory without writing temp files. The partial-success `insertMany` (with `ordered: false`) is consistent with the existing JSON bulk import — same returned shape (`{ inserted, failed, errors[] }`), same client-side display logic.
+
+**Gotchas / errors hit:**  
+Column name mapping handles both `configurationId` and `Configuration Id` (Title Case with spaces) because Excel downloads often reformat headers. Without this, re-importing an exported template would silently drop the config reference.
+
+---
+
+### [P2-5] — Admin controller: new fields passthrough confirmation
+**Date:** 2026-06-15  
+**Phase:** P2  
+**Status:** done  
+**Files changed:** `backend/controllers/adminProjectController.js` (gallery merge logic only)
+
+**What was done:**  
+Confirmed that both `create` and `update` controllers already spread `{ ...req.body }` into `data`, so all 10 new Zod-allowed fields pass through automatically — no code change needed for the fields themselves.
+
+Restructured the `update` function's gallery handling: `removeGalleryIds` is extracted from `updates` before the Mongoose call (it is not a model field). Two cases handled:
+1. **With new file uploads**: filter existing gallery by removing publicIds in the removal set, append new uploads, update `updates.gallery`. Delete removed files from Cloudinary fire-and-forget.
+2. **Without new uploads but with removals**: same filter, no merge needed. Cloudinary delete still runs.
+
+**Why this approach:**  
+Without extracting `removeGalleryIds` first, Mongoose would either ignore it (unknown field, schema `strict: true`) or error, and the Cloudinary deletion would never run. Separating the two code paths (with-files and without-files) keeps the existing media upload logic intact while adding the removal side-channel.
+
+---
+
+### [P1-5e + P1-5b] — Gallery deletion + per-config floor plan uploads (deferred tasks)
+**Date:** 2026-06-15  
+**Phase:** P1 (deferred) → completed alongside P2/P3  
+**Status:** done  
+**Files changed:**  
+- `frontend/src/context/ProjectFormContext.jsx`
+- `frontend/src/components/admin/projects/steps/Step3MediaDocs.jsx`
+- `frontend/src/components/admin/projects/ProjectFormWizard.jsx`
+
+**What was done:**  
+
+**P1-5e (gallery deletion):**  
+Added `removedGalleryPublicIds: []` to `step3` initial state in `ProjectFormContext.jsx`. Updated `removeGallery` in `Step3MediaDocs.jsx` to batch both the updated gallery array and the queued publicId in a single `updateFormData('step3', patch)` call (atomic update, avoids state divergence). In `ProjectFormWizard.jsx` Step 3 save block: `JSON.stringify`s the array into a `removeGalleryIds` FormData field; clears the queue in context after the backend confirms (`updateFormData('step3', { removedGalleryPublicIds: [] })`).
+
+**P1-5b (per-config floor plan uploads):**  
+After the project-level media update in Step 3, loops over `s3.configFloorPlans` entries, filters to only `File` objects (skips already-uploaded URLs), finds the matching config by `bhkType`, builds a `FormData` with `floorPlans` files and a `sortOrder` body field, and calls `updateConfiguration(cfg._id, cfgFd)` for each config that has new files.
+
+**Why this approach:**  
+Per-config floor plans are uploaded on Step 3 "Next" (batched), not on each file select, consistent with the save-on-advance pattern. The `sortOrder` field is always included because `configurationUpdate` Zod schema has a `.refine(obj => Object.keys(obj).length > 0)` guard — if only files are sent (body is empty), Zod rejects the request. `sortOrder` is a valid schema field and makes the body non-empty.
+
+**Gotchas / errors hit:**  
+The Zod `.refine` guard on `configurationUpdate` was the blocker for P1-5b being deferred. Without appending at least one body field alongside the files, the update route returns 400 "body required". `sortOrder` was chosen because it exists on the schema with no side effects when repeated.
+
+---
+
+### [P3-1..P3-4] — Frontend wiring for all Phase 2 backend fields
+**Date:** 2026-06-15  
+**Phase:** P3  
+**Status:** done  
+**Files changed:**  
+- `frontend/src/components/admin/projects/ProjectFormWizard.jsx`
+- `frontend/src/components/admin/projects/steps/Step5ReviewPublish.jsx`
+- `frontend/src/components/admin/projects/BulkImportPanel.jsx`
+- `frontend/src/services/projectService.js`
+
+**What was done:**  
+
+**P3-1 (Step 1 — contactPerson / contactPhone):** Added both fields to the `base` payload in the Step 1 branch of `saveCurrentStep`. Added to `mapProjectToFormData`'s `step1` slice for edit-flow hydration.
+
+**P3-3a/b (Step 4 — pricePerSqft / maintenanceCharges):** Added `pricePerSqft: numOrUndef(s4.pricePerSqft)` and `maintenanceCharges: s4.maintenanceCharges || undefined` to the Step 4 `updateProject` call. Already mapped in `mapProjectToFormData`.
+
+**P3-3c/d (Step 4 — file-based bulk import):** Rewrote `BulkImportPanel.jsx` end-to-end: removed the ~70-line inline CSV parser, removed the `bulkImportUnits` (JSON) import, added `bulkImportUnitsFromFile` import. The component now sends the raw file to `POST /api/projects/:id/bulk-import-file`; the backend handles both CSV and XLSX parsing. Added `bulkImportUnitsFromFile` to `projectService.js`.
+
+**P3-4a (Step 5 — lead capture toggles):** All 5 toggles wired in Step 5 `saveCurrentStep`. `mapProjectToFormData` now hydrates the full `leadCapture` object from backend data. Removed all "Wired in Phase 3" badge spans from `Step5ReviewPublish.jsx`.
+
+**P3-4b (Step 5 — reraVerified):** Added `reraVerified: s5.reraVerified` to Step 5 save. Added "Mark Verified / Mark Pending" toggle button in `Step5ReviewPublish.jsx` next to the RERA badge. Removed "(wired in Phase 3)" annotation.
+
+**Why this approach:**  
+BulkImportPanel rewrite is a pure replacement — same UI surface (drag-drop, file name, Import button, results cards, error list), different internals. The file goes straight to the backend rather than being parsed client-side, which handles XLSX correctly without bundling a browser-side spreadsheet parser.
+
+**Gotchas:**  
+None — all Phase 2 backend fields follow the same spread-based passthrough pattern, so wiring them is mechanical once the Zod schemas accept them.
+
+---

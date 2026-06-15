@@ -700,6 +700,7 @@ const schemas = {
         enableBrochureDownload: stringBooleanSchema.optional(),
         whatsappCtaEnabled:     stringBooleanSchema.optional(),
         enableSiteVisit:        stringBooleanSchema.optional(),
+        removeGalleryIds: z.preprocess(parseJsonIfString, z.array(z.string()).max(20)).optional(),
       })
       .refine((value) => Object.keys(value).length > 0, {
         message: 'At least one field must be provided',

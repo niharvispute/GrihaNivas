@@ -39,8 +39,13 @@ export default function Step3MediaDocs() {
 
   const removeGallery = (idx) => {
     const updated = [...(d.gallery || [])];
-    updated.splice(idx, 1);
-    set('gallery', updated);
+    const removed = updated.splice(idx, 1)[0];
+    const patch = { gallery: updated };
+    // Track already-uploaded images so the backend can delete them from Cloudinary
+    if (removed && !(removed instanceof File) && removed.publicId) {
+      patch.removedGalleryPublicIds = [...(d.removedGalleryPublicIds || []), removed.publicId];
+    }
+    updateFormData('step3', patch);
   };
 
   // Config floor plans

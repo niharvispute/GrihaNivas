@@ -237,10 +237,14 @@ const update = async (req, res, next) => {
       updates.slug = await ensureUniqueSlug(generateSlug(updates.slug), id);
     }
 
+    // Extract gallery removal list before passing to Mongoose (not a model field)
+    const removeGalleryIds = Array.isArray(updates.removeGalleryIds) ? updates.removeGalleryIds : [];
+    delete updates.removeGalleryIds;
+
     if (req.files && Object.keys(req.files).length > 0) {
       const media = await uploadProjectMedia(req.files, existing._id.toString());
 
-      // Track old publicIds for cleanup of replaced assets
+      // Track old publicIds for cleanup of replaced single-slot assets
       const oldPublicIds = [];
       if (media.heroImage && existing.heroImage?.publicId) oldPublicIds.push(existing.heroImage.publicId);
       if (media.masterPlan && existing.masterPlan?.publicId) oldPublicIds.push(existing.masterPlan.publicId);
@@ -249,13 +253,25 @@ const update = async (req, res, next) => {
       if (media.heroImage)  updates.heroImage  = media.heroImage;
       if (media.masterPlan) updates.masterPlan = media.masterPlan;
       if (media.brochure)   updates.brochure   = media.brochure;
-      if (media.gallery.length) updates.gallery = media.gallery;
+
+      // Merge gallery: existing minus removed, plus newly uploaded
+      const removeSet = new Set(removeGalleryIds);
+      const galleryToDelete = (existing.gallery || []).filter((g) => removeSet.has(g.publicId)).map((g) => g.publicId);
+      let mergedGallery = (existing.gallery || []).filter((g) => !removeSet.has(g.publicId));
+      if (media.gallery.length) mergedGallery = [...mergedGallery, ...media.gallery];
+      updates.gallery = mergedGallery;
+      if (galleryToDelete.length) deleteFiles(galleryToDelete, 'image').catch(() => {});
 
       if (oldPublicIds.length) {
-        // Brochure is uploaded as resource_type 'raw' — split if needed
         const imageIds = oldPublicIds.filter((_, idx) => idx < 2);
         if (imageIds.length) deleteFiles(imageIds, 'image').catch(() => {});
       }
+    } else if (removeGalleryIds.length) {
+      // Gallery removal without any new file uploads
+      const removeSet = new Set(removeGalleryIds);
+      const toDelete = (existing.gallery || []).filter((g) => removeSet.has(g.publicId)).map((g) => g.publicId);
+      updates.gallery = (existing.gallery || []).filter((g) => !removeSet.has(g.publicId));
+      if (toDelete.length) deleteFiles(toDelete, 'image').catch(() => {});
     }
 
     const project = await Project.findByIdAndUpdate(id, updates, {
