@@ -1,7 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useProjectForm } from '@/context/ProjectFormContext';
+import {
+  listUnits,
+  createUnit,
+  updateUnit,
+  deleteUnit,
+  exportUnits,
+} from '@/services/projectService';
 import UnitFormModal from '../UnitFormModal';
 import BulkImportPanel from '../BulkImportPanel';
 
@@ -65,16 +72,10 @@ function formatPrice(n) {
   return `₹${num.toLocaleString('en-IN')}`;
 }
 
-// Static placeholder units — replaced by API data in Phase 1
-const PLACEHOLDER_UNITS = [
-  { _id: 'u1', tower: 'Tower A', floor: 12, unitNumber: '1203', bhkType: '2BHK', carpetArea: 820,  facing: 'East',  price: 24500000, status: 'available' },
-  { _id: 'u2', tower: 'Tower B', floor: 13, unitNumber: '1301', bhkType: '3BHK', carpetArea: 1180, facing: 'West',  price: 37500000, status: 'hold' },
-  { _id: 'u3', tower: 'Tower C', floor: 9,  unitNumber: '904',  bhkType: '1BHK', carpetArea: 510,  facing: 'North', price: 14200000, status: 'booked' },
-  { _id: 'u4', tower: 'Tower A', floor: 10, unitNumber: '1002', bhkType: '2BHK', carpetArea: 720,  facing: 'East',  price: 21000000, status: 'sold' },
-];
+const cfgKey = (c) => c._id || c._tempId;
 
 export default function Step4PricingInventory() {
-  const { formData, updateFormData } = useProjectForm();
+  const { formData, updateFormData, projectId } = useProjectForm();
   const d   = formData.step4;
   const d2  = formData.step2;
   const configs = d2?.configurations || [];
@@ -84,43 +85,110 @@ export default function Step4PricingInventory() {
   const [openActionFor, setOpenActionFor] = useState(null);
   const [towerFilter, setTowerFilter]     = useState('');
   const [statusFilter, setStatusFilter]   = useState('');
+  const [configFilter, setConfigFilter]   = useState('');
+  const [unitsError, setUnitsError]       = useState(null);
+  const [busy, setBusy]                   = useState(false);
 
   const set = (key, val) => updateFormData('step4', { [key]: val });
+  const units = d.units || [];
 
-  const setConfigPrice = (tempId, field, val) => {
+  // Resolve a config label for a unit row from its configurationId
+  const configLabelForUnit = (u) => {
+    const id = typeof u.configurationId === 'object' ? u.configurationId?._id : u.configurationId;
+    const cfg = configs.find((c) => c._id === id);
+    return cfg ? (cfg.title || cfg.bhkType) : (u.bhkType || '—');
+  };
+
+  // ── Load / refresh units from the API (P1-6a / P1-6d) ─────────────────────
+  const refreshUnits = useCallback(async () => {
+    if (!projectId) return;
+    setUnitsError(null);
+    try {
+      const query = {};
+      if (towerFilter)  query.tower = towerFilter;
+      if (statusFilter) query.status = statusFilter;
+      if (configFilter) query.configurationId = configFilter;
+      const { items } = await listUnits(projectId, query);
+      updateFormData('step4', { units: items });
+    } catch (err) {
+      // GET units currently requires an active project; tolerate during draft editing
+      setUnitsError(err?.message || 'Could not load units');
+    }
+  }, [projectId, towerFilter, statusFilter, configFilter, updateFormData]);
+
+  useEffect(() => {
+    refreshUnits();
+  }, [refreshUnits]);
+
+  const setConfigPrice = (key, field, val) => {
     set('configPricing', {
       ...(d.configPricing || {}),
-      [tempId]: { ...(d.configPricing?.[tempId] || {}), [field]: val },
+      [key]: { ...(d.configPricing?.[key] || {}), [field]: val },
     });
   };
 
-  const handleSaveUnit = (unit) => {
-    // Phase 0: store locally — Phase 1 calls API
-    const units = [...(d.units || [])];
-    if (unit._id) {
-      const idx = units.findIndex((u) => u._id === unit._id);
-      if (idx !== -1) units[idx] = unit;
-    } else {
-      units.push({ ...unit, _id: `tmp_${Date.now()}` });
+  const handleSaveUnit = async (unit) => {
+    if (!projectId) {
+      setUnitsError('Save the earlier steps first so the project exists.');
+      return;
     }
-    set('units', units);
-    setUnitModalOpen(false);
-    setEditingUnit(null);
+    setBusy(true);
+    setUnitsError(null);
+    const payload = {
+      configurationId: unit.configurationId || undefined,
+      tower: unit.tower || undefined,
+      floor: unit.floor === '' ? undefined : Number(unit.floor),
+      unitNumber: unit.unitNumber || undefined,
+      carpetArea: unit.carpetArea === '' ? undefined : Number(unit.carpetArea),
+      facing: unit.facing || undefined,
+      price: unit.price === '' ? undefined : Number(unit.price),
+      status: unit.status || 'available',
+    };
+    try {
+      if (unit._id) {
+        await updateUnit(unit._id, payload);
+      } else {
+        await createUnit(projectId, payload);
+      }
+      setUnitModalOpen(false);
+      setEditingUnit(null);
+      await refreshUnits();
+    } catch (err) {
+      setUnitsError(err?.message || 'Failed to save unit');
+    } finally {
+      setBusy(false);
+    }
   };
 
-  const handleDeleteUnit = (id) => {
-    set('units', (d.units || []).filter((u) => u._id !== id));
+  const handleDeleteUnit = async (id) => {
     setOpenActionFor(null);
+    setBusy(true);
+    try {
+      await deleteUnit(id);
+      await refreshUnits();
+    } catch (err) {
+      setUnitsError(err?.message || 'Failed to delete unit');
+    } finally {
+      setBusy(false);
+    }
   };
 
-  // Show placeholder units if no real units yet (Phase 0 visual)
-  const displayUnits = (d.units?.length > 0 ? d.units : PLACEHOLDER_UNITS).filter((u) => {
-    const matchTower  = !towerFilter  || u.tower === towerFilter;
-    const matchStatus = !statusFilter || u.status === statusFilter;
-    return matchTower && matchStatus;
-  });
+  const handleExport = async () => {
+    if (!projectId) return;
+    try {
+      await exportUnits(projectId, {
+        tower: towerFilter || undefined,
+        status: statusFilter || undefined,
+        configurationId: configFilter || undefined,
+      });
+    } catch (err) {
+      setUnitsError(err?.message || 'Export failed');
+    }
+  };
 
-  const towers = [...new Set(PLACEHOLDER_UNITS.map((u) => u.tower))];
+  // Filtering is server-side; render whatever the API returned
+  const displayUnits = units;
+  const towers = [...new Set(units.map((u) => u.tower).filter(Boolean))];
 
   return (
     <div>
@@ -164,10 +232,10 @@ export default function Step4PricingInventory() {
           <div className="grid grid-cols-1 gap-3">
             {configs.map((cfg) => (
               <ConfigPricingCard
-                key={cfg._tempId}
+                key={cfgKey(cfg)}
                 cfg={cfg}
-                pricing={d.configPricing?.[cfg._tempId] || {}}
-                onChange={(field, val) => setConfigPrice(cfg._tempId, field, val)}
+                pricing={d.configPricing?.[cfgKey(cfg)] || {}}
+                onChange={(field, val) => setConfigPrice(cfgKey(cfg), field, val)}
               />
             ))}
           </div>
@@ -180,8 +248,10 @@ export default function Step4PricingInventory() {
           <h3 className="text-sm font-bold text-slate-700">Unit Inventory</h3>
           <div className="flex gap-2">
             <button
-              className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-50"
-              title="Download Inventory — wired in Phase 1"
+              onClick={handleExport}
+              disabled={!projectId || units.length === 0}
+              className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+              title="Download inventory as .xlsx"
             >
               <span className="material-symbols-outlined text-sm">download</span>
               Download
@@ -202,6 +272,12 @@ export default function Step4PricingInventory() {
             <option value="">All Towers</option>
             {towers.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
+          <select value={configFilter} onChange={(e) => setConfigFilter(e.target.value)} className="px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-600 bg-white focus:outline-none">
+            <option value="">All Configurations</option>
+            {configs.filter((c) => c._id).map((c) => (
+              <option key={c._id} value={c._id}>{c.title || c.bhkType}</option>
+            ))}
+          </select>
           <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-600 bg-white focus:outline-none">
             <option value="">All Statuses</option>
             <option value="available">Available</option>
@@ -210,6 +286,12 @@ export default function Step4PricingInventory() {
             <option value="sold">Sold</option>
           </select>
         </div>
+
+        {unitsError && (
+          <div className="mb-4 px-4 py-2.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-700">
+            {unitsError}
+          </div>
+        )}
 
         {/* Table */}
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
@@ -222,12 +304,19 @@ export default function Step4PricingInventory() {
               </tr>
             </thead>
             <tbody>
+              {displayUnits.length === 0 && (
+                <tr>
+                  <td colSpan={9} className="text-center py-10 text-slate-400 text-sm">
+                    No units yet — add units individually or via bulk import below.
+                  </td>
+                </tr>
+              )}
               {displayUnits.map((unit) => (
                 <tr key={unit._id} className="border-b border-slate-100 hover:bg-slate-50">
                   <td className="px-4 py-3 font-medium text-slate-700">{unit.tower || '—'}</td>
                   <td className="px-4 py-3 text-slate-600">{unit.floor ?? '—'}</td>
                   <td className="px-4 py-3 text-slate-600">{unit.unitNumber}</td>
-                  <td className="px-4 py-3 text-slate-600">{BHK_LABEL[unit.bhkType] || unit.bhkType || '—'}</td>
+                  <td className="px-4 py-3 text-slate-600">{configLabelForUnit(unit)}</td>
                   <td className="px-4 py-3 text-slate-600">{unit.carpetArea ? `${unit.carpetArea} sq.ft` : '—'}</td>
                   <td className="px-4 py-3 text-slate-600">{unit.facing || '—'}</td>
                   <td className="px-4 py-3 text-slate-700 font-medium">{formatPrice(unit.price)}</td>
@@ -262,14 +351,11 @@ export default function Step4PricingInventory() {
             </tbody>
           </table>
         </div>
-        {d.units?.length === 0 && (
-          <p className="text-xs text-slate-400 text-center mt-2">Showing placeholder data — live data wired in Phase 1</p>
-        )}
       </section>
 
       {/* Bulk Import */}
       <section className="bg-white border border-slate-200 rounded-xl p-5">
-        <BulkImportPanel />
+        <BulkImportPanel projectId={projectId} onImported={refreshUnits} />
       </section>
 
       <UnitFormModal

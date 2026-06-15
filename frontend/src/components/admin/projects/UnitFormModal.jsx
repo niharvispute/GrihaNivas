@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const FACING_OPTIONS = ['East', 'West', 'North', 'South', 'North-East', 'North-West', 'South-East', 'South-West'];
 const STATUS_OPTIONS = [
@@ -24,6 +24,20 @@ const EMPTY_UNIT = {
 export default function UnitFormModal({ isOpen, editingUnit, configurations = [], onSave, onClose }) {
   const [form, setForm] = useState(() => ({ ...(editingUnit || EMPTY_UNIT) }));
   const set = (key, val) => setForm((p) => ({ ...p, [key]: val }));
+
+  // Re-sync the form whenever a different unit is opened (add vs edit)
+  useEffect(() => {
+    if (!isOpen) return;
+    if (editingUnit) {
+      const configurationId =
+        typeof editingUnit.configurationId === 'object'
+          ? editingUnit.configurationId?._id || ''
+          : editingUnit.configurationId || '';
+      setForm({ ...EMPTY_UNIT, ...editingUnit, configurationId });
+    } else {
+      setForm({ ...EMPTY_UNIT });
+    }
+  }, [isOpen, editingUnit]);
 
   if (!isOpen) return null;
 

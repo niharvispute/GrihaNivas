@@ -1,0 +1,3 @@
+configurationId,tower,block,floor,unitNumber,carpetArea,builtupArea,facing,viewType,price,status,notes
+PASTE_CONFIGURATION_ID_HERE,Tower A,Block 1,12,A-1203,820,980,East,Garden view,24500000,available,Corner unit
+PASTE_CONFIGURATION_ID_HERE,Tower B,Block 2,9,B-904,510,640,North,City view,14200000,available,

@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useProjectForm } from '@/context/ProjectFormContext';
+import { listAdminBuilders } from '@/services/builderService';
 
 const LISTING_TYPES = [
   { value: 'sale',        label: 'Sale' },
@@ -33,19 +35,32 @@ const BHK_OPTIONS = [
   { value: 'penthouse', label: 'Penthouse' },
 ];
 
-// Static builder options — replaced with API fetch in Phase 1
-const BUILDER_OPTIONS = [
-  { value: '', label: 'Select Builder' },
-  { value: 'lodha',       label: 'Lodha Group' },
-  { value: 'hiranandani', label: 'Hiranandani' },
-  { value: 'godrej',      label: 'Godrej Properties' },
-];
-
 export default function Step1BasicInfo() {
   const { formData, updateFormData } = useProjectForm();
   const d = formData.step1;
 
+  const [builders, setBuilders] = useState([]);
+  const [buildersError, setBuildersError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const { items } = await listAdminBuilders({ limit: 200 });
+        if (!cancelled) setBuilders(items);
+      } catch (err) {
+        if (!cancelled) setBuildersError(err?.message || 'Failed to load builders');
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
   const set = (key, val) => updateFormData('step1', { [key]: val });
+
+  const handleBuilderChange = (id) => {
+    const b = builders.find((x) => x._id === id);
+    updateFormData('step1', { builderId: id, builderName: b?.name || '' });
+  };
 
   const toggleBhk = (val) => {
     const current = d.configurations || [];
@@ -124,14 +139,15 @@ export default function Step1BasicInfo() {
             <label className="block text-xs font-semibold text-slate-600 mb-1.5">Builder / Developer <span className="text-red-500">*</span></label>
             <select
               value={d.builderId}
-              onChange={(e) => set('builderId', e.target.value)}
+              onChange={(e) => handleBuilderChange(e.target.value)}
               className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
             >
-              {BUILDER_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
+              <option value="">Select Builder</option>
+              {builders.map((b) => (
+                <option key={b._id} value={b._id}>{b.name}</option>
               ))}
             </select>
-            <p className="text-xs text-slate-400 mt-1">Populated from API in Phase 1</p>
+            {buildersError && <p className="text-xs text-red-500 mt-1">{buildersError}</p>}
           </div>
 
           <div>

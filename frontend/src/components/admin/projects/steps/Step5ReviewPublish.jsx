@@ -188,13 +188,17 @@ export default function Step5ReviewPublish() {
       <section className="mb-6 bg-white border border-slate-200 rounded-xl p-5">
         <SectionHeader title="Inventory Summary" onEdit={() => goToStep(4)} />
         <div className="grid grid-cols-5 gap-3">
-          {[
-            { label: 'Total',     value: d2.totalUnits || 0,   icon: 'home',          color: 'text-primary',  bg: 'bg-primary/5' },
-            { label: 'Available', value: '—',                  icon: 'check_circle',  color: 'text-green-600',bg: 'bg-green-50' },
-            { label: 'Hold',      value: '—',                  icon: 'pause_circle',  color: 'text-orange-600',bg:'bg-orange-50' },
-            { label: 'Booked',    value: '—',                  icon: 'calendar_month',color: 'text-blue-600', bg: 'bg-blue-50' },
-            { label: 'Sold',      value: '—',                  icon: 'sell',          color: 'text-slate-500', bg: 'bg-slate-50' },
-          ].map(({ label, value, icon, color, bg }) => (
+          {(() => {
+            const units = d4.units || [];
+            const countBy = (s) => units.filter((u) => u.status === s).length;
+            return [
+              { label: 'Total',     value: units.length || d2.totalUnits || 0, icon: 'home',          color: 'text-primary',   bg: 'bg-primary/5' },
+              { label: 'Available', value: countBy('available'),               icon: 'check_circle',  color: 'text-green-600', bg: 'bg-green-50' },
+              { label: 'Hold',      value: countBy('hold'),                    icon: 'pause_circle',  color: 'text-orange-600',bg: 'bg-orange-50' },
+              { label: 'Booked',    value: countBy('booked'),                  icon: 'calendar_month',color: 'text-blue-600',  bg: 'bg-blue-50' },
+              { label: 'Sold',      value: countBy('sold'),                    icon: 'sell',          color: 'text-slate-500', bg: 'bg-slate-50' },
+            ];
+          })().map(({ label, value, icon, color, bg }) => (
             <div key={label} className={`${bg} rounded-xl p-3 text-center`}>
               <span className={`material-symbols-outlined ${color} text-xl block mb-1`}>{icon}</span>
               <p className={`text-xl font-bold ${color}`}>{value}</p>
@@ -202,7 +206,6 @@ export default function Step5ReviewPublish() {
             </div>
           ))}
         </div>
-        <p className="text-xs text-slate-400 mt-3">Live inventory counts wired in Phase 1</p>
       </section>
 
       {/* Lead Capture Settings */}

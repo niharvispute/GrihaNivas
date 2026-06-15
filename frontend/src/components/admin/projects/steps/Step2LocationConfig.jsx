@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useProjectForm } from '@/context/ProjectFormContext';
+import { deleteConfiguration } from '@/services/projectService';
 import ConfigSidePanel from '../ConfigSidePanel';
 
 const BHK_LABEL = {
@@ -10,11 +11,15 @@ const BHK_LABEL = {
 };
 
 export default function Step2LocationConfig() {
-  const { formData, updateFormData } = useProjectForm();
+  const { formData, updateFormData, projectId } = useProjectForm();
   const d = formData.step2;
 
   const [panelOpen, setPanelOpen] = useState(false);
   const [editingConfig, setEditingConfig] = useState(null);
+  const [deletingKey, setDeletingKey] = useState(null);
+  const [configError, setConfigError] = useState(null);
+
+  const cfgKey = (c) => c._id || c._tempId;
 
   const set = (key, val) => updateFormData('step2', { [key]: val });
   const setLoc = (key, val) => updateFormData('step2', { [key]: val });
@@ -29,14 +34,20 @@ export default function Step2LocationConfig() {
     setPanelOpen(true);
   };
 
+  // Configs are stored locally and persisted in batch by the wizard on "Next"
+  // (createConfiguration / updateConfiguration). Delete hits the API immediately
+  // for already-persisted configs (those with a backend _id).
   const handleSaveConfig = (cfg) => {
     const configs = [...(d.configurations || [])];
-    if (cfg._tempId) {
-      // Edit existing
-      const idx = configs.findIndex((c) => c._tempId === cfg._tempId);
-      if (idx !== -1) configs[idx] = cfg;
+    const key = cfg._id || cfg._tempId;
+    if (key) {
+      const idx = configs.findIndex((c) => (c._id || c._tempId) === key);
+      if (idx !== -1) {
+        configs[idx] = cfg;
+      } else {
+        configs.push(cfg);
+      }
     } else {
-      // Add new — assign a temp id
       configs.push({ ...cfg, _tempId: `tmp_${Date.now()}` });
     }
     updateFormData('step2', { configurations: configs });
@@ -44,9 +55,21 @@ export default function Step2LocationConfig() {
     setEditingConfig(null);
   };
 
-  const handleDeleteConfig = (tempId) => {
+  const handleDeleteConfig = async (cfg) => {
+    setConfigError(null);
+    if (cfg._id) {
+      setDeletingKey(cfg._id);
+      try {
+        await deleteConfiguration(cfg._id);
+      } catch (err) {
+        setConfigError(err?.message || 'Failed to delete configuration');
+        setDeletingKey(null);
+        return;
+      }
+      setDeletingKey(null);
+    }
     updateFormData('step2', {
-      configurations: (d.configurations || []).filter((c) => c._tempId !== tempId),
+      configurations: (d.configurations || []).filter((c) => cfgKey(c) !== cfgKey(cfg)),
     });
   };
 
@@ -183,6 +206,12 @@ export default function Step2LocationConfig() {
           <p className="text-xs text-slate-400">{(d.configurations || []).length} added</p>
         </div>
 
+        {configError && (
+          <div className="mb-3 px-4 py-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700">
+            {configError}
+          </div>
+        )}
+
         <div className="space-y-3">
           {(d.configurations || []).length === 0 ? (
             <div className="text-center py-8 text-slate-400 border-2 border-dashed border-slate-200 rounded-xl">
@@ -192,7 +221,7 @@ export default function Step2LocationConfig() {
             </div>
           ) : (
             (d.configurations || []).map((cfg) => (
-              <div key={cfg._tempId} className="flex items-center justify-between px-5 py-4 bg-white border border-slate-200 rounded-xl hover:border-slate-300 transition-colors">
+              <div key={cfgKey(cfg)} className="flex items-center justify-between px-5 py-4 bg-white border border-slate-200 rounded-xl hover:border-slate-300 transition-colors">
                 <div className="flex items-center gap-4">
                   <span className="inline-flex items-center px-2.5 py-0.5 bg-primary/10 text-primary text-xs font-bold rounded-lg">
                     {BHK_LABEL[cfg.bhkType] || cfg.bhkType}
@@ -213,8 +242,9 @@ export default function Step2LocationConfig() {
                     <span className="material-symbols-outlined text-lg">edit</span>
                   </button>
                   <button
-                    onClick={() => handleDeleteConfig(cfg._tempId)}
-                    className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    onClick={() => handleDeleteConfig(cfg)}
+                    disabled={deletingKey === cfg._id}
+                    className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
                   >
                     <span className="material-symbols-outlined text-lg">delete</span>
                   </button>

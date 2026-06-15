@@ -269,3 +269,181 @@ Pages importing client-only Context providers cannot use `export const metadata`
 Next.js 15 + React 19: `params` is a Promise in dynamic routes — must be unwrapped with `use()` in client components or `await` in async server components.
 
 ---
+
+### [P1-1a] — Created projectService.js
+**Date:** 2026-06-14  
+**Phase:** P1  
+**Status:** done  
+**Files changed:** `frontend/src/services/projectService.js`
+
+**What was done:**  
+Created the full admin project service using the codebase's existing `authedApiFetch` (token-refresh-aware) and `downloadAuthedFile` helpers. Functions: project CRUD (`adminListProjects`, `getProjectById`, `createProject`, `updateProject`, `deleteProject`, `setProjectStatus`, `toggleFeatured`), configuration CRUD (`createConfiguration`, `updateConfiguration`, `deleteConfiguration`, `listConfigurations`), unit CRUD (`listUnits`, `createUnit`, `updateUnit`, `deleteUnit`, `bulkImportUnits`, `exportUnits`). Added label↔enum mapping helpers: `toBackendListingStatus`/`toListingStatusLabel` (Published↔active) and `toBackendBhkType`/`toBhkLabel` ("1 BHK"↔"1BHK").
+
+**Why this approach:**  
+Mirrored `builderService.js` exactly so the new service is idiomatic. All admin project routes live under `/api/projects` (e.g. list = `/api/projects/admin`), NOT `/api/admin/projects` — confirmed against `backend/routes/projects.js`. FormData bodies are auto-detected by the shared `apiFetch` client (no manual Content-Type), so multipart create/update "just works."
+
+**Gotchas:**  
+- `bulkImportUnits` body must be `{ units: [...] }` (verified against `schemas.project.bulkImportUnits`), not a bare array.
+- listingStatus remap lives in the service layer per the architecture note, so components never deal with "active" vs "Published".
+
+---
+
+### [P1-2] — Wired admin Projects list page
+**Date:** 2026-06-14  
+**Phase:** P1  
+**Status:** done  
+**Files changed:** `frontend/src/app/admin/projects/page.js`
+
+**What was done:**  
+Replaced placeholder rows with live `adminListProjects()` data. Added: loading skeleton + error banner with Retry; debounced search (300ms) + listingStatus filter via query params; inline listing-status `<select>` per row calling `setProjectStatus`; star button calling `toggleFeatured`; 3-dot menu Delete with a confirmation modal calling `deleteProject`. Builder name resolved from populated `builderId.name`.
+
+**Why this approach:**  
+Debounce avoids a request per keystroke. Status is an inline select (not a separate dialog) because the list already shows the badge — turning the badge into a control is the least-friction UX. Delete uses a modal because it cascades to configs + units.
+
+**Gotchas:**  
+The backend `adminList` populates `builderId` with `{name,slug,logo,isActive}`, so `row.builderId` is an object, not a string — handled with a `builderName()` helper.
+
+---
+
+### [P1-3..P1-7 orchestration] — Wizard turned into the save-on-advance orchestrator
+**Date:** 2026-06-14  
+**Phase:** P1  
+**Status:** done  
+**Files changed:** `frontend/src/components/admin/projects/ProjectFormWizard.jsx`
+
+**What was done:**  
+Rewrote `ProjectFormWizard` from a dumb step-switcher into the orchestrator that owns all project-level persistence, reading slices from `ProjectFormContext`:
+- **Edit hydration** (P1-3d/4e/5d/6a/7a): on entry, if `projectId` is set and the form is empty, calls `getProjectById` + `listUnits`, maps the backend doc into all 5 formData slices via `mapProjectToFormData`, then clears `isDirty`.
+- **`saveCurrentStep()`** dispatches per step: Step 1 `createProject` (or update); Step 2 `updateProject` (location+scale) + `syncConfigurations`; Step 3 multipart `updateProject` (hero/gallery/masterPlan/brochure/videoUrl); Step 4 `updateProject` (priceMin/Max) + per-config pricing updates; Step 5 `updateProject` (SEO+slug).
+- **`handleNext`** saves then advances; on Step 5 it saves then calls `setProjectStatus`. **`handleSaveDraft`** saves the current step + forces `listingStatus: draft`. Inline error banner + "Loading project…" state.
+
+**Why this approach:**  
+Centralizing persistence in the wizard keeps step components presentational (they only read/write context). Config persistence is **batched on Step 2 "Next"** rather than per-keystroke real-time (a deviation from the literal P1-4b wording) — simpler, fewer requests, and still survives refresh because Step 1 already created the project.
+
+**Gotchas / decisions:**  
+- Project is created on **Step 1 → Next**, but the backend requires `location.area` at create and area isn't collected until Step 2 → send the project **name as a placeholder area**, overwritten on Step 2. Logged as backend blocker #2.
+- `updateProject` with a plain object sends JSON to the multipart route; multer ignores non-multipart bodies and `express.json` parses it, so nested `location` works. Multipart FormData is only built for Step 3 media.
+- Step 3 update is skipped entirely when there are no new files and no videoUrl, to avoid the backend "at least one field" rejection.
+
+---
+
+### [P1-3a/d] — Step 1 builder dropdown + edit prefill
+**Date:** 2026-06-14  
+**Phase:** P1  
+**Status:** done  
+**Files changed:** `frontend/src/components/admin/projects/steps/Step1BasicInfo.jsx`
+
+**What was done:**  
+Replaced static builder options with a `listAdminBuilders({limit:200})` fetch on mount. Selecting a builder stores both `builderId` and `builderName` (for the Step 5 review label). Builder fetch errors shown inline.
+
+**Why this approach:**  
+Used `listAdminBuilders` (raw `{_id,name}` docs) rather than the public `listBuilders` (card view-models) so the option values are real ObjectIds the backend accepts directly.
+
+---
+
+### [P1-4b/c/d/e] — Step 2 configuration CRUD
+**Date:** 2026-06-14  
+**Phase:** P1  
+**Status:** done  
+**Files changed:**  
+- `frontend/src/components/admin/projects/steps/Step2LocationConfig.jsx`
+- `frontend/src/components/admin/projects/ConfigSidePanel.jsx`
+
+**What was done:**  
+Configs now carry a backend `_id` once persisted (alongside the legacy `_tempId` for unsaved ones); introduced a `cfgKey()` helper used everywhere as the React key and pricing-map key. Delete hits `deleteConfiguration` immediately for persisted configs (with busy state + error), and just drops local state for unsaved ones. ConfigSidePanel's re-sync effect and header now key off `_id || _tempId`. BHK enum values were already stored backend-style ("1BHK") from Phase 0, so P1-4d needed no mapping.
+
+**Why this approach:**  
+Keeping configs in context and batch-creating them on Step 2 "Next" (in the wizard's `syncConfigurations`) means the side panel stays a pure local editor. Create sends `priceMin:0/priceMax:0` because the backend marks them required even though pricing is a Step 4 concern (backend blocker #3).
+
+---
+
+### [P1-6] — Step 4 unit inventory wired to API
+**Date:** 2026-06-14  
+**Phase:** P1  
+**Status:** done (degraded by backend blocker #4)  
+**Files changed:**  
+- `frontend/src/components/admin/projects/steps/Step4PricingInventory.jsx`
+- `frontend/src/components/admin/projects/UnitFormModal.jsx`
+
+**What was done:**  
+Removed placeholder units. Units load via `listUnits` on mount and on any filter change (Tower / Configuration / Status — server-side filtering). Added a Configuration filter dropdown. Add/Edit call `createUnit`/`updateUnit`; delete calls `deleteUnit`; all refresh the table. Download button calls `exportUnits` (xlsx via `downloadAuthedFile`). The unit row's config column resolves the label from `configurationId` against the loaded configs. `UnitFormModal` got a re-sync `useEffect` (it previously initialized state only once, so editing a 2nd unit showed stale data) and normalizes a populated `configurationId` object back to its `_id`.
+
+**Why this approach:**  
+Server-side filtering matches `listUnits` query params, so the table always reflects the DB. `listUnits` failures are surfaced as a soft amber notice rather than a hard error because GET units currently 404s for draft projects (backend blocker #4) — the rest of Step 4 stays usable.
+
+---
+
+### [P1-6j/k/l] — Bulk import (CSV) + template
+**Date:** 2026-06-14  
+**Phase:** P1  
+**Status:** done  
+**Files changed:**  
+- `frontend/src/components/admin/projects/BulkImportPanel.jsx`
+- `frontend/public/templates/unit-import-template.csv`
+
+**What was done:**  
+BulkImportPanel now parses dropped **CSV** client-side with a small built-in quoted-CSV parser (no papaparse dependency added), maps rows to the unit schema (`configurationId,tower,block,floor,unitNumber,carpetArea,builtupArea,facing,viewType,price,status,notes`), coerces numeric columns, collects per-row validation errors, then calls `bulkImportUnits(projectId, units)` and shows Inserted/Failed + an error list. Created the downloadable template CSV. XLSX shows a "comes in Phase 3" notice (the dedicated file-upload endpoint, P3-3c).
+
+**Why this approach:**  
+Avoided adding `papaparse` — a tiny hand-rolled parser covers the template format and keeps the dependency surface clean. XLSX genuinely needs a library, so it's correctly deferred to the Phase 3 server-side endpoint rather than bundling a parser now.
+
+---
+
+### [P1-7a] — Step 5 live inventory counts
+**Date:** 2026-06-14  
+**Phase:** P1  
+**Status:** done  
+**Files changed:** `frontend/src/components/admin/projects/steps/Step5ReviewPublish.jsx`
+
+**What was done:**  
+Inventory Summary stat cards (Total/Available/Hold/Booked/Sold) now compute from the loaded `step4.units` instead of showing "—". Publish/Save-Draft/Edit-nav were already handled by the wizard footer + `goToStep`.
+
+---
+
+### [FIX-B1+B4] — Fixed critical backend blockers: createdBy + admin units access
+**Date:** 2026-06-14  
+**Phase:** P1 → backend fixes  
+**Status:** done  
+**Files changed:**  
+- `backend/controllers/adminProjectController.js`  
+- `backend/controllers/projectController.js`  
+- `backend/middleware/validate.js`
+
+**What was done:**  
+Three backend fixes applied:
+
+1. **Blocker #1 — `createdBy` missing** (`adminProjectController.create`): After `const data = { ...req.body }`, added `data.createdBy = req.user._id;`. Without this, the Mongoose `Project.create()` call always failed with a required-field validation error (`createdBy: required: true`), making project creation impossible.
+
+2. **Blocker #4 — admin units blocked for draft projects** (`projectController.getUnits`): Changed the project lookup from `findOne({ _id: id, listingStatus: 'active' })` to check `req.user?.role === 'admin'` first — admins bypass the `listingStatus: 'active'` filter. The admin role check for returning all unit statuses (not just `available`) was already there at line 204; the project-lookup check was the missing piece. The `optionalAuth` middleware on the route ensures `req.user` is populated when the admin sends their JWT.
+
+3. **Silent bug — slug stripped by Zod** (`validate.js` `project.update` schema): The `slug` field was absent from the update schema, so Zod was stripping it before it reached the controller. The controller already had the logic to handle `updates.slug` (unique-check + save) — adding `slug: z.string().trim().min(2).max(250).optional()` to the schema connects it. Without this, Step 5's manual slug edits were silently ignored.
+
+**Why this approach:**  
+- Minimal, surgical patches — no schema migrations, no new routes, no middleware changes beyond a schema field addition.
+- Admin units fix uses `optionalAuth`'s existing `req.user` rather than adding a new protected admin-only route, which would require client service changes.
+- Kept blockers #2 (`location.area`) and #3 (`priceMin`/`priceMax`) as frontend-workaround-only: #2 uses project name as placeholder (always non-empty), #3 sends `0` (valid for `min: 0` validator). Backend still enforces the right invariants for production data.
+
+**Gotchas:**  
+- `optionalAuth` in `routes/projects.js` on `GET /:id/units` is the key enabler for the admin check — if ever removed, the units route would stop working for draft projects again.
+- Blocker #2 (`location.area` required in Zod create schema) still holds — the frontend workaround (project name as placeholder area) must stay in `ProjectFormWizard.saveCurrentStep` Step 1 branch.
+
+---
+
+### [BLOCKERS-P1] — Backend gaps that stop Phase 1 working end-to-end
+**Date:** 2026-06-14  
+**Phase:** P1 → needs P2  
+**Status:** flagged (not fixed — backend is "Vishal half done", avoiding conflicts)
+
+**What was found (full detail mirrored in progress2.md status section):**  
+1. `adminProjectController.create` never sets `createdBy` (required on model) → create likely 500s. One-line fix: `data.createdBy = req.user._id`.
+2. `create` requires `location.area`; not known until Step 2. Worked around with placeholder; cleaner = make area optional for drafts.
+3. Configuration create requires `priceMin`/`priceMax`; not known until Step 4. Worked around with `0`; cleaner = optional for drafts.
+4. `GET /:id/units` (public controller) requires `listingStatus: 'active'` → admins can't list units for a draft → wizard inventory degraded. Fix = admin units endpoint or relax active-check for admins.
+
+**Why not fixed here:**  
+Backend is mid-refactor by another dev; these are Phase-2-shaped changes. Frontend is wired to the documented contract and will work once the backend lands the fixes. Flagged rather than silently patched to avoid merge conflicts.
+
+**Verification:**  
+`npx eslint` on all changed files → 0 errors (only pre-existing setState-in-effect / unescaped-quote warnings).
+
+---

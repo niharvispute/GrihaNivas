@@ -33,7 +33,7 @@ export default function ConfigSidePanel({ isOpen, editingConfig, onSave, onClose
   // Using useEffect avoids calling setState during render
   useEffect(() => {
     setLocal({ ...(editingConfig || EMPTY_CONFIG) });
-  }, [editingConfig?._tempId]);
+  }, [editingConfig?._id, editingConfig?._tempId]);
 
   const set = (key, val) => setLocal((prev) => ({ ...prev, [key]: val }));
 
@@ -54,7 +54,7 @@ export default function ConfigSidePanel({ isOpen, editingConfig, onSave, onClose
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
           <h3 className="text-base font-bold text-slate-800">
-            {editingConfig?._tempId ? 'Edit Configuration' : 'Add Configuration'}
+            {editingConfig?._id || editingConfig?._tempId ? 'Edit Configuration' : 'Add Configuration'}
           </h3>
           <button
             onClick={onClose}

@@ -170,6 +170,7 @@ const getOne = async (req, res, next) => {
 const create = async (req, res, next) => {
   try {
     const data = { ...req.body };
+    data.createdBy = req.user._id;
     data.builderId = await resolveBuilderReference(data.builderId);
 
     const baseSlug = data.slug ? generateSlug(data.slug) : generateSlug(data.name);

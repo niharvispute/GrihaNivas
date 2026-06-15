@@ -641,6 +641,7 @@ const schemas = {
     update: z
       .object({
         name: z.string().trim().min(2).max(200).optional(),
+        slug: z.string().trim().min(2).max(250).optional(),
         description: z.string().trim().max(10000).optional(),
         shortDescription: z.string().trim().max(400).optional(),
         projectType: z.enum(['residential', 'commercial', 'mixed']).optional(),

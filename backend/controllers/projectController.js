@@ -193,7 +193,9 @@ const getUnits = async (req, res, next) => {
     const { id } = req.params;
     const { limit, skip, buildMeta } = parsePagination(req.query);
 
-    const project = await Project.findOne({ _id: id, listingStatus: 'active' }).select('_id name slug');
+    const isAdmin = req.user?.role === 'admin';
+    const projectFilter = isAdmin ? { _id: id } : { _id: id, listingStatus: 'active' };
+    const project = await Project.findOne(projectFilter).select('_id name slug');
     if (!project) throw new AppError('Project not found', 404);
 
     // Public users see only available units by default
