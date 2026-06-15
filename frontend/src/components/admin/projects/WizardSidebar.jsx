@@ -16,7 +16,7 @@ export default function WizardSidebar() {
   const progressPct = Math.round(((currentStep - 1) / 4) * 100);
 
   return (
-    <aside className="w-72 min-h-screen bg-slate-900 flex flex-col flex-shrink-0">
+    <aside className="w-64 min-h-screen bg-slate-900 flex flex-col flex-shrink-0">
       {/* Header */}
       <div className="px-6 pt-8 pb-6 border-b border-slate-800">
         <p className="text-xs font-black uppercase tracking-[0.25em] text-slate-400 mb-1">Admin Console</p>

@@ -374,7 +374,7 @@ export default function ProjectFormWizard() {
 
   return (
     // Full-bleed wizard layout — overrides the admin layout max-width
-    <div className="fixed inset-0 top-[72px] flex bg-[#f8f7f5] z-10">
+    <div className="fixed inset-0 top-[72px] flex bg-[#f8f7f5] z-[55]">
       <WizardSidebar />
 
       {/* Scrollable content */}
