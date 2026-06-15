@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const XLSX = require('xlsx');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
 const { sendExcel, formatDate, joinList } = require('../utils/excelExport');
 const { parsePagination } = require('../utils/pagination');
@@ -653,6 +654,103 @@ const bulkImportUnits = async (req, res, next) => {
   }
 };
 
+// ── Bulk import from file (CSV / XLSX) ──────────────────────────────────────
+
+const bulkImportUnitsFromFile = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (!req.file) throw new AppError('No file uploaded', 400);
+
+    const project = await Project.findById(id).select('_id slug name');
+    if (!project) throw new AppError('Project not found', 404);
+
+    const workbook = XLSX.read(req.file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    if (!sheetName) throw new AppError('File contains no sheets', 400);
+    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: null });
+
+    if (!rows.length) throw new AppError('File contains no data rows', 400);
+    if (rows.length > MAX_BULK_IMPORT) {
+      throw new AppError(`Bulk import is limited to ${MAX_BULK_IMPORT} units per request`, 400);
+    }
+
+    const units = rows.map((row) => ({
+      configurationId: row.configurationId || row['Configuration ID'] || null,
+      tower:      row.tower      || row['Tower']        || null,
+      block:      row.block      || row['Block']        || null,
+      floor:      row.floor      != null ? Number(row.floor)      : (row['Floor']      != null ? Number(row['Floor'])      : undefined),
+      unitNumber: row.unitNumber || row['Unit Number']  || null,
+      carpetArea: row.carpetArea != null ? Number(row.carpetArea) : (row['Carpet Area'] != null ? Number(row['Carpet Area']) : undefined),
+      builtupArea:row.builtupArea!= null ? Number(row.builtupArea): (row['Built-up Area']!= null? Number(row['Built-up Area']): undefined),
+      facing:     row.facing     || row['Facing']       || null,
+      viewType:   row.viewType   || row['View']         || row['View Type'] || null,
+      price:      row.price      != null ? Number(row.price)      : (row['Price']      != null ? Number(row['Price'])      : undefined),
+      status:     row.status     || row['Status']       || 'available',
+      notes:      row.notes      || row['Notes']        || null,
+      projectId:  id,
+    }));
+
+    const validUnits  = units.filter((u) => u.configurationId);
+    const skippedCount = units.length - validUnits.length;
+
+    if (!validUnits.length) throw new AppError('No rows contained a valid configurationId', 400);
+
+    const configIds = Array.from(new Set(validUnits.map((u) => u.configurationId)));
+    const validConfigs = await ProjectConfiguration.find({
+      _id: { $in: configIds },
+      projectId: id,
+    }).select('_id');
+    const validConfigSet = new Set(validConfigs.map((c) => c._id.toString()));
+    const invalidConfigs = configIds.filter((cid) => !validConfigSet.has(String(cid)));
+    if (invalidConfigs.length) {
+      throw new AppError(
+        `One or more configurationIds do not belong to this project: ${invalidConfigs.join(', ')}`,
+        400
+      );
+    }
+
+    let inserted = 0;
+    let failed = skippedCount;
+    const errors = [];
+
+    try {
+      const result = await ProjectUnit.insertMany(validUnits, { ordered: false });
+      inserted = Array.isArray(result) ? result.length : 0;
+    } catch (insertErr) {
+      if (insertErr.insertedDocs && Array.isArray(insertErr.insertedDocs)) {
+        inserted = insertErr.insertedDocs.length;
+      } else if (insertErr.result?.insertedCount != null) {
+        inserted = insertErr.result.insertedCount;
+      } else {
+        inserted = 0;
+      }
+      failed += validUnits.length - inserted;
+
+      const writeErrors =
+        insertErr.writeErrors ||
+        insertErr.result?.writeErrors ||
+        insertErr.err?.writeErrors ||
+        [];
+      for (const we of writeErrors) {
+        errors.push({ index: we.index, code: we.code, message: we.errmsg || we.message || 'Insert error' });
+      }
+    }
+
+    await Promise.all(configIds.map((cid) => recomputeConfigAvailability(cid)));
+    await invalidateProjectCaches(project.slug);
+
+    return sendSuccess(res, 200, 'File bulk import processed', {
+      total: units.length,
+      inserted,
+      failed,
+      errors,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // ── Export units to Excel ────────────────────────────────────────────────────
 
 const exportUnits = async (req, res, next) => {
@@ -737,5 +835,6 @@ module.exports = {
   updateUnit,
   deleteUnit,
   bulkImportUnits,
+  bulkImportUnitsFromFile,
   exportUnits,
 };

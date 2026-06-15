@@ -223,7 +223,7 @@ The wizard uses a **save-on-advance** pattern, not a hold-all-in-memory-until-pu
 
 ### P2-1 — Project Model additions
 
-- [ ] **P2-1a** In `backend/models/mongoose/Project.js` add:
+- [x] **P2-1a** In `backend/models/mongoose/Project.js` add:
   ```js
   contactPerson: { type: String, trim: true, default: null },
   contactPhone:  { type: String, trim: true, default: null },
@@ -236,42 +236,28 @@ The wizard uses a **save-on-advance** pattern, not a hold-all-in-memory-until-pu
   whatsappCtaEnabled:    { type: Boolean, default: true },
   enableSiteVisit:       { type: Boolean, default: true },
   ```
-- [ ] **P2-1b** In `projectType` enum array add `'plotting'` → `['residential', 'commercial', 'mixed', 'plotting']`
+- [x] **P2-1b** In `projectType` enum array add `'plotting'` → `['residential', 'commercial', 'mixed', 'plotting']`
 
 ### P2-2 — Validation schema additions
 
-- [ ] **P2-2a** In `backend/middleware/validate.js` extend `schemas.project.create` and `schemas.project.update` to accept all 11 new fields added in P2-1a/b
+- [x] **P2-2a** In `backend/middleware/validate.js` extend `schemas.project.create` and `schemas.project.update` to accept all 11 new fields added in P2-1a/b; also updated `projectType` enum in `create`, `update`, and `list` schemas
 
 ### P2-3 — Upload middleware fix
 
-- [ ] **P2-3a** In `backend/middleware/upload.js` find `projectUploadFields` — change gallery `maxCount` from `10` to `20`
-- [ ] **P2-3b** In `backend/middleware/upload.js` ensure Multer `fileFilter` allows `application/pdf` mimetype for the `brochure` field (currently likely only allows images)
+- [x] **P2-3a** In `backend/middleware/upload.js` changed gallery `maxCount` from `10` to `20`; updated `files` limit from `13` to `23`
+- [x] **P2-3b** Confirmed already working — `projectUploadFields` uses `mixedFilter` which includes `application/pdf`; no change needed
 
 ### P2-4 — Bulk Import: file upload support
 
-- [ ] **P2-4a** In `backend/middleware/upload.js` add a new Multer config:
-  ```js
-  const bulkImportUpload = multer({ storage: multer.memoryStorage(), fileFilter: csvXlsxFilter }).single('file');
-  ```
-  where `csvXlsxFilter` allows `text/csv`, `application/vnd.ms-excel`, `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
-- [ ] **P2-4b** Install `xlsx` npm package in backend: `npm install xlsx`
-- [ ] **P2-4c** In `backend/controllers/adminProjectController.js` add new function `bulkImportUnitsFromFile`:
-  - Reads `req.file.buffer`
-  - If CSV: parse with `xlsx.read(buffer, { type: 'buffer' })`
-  - If XLSX: same
-  - Extract rows as JSON array
-  - Map columns to unit fields (same as existing `bulkImportUnits` logic)
-  - Validate and insert with same `insertMany` logic
-  - Return same `{ total, inserted, failed, errors[] }` response
-- [ ] **P2-4d** In `backend/routes/projects.js` add route:
-  ```js
-  POST /:id/bulk-import-file  → protect, adminOnly, bulkImportUpload, adminProjectController.bulkImportUnitsFromFile
-  ```
+- [x] **P2-4a** Added `csvXlsxFilter` + `bulkImportUpload` to `backend/middleware/upload.js`; exported as `bulkImportUpload`
+- [x] **P2-4b** Installed `xlsx` npm package: `npm install xlsx`
+- [x] **P2-4c** Added `bulkImportUnitsFromFile` to `backend/controllers/adminProjectController.js` — parses CSV/XLSX buffer via `xlsx`, maps column names (camelCase + title-case), validates configIds, runs same `insertMany` logic as JSON endpoint
+- [x] **P2-4d** Added `POST /:id/bulk-import-file` route to `backend/routes/projects.js`
 
 ### P2-5 — Admin controller: new fields passthrough
 
-- [ ] **P2-5a** In `backend/controllers/adminProjectController.js` — `create` function: ensure all new fields from P2-1a (`contactPerson`, `contactPhone`, `pricePerSqft`, `maintenanceCharges`, `reraVerified`, all 5 enable* toggles) are read from `req.body` and saved
-- [ ] **P2-5b** Same for `update` function — new fields allowed in partial update
+- [x] **P2-5a** `create` already spreads `{ ...req.body }` into `data` — all new Zod-allowed fields pass through automatically; no code change needed
+- [x] **P2-5b** Same for `update` — same spread pattern; no code change needed
 
 ---
 
@@ -328,8 +314,8 @@ P3 requires P1 + P2 both done.
 |---|---|---|---|
 | Phase 0 — UI Replication | 22 | 22 | ✅ Complete |
 | Phase 1 — Wire Compatible | 32 | 30 | ✅ Frontend done (2 deferred to Phase 2; backend blockers fixed) |
-| Phase 2 — Backend Changes | 11 | 0  | 🔴 Not Started |
-| Phase 3 — Wire New Fields | 11 | 0  | 🔴 Not Started |
+| Phase 2 — Backend Changes | 11 | 11 | ✅ Complete |
+| Phase 3 — Wire New Fields | 11 | 0  | 🔴 Not Started (unblocked) |
 | **Total** | **76** | **52** | |
 
 ### Backend blockers discovered during Phase 1 — status as of 2026-06-14

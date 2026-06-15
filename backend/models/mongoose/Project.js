@@ -69,7 +69,7 @@ const projectSchema = new mongoose.Schema(
     projectType: {
       type: String,
       enum: {
-        values: ['residential', 'commercial', 'mixed'],
+        values: ['residential', 'commercial', 'mixed', 'plotting'],
         message: 'Invalid project type',
       },
       default: 'residential',
@@ -144,6 +144,24 @@ const projectSchema = new mongoose.Schema(
 
     // ── Flags ───────────────────────────────────────────────────────────
     isFeatured: { type: Boolean, default: false },
+
+    // ── Contact ──────────────────────────────────────────────────────────
+    contactPerson: { type: String, trim: true, default: null },
+    contactPhone:  { type: String, trim: true, default: null },
+
+    // ── Extended Pricing ─────────────────────────────────────────────────
+    pricePerSqft:       { type: Number, default: null, min: 0 },
+    maintenanceCharges: { type: String, trim: true, default: null },
+
+    // ── Regulatory ───────────────────────────────────────────────────────
+    reraVerified: { type: Boolean, default: false },
+
+    // ── Lead Capture Settings ────────────────────────────────────────────
+    enablePriceRequest:     { type: Boolean, default: true },
+    enableCallback:         { type: Boolean, default: true },
+    enableBrochureDownload: { type: Boolean, default: true },
+    whatsappCtaEnabled:     { type: Boolean, default: true },
+    enableSiteVisit:        { type: Boolean, default: true },
 
     // ── Amenities ───────────────────────────────────────────────────────
     amenities: { type: [String], default: [] },

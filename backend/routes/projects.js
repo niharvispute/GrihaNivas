@@ -7,6 +7,7 @@ const { adminOnly } = require('../middleware/adminOnly');
 const {
   projectUploadFields,
   configUploadFields,
+  bulkImportUpload,
 } = require('../middleware/upload');
 const { uploadLimiter: uploadRateLimit } = require('../middleware/rateLimiter');
 
@@ -180,6 +181,15 @@ router.post(
   validate(schemas.project.idParams, 'params'),
   validate(schemas.project.bulkImportUnits),
   adminProjectController.bulkImportUnits
+);
+
+router.post(
+  '/:id/bulk-import-file',
+  protect,
+  adminOnly,
+  bulkImportUpload,
+  validate(schemas.project.idParams, 'params'),
+  adminProjectController.bulkImportUnitsFromFile
 );
 
 router.get(
