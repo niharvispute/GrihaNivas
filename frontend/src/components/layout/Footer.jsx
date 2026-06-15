@@ -3,7 +3,7 @@ import Link from 'next/link';
 const SOCIAL_LINKS = [
   {
     label: 'Instagram',
-    href: 'https://instagram.com/mumbaieditorial',
+    href: 'https://www.instagram.com/grihanivas_sgp?igsh=YWwzd2ltc2piY3Fo',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
@@ -20,17 +20,8 @@ const SOCIAL_LINKS = [
     ),
   },
   {
-    label: 'LinkedIn',
-    href: 'https://linkedin.com/company/mumbaieditorial',
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>
-      </svg>
-    ),
-  },
-  {
     label: 'YouTube',
-    href: 'https://youtube.com/@mumbaieditorial',
+    href: 'https://www.youtube.com/@GrihaNivas',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
@@ -108,11 +99,15 @@ export default function Footer() {
           <ul className="space-y-4 text-slate-500">
             <li className="flex items-start gap-3">
               <svg className="mt-1 text-primary shrink-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span>D-507, 8th Floor, Shree Sawan Knowledge Park,<br />Turbhe, Navi Mumbai – 400703</span>
+              <span>Heera Panna Shopping Complex,<br />Powai Hiranandani Garden, Mumbai – 400076</span>
             </li>
             <li className="flex items-center gap-3">
               <svg className="text-primary shrink-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
               <a href="tel:+919137950050" className="hover:text-primary transition-colors">+91 91379 50050</a>
+            </li>
+            <li className="flex items-center gap-3">
+              <svg className="text-primary shrink-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="14" x="3" y="5" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              <a href="mailto:contact@grihanivas.in" className="hover:text-primary transition-colors">contact@grihanivas.in</a>
             </li>
             <li className="flex items-start gap-3">
               <svg className="mt-0.5 text-primary shrink-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="14" x="3" y="5" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
@@ -133,6 +128,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-slate-200 py-6 px-8 max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="text-slate-600 text-xs">© {currentYear} GrihaNivas. All rights reserved.</div>
+        <div className="text-slate-400 text-xs">Powered by Shree Gurudev Properties</div>
         <div className="flex gap-6 text-xs font-bold text-slate-500">
           <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-primary transition-colors">Terms of Use</Link>
