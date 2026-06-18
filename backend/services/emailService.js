@@ -146,7 +146,9 @@ const leadNotificationTemplate = (lead) => {
     rent: 'Rent Property',
     loan: 'Home Loan',
     agreement: 'Rent Agreement',
+    project: 'Project Enquiry',
     list_property: 'List Property',
+    project_application: 'Bulk Project Application',
   };
 
   return baseTemplate(
@@ -165,6 +167,12 @@ const leadNotificationTemplate = (lead) => {
       ${lead.message ? row('Message', lead.message) : ''}
       ${lead.budgetMin || lead.budgetMax ? row('Budget', `₹${(lead.budgetMin || 0).toLocaleString('en-IN')} — ₹${(lead.budgetMax || 0).toLocaleString('en-IN')}`) : ''}
       ${lead.propertyTitle ? row('Property', lead.propertyTitle) : ''}
+      ${lead.projectApplication?.projectName ? row('Project Name', lead.projectApplication.projectName) : ''}
+      ${lead.projectApplication?.builderName ? row('Builder/Developer', lead.projectApplication.builderName) : ''}
+      ${lead.projectApplication?.city || lead.projectApplication?.locality ? row('Location', [lead.projectApplication.locality, lead.projectApplication.city].filter(Boolean).join(', ')) : ''}
+      ${lead.projectApplication?.approxUnits ? row('Approx. Units', String(lead.projectApplication.approxUnits)) : ''}
+      ${lead.projectApplication?.projectType ? row('Project Type', lead.projectApplication.projectType) : ''}
+      ${lead.projectApplication?.reraNumber ? row('RERA Number', lead.projectApplication.reraNumber) : ''}
       ${row('Submitted At', new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }))}
     </table>
 

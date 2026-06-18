@@ -107,7 +107,13 @@
       "Bash(grep -E \"\\\\.\\(js|ts\\)$\")",
       "mcp__hostinger-mcp__VPS_getVirtualMachinesV1",
       "mcp__hostinger-mcp__VPS_getProjectListV1",
-      "Bash(dir E:\\\\Bricks\\\\UIchanges *)"
+      "Bash(dir E:\\\\Bricks\\\\UIchanges *)",
+      "Bash(python -c \"import reportlab; print\\('reportlab ok'\\)\")",
+      "Bash(python -c \"import weasyprint; print\\('weasyprint ok'\\)\")",
+      "Bash(where wkhtmltopdf *)",
+      "Bash(pip install *)",
+      "Bash(python generate_report.py)",
+      "Bash(python *)"
     ]
   }
 }

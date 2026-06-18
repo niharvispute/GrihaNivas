@@ -12,6 +12,10 @@ const mongoose = require('mongoose');
  *   loan         — home loan enquiry
  *   agreement    — rent/sale agreement service
  *   project      — project-level enquiry (brochure, site visit, price request, callback)
+ *   list_property      — owner wants to list a single property
+ *   project_application — owner/builder applying to bulk-list an entire project;
+ *                          admin reviews and personally follows up before
+ *                          building the full listing via the admin project wizard
  *
  * Status flow (enforced in controller — one-step moves only):
  *   new ↔ contacted ↔ qualified ↔ closed
@@ -21,6 +25,9 @@ const mongoose = require('mongoose');
  * Project leads carry optional references to the originating Project,
  * ProjectConfiguration, and ProjectUnit. enquiryType narrows down the
  * kind of project enquiry submitted (brochure, site visit, etc.).
+ *
+ * projectApplication carries the basic project info submitted with a
+ * project_application lead — populated only for that lead type.
  */
 
 const noteSchema = new mongoose.Schema(
@@ -74,8 +81,8 @@ const leadSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Lead type is required'],
       enum: {
-        values: ['buy', 'rent', 'loan', 'agreement', 'project'],
-        message: 'Lead type must be one of: buy, rent, loan, agreement, project',
+        values: ['buy', 'rent', 'loan', 'agreement', 'project', 'list_property', 'project_application'],
+        message: 'Lead type must be one of: buy, rent, loan, agreement, project, list_property, project_application',
       },
     },
     status: {
@@ -125,6 +132,28 @@ const leadSchema = new mongoose.Schema(
         message: 'Invalid enquiry type',
       },
       default: null,
+    },
+
+    // ── Project Application (only for leadType: project_application) ──────
+    projectApplication: {
+      type: {
+        projectName: { type: String, trim: true, default: null },
+        builderName: { type: String, trim: true, default: null },
+        city: { type: String, trim: true, default: null },
+        locality: { type: String, trim: true, default: null },
+        approxUnits: { type: Number, min: 0, default: null },
+        projectType: {
+          type: String,
+          enum: {
+            values: ['residential', 'commercial', 'mixed', 'plotting'],
+            message: 'Invalid project type',
+          },
+          default: null,
+        },
+        reraNumber: { type: String, trim: true, default: null },
+      },
+      default: null,
+      _id: false,
     },
 
     // Budget range (relevant for buy/rent leads)

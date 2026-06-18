@@ -243,7 +243,7 @@ const schemas = {
       name: z.string().trim().min(2, 'Name too short').max(100),
       phone: phoneSchema,
       email: emailSchema.optional(),
-      leadType: z.enum(['buy', 'rent', 'loan', 'agreement', 'project']),
+      leadType: z.enum(['buy', 'rent', 'loan', 'agreement', 'project', 'list_property', 'project_application']),
       propertyId: objectIdSchema.optional(),
       projectId: objectIdSchema.optional(),
       configurationId: objectIdSchema.optional(),
@@ -254,6 +254,15 @@ const schemas = {
       budgetMax: z.number().min(0).optional(),
       monthlyIncome: z.number().min(0).optional(),
       preferredLocations: z.array(z.string()).max(5).optional(),
+      projectApplication: z.object({
+        projectName: z.string().trim().max(150).optional(),
+        builderName: z.string().trim().max(150).optional(),
+        city: z.string().trim().max(100).optional(),
+        locality: z.string().trim().max(150).optional(),
+        approxUnits: z.number().min(0).optional(),
+        projectType: z.enum(['residential', 'commercial', 'mixed', 'plotting']).optional(),
+        reraNumber: z.string().trim().max(50).optional(),
+      }).optional(),
     }),
 
     updateStatus: z.object({
@@ -268,7 +277,7 @@ const schemas = {
       page: z.coerce.number().int().min(1).default(1),
       limit: z.coerce.number().int().min(1).max(100).default(10),
       status: z.enum(['new', 'contacted', 'qualified', 'closed']).optional(),
-      leadType: z.enum(['buy', 'rent', 'loan', 'agreement', 'project']).optional(),
+      leadType: z.enum(['buy', 'rent', 'loan', 'agreement', 'project', 'list_property', 'project_application']).optional(),
       search: z.string().trim().max(100).optional(),
     }),
   },
@@ -484,7 +493,7 @@ const schemas = {
 
     adminList: z.object({
       page: z.coerce.number().int().min(1).default(1),
-      limit: z.coerce.number().int().min(1).max(100).default(10),
+      limit: z.coerce.number().int().min(1).max(200).default(10),
       search: z.string().trim().max(100).optional(),
       isActive: z.coerce.boolean().optional(),
       isFeatured: z.coerce.boolean().optional(),
