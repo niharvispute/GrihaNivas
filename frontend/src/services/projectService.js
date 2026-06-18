@@ -1,5 +1,22 @@
+import { apiFetch } from '@/lib/api';
 import { authedApiFetch } from '@/lib/api/authedRequest';
 import { downloadAuthedFile } from '@/lib/api/downloadFile';
+
+// ── Public: Projects ────────────────────────────────────────────────────────
+
+export const listProjects = async (params = {}) => {
+  const res = await apiFetch('/api/projects', { query: params });
+  return {
+    items: Array.isArray(res.data) ? res.data : [],
+    meta: res.meta,
+    message: res.message,
+  };
+};
+
+export const getProjectBySlug = async (slug) => {
+  const res = await apiFetch(`/api/projects/slug/${slug}`);
+  return res.data;
+};
 
 /**
  * Project / Bulk Unit Registration service.

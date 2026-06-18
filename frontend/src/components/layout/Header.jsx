@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: 'BUY', href: '/buy' },
   { label: 'RENT', href: '/rent' },
   { label: 'NEW LAUNCH', href: '/new-launch' },
+  { label: 'PROJECTS', href: '/projects' },
   { label: 'BUILDERS', href: '/builders' },
   { label: 'BLOGS', href: '/blogs' },
 ];
