@@ -119,8 +119,8 @@ export default function Step3MediaDocs() {
                 maxSizeMB={5}
                 multiple
                 onFilesChange={handleGalleryAdd}
-                label=""
-                hint=""
+                label="Add more images"
+                compact
                 className="aspect-square"
               />
             )}

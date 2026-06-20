@@ -166,7 +166,6 @@ export default function Step2LocationConfig() {
           {[
             { key: 'totalTowers', label: 'Total Towers',    icon: 'domain',          suffix: 'Towers' },
             { key: 'totalFloors', label: 'Total Floors',    icon: 'layers',           suffix: 'Floors' },
-            { key: 'totalUnits',  label: 'Total Units',     icon: 'home',             suffix: 'Units' },
             { key: 'landArea',    label: 'Land Area (sq.ft)', icon: 'straighten',      suffix: 'sq.ft' },
           ].map(({ key, label, icon, suffix }) => (
             <div key={key} className="bg-white border border-slate-200 rounded-xl p-4">
@@ -184,6 +183,17 @@ export default function Step2LocationConfig() {
               <p className="text-xs text-slate-400 mt-0.5">{suffix}</p>
             </div>
           ))}
+
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="material-symbols-outlined text-primary text-lg">home</span>
+              <p className="text-xs font-semibold text-slate-500">Total Units</p>
+            </div>
+            <p className="text-xl font-bold text-slate-800">
+              {(d.configurations || []).reduce((sum, cfg) => sum + (Number(cfg.totalUnits) || 0), 0)}
+            </p>
+            <p className="text-xs text-slate-400 mt-0.5">Auto-summed from BHK configurations below</p>
+          </div>
         </div>
       </section>
 

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import CloudinaryImage from '@/components/CloudinaryImage';
+import ProjectUnitGallery from '@/components/property/details/ProjectUnitGallery';
 import PropertyBuilderProfile from '@/components/property/details/PropertyBuilderProfile';
 import PropertyFloorPlans from '@/components/property/details/PropertyFloorPlans';
 import LeadForm from '@/components/forms/LeadForm';
@@ -96,6 +96,15 @@ export default async function ProjectUnitPage({ params }) {
         </ol>
       </nav>
 
+      {/* Back button */}
+      <Link
+        href={`/projects/${project.slug}`}
+        className="inline-flex items-center gap-1.5 mb-4 sm:mb-6 px-1 text-sm font-bold text-slate-500 hover:text-primary transition-colors"
+      >
+        <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+        Back to {project.name}
+      </Link>
+
       {/* Hero */}
       <section className="mb-8 sm:mb-16 lg:mb-20 space-y-5 sm:space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
@@ -135,35 +144,7 @@ export default async function ProjectUnitPage({ params }) {
 
         {/* Gallery */}
         {galleryImages.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,7fr)_minmax(280px,3fr)] gap-3 sm:gap-4 h-auto lg:h-120">
-            <div className="relative min-h-72 sm:min-h-88 lg:h-full rounded-2xl overflow-hidden shadow-xl">
-              <CloudinaryImage
-                src={galleryImages[0]}
-                alt={config.title || config.bhkType}
-                fill
-                eager
-                sizes="(max-width: 1024px) 100vw, 70vw"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 gap-3 sm:gap-4 lg:h-full">
-              {[galleryImages[1], galleryImages[2]].map((img, idx) =>
-                img ? (
-                  <div key={idx} className="relative min-h-32 sm:min-h-44 lg:min-h-0 rounded-2xl overflow-hidden border border-slate-100">
-                    <CloudinaryImage
-                      src={img}
-                      alt={`${config.title} ${idx + 2}`}
-                      fill
-                      sizes="(max-width: 1024px) 50vw, 30vw"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div key={idx} className="hidden lg:flex min-h-0 rounded-2xl bg-slate-50 border border-slate-100" />
-                )
-              )}
-            </div>
-          </div>
+          <ProjectUnitGallery images={galleryImages} alt={config.title || config.bhkType} />
         ) : (
           <div className="h-72 sm:h-96 rounded-2xl border border-slate-100 bg-linear-to-br from-slate-100 via-white to-slate-50 flex flex-col items-center justify-center text-slate-400">
             <span className="material-symbols-outlined text-6xl">image_not_supported</span>
@@ -220,17 +201,6 @@ export default async function ProjectUnitPage({ params }) {
               brochureUrl={project.enableBrochureDownload ? project.brochureUrl : ''}
             />
           )}
-
-          {/* Back to project */}
-          <section>
-            <Link
-              href={`/projects/${project.slug}`}
-              className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-primary transition-colors"
-            >
-              <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-              Back to {project.name}
-            </Link>
-          </section>
         </div>
 
         {/* Sidebar */}

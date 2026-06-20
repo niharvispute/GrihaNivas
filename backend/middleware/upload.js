@@ -138,7 +138,7 @@ const uploadMixed = multer({
 const uploadPropertySubmission = multer({
   storage: memoryStorage,
   fileFilter: propertySubmissionFilter,
-  limits: { fileSize: MAX_VIDEO_SIZE, files: 11 },
+  limits: { fileSize: MAX_VIDEO_SIZE, files: 17 }, // 10 + 5 + 1 + 1
 });
 
 /**

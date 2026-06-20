@@ -26,6 +26,7 @@ const Builder = require('../models/mongoose/Builder');
  *   - On configuration create/update/delete:
  *       Project.bhkSummary  is recomputed from active configurations
  *       Project.priceMin / Project.priceMax are recomputed from active configs
+ *       Project.totalUnits is recomputed as the sum of active configs' totalUnits
  *   - On unit create/update/delete:
  *       ProjectConfiguration.availableUnits is recomputed
  *
@@ -67,13 +68,14 @@ const recomputeProjectAggregates = async (projectId) => {
   const configs = await ProjectConfiguration.find({
     projectId,
     isActive: true,
-  }).select('bhkType priceMin priceMax');
+  }).select('bhkType priceMin priceMax totalUnits');
 
   if (!configs.length) {
     await Project.findByIdAndUpdate(projectId, {
       bhkSummary: [],
       priceMin: null,
       priceMax: null,
+      totalUnits: null,
     });
     return;
   }
@@ -81,11 +83,13 @@ const recomputeProjectAggregates = async (projectId) => {
   const bhkSummary = Array.from(new Set(configs.map((c) => c.bhkType))).sort();
   const priceMin = Math.min(...configs.map((c) => c.priceMin || Number.POSITIVE_INFINITY));
   const priceMax = Math.max(...configs.map((c) => c.priceMax || 0));
+  const totalUnits = configs.reduce((sum, c) => sum + (c.totalUnits || 0), 0);
 
   await Project.findByIdAndUpdate(projectId, {
     bhkSummary,
     priceMin: Number.isFinite(priceMin) ? priceMin : null,
     priceMax: priceMax > 0 ? priceMax : null,
+    totalUnits: totalUnits > 0 ? totalUnits : null,
   });
 };
 

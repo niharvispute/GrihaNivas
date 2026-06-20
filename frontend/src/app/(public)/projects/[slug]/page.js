@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import QRCode from 'qrcode';
 import CloudinaryImage from '@/components/CloudinaryImage';
 
+import ProjectUnitGallery from '@/components/property/details/ProjectUnitGallery';
 import PropertyBuilderProfile from '@/components/property/details/PropertyBuilderProfile';
 import PropertyFloorPlans from '@/components/property/details/PropertyFloorPlans';
 import LeadForm from '@/components/forms/LeadForm';
@@ -127,20 +128,7 @@ export default async function ProjectDetailPage({ params }) {
 
         {/* Gallery */}
         {galleryImages.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,7fr)_minmax(280px,3fr)] gap-3 sm:gap-4 h-auto lg:h-120">
-            <div className="relative min-h-72 sm:min-h-88 lg:h-full rounded-2xl overflow-hidden shadow-xl">
-              <CloudinaryImage src={galleryImages[0]} alt={project.name} fill eager sizes="(max-width: 1024px) 100vw, 70vw" className="w-full h-full object-cover" />
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 gap-3 sm:gap-4 lg:h-full">
-              {[galleryImages[1], galleryImages[2]].map((img, idx) => img ? (
-                <div key={idx} className="relative min-h-32 sm:min-h-44 lg:min-h-0 rounded-2xl overflow-hidden border border-slate-100">
-                  <CloudinaryImage src={img} alt={`${project.name} ${idx + 2}`} fill sizes="(max-width: 1024px) 50vw, 30vw" className="w-full h-full object-cover" />
-                </div>
-              ) : (
-                <div key={idx} className="hidden lg:flex min-h-0 rounded-2xl bg-slate-50 border border-slate-100" />
-              ))}
-            </div>
-          </div>
+          <ProjectUnitGallery images={galleryImages} alt={project.name} />
         ) : (
           <div className="h-72 sm:h-96 rounded-2xl border border-slate-100 bg-gradient-to-br from-slate-100 via-white to-slate-50 flex flex-col items-center justify-center text-slate-400">
             <span className="material-symbols-outlined text-6xl">image_not_supported</span>

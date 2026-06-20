@@ -12,6 +12,7 @@ export default function FileUploadZone({
   previewUrls = [],       // [{ url: string, name?: string, isImage?: boolean }]
   onRemove,               // (index) => void
   className = '',
+  compact = false,        // square tile with just an icon, for use inside image grids
 }) {
   const inputRef = useRef(null);
   const [dragOver, setDragOver] = useState(false);
@@ -47,6 +48,36 @@ export default function FileUploadZone({
   };
 
   const isImageAccept = accept.includes('image');
+
+  if (compact) {
+    return (
+      <div className={className}>
+        <div
+          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={handleDrop}
+          onClick={() => inputRef.current?.click()}
+          title={label}
+          className={`w-full h-full aspect-square flex items-center justify-center border-2 border-dashed rounded-xl cursor-pointer transition-colors ${
+            dragOver
+              ? 'border-primary bg-primary/5'
+              : 'border-slate-300 hover:border-primary/50 hover:bg-slate-50'
+          }`}
+        >
+          <span className="material-symbols-outlined text-2xl text-slate-400">add</span>
+        </div>
+        {error && <p className="text-xs text-red-500 mt-1.5">{error}</p>}
+        <input
+          ref={inputRef}
+          type="file"
+          accept={accept}
+          multiple={multiple}
+          className="hidden"
+          onChange={handleChange}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={className}>

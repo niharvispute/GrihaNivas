@@ -259,7 +259,6 @@ export default function ProjectFormWizard() {
         },
         totalTowers: numOrUndef(s2.totalTowers),
         totalFloors: numOrUndef(s2.totalFloors),
-        totalUnits: numOrUndef(s2.totalUnits),
         landArea: numOrUndef(s2.landArea),
       });
       await syncConfigurations(id);
