@@ -50,6 +50,10 @@ function mapProjectToFormData(p) {
     balconies: c.balconies != null ? String(c.balconies) : '',
     parking: c.parking != null ? String(c.parking) : '',
     totalUnits: c.totalUnits ?? '',
+    images: Array.isArray(c.gallery)
+      ? c.gallery.map((g) => (typeof g === 'string' ? g : g?.url || '')).filter(Boolean)
+      : [],
+    imageFiles: [],
   }));
   const configPricing = {};
   (p.configurations || []).forEach((c) => {
@@ -185,18 +189,22 @@ export default function ProjectFormWizard() {
         parking: numOrUndef(cfg.parking),
         totalUnits: numOrUndef(cfg.totalUnits),
       };
+      let configId = cfg._id;
       if (cfg._id) {
         await updateConfiguration(cfg._id, payload);
-        updated.push(cfg);
       } else {
-        // priceMin/priceMax are required on create — default to 0, real pricing set in Step 4
-        const created = await createConfiguration(id, {
-          ...payload,
-          priceMin: 0,
-          priceMax: 0,
-        });
-        updated.push({ ...cfg, _id: created?._id });
+        // priceMin/priceMax required on create — real pricing set in Step 4
+        const created = await createConfiguration(id, { ...payload, priceMin: 0, priceMax: 0 });
+        configId = created?._id;
       }
+      // Upload new unit photos if any were added in the config panel
+      if (configId && Array.isArray(cfg.imageFiles) && cfg.imageFiles.length > 0) {
+        const fd = new FormData();
+        cfg.imageFiles.forEach((f) => fd.append('images', f));
+        fd.append('sortOrder', '0');
+        await updateConfiguration(configId, fd);
+      }
+      updated.push({ ...cfg, _id: configId, imageFiles: [] });
     }
     updateFormData('step2', { configurations: updated });
   }, [formData.step2.configurations, updateFormData]);
@@ -292,12 +300,15 @@ export default function ProjectFormWizard() {
     }
 
     if (currentStep === 4) {
-      await updateProject(id, {
+      const pricingPayload = {
         priceMin: numOrUndef(s4.priceMin),
         priceMax: numOrUndef(s4.priceMax),
         pricePerSqft: numOrUndef(s4.pricePerSqft),
         maintenanceCharges: s4.maintenanceCharges || undefined,
-      });
+      };
+      if (Object.values(pricingPayload).some((v) => v !== undefined)) {
+        await updateProject(id, pricingPayload);
+      }
       // Persist per-config pricing edits
       const pricing = s4.configPricing || {};
       for (const cfg of s2.configurations || []) {
@@ -374,7 +385,7 @@ export default function ProjectFormWizard() {
 
   return (
     // Full-bleed wizard layout — overrides the admin layout max-width
-    <div className="fixed inset-0 top-[72px] flex bg-[#f8f7f5] z-[55]">
+    <div className="fixed inset-0 top-18 flex bg-[#f8f7f5] z-55">
       <WizardSidebar />
 
       {/* Scrollable content */}

@@ -1,0 +1,292 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e153]:
+    - complementary [ref=e154]:
+      - generic [ref=e155]:
+        - generic [ref=e157]: Grihanivas
+        - paragraph [ref=e158]: Admin Console
+        - link "arrow_back Back to Home" [ref=e159] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e160]: arrow_back
+          - text: Back to Home
+      - navigation [ref=e161]:
+        - link "dashboard Dashboard" [ref=e162] [cursor=pointer]:
+          - /url: /admin
+          - generic [ref=e163]: dashboard
+          - generic [ref=e164]: Dashboard
+        - link "real_estate_agent Properties" [ref=e165] [cursor=pointer]:
+          - /url: /admin/properties
+          - generic [ref=e166]: real_estate_agent
+          - generic [ref=e167]: Properties
+        - link "domain Projects" [ref=e168] [cursor=pointer]:
+          - /url: /admin/projects
+          - generic [ref=e169]: domain
+          - generic [ref=e170]: Projects
+        - link "apartment Builders" [ref=e171] [cursor=pointer]:
+          - /url: /admin/builders
+          - generic [ref=e172]: apartment
+          - generic [ref=e173]: Builders
+        - link "home_work Property Submissions" [ref=e174] [cursor=pointer]:
+          - /url: /admin/property-submissions
+          - generic [ref=e175]: home_work
+          - generic [ref=e176]: Property Submissions
+        - link "leaderboard Leads" [ref=e177] [cursor=pointer]:
+          - /url: /admin/leads
+          - generic [ref=e178]: leaderboard
+          - generic [ref=e179]: Leads
+        - link "edit_note Blogs" [ref=e180] [cursor=pointer]:
+          - /url: /admin/blogs
+          - generic [ref=e181]: edit_note
+          - generic [ref=e182]: Blogs
+        - link "view_carousel Banners" [ref=e183] [cursor=pointer]:
+          - /url: /admin/banners
+          - generic [ref=e184]: view_carousel
+          - generic [ref=e185]: Banners
+        - link "reviews Testimonials" [ref=e186] [cursor=pointer]:
+          - /url: /admin/testimonials
+          - generic [ref=e187]: reviews
+          - generic [ref=e188]: Testimonials
+        - link "group Users" [ref=e189] [cursor=pointer]:
+          - /url: /admin/users
+          - generic [ref=e190]: group
+          - generic [ref=e191]: Users
+        - link "local_offer Offers" [ref=e192] [cursor=pointer]:
+          - /url: /admin/offers
+          - generic [ref=e193]: local_offer
+          - generic [ref=e194]: Offers
+        - link "receipt_long Stamp Duty Rates" [ref=e195] [cursor=pointer]:
+          - /url: /admin/stamp-duty
+          - generic [ref=e196]: receipt_long
+          - generic [ref=e197]: Stamp Duty Rates
+        - link "tune System Settings" [ref=e198] [cursor=pointer]:
+          - /url: /admin/system
+          - generic [ref=e199]: tune
+          - generic [ref=e200]: System Settings
+    - generic [ref=e201]:
+      - banner [ref=e202]:
+        - generic [ref=e204]:
+          - generic [ref=e205]: search
+          - textbox "Search leads, properties, or transactions..." [ref=e206]
+        - generic [ref=e207]:
+          - button "logout Logout" [ref=e209]:
+            - generic [ref=e210]: logout
+            - text: Logout
+          - generic [ref=e212] [cursor=pointer]:
+            - generic [ref=e213]:
+              - paragraph [ref=e214]: Super Admin
+              - paragraph [ref=e215]: admin access
+            - generic [ref=e217]: SA
+      - main [ref=e218]:
+        - generic [ref=e423]:
+          - complementary [ref=e424]:
+            - generic [ref=e425]:
+              - paragraph [ref=e426]: Admin Console
+              - heading "Edit Project" [level=2] [ref=e536]
+              - generic [ref=e429]:
+                - generic [ref=e430]: Step 5 of 5
+                - generic [ref=e431]: 100%
+            - navigation [ref=e433]:
+              - button "check Basic Information Project details & type" [ref=e538] [cursor=pointer]:
+                - generic [ref=e539]: check
+                - generic [ref=e436]:
+                  - paragraph [ref=e437]: Basic Information
+                  - paragraph [ref=e438]: Project details & type
+              - button "check Location & Config Address & BHK configs" [ref=e709] [cursor=pointer]:
+                - generic [ref=e710]: check
+                - generic [ref=e441]:
+                  - paragraph [ref=e442]: Location & Config
+                  - paragraph [ref=e443]: Address & BHK configs
+              - button "check Media & Documents Images, plans & brochure" [ref=e815] [cursor=pointer]:
+                - generic [ref=e816]: check
+                - generic [ref=e446]:
+                  - paragraph [ref=e447]: Media & Documents
+                  - paragraph [ref=e448]: Images, plans & brochure
+              - button "check Pricing & Inventory Prices & unit inventory" [ref=e968] [cursor=pointer]:
+                - generic [ref=e969]: check
+                - generic [ref=e451]:
+                  - paragraph [ref=e452]: Pricing & Inventory
+                  - paragraph [ref=e453]: Prices & unit inventory
+              - button "5 Review & Publish SEO & go live" [ref=e454]:
+                - generic [ref=e455]: "5"
+                - generic [ref=e456]:
+                  - paragraph [ref=e457]: Review & Publish
+                  - paragraph [ref=e458]: SEO & go live
+            - generic [ref=e459]:
+              - generic [ref=e460]:
+                - generic [ref=e461]: support_agent
+                - paragraph [ref=e462]: Need Help?
+              - paragraph [ref=e463]: Contact support for any issues while listing your project.
+              - button "Contact Support →" [ref=e464]
+          - generic [ref=e465]:
+            - generic [ref=e970]:
+              - generic [ref=e971]:
+                - heading "Review & Publish" [level=2] [ref=e972]
+                - paragraph [ref=e973]: Review all details and publish your project.
+              - generic [ref=e974]:
+                - generic [ref=e975]:
+                  - paragraph [ref=e976]: Completion
+                  - generic [ref=e980]: 100%
+                - generic [ref=e981]:
+                  - paragraph [ref=e982]: Listing Status
+                  - combobox [ref=e983]:
+                    - option "Draft" [selected]
+                    - option "Published"
+                    - option "Inactive"
+                - generic [ref=e984]:
+                  - paragraph [ref=e985]: RERA Verification
+                  - generic [ref=e986]:
+                    - generic [ref=e987]:
+                      - generic [ref=e988]: pending
+                      - text: Pending
+                    - button "Mark Verified" [ref=e989]
+              - generic [ref=e990]:
+                - generic [ref=e991]:
+                  - heading "Project Overview" [level=3] [ref=e992]
+                  - button "edit Edit" [ref=e993]:
+                    - generic [ref=e994]: edit
+                    - text: Edit
+                - generic [ref=e995]:
+                  - generic [ref=e996]:
+                    - generic [ref=e997]: "Project Name:"
+                    - generic [ref=e998]: Lodha Palava City Phase 2
+                  - generic [ref=e999]:
+                    - generic [ref=e1000]: "Builder:"
+                    - generic [ref=e1001]: Lodha Group (Macrotech Developers Limited)
+                  - generic [ref=e1002]:
+                    - generic [ref=e1003]: "RERA Number:"
+                    - generic [ref=e1004]: P51800019788
+                  - generic [ref=e1005]:
+                    - generic [ref=e1006]: "Location:"
+                    - generic [ref=e1007]: Dombivli East, Mumbai
+                  - generic [ref=e1008]:
+                    - generic [ref=e1009]: "Project Type:"
+                    - generic [ref=e1010]: residential
+                  - generic [ref=e1011]:
+                    - generic [ref=e1012]: "Status:"
+                    - generic [ref=e1013]: new launch
+              - generic [ref=e1014]:
+                - generic [ref=e1015]:
+                  - heading "Configuration Summary" [level=3] [ref=e1016]
+                  - button "edit Edit" [ref=e1017]:
+                    - generic [ref=e1018]: edit
+                    - text: Edit
+                - table [ref=e1019]:
+                  - rowgroup [ref=e1020]:
+                    - row "BHK Carpet Area Price Range Bathrooms Parking Units" [ref=e1021]:
+                      - columnheader "BHK" [ref=e1022]
+                      - columnheader "Carpet Area" [ref=e1023]
+                      - columnheader "Price Range" [ref=e1024]
+                      - columnheader "Bathrooms" [ref=e1025]
+                      - columnheader "Parking" [ref=e1026]
+                      - columnheader "Units" [ref=e1027]
+                  - rowgroup [ref=e1028]:
+                    - row "2 BHK 850–950 sq.ft — 2 1 120" [ref=e1029]:
+                      - cell "2 BHK" [ref=e1030]:
+                        - generic [ref=e1031]: 2 BHK
+                      - cell "850–950 sq.ft" [ref=e1032]
+                      - cell "—" [ref=e1033]
+                      - cell "2" [ref=e1034]
+                      - cell "1" [ref=e1035]
+                      - cell "120" [ref=e1036]
+                    - row "3 BHK 1150–1280 sq.ft — 3 2 80" [ref=e1037]:
+                      - cell "3 BHK" [ref=e1038]:
+                        - generic [ref=e1039]: 3 BHK
+                      - cell "1150–1280 sq.ft" [ref=e1040]
+                      - cell "—" [ref=e1041]
+                      - cell "3" [ref=e1042]
+                      - cell "2" [ref=e1043]
+                      - cell "80" [ref=e1044]
+              - generic [ref=e1045]:
+                - generic [ref=e1046]:
+                  - heading "Inventory Summary" [level=3] [ref=e1047]
+                  - button "edit Edit" [ref=e1048]:
+                    - generic [ref=e1049]: edit
+                    - text: Edit
+                - generic [ref=e1050]:
+                  - generic [ref=e1051]:
+                    - generic [ref=e1052]: home
+                    - paragraph [ref=e1053]: "1"
+                    - paragraph [ref=e1054]: Total
+                  - generic [ref=e1055]:
+                    - generic [ref=e1056]: check_circle
+                    - paragraph [ref=e1057]: "1"
+                    - paragraph [ref=e1058]: Available
+                  - generic [ref=e1059]:
+                    - generic [ref=e1060]: pause_circle
+                    - paragraph [ref=e1061]: "0"
+                    - paragraph [ref=e1062]: Hold
+                  - generic [ref=e1063]:
+                    - generic [ref=e1064]: calendar_month
+                    - paragraph [ref=e1065]: "0"
+                    - paragraph [ref=e1066]: Booked
+                  - generic [ref=e1067]:
+                    - generic [ref=e1068]: sell
+                    - paragraph [ref=e1069]: "0"
+                    - paragraph [ref=e1070]: Sold
+              - generic [ref=e1071]:
+                - heading "Lead Capture Settings" [level=3] [ref=e1073]
+                - generic [ref=e1074]:
+                  - generic [ref=e1075]:
+                    - generic [ref=e1076]:
+                      - generic [ref=e1077]: payments
+                      - generic [ref=e1078]: Enable Price Request
+                    - button [ref=e1079]
+                  - generic [ref=e1081]:
+                    - generic [ref=e1082]:
+                      - generic [ref=e1083]: call
+                      - generic [ref=e1084]: Enable Callback
+                    - button [ref=e1085]
+                  - generic [ref=e1087]:
+                    - generic [ref=e1088]:
+                      - generic [ref=e1089]: download
+                      - generic [ref=e1090]: Enable Brochure Download
+                    - button [ref=e1091]
+                  - generic [ref=e1093]:
+                    - generic [ref=e1094]:
+                      - generic [ref=e1095]: chat
+                      - generic [ref=e1096]: WhatsApp CTA Enabled
+                    - button [ref=e1097]
+                  - generic [ref=e1099]:
+                    - generic [ref=e1100]:
+                      - generic [ref=e1101]: calendar_month
+                      - generic [ref=e1102]: Enable Site Visit
+                    - button [ref=e1103]
+              - generic [ref=e1105]:
+                - heading "SEO Settings" [level=3] [ref=e1107]
+                - generic [ref=e1108]:
+                  - paragraph [ref=e1109]: Google Search Preview
+                  - paragraph [ref=e1110]: grihanivas.in › projects › lodha-palava-city-phase-2
+                  - paragraph [ref=e1111] [cursor=pointer]: Lodha Palava City Phase 2, Dombivli East | Grihanivas
+                  - paragraph [ref=e1112]: Premium project in Dombivli East — [object Object], [object Object] configurations.
+                - generic [ref=e1113]:
+                  - generic [ref=e1114]:
+                    - generic [ref=e1115]: SEO Title
+                    - textbox "Lodha Palava City Phase 2, Dombivli East | Grihanivas" [ref=e1116]
+                    - generic [ref=e1117]:
+                      - generic [ref=e1118]: Recommended max 70 chars
+                      - generic [ref=e1119]: 0/70
+                  - generic [ref=e1120]:
+                    - generic [ref=e1121]: SEO Description
+                    - textbox "Premium project in Dombivli East — [object Object], [object Object] configurations." [ref=e1122]
+                    - generic [ref=e1123]:
+                      - generic [ref=e1124]: Recommended max 160 chars
+                      - generic [ref=e1125]: 0/160
+                  - generic [ref=e1126]:
+                    - generic [ref=e1127]: URL Slug
+                    - generic [ref=e1128]:
+                      - generic [ref=e1129]: grihanivas.in/projects/
+                      - textbox [ref=e1130]: lodha-palava-city-phase-2
+                    - generic [ref=e1131]:
+                      - generic [ref=e1132]: Max 75 chars
+                      - generic [ref=e1133]: 25/75
+            - generic [ref=e531]:
+              - button "arrow_back Back" [ref=e613]:
+                - generic [ref=e614]: arrow_back
+                - text: Back
+              - generic [ref=e532]:
+                - button "Save as Draft" [ref=e533]
+                - button "publish Publish Project" [ref=e1134]:
+                  - generic [ref=e1135]: publish
+                  - text: Publish Project
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - alert [ref=e11]

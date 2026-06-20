@@ -70,7 +70,7 @@ export default function Step5ReviewPublish() {
 
   // Preview title truncation
   const seoTitle = d5.seoTitle || `${d1.projectName || 'Project'}, ${d2.area || 'Mumbai'} | Grihanivas`;
-  const seoDesc  = d5.seoDescription || `Premium project in ${d2.area || 'Mumbai'} — ${(d2.configurations || []).map((c) => BHK_LABEL[c] || c).join(', ')} configurations.`;
+  const seoDesc  = d5.seoDescription || `Premium project in ${d2.area || 'Mumbai'} — ${(d2.configurations || []).map((c) => { const key = typeof c === 'string' ? c : c?.bhkType; return BHK_LABEL[key] || key || ''; }).filter(Boolean).join(', ')} configurations.`;
   const seoSlug  = derivedSlug || 'project-slug';
 
   return (
@@ -166,7 +166,7 @@ export default function Step5ReviewPublish() {
             </thead>
             <tbody>
               {d2.configurations.map((cfg) => {
-                const pricing = d4.configPricing?.[cfg._tempId] || {};
+                const pricing = d4.configPricing?.[cfg._id || cfg._tempId] || {};
                 return (
                   <tr key={cfg._tempId} className="border-b border-slate-50">
                     <td className="py-3 pr-4">

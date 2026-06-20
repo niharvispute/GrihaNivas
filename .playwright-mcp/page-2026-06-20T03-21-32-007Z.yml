@@ -1,0 +1,315 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "GrihaNivas" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e7]:
+          - link "BUY" [ref=e8] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e9] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e10] [cursor=pointer]:
+            - /url: /new-launch
+          - link "PROJECTS" [ref=e11] [cursor=pointer]:
+            - /url: /projects
+          - link "BUILDERS" [ref=e12] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e13] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e14]:
+            - button "SERVICES expand_more" [ref=e15]:
+              - generic [ref=e16]: SERVICES
+              - generic [ref=e17]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e18] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - button "Super Admin person" [ref=e250]:
+              - generic [ref=e251]: Super Admin
+              - generic [ref=e253]: person
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - paragraph: Signed in as
+                    - paragraph: Super Admin
+                  - generic:
+                    - link "person My Account":
+                      - /url: /admin
+                      - generic: person
+                      - generic: My Account
+                    - link "favorite Wishlist":
+                      - /url: /account/saved
+                      - generic: favorite
+                      - generic: Wishlist
+                    - button "logout Logout":
+                      - generic: logout
+                      - generic: Logout
+          - button "List Property" [ref=e21]
+    - main [ref=e22]:
+      - main [ref=e23]:
+        - navigation "Breadcrumb" [ref=e24]:
+          - list [ref=e25]:
+            - listitem [ref=e26]:
+              - link "Home" [ref=e27] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e28]:
+              - img [ref=e29]
+              - link "Projects" [ref=e31] [cursor=pointer]:
+                - /url: /projects
+            - listitem [ref=e32]:
+              - img [ref=e33]
+              - generic [ref=e35]: Lodha Palava City Phase 2
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - generic [ref=e38]:
+              - generic [ref=e39]:
+                - generic [ref=e40]: New Launch
+                - generic [ref=e41]:
+                  - generic [ref=e42]: verified
+                  - text: RERA
+              - heading "Lodha Palava City Phase 2" [level=1] [ref=e43]
+              - paragraph [ref=e44]: by Lodha Group (Macrotech Developers Limited)
+              - paragraph [ref=e45]:
+                - img [ref=e46]
+                - generic [ref=e49]: Dombivli East, Mumbai
+            - generic [ref=e50]:
+              - paragraph [ref=e51]: Price Range
+              - paragraph [ref=e52]: ₹85,00,000 - ₹1,80,00,000
+          - generic [ref=e53]:
+            - img "Lodha Palava City Phase 2" [ref=e55]
+            - generic [ref=e56]:
+              - img "Lodha Palava City Phase 2 2" [ref=e58]
+              - img "Lodha Palava City Phase 2 3" [ref=e60]
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - generic [ref=e64]:
+              - generic [ref=e65]:
+                - generic [ref=e66]: Configurations
+                - text: 2BHK, 3BHK
+              - generic [ref=e67]:
+                - generic [ref=e68]: Total Units
+                - text: "480"
+              - generic [ref=e69]:
+                - generic [ref=e70]: Possession
+                - text: On request
+              - generic [ref=e71]:
+                - generic [ref=e72]: Land Area
+                - text: 1,25,000 sq.ft
+            - generic [ref=e73]:
+              - heading "Configurations & Pricing" [level=2] [ref=e74]
+              - generic [ref=e75]:
+                - 'link "2 BHK Premium ₹85,00,000 - ₹1,05,00,000 Carpet: 850-950 sq.ft 2 Bathrooms 2 Balconies 1 Available View Unit Details →" [active] [ref=e76] [cursor=pointer]':
+                  - /url: /projects/lodha-palava-city-phase-2/units/6a3546e2762e283801091ae9
+                  - heading "2 BHK Premium" [level=3] [ref=e77]
+                  - paragraph [ref=e78]: ₹85,00,000 - ₹1,05,00,000
+                  - generic [ref=e79]:
+                    - generic [ref=e80]: "Carpet: 850-950 sq.ft"
+                    - generic [ref=e81]: 2 Bathrooms
+                    - generic [ref=e82]: 2 Balconies
+                    - generic [ref=e83]: 1 Available
+                  - paragraph [ref=e84]: View Unit Details →
+                - 'link "3 BHK Luxury ₹1,35,00,000 - ₹1,80,00,000 Carpet: 1150-1280 sq.ft 3 Bathrooms 2 Balconies View Unit Details →" [ref=e85] [cursor=pointer]':
+                  - /url: /projects/lodha-palava-city-phase-2/units/6a3546e3762e283801091aea
+                  - heading "3 BHK Luxury" [level=3] [ref=e86]
+                  - paragraph [ref=e87]: ₹1,35,00,000 - ₹1,80,00,000
+                  - generic [ref=e88]:
+                    - generic [ref=e89]: "Carpet: 1150-1280 sq.ft"
+                    - generic [ref=e90]: 3 Bathrooms
+                    - generic [ref=e91]: 2 Balconies
+                  - paragraph [ref=e92]: View Unit Details →
+            - generic [ref=e93]:
+              - generic [ref=e94]:
+                - heading "Floor Plans" [level=2] [ref=e95]
+                - generic [ref=e96]: 2 Layouts Available
+              - generic [ref=e98]:
+                - img "Property Floor Plan" [ref=e99]
+                - generic [ref=e101]:
+                  - img [ref=e103]
+                  - heading "Preview Available" [level=3] [ref=e106]
+                  - paragraph [ref=e107]: High-resolution floor plan assets are attached with this listing.
+                  - button "Brochure Not Uploaded" [disabled] [ref=e108]:
+                    - img [ref=e109]
+                    - text: Brochure Not Uploaded
+            - generic [ref=e112]:
+              - heading "Master Plan" [level=2] [ref=e113]
+              - img "Master Plan" [ref=e115]
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - heading "Enquire About Lodha Palava City Phase 2" [level=3] [ref=e118]
+              - generic [ref=e119]:
+                - generic [ref=e120]:
+                  - generic [ref=e121]: Full Name
+                  - textbox "Full Name" [ref=e122]:
+                    - /placeholder: John Doe
+                    - text: Super Admin
+                - generic [ref=e123]:
+                  - generic [ref=e124]: Email Address
+                  - textbox "Email Address" [ref=e125]:
+                    - /placeholder: john@example.com
+                    - text: shreegurudevproperties@gmail.com
+                - generic [ref=e126]:
+                  - generic [ref=e127]: Phone Number *
+                  - textbox "Phone Number *" [ref=e128]:
+                    - /placeholder: 98765 43210
+                    - text: "+919876543210"
+                - generic [ref=e129]:
+                  - generic [ref=e130]: Message
+                  - textbox "Message" [ref=e131]:
+                    - /placeholder: Tell us your budget, preferred area, and possession timeline.
+                - button "Send Inquiry" [ref=e132]
+                - paragraph [ref=e133]:
+                  - text: By submitting, you agree to our
+                  - link "Terms" [ref=e134] [cursor=pointer]:
+                    - /url: /terms
+                  - text: and
+                  - link "Privacy Policy" [ref=e135] [cursor=pointer]:
+                    - /url: /privacy
+                  - text: .
+            - generic [ref=e136]:
+              - generic [ref=e137]:
+                - img "Lodha Group (Macrotech Developers Limited)" [ref=e139]
+                - generic [ref=e140]:
+                  - heading "Lodha Group (Macrotech Developers Limited)" [level=4] [ref=e141]
+                  - paragraph [ref=e142]: Est. 1990 • Multiple Projects Delivered
+              - paragraph [ref=e143]: Project delivered by a trusted Mumbai developer.
+              - generic [ref=e144]:
+                - generic [ref=e145]:
+                  - img [ref=e146]
+                  - text: Trusted Builder
+                - generic [ref=e148]:
+                  - img [ref=e149]
+                  - text: Established Brand Experience
+    - contentinfo [ref=e151]:
+      - generic [ref=e152]:
+        - generic [ref=e153]:
+          - generic [ref=e154]: GrihaNivas
+          - paragraph [ref=e155]: Mumbai's concierge real estate advisory.
+          - generic [ref=e156]:
+            - link "Instagram" [ref=e157] [cursor=pointer]:
+              - /url: https://www.instagram.com/grihanivas_sgp?igsh=YWwzd2ltc2piY3Fo
+              - img [ref=e158]
+            - link "WhatsApp" [ref=e161] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e162]
+            - link "YouTube" [ref=e164] [cursor=pointer]:
+              - /url: https://www.youtube.com/@GrihaNivas
+              - img [ref=e165]
+        - generic [ref=e168]:
+          - heading "Properties" [level=3] [ref=e169]
+          - list [ref=e170]:
+            - listitem [ref=e171]:
+              - link "Buy" [ref=e172] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e173]:
+              - link "Rent" [ref=e174] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e175]:
+              - link "Projects" [ref=e176] [cursor=pointer]:
+                - /url: /projects
+            - listitem [ref=e177]:
+              - link "Builders" [ref=e178] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e179]:
+              - link "New Launch" [ref=e180] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e181]:
+          - heading "Services" [level=3] [ref=e182]
+          - list [ref=e183]:
+            - listitem [ref=e184]:
+              - link "Home Loan" [ref=e185] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e186]:
+              - link "EMI Calculator" [ref=e187] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e188]:
+              - link "Stamp Duty" [ref=e189] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e190]:
+              - link "Rent Agreement" [ref=e191] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e192]:
+              - link "Comparison" [ref=e193] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e194]:
+          - heading "Resources" [level=3] [ref=e195]
+          - list [ref=e196]:
+            - listitem [ref=e197]:
+              - link "Blogs" [ref=e198] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e199]:
+              - link "FAQs" [ref=e200] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e201]:
+              - link "About Us" [ref=e202] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e203]:
+              - link "Contact" [ref=e204] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e205]:
+          - heading "Contact" [level=3] [ref=e206]
+          - list [ref=e207]:
+            - listitem [ref=e208]:
+              - img [ref=e209]
+              - generic [ref=e212]:
+                - text: Heera Panna Shopping Complex,
+                - text: Powai Hiranandani Garden, Mumbai – 400076
+            - listitem [ref=e213]:
+              - img [ref=e214]
+              - link "+91 91379 50050" [ref=e216] [cursor=pointer]:
+                - /url: tel:+919137950050
+            - listitem [ref=e217]:
+              - img [ref=e218]
+              - link "contact@grihanivas.in" [ref=e221] [cursor=pointer]:
+                - /url: mailto:contact@grihanivas.in
+            - listitem [ref=e222]:
+              - img [ref=e223]
+              - generic [ref=e226]: "RERA: A51700000043"
+      - generic [ref=e227]:
+        - generic [ref=e228]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e229]: Powered by Shree Gurudev Properties
+        - generic [ref=e230]:
+          - link "Privacy Policy" [ref=e231] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e232] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e233]:
+      - button "View current offer" [ref=e254]:
+        - generic [ref=e255]: local_offer
+      - link "Call us" [ref=e234] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e235]
+      - link "Chat on WhatsApp" [ref=e237] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e238]
+  - button "Open Next.js Dev Tools" [ref=e256] [cursor=pointer]:
+    - generic [ref=e259]:
+      - text: Compiling
+      - generic [ref=e260]:
+        - generic [ref=e261]: .
+        - generic [ref=e262]: .
+        - generic [ref=e263]: .
+  - alert [ref=e249]

@@ -1,0 +1,216 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e153]:
+    - complementary [ref=e154]:
+      - generic [ref=e155]:
+        - generic [ref=e157]: Grihanivas
+        - paragraph [ref=e158]: Admin Console
+        - link "arrow_back Back to Home" [ref=e159] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e160]: arrow_back
+          - text: Back to Home
+      - navigation [ref=e161]:
+        - link "dashboard Dashboard" [ref=e162] [cursor=pointer]:
+          - /url: /admin
+          - generic [ref=e163]: dashboard
+          - generic [ref=e164]: Dashboard
+        - link "real_estate_agent Properties" [ref=e165] [cursor=pointer]:
+          - /url: /admin/properties
+          - generic [ref=e166]: real_estate_agent
+          - generic [ref=e167]: Properties
+        - link "domain Projects" [ref=e168] [cursor=pointer]:
+          - /url: /admin/projects
+          - generic [ref=e169]: domain
+          - generic [ref=e170]: Projects
+        - link "apartment Builders" [ref=e171] [cursor=pointer]:
+          - /url: /admin/builders
+          - generic [ref=e172]: apartment
+          - generic [ref=e173]: Builders
+        - link "home_work Property Submissions" [ref=e174] [cursor=pointer]:
+          - /url: /admin/property-submissions
+          - generic [ref=e175]: home_work
+          - generic [ref=e176]: Property Submissions
+        - link "leaderboard Leads" [ref=e177] [cursor=pointer]:
+          - /url: /admin/leads
+          - generic [ref=e178]: leaderboard
+          - generic [ref=e179]: Leads
+        - link "edit_note Blogs" [ref=e180] [cursor=pointer]:
+          - /url: /admin/blogs
+          - generic [ref=e181]: edit_note
+          - generic [ref=e182]: Blogs
+        - link "view_carousel Banners" [ref=e183] [cursor=pointer]:
+          - /url: /admin/banners
+          - generic [ref=e184]: view_carousel
+          - generic [ref=e185]: Banners
+        - link "reviews Testimonials" [ref=e186] [cursor=pointer]:
+          - /url: /admin/testimonials
+          - generic [ref=e187]: reviews
+          - generic [ref=e188]: Testimonials
+        - link "group Users" [ref=e189] [cursor=pointer]:
+          - /url: /admin/users
+          - generic [ref=e190]: group
+          - generic [ref=e191]: Users
+        - link "local_offer Offers" [ref=e192] [cursor=pointer]:
+          - /url: /admin/offers
+          - generic [ref=e193]: local_offer
+          - generic [ref=e194]: Offers
+        - link "receipt_long Stamp Duty Rates" [ref=e195] [cursor=pointer]:
+          - /url: /admin/stamp-duty
+          - generic [ref=e196]: receipt_long
+          - generic [ref=e197]: Stamp Duty Rates
+        - link "tune System Settings" [ref=e198] [cursor=pointer]:
+          - /url: /admin/system
+          - generic [ref=e199]: tune
+          - generic [ref=e200]: System Settings
+    - generic [ref=e201]:
+      - banner [ref=e202]:
+        - generic [ref=e204]:
+          - generic [ref=e205]: search
+          - textbox "Search leads, properties, or transactions..." [ref=e206]
+        - generic [ref=e207]:
+          - button "logout Logout" [ref=e209]:
+            - generic [ref=e210]: logout
+            - text: Logout
+          - generic [ref=e212] [cursor=pointer]:
+            - generic [ref=e213]:
+              - paragraph [ref=e214]: Super Admin
+              - paragraph [ref=e215]: admin access
+            - generic [ref=e217]: SA
+      - main [ref=e218]:
+        - generic [ref=e220]:
+          - generic [ref=e222]:
+            - heading "Admin Console" [level=1] [ref=e223]
+            - paragraph [ref=e224]: GrihaNivas Management Dashboard
+          - generic [ref=e225]:
+            - link "person_add arrow_forward Total Leads 7" [ref=e226] [cursor=pointer]:
+              - /url: /admin/leads
+              - generic [ref=e227]:
+                - generic [ref=e229]: person_add
+                - generic [ref=e230]: arrow_forward
+              - generic [ref=e231]:
+                - paragraph [ref=e232]: Total Leads
+                - heading "7" [level=3] [ref=e233]
+            - link "home_work arrow_forward Properties Listed 0" [ref=e234] [cursor=pointer]:
+              - /url: /admin/properties
+              - generic [ref=e235]:
+                - generic [ref=e237]: home_work
+                - generic [ref=e238]: arrow_forward
+              - generic [ref=e239]:
+                - paragraph [ref=e240]: Properties Listed
+                - heading "0" [level=3] [ref=e241]
+            - link "mark_email_unread arrow_forward New Leads 7" [ref=e242] [cursor=pointer]:
+              - /url: /admin/leads
+              - generic [ref=e243]:
+                - generic [ref=e245]: mark_email_unread
+                - generic [ref=e246]: arrow_forward
+              - generic [ref=e247]:
+                - paragraph [ref=e248]: New Leads
+                - heading "7" [level=3] [ref=e249]
+            - link "assignment_turned_in arrow_forward Leads Closed 0" [ref=e250] [cursor=pointer]:
+              - /url: /admin/leads
+              - generic [ref=e251]:
+                - generic [ref=e253]: assignment_turned_in
+                - generic [ref=e254]: arrow_forward
+              - generic [ref=e255]:
+                - paragraph [ref=e256]: Leads Closed
+                - heading "0" [level=3] [ref=e257]
+          - generic [ref=e258]:
+            - generic [ref=e259]:
+              - generic [ref=e260]:
+                - heading "Recent Leads" [level=2] [ref=e261]
+                - paragraph [ref=e262]: Latest submissions across the platform
+              - link "View All arrow_forward" [ref=e263] [cursor=pointer]:
+                - /url: /admin/leads
+                - text: View All
+                - generic [ref=e264]: arrow_forward
+            - table [ref=e266]:
+              - rowgroup [ref=e267]:
+                - row "Name Type Phone Status Action" [ref=e268]:
+                  - columnheader "Name" [ref=e269]
+                  - columnheader "Type" [ref=e270]
+                  - columnheader "Phone" [ref=e271]
+                  - columnheader "Status" [ref=e272]
+                  - columnheader "Action" [ref=e273]
+              - rowgroup [ref=e274]:
+                - row "V Vishal project application +919876543210 new more_horiz" [ref=e275]:
+                  - cell "V Vishal" [ref=e276]:
+                    - generic [ref=e277]:
+                      - generic [ref=e278]: V
+                      - generic [ref=e279]: Vishal
+                  - cell "project application" [ref=e280]
+                  - cell "+919876543210" [ref=e281]
+                  - cell "new" [ref=e282]
+                  - cell "more_horiz" [ref=e283]:
+                    - button "more_horiz" [ref=e285]:
+                      - generic [ref=e286]: more_horiz
+                - row "TG Tousiph GAVALI loan +917894563210 new more_horiz" [ref=e287]:
+                  - cell "TG Tousiph GAVALI" [ref=e288]:
+                    - generic [ref=e289]:
+                      - generic [ref=e290]: TG
+                      - generic [ref=e291]: Tousiph GAVALI
+                  - cell "loan" [ref=e292]
+                  - cell "+917894563210" [ref=e293]
+                  - cell "new" [ref=e294]
+                  - cell "more_horiz" [ref=e295]:
+                    - button "more_horiz" [ref=e297]:
+                      - generic [ref=e298]: more_horiz
+                - row "TG Tousiph GAVALI buy +917894563210 new more_horiz" [ref=e299]:
+                  - cell "TG Tousiph GAVALI" [ref=e300]:
+                    - generic [ref=e301]:
+                      - generic [ref=e302]: TG
+                      - generic [ref=e303]: Tousiph GAVALI
+                  - cell "buy" [ref=e304]
+                  - cell "+917894563210" [ref=e305]
+                  - cell "new" [ref=e306]
+                  - cell "more_horiz" [ref=e307]:
+                    - button "more_horiz" [ref=e309]:
+                      - generic [ref=e310]: more_horiz
+                - row "TG Tousiph GAVALI rent +917894563210 new more_horiz" [ref=e311]:
+                  - cell "TG Tousiph GAVALI" [ref=e312]:
+                    - generic [ref=e313]:
+                      - generic [ref=e314]: TG
+                      - generic [ref=e315]: Tousiph GAVALI
+                  - cell "rent" [ref=e316]
+                  - cell "+917894563210" [ref=e317]
+                  - cell "new" [ref=e318]
+                  - cell "more_horiz" [ref=e319]:
+                    - button "more_horiz" [ref=e321]:
+                      - generic [ref=e322]: more_horiz
+                - row "TG Tousiph GAVALI loan +919876543210 new more_horiz" [ref=e323]:
+                  - cell "TG Tousiph GAVALI" [ref=e324]:
+                    - generic [ref=e325]:
+                      - generic [ref=e326]: TG
+                      - generic [ref=e327]: Tousiph GAVALI
+                  - cell "loan" [ref=e328]
+                  - cell "+919876543210" [ref=e329]
+                  - cell "new" [ref=e330]
+                  - cell "more_horiz" [ref=e331]:
+                    - button "more_horiz" [ref=e333]:
+                      - generic [ref=e334]: more_horiz
+          - generic [ref=e335]:
+            - link "group Total Users 6" [ref=e336] [cursor=pointer]:
+              - /url: /admin/users
+              - generic [ref=e338]: group
+              - generic [ref=e339]:
+                - paragraph [ref=e340]: Total Users
+                - heading "6" [level=4] [ref=e341]
+            - link "article Active Blogs 4" [ref=e342] [cursor=pointer]:
+              - /url: /admin/blogs
+              - generic [ref=e344]: article
+              - generic [ref=e345]:
+                - paragraph [ref=e346]: Active Blogs
+                - heading "4" [level=4] [ref=e347]
+            - link "panorama Total Banners —" [ref=e348] [cursor=pointer]:
+              - /url: /admin/banners
+              - generic [ref=e350]: panorama
+              - generic [ref=e351]:
+                - paragraph [ref=e352]: Total Banners
+                - heading "—" [level=4] [ref=e353]
+            - link "star Testimonials —" [ref=e354] [cursor=pointer]:
+              - /url: /admin/testimonials
+              - generic [ref=e356]: star
+              - generic [ref=e357]:
+                - paragraph [ref=e358]: Testimonials
+                - heading "—" [level=4] [ref=e359]
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - alert [ref=e11]

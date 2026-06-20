@@ -1,0 +1,230 @@
+- generic [ref=e1]:
+  - generic [ref=e153]:
+    - complementary [ref=e154]:
+      - generic [ref=e155]:
+        - generic [ref=e157]: Grihanivas
+        - paragraph [ref=e158]: Admin Console
+        - link "arrow_back Back to Home" [ref=e159] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e160]: arrow_back
+          - text: Back to Home
+      - navigation [ref=e161]:
+        - link "dashboard Dashboard" [ref=e162] [cursor=pointer]:
+          - /url: /admin
+          - generic [ref=e163]: dashboard
+          - generic [ref=e164]: Dashboard
+        - link "real_estate_agent Properties" [ref=e165] [cursor=pointer]:
+          - /url: /admin/properties
+          - generic [ref=e166]: real_estate_agent
+          - generic [ref=e167]: Properties
+        - link "domain Projects" [ref=e168] [cursor=pointer]:
+          - /url: /admin/projects
+          - generic [ref=e169]: domain
+          - generic [ref=e170]: Projects
+        - link "apartment Builders" [ref=e171] [cursor=pointer]:
+          - /url: /admin/builders
+          - generic [ref=e172]: apartment
+          - generic [ref=e173]: Builders
+        - link "home_work Property Submissions" [ref=e174] [cursor=pointer]:
+          - /url: /admin/property-submissions
+          - generic [ref=e175]: home_work
+          - generic [ref=e176]: Property Submissions
+        - link "leaderboard Leads" [ref=e177] [cursor=pointer]:
+          - /url: /admin/leads
+          - generic [ref=e178]: leaderboard
+          - generic [ref=e179]: Leads
+        - link "edit_note Blogs" [ref=e180] [cursor=pointer]:
+          - /url: /admin/blogs
+          - generic [ref=e181]: edit_note
+          - generic [ref=e182]: Blogs
+        - link "view_carousel Banners" [ref=e183] [cursor=pointer]:
+          - /url: /admin/banners
+          - generic [ref=e184]: view_carousel
+          - generic [ref=e185]: Banners
+        - link "reviews Testimonials" [ref=e186] [cursor=pointer]:
+          - /url: /admin/testimonials
+          - generic [ref=e187]: reviews
+          - generic [ref=e188]: Testimonials
+        - link "group Users" [ref=e189] [cursor=pointer]:
+          - /url: /admin/users
+          - generic [ref=e190]: group
+          - generic [ref=e191]: Users
+        - link "local_offer Offers" [ref=e192] [cursor=pointer]:
+          - /url: /admin/offers
+          - generic [ref=e193]: local_offer
+          - generic [ref=e194]: Offers
+        - link "receipt_long Stamp Duty Rates" [ref=e195] [cursor=pointer]:
+          - /url: /admin/stamp-duty
+          - generic [ref=e196]: receipt_long
+          - generic [ref=e197]: Stamp Duty Rates
+        - link "tune System Settings" [ref=e198] [cursor=pointer]:
+          - /url: /admin/system
+          - generic [ref=e199]: tune
+          - generic [ref=e200]: System Settings
+    - generic [ref=e201]:
+      - banner [ref=e202]:
+        - generic [ref=e204]:
+          - generic [ref=e205]: search
+          - textbox "Search leads, properties, or transactions..." [ref=e206]
+        - generic [ref=e207]:
+          - button "logout Logout" [ref=e209]:
+            - generic [ref=e210]: logout
+            - text: Logout
+          - generic [ref=e212] [cursor=pointer]:
+            - generic [ref=e213]:
+              - paragraph [ref=e214]: Super Admin
+              - paragraph [ref=e215]: admin access
+            - generic [ref=e217]: SA
+      - main [ref=e218]:
+        - generic [ref=e423]:
+          - complementary [ref=e424]:
+            - generic [ref=e425]:
+              - paragraph [ref=e426]: Admin Console
+              - heading "Edit Project" [level=2] [ref=e536]
+              - generic [ref=e429]:
+                - generic [ref=e430]: Step 4 of 5
+                - generic [ref=e431]: 75%
+            - navigation [ref=e433]:
+              - button "check Basic Information Project details & type" [ref=e538] [cursor=pointer]:
+                - generic [ref=e539]: check
+                - generic [ref=e436]:
+                  - paragraph [ref=e437]: Basic Information
+                  - paragraph [ref=e438]: Project details & type
+              - button "check Location & Config Address & BHK configs" [ref=e709] [cursor=pointer]:
+                - generic [ref=e710]: check
+                - generic [ref=e441]:
+                  - paragraph [ref=e442]: Location & Config
+                  - paragraph [ref=e443]: Address & BHK configs
+              - button "check Media & Documents Images, plans & brochure" [ref=e815] [cursor=pointer]:
+                - generic [ref=e816]: check
+                - generic [ref=e446]:
+                  - paragraph [ref=e447]: Media & Documents
+                  - paragraph [ref=e448]: Images, plans & brochure
+              - button "4 Pricing & Inventory Prices & unit inventory" [ref=e449]:
+                - generic [ref=e450]: "4"
+                - generic [ref=e451]:
+                  - paragraph [ref=e452]: Pricing & Inventory
+                  - paragraph [ref=e453]: Prices & unit inventory
+              - button "5 Review & Publish SEO & go live" [ref=e454]:
+                - generic [ref=e455]: "5"
+                - generic [ref=e456]:
+                  - paragraph [ref=e457]: Review & Publish
+                  - paragraph [ref=e458]: SEO & go live
+            - generic [ref=e459]:
+              - generic [ref=e460]:
+                - generic [ref=e461]: support_agent
+                - paragraph [ref=e462]: Need Help?
+              - paragraph [ref=e463]: Contact support for any issues while listing your project.
+              - button "Contact Support →" [ref=e464]
+          - generic [ref=e465]:
+            - generic [ref=e817]:
+              - generic [ref=e818]:
+                - heading "Pricing & Inventory" [level=2] [ref=e819]
+                - paragraph [ref=e820]: Set pricing, manage unit inventory, and bulk import.
+              - generic [ref=e821]:
+                - heading "Project Price Summary" [level=3] [ref=e822]
+                - generic [ref=e823]:
+                  - generic [ref=e824]: info
+                  - paragraph [ref=e825]: Project price range can be auto-calculated from active configurations (Phase 1)
+                - generic [ref=e826]:
+                  - generic [ref=e827]:
+                    - generic [ref=e828]: Starting Price (₹)
+                    - spinbutton [ref=e829]: "8500000"
+                  - generic [ref=e830]:
+                    - generic [ref=e831]: Maximum Price (₹)
+                    - spinbutton [ref=e832]: "18000000"
+                  - generic [ref=e833]:
+                    - generic [ref=e834]: Price per Sq.Ft (₹)
+                    - spinbutton [ref=e835]: "9500"
+                  - generic [ref=e836]:
+                    - generic [ref=e837]: Maintenance / Other
+                    - textbox "₹3.50 / sq.ft / month" [ref=e838]: 3.50 / sq.ft / month
+              - generic [ref=e839]:
+                - heading "Configuration Pricing" [level=3] [ref=e840]
+                - generic [ref=e841]:
+                  - generic [ref=e843]:
+                    - generic [ref=e844]:
+                      - generic [ref=e845]: 2 BHK
+                      - generic [ref=e846]: 850–950 sq.ft
+                      - generic [ref=e906]: ₹85.00 L – ₹1.05 Cr
+                    - button "edit Edit Pricing" [ref=e907]:
+                      - generic [ref=e849]: edit
+                      - text: Edit Pricing
+                  - generic [ref=e850]:
+                    - generic [ref=e851]:
+                      - generic [ref=e852]:
+                        - generic [ref=e853]: 3 BHK
+                        - generic [ref=e854]: 1150–1280 sq.ft
+                      - button "edit Done" [active] [ref=e908]:
+                        - generic [ref=e857]: edit
+                        - text: Done
+                    - generic [ref=e909]:
+                      - generic [ref=e910]:
+                        - generic [ref=e911]: Price Min (₹)
+                        - spinbutton [ref=e912]
+                      - generic [ref=e913]:
+                        - generic [ref=e914]: Price Max (₹)
+                        - spinbutton [ref=e915]
+              - generic [ref=e858]:
+                - generic [ref=e859]:
+                  - heading "Unit Inventory" [level=3] [ref=e860]
+                  - generic [ref=e861]:
+                    - button "download Download" [disabled] [ref=e862]:
+                      - generic [ref=e863]: download
+                      - text: Download
+                    - button "add Add Unit" [ref=e864]:
+                      - generic [ref=e865]: add
+                      - text: Add Unit
+                - generic [ref=e866]:
+                  - combobox [ref=e867]:
+                    - option "All Towers" [selected]
+                  - combobox [ref=e868]:
+                    - option "All Configurations" [selected]
+                    - option "2 BHK Premium"
+                    - option "3 BHK Luxury"
+                  - combobox [ref=e869]:
+                    - option "All Statuses" [selected]
+                    - option "Available"
+                    - option "Hold"
+                    - option "Booked"
+                    - option "Sold"
+                - table [ref=e871]:
+                  - rowgroup [ref=e872]:
+                    - row "Tower Floor Unit No. Config Area Facing Price Status" [ref=e873]:
+                      - columnheader "Tower" [ref=e874]
+                      - columnheader "Floor" [ref=e875]
+                      - columnheader "Unit No." [ref=e876]
+                      - columnheader "Config" [ref=e877]
+                      - columnheader "Area" [ref=e878]
+                      - columnheader "Facing" [ref=e879]
+                      - columnheader "Price" [ref=e880]
+                      - columnheader "Status" [ref=e881]
+                      - columnheader [ref=e882]
+                  - rowgroup [ref=e883]:
+                    - row "No units yet — add units individually or via bulk import below." [ref=e884]:
+                      - cell "No units yet — add units individually or via bulk import below." [ref=e885]
+              - generic [ref=e887]:
+                - generic [ref=e888]:
+                  - generic [ref=e889]:
+                    - heading "Bulk Import Units" [level=4] [ref=e890]
+                    - paragraph [ref=e891]: Import units from CSV or XLSX · Max 500 units per import
+                  - link "download Download Template" [ref=e892] [cursor=pointer]:
+                    - /url: /templates/unit-import-template.csv
+                    - generic [ref=e893]: download
+                    - text: Download Template
+                - generic [ref=e894] [cursor=pointer]:
+                  - generic [ref=e895]: upload_file
+                  - paragraph [ref=e896]: Drag & drop file here or click to browse
+                  - paragraph [ref=e897]: CSV or XLSX · Max 5 MB
+            - generic [ref=e531]:
+              - button "arrow_back Back" [ref=e613]:
+                - generic [ref=e614]: arrow_back
+                - text: Back
+              - generic [ref=e532]:
+                - button "Save as Draft" [ref=e533]
+                - button "Next Phase arrow_forward" [ref=e534]:
+                  - text: Next Phase
+                  - generic [ref=e535]: arrow_forward
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - alert [ref=e11]

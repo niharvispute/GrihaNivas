@@ -74,31 +74,6 @@ export default function Step1BasicInfo() {
         <p className="text-slate-500 mt-1 text-sm">Set up project identity, type, and available configurations.</p>
       </div>
 
-      {/* Listing Mode */}
-      <section className="mb-8">
-        <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Listing Mode</label>
-        <div className="flex gap-3">
-          {[
-            { value: 'single',  label: 'Single Property',     icon: 'home' },
-            { value: 'project', label: 'Project / Bulk Units', icon: 'domain' },
-          ].map((opt) => (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => set('listingMode', opt.value)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 text-sm font-semibold transition-colors ${
-                d.listingMode === opt.value
-                  ? 'border-primary bg-primary/5 text-primary'
-                  : 'border-slate-200 text-slate-600 hover:border-slate-300'
-              }`}
-            >
-              <span className="material-symbols-outlined text-lg">{opt.icon}</span>
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      </section>
-
       {/* Listing Type */}
       <section className="mb-8">
         <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Listing Type</label>

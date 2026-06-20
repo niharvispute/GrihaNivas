@@ -173,7 +173,7 @@ const projectUploadFields = multer({
 const configUploadFields = multer({
   storage: memoryStorage,
   fileFilter: imageFilter,
-  limits: { fileSize: MAX_IMAGE_SIZE, files: 10 },
+  limits: { fileSize: 5 * 1024 * 1024, files: 10 },
 }).fields([
   { name: 'floorPlans', maxCount: 5 },
   { name: 'images',     maxCount: 5 },

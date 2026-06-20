@@ -157,18 +157,6 @@ export default function Step2LocationConfig() {
           </div>
         </div>
 
-        {/* Map placeholder */}
-        <div className="mt-4 h-40 bg-slate-100 rounded-xl border border-slate-200 flex items-center justify-center relative overflow-hidden">
-          <div className="text-center">
-            <span className="material-symbols-outlined text-4xl text-slate-400 block mb-1">map</span>
-            <p className="text-sm text-slate-500">Map preview</p>
-            <p className="text-xs text-slate-400">Geocoding wired in Phase 1</p>
-          </div>
-          <button className="absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-50 shadow-sm">
-            <span className="material-symbols-outlined text-sm">my_location</span>
-            Adjust Location
-          </button>
-        </div>
       </section>
 
       {/* Project Scale */}
@@ -232,6 +220,12 @@ export default function Step2LocationConfig() {
                   </span>
                   {cfg.totalUnits && (
                     <span className="text-sm text-slate-500">{cfg.totalUnits} units</span>
+                  )}
+                  {((cfg.images || []).length + (cfg.imageFiles || []).length) > 0 && (
+                    <span className="flex items-center gap-0.5 text-xs text-slate-400">
+                      <span className="material-symbols-outlined text-base">photo_library</span>
+                      {(cfg.images || []).length + (cfg.imageFiles || []).length}
+                    </span>
                   )}
                 </div>
                 <div className="flex items-center gap-2">

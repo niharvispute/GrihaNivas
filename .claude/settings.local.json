@@ -113,7 +113,24 @@
       "Bash(where wkhtmltopdf *)",
       "Bash(pip install *)",
       "Bash(python generate_report.py)",
-      "Bash(python *)"
+      "Bash(python *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\visha\\\\OneDrive\\\\Desktop\\\\Bricks\" -Force)",
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(Format-Table -AutoSize)",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_snapshot",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_click",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_fill_form",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_file_upload",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_select_option",
+      "mcp__plugin_wisdmlabs-engineering_playwright__browser_console_messages",
+      "Bash(mkdir -p \"c:/Users/visha/OneDrive/Desktop/Bricks/frontend/src/app/\\(public\\)/projects/[slug]/units/[configId]\")",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(npx next *)",
+      "Bash(echo \"PID: $!\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\visha\\OneDrive\\Desktop\\Bricks\\frontend\\src\\app\\(public)\\projects\\[slug]\\units"
     ]
   }
 }

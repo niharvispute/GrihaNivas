@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { bulkImportUnitsFromFile } from '@/services/projectService';
+import { bulkImportUnitsFromFile, downloadBulkImportTemplate } from '@/services/projectService';
 
 export default function BulkImportPanel({ projectId, onImported }) {
   const inputRef = useRef(null);
@@ -42,6 +42,7 @@ export default function BulkImportPanel({ projectId, onImported }) {
         inserted: res?.inserted ?? 0,
         failed: res?.failed ?? 0,
         errors: res?.errors || [],
+        warning: res?.warning || null,
       });
       onImported?.();
     } catch (err) {
@@ -58,14 +59,14 @@ export default function BulkImportPanel({ projectId, onImported }) {
           <h4 className="text-sm font-bold text-slate-700">Bulk Import Units</h4>
           <p className="text-xs text-slate-400 mt-0.5">Import units from CSV or XLSX · Max 500 units per import</p>
         </div>
-        <a
-          href="/templates/unit-import-template.csv"
-          download
-          className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+        <button
+          onClick={() => projectId && downloadBulkImportTemplate(projectId)}
+          disabled={!projectId}
+          className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-40"
         >
           <span className="material-symbols-outlined text-sm">download</span>
           Download Template
-        </a>
+        </button>
       </div>
 
       {/* Drop zone */}
@@ -126,6 +127,12 @@ export default function BulkImportPanel({ projectId, onImported }) {
             <p className="text-2xl font-bold text-red-600">{result.failed}</p>
             <p className="text-xs font-semibold text-red-700 mt-0.5">Failed</p>
           </div>
+        </div>
+      )}
+
+      {result?.warning && (
+        <div className="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-700">
+          {result.warning}
         </div>
       )}
 

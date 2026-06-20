@@ -28,6 +28,7 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [mounted, setMounted] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesMenuOpen, setIsServicesMenuOpen] = useState(false);
@@ -39,6 +40,8 @@ export default function Header() {
   const avatarSrc = user?.profilePictureUrl || user?.photoURL || user?.imageUrl || null;
   const normalizedRole = typeof user?.role === 'string' ? user.role.toLowerCase() : '';
   const accountHref = normalizedRole === 'admin' ? '/admin' : '/account';
+
+  useEffect(() => { setMounted(true); }, []);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -211,7 +214,7 @@ export default function Header() {
 
           {/* Desktop Actions (Column 3) */}
           <div className="hidden nav:flex justify-end items-center gap-3 lg:gap-4 shrink-0">
-            {loadingUser ? (
+            {!mounted || loadingUser ? (
               <div className="w-24 h-8 rounded-full bg-slate-100 animate-pulse" />
             ) : user ? (
               <div ref={accountMenuRef} className="relative">
@@ -308,7 +311,7 @@ export default function Header() {
 
           {/* Mobile: Login + Hamburger */}
           <div className="flex nav:hidden items-center justify-end gap-3">
-            {!loadingUser && !user && (
+            {mounted && !loadingUser && !user && (
               <button
                 type="button"
                 onClick={handleOpenLogin}
@@ -317,7 +320,7 @@ export default function Header() {
                 Login
               </button>
             )}
-            {!loadingUser && user && (
+            {mounted && !loadingUser && user && (
               <Link href={accountHref} className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-primary/10 text-primary ring-1 ring-slate-200">
                 {avatarSrc ? (
                   <Image src={avatarSrc} alt={displayName} fill sizes="36px" unoptimized className="object-cover" />
@@ -454,7 +457,7 @@ export default function Header() {
             >
               List Your Property
             </button>
-            {user ? (
+            {mounted && user ? (
               <button
                 type="button"
                 onClick={async () => { setIsMobileMenuOpen(false); await logout(); }}
@@ -462,7 +465,7 @@ export default function Header() {
               >
                 Logout
               </button>
-            ) : (
+            ) : mounted ? (
               <button
                 type="button"
                 onClick={handleOpenLogin}
@@ -470,7 +473,7 @@ export default function Header() {
               >
                 Login / Register
               </button>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

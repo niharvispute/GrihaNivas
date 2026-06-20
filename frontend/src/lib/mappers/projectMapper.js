@@ -165,6 +165,7 @@ export const mapProjectToDetailVM = (project = {}) => {
     enablePriceRequest: project?.enablePriceRequest !== false,
     enableCallback: project?.enableCallback !== false,
     enableBrochureDownload: project?.enableBrochureDownload !== false,
+    whatsappCtaEnabled: project?.whatsappCtaEnabled !== false,
     enableSiteVisit: project?.enableSiteVisit !== false,
     seoTitle: project?.seoTitle || '',
     seoDescription: project?.seoDescription || '',

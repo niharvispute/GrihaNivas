@@ -224,7 +224,14 @@ export default function Step3MediaDocs() {
                       : 'border-transparent text-slate-500 hover:text-slate-700'
                   }`}
                 >
-                  {BHK_LABEL[bhk] || bhk}
+                  <span className="flex items-center gap-1.5">
+                    {BHK_LABEL[bhk] || bhk}
+                    {(d.configFloorPlans?.[bhk]?.length || 0) > 0 && (
+                      <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-primary text-white text-[9px] font-bold leading-none">
+                        {d.configFloorPlans[bhk].length}
+                      </span>
+                    )}
+                  </span>
                 </button>
               ))}
             </div>

@@ -226,3 +226,9 @@ export const exportUnits = async (projectId, params = {}) => {
     fallbackName: 'project_units.xlsx',
   });
 };
+
+export const downloadBulkImportTemplate = async (projectId) => {
+  return downloadAuthedFile(`/api/projects/${projectId}/bulk-import-template`, {
+    fallbackName: 'unit-import-template.xlsx',
+  });
+};

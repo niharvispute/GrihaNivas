@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import FileUploadZone from './FileUploadZone';
 
 const BHK_OPTIONS = [
   { value: 'studio',    label: 'Studio' },
@@ -24,23 +25,81 @@ const EMPTY_CONFIG = {
   balconies: '1',
   parking: '1',
   totalUnits: '',
+  images: [],
+  imageFiles: [],
 };
 
 export default function ConfigSidePanel({ isOpen, editingConfig, onSave, onClose }) {
-  const [local, setLocal] = useState(() => ({ ...(editingConfig || EMPTY_CONFIG) }));
+  const [local, setLocal] = useState(() => ({
+    ...(editingConfig || EMPTY_CONFIG),
+    imageFiles: [],
+    images: Array.isArray(editingConfig?.images) ? editingConfig.images : [],
+  }));
 
-  // Re-sync when editingConfig changes (user clicks a different config to edit)
-  // Using useEffect avoids calling setState during render
+  // Blob URLs for new file previews — tracked via ref for cleanup
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const previewsRef = useRef([]);
+
+  const updatePreviews = (newPreviews) => {
+    previewsRef.current = newPreviews;
+    setImagePreviews(newPreviews);
+  };
+
+  // Reset when panel opens or switches to a different config
   useEffect(() => {
-    setLocal({ ...(editingConfig || EMPTY_CONFIG) });
-  }, [editingConfig?._id, editingConfig?._tempId]);
+    previewsRef.current.forEach((url) => URL.revokeObjectURL(url));
+    updatePreviews([]);
+    setLocal({
+      ...(editingConfig || EMPTY_CONFIG),
+      imageFiles: [],
+      images: Array.isArray(editingConfig?.images) ? editingConfig.images : [],
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editingConfig?._id, editingConfig?._tempId, isOpen]);
+
+  // Revoke all blob URLs on unmount
+  useEffect(() => {
+    return () => previewsRef.current.forEach((url) => URL.revokeObjectURL(url));
+  }, []);
 
   const set = (key, val) => setLocal((prev) => ({ ...prev, [key]: val }));
+
+  const handleAddImages = (files) => {
+    const newUrls = Array.from(files).map((f) => URL.createObjectURL(f));
+    updatePreviews([...previewsRef.current, ...newUrls]);
+    setLocal((prev) => ({
+      ...prev,
+      imageFiles: [...(prev.imageFiles || []), ...Array.from(files)],
+    }));
+  };
+
+  const handleRemoveImage = (index) => {
+    const existingCount = (local.images || []).length;
+    if (index < existingCount) {
+      setLocal((prev) => ({
+        ...prev,
+        images: (prev.images || []).filter((_, i) => i !== index),
+      }));
+    } else {
+      const fileIdx = index - existingCount;
+      URL.revokeObjectURL(previewsRef.current[fileIdx]);
+      updatePreviews(previewsRef.current.filter((_, i) => i !== fileIdx));
+      setLocal((prev) => ({
+        ...prev,
+        imageFiles: (prev.imageFiles || []).filter((_, i) => i !== fileIdx),
+      }));
+    }
+  };
 
   const handleSave = () => {
     if (!local.bhkType || !local.carpetAreaMin) return;
     onSave(local);
   };
+
+  const allImagePreviews = [
+    ...(local.images || []).map((url) => ({ url, isImage: true })),
+    ...imagePreviews.map((url) => ({ url, isImage: true })),
+  ];
 
   if (!isOpen) return null;
 
@@ -50,7 +109,7 @@ export default function ConfigSidePanel({ isOpen, editingConfig, onSave, onClose
       <div className="fixed inset-0 bg-black/20 z-20" onClick={onClose} />
 
       {/* Panel */}
-      <div className="fixed right-0 top-[72px] bottom-0 w-[420px] bg-white shadow-2xl z-30 flex flex-col">
+      <div className="fixed right-0 top-18 bottom-0 w-105 bg-white shadow-2xl z-30 flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
           <h3 className="text-base font-bold text-slate-800">
@@ -144,6 +203,22 @@ export default function ConfigSidePanel({ isOpen, editingConfig, onSave, onClose
               onChange={(e) => set('totalUnits', e.target.value)}
               placeholder="e.g. 24"
               className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            />
+          </div>
+
+          {/* Unit Photos */}
+          <div>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Unit Photos</label>
+            <p className="text-[11px] text-slate-400 mb-2">Photos specific to this BHK type — shown on the unit detail page</p>
+            <FileUploadZone
+              accept="image/*"
+              multiple
+              maxSizeMB={5}
+              label="Upload Unit Photos"
+              hint="Drag & drop or click · Max 5MB each"
+              previewUrls={allImagePreviews}
+              onFilesChange={handleAddImages}
+              onRemove={handleRemoveImage}
             />
           </div>
         </div>

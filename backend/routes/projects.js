@@ -193,6 +193,14 @@ router.post(
 );
 
 router.get(
+  '/:id/bulk-import-template',
+  protect,
+  adminOnly,
+  validate(schemas.project.idParams, 'params'),
+  adminProjectController.downloadBulkImportTemplate
+);
+
+router.get(
   '/:id/units/export',
   protect,
   adminOnly,
