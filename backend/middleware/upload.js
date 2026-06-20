@@ -138,14 +138,14 @@ const uploadMixed = multer({
 const uploadPropertySubmission = multer({
   storage: memoryStorage,
   fileFilter: propertySubmissionFilter,
-  limits: { fileSize: MAX_VIDEO_SIZE, files: 11 },
+  limits: { fileSize: MAX_VIDEO_SIZE, files: 17 }, // 10 + 5 + 1 + 1
 });
 
 /**
- * Project upload — hero, gallery (10), master plan, brochure (PDF).
+ * Project upload — hero, gallery (20), master plan, brochure (PDF).
  * Fields:
  *   - heroImage  : 1 image
- *   - images     : up to 10 images
+ *   - images     : up to 20 images
  *   - masterPlan : 1 image
  *   - brochure   : 1 PDF
  *
@@ -154,10 +154,10 @@ const uploadPropertySubmission = multer({
 const projectUploadFields = multer({
   storage: memoryStorage,
   fileFilter: mixedFilter,
-  limits: { fileSize: MAX_PDF_SIZE, files: 13 }, // 1 + 10 + 1 + 1
+  limits: { fileSize: MAX_PDF_SIZE, files: 23 }, // 1 + 20 + 1 + 1
 }).fields([
   { name: 'heroImage',  maxCount: 1  },
-  { name: 'images',     maxCount: 10 },
+  { name: 'images',     maxCount: 20 },
   { name: 'masterPlan', maxCount: 1  },
   { name: 'brochure',   maxCount: 1  },
 ]);
@@ -173,7 +173,7 @@ const projectUploadFields = multer({
 const configUploadFields = multer({
   storage: memoryStorage,
   fileFilter: imageFilter,
-  limits: { fileSize: MAX_IMAGE_SIZE, files: 10 },
+  limits: { fileSize: 5 * 1024 * 1024, files: 10 },
 }).fields([
   { name: 'floorPlans', maxCount: 5 },
   { name: 'images',     maxCount: 5 },
@@ -198,6 +198,33 @@ const propertySubmissionUploadFields = uploadPropertySubmission.fields([
   { name: 'video', maxCount: 1 },
 ]);
 
+const csvXlsxFilter = (req, file, cb) => {
+  const allowed = [
+    'text/csv',
+    'application/csv',
+    'text/plain',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  ];
+  if (allowed.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    const err = new Error(`Invalid file type: "${file.mimetype}". Only CSV and XLSX files are allowed.`);
+    err.code = 'INVALID_FILE_TYPE';
+    cb(err, false);
+  }
+};
+
+/**
+ * Bulk unit import — single CSV or XLSX file (max 5 MB).
+ * Usage: bulkImportUpload (middleware, .single('file') already applied)
+ */
+const bulkImportUpload = multer({
+  storage: memoryStorage,
+  fileFilter: csvXlsxFilter,
+  limits: { fileSize: 5 * 1024 * 1024, files: 1 },
+}).single('file');
+
 module.exports = {
   uploadImage,
   uploadImages,
@@ -208,4 +235,5 @@ module.exports = {
   propertySubmissionUploadFields,
   projectUploadFields,
   configUploadFields,
+  bulkImportUpload,
 };

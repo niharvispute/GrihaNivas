@@ -22,6 +22,7 @@ import {
 import { invalidateMyListingsSummary } from '@/hooks/useMyListingsSummary';
 import { createPropertySubmission } from '@/services/propertySubmissionService';
 import { getSystemBootstrap } from '@/services/systemService';
+import ProjectApplicationForm from './ProjectApplicationForm';
 
 const MIN_PROPERTY_IMAGES = 5;
 const MAX_PROPERTY_IMAGES = 10;
@@ -38,6 +39,7 @@ const parseFeatureLines = (value) =>
 export default function MultiStageListingForm() {
   const { user, openModal } = useAuth();
   const router = useRouter();
+  const [mode, setMode] = useState('single'); // 'single' | 'bulk'
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -484,6 +486,10 @@ export default function MultiStageListingForm() {
 
   const progress = (step / 5) * 100;
 
+  if (mode === 'bulk') {
+    return <ProjectApplicationForm onBack={() => setMode('single')} />;
+  }
+
   return (
     <>
     <div className="flex bg-white md:bg-slate-50 h-screen overflow-hidden">
@@ -588,18 +594,24 @@ export default function MultiStageListingForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                   <div className="space-y-4">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Listing Type</label>
-                    <div className="grid grid-cols-2 p-1 bg-slate-50 md:bg-slate-100 rounded-2xl">
-                      <button 
+                    <div className="grid grid-cols-3 p-1 bg-slate-50 md:bg-slate-100 rounded-2xl">
+                      <button
                         onClick={() => handleToggle('listingType', 'Sale')}
                         className={`py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${form.listingType === 'Sale' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                       >
                         Sale
                       </button>
-                      <button 
+                      <button
                         onClick={() => handleToggle('listingType', 'Rent')}
                         className={`py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${form.listingType === 'Rent' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                       >
                         Rent
+                      </button>
+                      <button
+                        onClick={() => setMode('bulk')}
+                        className="py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all text-slate-400 hover:text-slate-600"
+                      >
+                        Bulk Project
                       </button>
                     </div>
                   </div>

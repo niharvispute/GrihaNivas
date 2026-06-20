@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  experimental: {
+    middlewareClientMaxBodySize: 52428800, // 50 MB — needed for gallery/media uploads proxied through rewrites
+  },
   allowedDevOrigins: [
     'localhost',
     '127.0.0.1',

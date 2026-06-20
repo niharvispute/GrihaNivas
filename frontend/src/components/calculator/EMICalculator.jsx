@@ -101,30 +101,161 @@ const EMICalculator = () => {
   };
 
   const downloadReport = () => {
-    const rows = [
-      ['EMI REPORT — Grihanivas'],
-      [],
-      ['Loan Summary'],
-      ['Loan Amount', formatCurrency(loanAmount)],
-      ['Interest Rate', `${interestRate}%`],
-      ['Tenure', `${tenure} Years`],
-      ['Monthly EMI', formatCurrency(results.emi)],
-      ['Total Interest', formatCurrency(results.totalInterest)],
-      ['Total Payable', formatCurrency(results.totalPayable)],
-      [],
-      ['Amortization Schedule (Yearly)'],
-      ['Year', 'Principal Paid', 'Interest Paid', 'Total Payment', 'Outstanding Balance'],
-      ...schedule.map((r) => [r.year, r.principal, r.interest, r.totalPayment, r.balance]),
-    ];
+    const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+    const principalPct = results.principalPercent;
+    const interestPct = results.interestPercent;
 
-    const csv = rows.map((r) => r.join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `EMI_Report_${loanAmount / 100000}L_${interestRate}pct_${tenure}yrs.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const scheduleRows = schedule.map((r) => `
+      <tr>
+        <td>${r.year}</td>
+        <td>${formatCurrency(r.principal)}</td>
+        <td>${formatCurrency(r.interest)}</td>
+        <td>${formatCurrency(r.totalPayment)}</td>
+        <td class="right">${formatCurrency(r.balance)}</td>
+      </tr>`).join('');
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>EMI Report — GrihaNivas</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #1e293b; font-size: 13px; background: #fff; }
+  .page { max-width: 780px; margin: 0 auto; padding: 40px 48px; }
+
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 20px; border-bottom: 2px solid #2F6FED; margin-bottom: 28px; }
+  .brand { font-size: 22px; font-weight: 900; color: #2F6FED; letter-spacing: -0.5px; }
+  .report-meta { text-align: right; }
+  .report-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #64748b; }
+  .report-date { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+  /* Loan Summary */
+  .section-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #94a3b8; margin-bottom: 12px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; margin-bottom: 32px; }
+  .summary-cell { padding: 16px 20px; background: #fff; }
+  .summary-cell:not(:last-child) { border-right: 1px solid #e2e8f0; }
+  .summary-cell.highlight { background: #EAF2FF; }
+  .summary-cell.emi { background: #2F6FED; color: #fff; }
+  .cell-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #94a3b8; margin-bottom: 4px; }
+  .summary-cell.emi .cell-label { color: rgba(255,255,255,0.7); }
+  .cell-value { font-size: 17px; font-weight: 900; color: #1e293b; letter-spacing: -0.5px; }
+  .summary-cell.emi .cell-value { color: #fff; font-size: 20px; }
+
+  /* Breakdown bar */
+  .breakdown { margin-bottom: 32px; }
+  .bar-wrap { height: 10px; border-radius: 99px; overflow: hidden; background: #FF7A1A; margin-bottom: 10px; }
+  .bar-principal { height: 100%; background: #2F6FED; border-radius: 99px; width: ${principalPct}%; }
+  .bar-legend { display: flex; gap: 24px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: #475569; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-blue { background: #2F6FED; }
+  .dot-orange { background: #FF7A1A; }
+
+  /* Table */
+  .amort-section { margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  thead tr { background: #f8fafc; }
+  th { padding: 10px 12px; text-align: left; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; border-bottom: 1px solid #e2e8f0; }
+  td { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; color: #475569; font-weight: 500; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #fafafa; }
+  td:first-child { font-weight: 800; color: #1e293b; }
+  .right { text-align: right; font-weight: 700; color: #2F6FED; }
+
+  /* Footer */
+  .footer { margin-top: 36px; padding-top: 16px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+  .footer-note { font-size: 9px; color: #cbd5e1; }
+  .powered { font-size: 9px; color: #94a3b8; font-weight: 600; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding: 24px 32px; }
+    @page { margin: 0.5cm; size: A4 portrait; }
+  }
+</style>
+</head>
+<body onload="setTimeout(()=>window.print(),400)">
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="brand">GrihaNivas</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:3px;">Mumbai's Real Estate Advisory</div>
+    </div>
+    <div class="report-meta">
+      <div class="report-title">EMI Report — Loan Summary</div>
+      <div class="report-date">Generated: ${today}</div>
+    </div>
+  </div>
+
+  <div class="section-title">Loan Details</div>
+  <div class="summary-grid">
+    <div class="summary-cell">
+      <div class="cell-label">Loan Amount</div>
+      <div class="cell-value">${formatCurrency(loanAmount)}</div>
+    </div>
+    <div class="summary-cell">
+      <div class="cell-label">Interest Rate</div>
+      <div class="cell-value">${interestRate}%</div>
+    </div>
+    <div class="summary-cell">
+      <div class="cell-label">Tenure</div>
+      <div class="cell-value">${tenure} Yrs</div>
+    </div>
+    <div class="summary-cell emi">
+      <div class="cell-label">Monthly EMI</div>
+      <div class="cell-value">${formatCurrency(results.emi)}</div>
+    </div>
+    <div class="summary-cell highlight">
+      <div class="cell-label">Total Interest</div>
+      <div class="cell-value">${formatCurrency(results.totalInterest)}</div>
+    </div>
+    <div class="summary-cell highlight">
+      <div class="cell-label">Total Payable</div>
+      <div class="cell-value">${formatCurrency(results.totalPayable)}</div>
+    </div>
+  </div>
+
+  <div class="breakdown">
+    <div class="section-title">Principal vs Interest Breakdown</div>
+    <div class="bar-wrap"><div class="bar-principal"></div></div>
+    <div class="bar-legend">
+      <div class="legend-item"><span class="dot dot-blue"></span> Principal ${principalPct}% — ${formatCurrency(loanAmount)}</div>
+      <div class="legend-item"><span class="dot dot-orange"></span> Interest ${interestPct}% — ${formatCurrency(results.totalInterest)}</div>
+    </div>
+  </div>
+
+  <div class="amort-section">
+    <div class="section-title">Amortization Schedule (Yearly)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Principal Paid</th>
+          <th>Interest Paid</th>
+          <th>Total Payment</th>
+          <th class="right">Outstanding Balance</th>
+        </tr>
+      </thead>
+      <tbody>${scheduleRows}</tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div class="footer-note">This is a computer-generated report. Values are indicative and may vary.</div>
+    <div class="powered">Powered by Shree Gurudev Properties</div>
+  </div>
+
+</div>
+</body>
+</html>`;
+
+    const win = window.open('', '_blank');
+    if (!win) return;
+    win.document.write(html);
+    win.document.close();
   };
 
   const principalShare = Math.max(0, Math.min(100, Number(results.principalPercent) || 0));

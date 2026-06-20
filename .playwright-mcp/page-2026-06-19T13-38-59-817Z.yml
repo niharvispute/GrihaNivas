@@ -1,0 +1,200 @@
+- generic [ref=e1]:
+  - generic [ref=e153]:
+    - complementary [ref=e154]:
+      - generic [ref=e155]:
+        - generic [ref=e157]: Grihanivas
+        - paragraph [ref=e158]: Admin Console
+        - link "arrow_back Back to Home" [ref=e159] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e160]: arrow_back
+          - text: Back to Home
+      - navigation [ref=e161]:
+        - link "dashboard Dashboard" [ref=e162] [cursor=pointer]:
+          - /url: /admin
+          - generic [ref=e163]: dashboard
+          - generic [ref=e164]: Dashboard
+        - link "real_estate_agent Properties" [ref=e165] [cursor=pointer]:
+          - /url: /admin/properties
+          - generic [ref=e166]: real_estate_agent
+          - generic [ref=e167]: Properties
+        - link "domain Projects" [ref=e168] [cursor=pointer]:
+          - /url: /admin/projects
+          - generic [ref=e169]: domain
+          - generic [ref=e170]: Projects
+        - link "apartment Builders" [ref=e171] [cursor=pointer]:
+          - /url: /admin/builders
+          - generic [ref=e172]: apartment
+          - generic [ref=e173]: Builders
+        - link "home_work Property Submissions" [ref=e174] [cursor=pointer]:
+          - /url: /admin/property-submissions
+          - generic [ref=e175]: home_work
+          - generic [ref=e176]: Property Submissions
+        - link "leaderboard Leads" [ref=e177] [cursor=pointer]:
+          - /url: /admin/leads
+          - generic [ref=e178]: leaderboard
+          - generic [ref=e179]: Leads
+        - link "edit_note Blogs" [ref=e180] [cursor=pointer]:
+          - /url: /admin/blogs
+          - generic [ref=e181]: edit_note
+          - generic [ref=e182]: Blogs
+        - link "view_carousel Banners" [ref=e183] [cursor=pointer]:
+          - /url: /admin/banners
+          - generic [ref=e184]: view_carousel
+          - generic [ref=e185]: Banners
+        - link "reviews Testimonials" [ref=e186] [cursor=pointer]:
+          - /url: /admin/testimonials
+          - generic [ref=e187]: reviews
+          - generic [ref=e188]: Testimonials
+        - link "group Users" [ref=e189] [cursor=pointer]:
+          - /url: /admin/users
+          - generic [ref=e190]: group
+          - generic [ref=e191]: Users
+        - link "local_offer Offers" [ref=e192] [cursor=pointer]:
+          - /url: /admin/offers
+          - generic [ref=e193]: local_offer
+          - generic [ref=e194]: Offers
+        - link "receipt_long Stamp Duty Rates" [ref=e195] [cursor=pointer]:
+          - /url: /admin/stamp-duty
+          - generic [ref=e196]: receipt_long
+          - generic [ref=e197]: Stamp Duty Rates
+        - link "tune System Settings" [ref=e198] [cursor=pointer]:
+          - /url: /admin/system
+          - generic [ref=e199]: tune
+          - generic [ref=e200]: System Settings
+    - generic [ref=e201]:
+      - banner [ref=e202]:
+        - generic [ref=e204]:
+          - generic [ref=e205]: search
+          - textbox "Search leads, properties, or transactions..." [ref=e206]
+        - generic [ref=e207]:
+          - button "logout Logout" [ref=e209]:
+            - generic [ref=e210]: logout
+            - text: Logout
+          - generic [ref=e212] [cursor=pointer]:
+            - generic [ref=e213]:
+              - paragraph [ref=e214]: Super Admin
+              - paragraph [ref=e215]: admin access
+            - generic [ref=e217]: SA
+      - main [ref=e218]:
+        - generic [ref=e423]:
+          - complementary [ref=e424]:
+            - generic [ref=e425]:
+              - paragraph [ref=e426]: Admin Console
+              - heading "New Project" [level=2] [ref=e427]
+              - generic [ref=e429]:
+                - generic [ref=e430]: Step 1 of 5
+                - generic [ref=e431]: 0%
+            - navigation [ref=e433]:
+              - button "1 Basic Information Project details & type" [ref=e434]:
+                - generic [ref=e435]: "1"
+                - generic [ref=e436]:
+                  - paragraph [ref=e437]: Basic Information
+                  - paragraph [ref=e438]: Project details & type
+              - button "2 Location & Config Address & BHK configs" [disabled] [ref=e439]:
+                - generic [ref=e440]: "2"
+                - generic [ref=e441]:
+                  - paragraph [ref=e442]: Location & Config
+                  - paragraph [ref=e443]: Address & BHK configs
+              - button "3 Media & Documents Images, plans & brochure" [disabled] [ref=e444]:
+                - generic [ref=e445]: "3"
+                - generic [ref=e446]:
+                  - paragraph [ref=e447]: Media & Documents
+                  - paragraph [ref=e448]: Images, plans & brochure
+              - button "4 Pricing & Inventory Prices & unit inventory" [disabled] [ref=e449]:
+                - generic [ref=e450]: "4"
+                - generic [ref=e451]:
+                  - paragraph [ref=e452]: Pricing & Inventory
+                  - paragraph [ref=e453]: Prices & unit inventory
+              - button "5 Review & Publish SEO & go live" [disabled] [ref=e454]:
+                - generic [ref=e455]: "5"
+                - generic [ref=e456]:
+                  - paragraph [ref=e457]: Review & Publish
+                  - paragraph [ref=e458]: SEO & go live
+            - generic [ref=e459]:
+              - generic [ref=e460]:
+                - generic [ref=e461]: support_agent
+                - paragraph [ref=e462]: Need Help?
+              - paragraph [ref=e463]: Contact support for any issues while listing your project.
+              - button "Contact Support →" [ref=e464]
+          - generic [ref=e465]:
+            - generic [ref=e468]:
+              - generic [ref=e469]:
+                - heading "Basic Information" [level=2] [ref=e470]
+                - paragraph [ref=e471]: Set up project identity, type, and available configurations.
+              - generic [ref=e472]:
+                - generic [ref=e473]: Listing Mode
+                - generic [ref=e474]:
+                  - button "home Single Property" [ref=e475]:
+                    - generic [ref=e476]: home
+                    - text: Single Property
+                  - button "domain Project / Bulk Units" [ref=e477]:
+                    - generic [ref=e478]: domain
+                    - text: Project / Bulk Units
+              - generic [ref=e479]:
+                - generic [ref=e480]: Listing Type
+                - generic [ref=e481]:
+                  - button "Sale" [ref=e482]
+                  - button "Rent" [ref=e483]
+                  - button "New Launch" [ref=e484]
+                  - button "Commercial" [ref=e485]
+              - generic [ref=e486]:
+                - heading "Project Details" [level=3] [ref=e487]
+                - generic [ref=e488]:
+                  - generic [ref=e489]:
+                    - generic [ref=e490]: Project Name *
+                    - textbox "e.g. Nahar Amrit Shakti" [ref=e491]: Lodha Palava City Phase 2
+                  - generic [ref=e492]:
+                    - generic [ref=e493]: Builder / Developer *
+                    - combobox [ref=e494]:
+                      - option "Select Builder"
+                      - option "Kanakia Spaces Realty Pvt. Ltd."
+                      - option "GHP Group"
+                      - option "Godrej Properties Limited"
+                      - option "Nahar Group"
+                      - option "L&T Realty"
+                      - option "Lodha Group (Macrotech Developers Limited)" [selected]
+                      - option "Hiranandani Group"
+                  - generic [ref=e495]:
+                    - generic [ref=e496]: Contact Person Name
+                    - textbox "Enter contact person name" [ref=e497]: Rajesh Sharma
+                  - generic [ref=e498]:
+                    - generic [ref=e499]: Contact Number
+                    - textbox "Enter 10 digit mobile number" [ref=e500]: "9876543210"
+                  - generic [ref=e501]:
+                    - generic [ref=e502]: RERA Number
+                    - textbox "Enter RERA number" [ref=e503]: P51800019788
+                  - generic [ref=e504]:
+                    - generic [ref=e505]: RERA URL
+                    - textbox "https://maharera.mahaonline.gov.in" [ref=e506]: https://maharera.mahaonline.gov.in/MahaRERA/Visitor/VisitorUserListing.aspx
+              - generic [ref=e507]:
+                - generic [ref=e508]: Project Type
+                - generic [ref=e509]:
+                  - button "Residential" [ref=e510]
+                  - button "Commercial" [ref=e511]
+                  - button "Mixed Use" [ref=e512]
+                  - button "Plotting" [ref=e513]
+              - generic [ref=e514]:
+                - generic [ref=e515]: Project Status
+                - generic [ref=e516]:
+                  - button "New Launch" [ref=e517]
+                  - button "Under Construction" [ref=e518]
+                  - button "Ready To Move" [ref=e519]
+              - generic [ref=e520]:
+                - generic [ref=e521]: Configurations Available
+                - paragraph [ref=e522]: Multi-select — drives tabs in Step 3 floor plans
+                - generic [ref=e523]:
+                  - button "Studio" [ref=e524]
+                  - button "1 BHK" [ref=e525]
+                  - button "2 BHK" [ref=e526]
+                  - button "3 BHK" [active] [ref=e527]
+                  - button "4 BHK" [ref=e528]
+                  - button "4+ BHK" [ref=e529]
+                  - button "Penthouse" [ref=e530]
+            - generic [ref=e532]:
+              - button "Save as Draft" [ref=e533]
+              - button "Next Phase arrow_forward" [ref=e534]:
+                - text: Next Phase
+                - generic [ref=e535]: arrow_forward
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - alert [ref=e11]

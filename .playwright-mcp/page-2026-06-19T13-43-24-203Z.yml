@@ -1,0 +1,206 @@
+- generic [ref=e1]:
+  - generic [ref=e153]:
+    - complementary [ref=e154]:
+      - generic [ref=e155]:
+        - generic [ref=e157]: Grihanivas
+        - paragraph [ref=e158]: Admin Console
+        - link "arrow_back Back to Home" [ref=e159] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e160]: arrow_back
+          - text: Back to Home
+      - navigation [ref=e161]:
+        - link "dashboard Dashboard" [ref=e162] [cursor=pointer]:
+          - /url: /admin
+          - generic [ref=e163]: dashboard
+          - generic [ref=e164]: Dashboard
+        - link "real_estate_agent Properties" [ref=e165] [cursor=pointer]:
+          - /url: /admin/properties
+          - generic [ref=e166]: real_estate_agent
+          - generic [ref=e167]: Properties
+        - link "domain Projects" [ref=e168] [cursor=pointer]:
+          - /url: /admin/projects
+          - generic [ref=e169]: domain
+          - generic [ref=e170]: Projects
+        - link "apartment Builders" [ref=e171] [cursor=pointer]:
+          - /url: /admin/builders
+          - generic [ref=e172]: apartment
+          - generic [ref=e173]: Builders
+        - link "home_work Property Submissions" [ref=e174] [cursor=pointer]:
+          - /url: /admin/property-submissions
+          - generic [ref=e175]: home_work
+          - generic [ref=e176]: Property Submissions
+        - link "leaderboard Leads" [ref=e177] [cursor=pointer]:
+          - /url: /admin/leads
+          - generic [ref=e178]: leaderboard
+          - generic [ref=e179]: Leads
+        - link "edit_note Blogs" [ref=e180] [cursor=pointer]:
+          - /url: /admin/blogs
+          - generic [ref=e181]: edit_note
+          - generic [ref=e182]: Blogs
+        - link "view_carousel Banners" [ref=e183] [cursor=pointer]:
+          - /url: /admin/banners
+          - generic [ref=e184]: view_carousel
+          - generic [ref=e185]: Banners
+        - link "reviews Testimonials" [ref=e186] [cursor=pointer]:
+          - /url: /admin/testimonials
+          - generic [ref=e187]: reviews
+          - generic [ref=e188]: Testimonials
+        - link "group Users" [ref=e189] [cursor=pointer]:
+          - /url: /admin/users
+          - generic [ref=e190]: group
+          - generic [ref=e191]: Users
+        - link "local_offer Offers" [ref=e192] [cursor=pointer]:
+          - /url: /admin/offers
+          - generic [ref=e193]: local_offer
+          - generic [ref=e194]: Offers
+        - link "receipt_long Stamp Duty Rates" [ref=e195] [cursor=pointer]:
+          - /url: /admin/stamp-duty
+          - generic [ref=e196]: receipt_long
+          - generic [ref=e197]: Stamp Duty Rates
+        - link "tune System Settings" [ref=e198] [cursor=pointer]:
+          - /url: /admin/system
+          - generic [ref=e199]: tune
+          - generic [ref=e200]: System Settings
+    - generic [ref=e201]:
+      - banner [ref=e202]:
+        - generic [ref=e204]:
+          - generic [ref=e205]: search
+          - textbox "Search leads, properties, or transactions..." [ref=e206]
+        - generic [ref=e207]:
+          - button "logout Logout" [ref=e209]:
+            - generic [ref=e210]: logout
+            - text: Logout
+          - generic [ref=e212] [cursor=pointer]:
+            - generic [ref=e213]:
+              - paragraph [ref=e214]: Super Admin
+              - paragraph [ref=e215]: admin access
+            - generic [ref=e217]: SA
+      - main [ref=e218]:
+        - generic [ref=e423]:
+          - complementary [ref=e424]:
+            - generic [ref=e425]:
+              - paragraph [ref=e426]: Admin Console
+              - heading "Edit Project" [level=2] [ref=e536]
+              - generic [ref=e429]:
+                - generic [ref=e430]: Step 3 of 5
+                - generic [ref=e431]: 50%
+            - navigation [ref=e433]:
+              - button "check Basic Information Project details & type" [ref=e538] [cursor=pointer]:
+                - generic [ref=e539]: check
+                - generic [ref=e436]:
+                  - paragraph [ref=e437]: Basic Information
+                  - paragraph [ref=e438]: Project details & type
+              - button "check Location & Config Address & BHK configs" [ref=e709] [cursor=pointer]:
+                - generic [ref=e710]: check
+                - generic [ref=e441]:
+                  - paragraph [ref=e442]: Location & Config
+                  - paragraph [ref=e443]: Address & BHK configs
+              - button "3 Media & Documents Images, plans & brochure" [ref=e444]:
+                - generic [ref=e445]: "3"
+                - generic [ref=e446]:
+                  - paragraph [ref=e447]: Media & Documents
+                  - paragraph [ref=e448]: Images, plans & brochure
+              - button "4 Pricing & Inventory Prices & unit inventory" [ref=e449]:
+                - generic [ref=e450]: "4"
+                - generic [ref=e451]:
+                  - paragraph [ref=e452]: Pricing & Inventory
+                  - paragraph [ref=e453]: Prices & unit inventory
+              - button "5 Review & Publish SEO & go live" [ref=e454]:
+                - generic [ref=e455]: "5"
+                - generic [ref=e456]:
+                  - paragraph [ref=e457]: Review & Publish
+                  - paragraph [ref=e458]: SEO & go live
+            - generic [ref=e459]:
+              - generic [ref=e460]:
+                - generic [ref=e461]: support_agent
+                - paragraph [ref=e462]: Need Help?
+              - paragraph [ref=e463]: Contact support for any issues while listing your project.
+              - button "Contact Support →" [ref=e464]
+          - generic [ref=e465]:
+            - generic [ref=e711]:
+              - generic [ref=e712]:
+                - heading "Media & Documents" [level=2] [ref=e713]
+                - paragraph [ref=e714]: Upload project images, floor plans, and brochure.
+              - generic [ref=e715]:
+                - heading "Hero Image" [level=3] [ref=e716]
+                - paragraph [ref=e717]: "Recommended: 1600 × 900px · JPG/PNG · Max 5MB"
+                - generic [ref=e718]:
+                  - button "close" [ref=e780]:
+                    - generic [ref=e781]: close
+                  - generic [ref=e719] [cursor=pointer]:
+                    - generic [ref=e720]: cloud_upload
+                    - paragraph [ref=e721]: Upload Hero Image
+                    - paragraph [ref=e722]: Drag & drop or click to browse · Max 5MB
+                    - button "Choose File" [ref=e723]
+              - generic [ref=e724]:
+                - generic [ref=e725]:
+                  - heading "Project Gallery" [level=3] [ref=e726]
+                  - generic [ref=e727]: 3 / 20
+                - paragraph [ref=e728]: Up to 20 images · JPG/PNG · Max 5MB each
+                - generic [ref=e782]:
+                  - button "delete" [ref=e784]:
+                    - generic [ref=e785]: delete
+                  - button "delete" [ref=e787]:
+                    - generic [ref=e788]: delete
+                  - button "delete" [ref=e790]:
+                    - generic [ref=e791]: delete
+                  - generic [ref=e793] [cursor=pointer]:
+                    - generic [ref=e794]: cloud_upload
+                    - paragraph
+                    - paragraph [ref=e795]: Drag & drop or click to browse · Max 5MB
+                    - button "Choose Files" [ref=e796]
+              - generic [ref=e735]:
+                - heading "Master Plan & Brochure" [level=3] [ref=e736]
+                - generic [ref=e737]:
+                  - generic [ref=e738]:
+                    - paragraph [ref=e739]: Master Plan
+                    - paragraph [ref=e740]: JPG/PNG · Max 5MB
+                    - generic [ref=e741]:
+                      - button "close" [ref=e800]:
+                        - generic [ref=e801]: close
+                      - generic [ref=e742] [cursor=pointer]:
+                        - generic [ref=e743]: cloud_upload
+                        - paragraph [ref=e744]: Upload Master Plan
+                        - paragraph [ref=e745]: Drag & drop or click to browse · Max 5MB
+                        - button "Choose File" [ref=e746]
+                  - generic [ref=e747]:
+                    - paragraph [ref=e748]: Project Brochure
+                    - paragraph [ref=e749]: PDF · Max 20MB
+                    - generic [ref=e751] [cursor=pointer]:
+                      - generic [ref=e752]: cloud_upload
+                      - paragraph [ref=e753]: Upload Brochure
+                      - paragraph [ref=e754]: PDF · Max 20MB
+                      - button "Choose File" [ref=e755]
+              - generic [ref=e756]:
+                - heading "Project Video" [level=3] [ref=e757]
+                - paragraph [ref=e758]: Optional YouTube or Vimeo URL
+                - generic [ref=e759]:
+                  - generic [ref=e760]: link
+                  - textbox "https://youtube.com/watch?v=..." [ref=e761]: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+              - generic [ref=e762]:
+                - heading "Configuration Floor Plans" [level=3] [ref=e763]
+                - paragraph [ref=e764]: Upload floor plans per BHK configuration
+                - generic [ref=e765]:
+                  - button "2 BHK" [ref=e766]
+                  - button "3 BHK" [active] [ref=e767]
+                - generic [ref=e768]:
+                  - paragraph [ref=e769]:
+                    - text: Floor plans for
+                    - strong [ref=e770]: 3 BHK
+                  - generic [ref=e772] [cursor=pointer]:
+                    - generic [ref=e773]: cloud_upload
+                    - paragraph [ref=e774]: Upload 3 BHK Floor Plans
+                    - paragraph [ref=e775]: JPG/PNG · Max 5MB each
+                    - button "Choose Files" [ref=e776]
+            - generic [ref=e531]:
+              - button "arrow_back Back" [ref=e613]:
+                - generic [ref=e614]: arrow_back
+                - text: Back
+              - generic [ref=e532]:
+                - button "Save as Draft" [ref=e533]
+                - button "Next Phase arrow_forward" [ref=e534]:
+                  - text: Next Phase
+                  - generic [ref=e535]: arrow_forward
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - alert [ref=e11]

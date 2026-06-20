@@ -9,6 +9,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { mapPropertyListToCardVM } from '@/lib/mappers/propertyMapper';
 import { mapBuilderListToCardVM } from '@/lib/mappers/builderMapper';
 import { mapBlogListToCardVM } from '@/lib/mappers/blogMapper';
+import { mapProjectListToCardVM } from '@/lib/mappers/projectMapper';
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
@@ -54,8 +55,11 @@ async function fetchHomeData() {
   const revalidate = 300; // 5-min Next.js data cache
 
   try {
-    const [propRes, buildRes, blogRes, bannerRes] = await Promise.allSettled([
+    const [propRes, projectRes, buildRes, blogRes, bannerRes] = await Promise.allSettled([
       fetch(`${API_BASE}/api/properties?isFeatured=true&limit=12`, {
+        next: { revalidate },
+      }),
+      fetch(`${API_BASE}/api/projects?isFeatured=true&limit=12`, {
         next: { revalidate },
       }),
       fetch(`${API_BASE}/api/builders?isFeatured=true&limit=12`, {
@@ -78,8 +82,9 @@ async function fetchHomeData() {
       }
     };
 
-    const [propJson, buildJson, blogJson, bannerJson] = await Promise.all([
+    const [propJson, projectJson, buildJson, blogJson, bannerJson] = await Promise.all([
       parseJson(propRes),
+      parseJson(projectRes),
       parseJson(buildRes),
       parseJson(blogRes),
       parseJson(bannerRes),
@@ -87,7 +92,9 @@ async function fetchHomeData() {
 
     const properties = mapPropertyListToCardVM(propJson?.data || []).filter(
       (p) => Number.isFinite(Number(p.priceValue)) && Number(p.priceValue) > 0
-    );
+    ).map((p) => ({ ...p, type: 'property' }));
+    const projects = mapProjectListToCardVM(projectJson?.data || []);
+    const trendingItems = [...properties, ...projects].slice(0, 12);
     const builders = mapBuilderListToCardVM(buildJson?.data || []);
     const blogs = mapBlogListToCardVM(blogJson?.data || []);
 
@@ -96,10 +103,10 @@ async function fetchHomeData() {
       : null;
     const heroBannerImage = heroBanner?.image?.url || DEFAULT_HERO_IMAGE;
 
-    return { properties, builders, blogs, heroBannerImage };
+    return { trendingItems, builders, blogs, heroBannerImage };
   } catch {
     return {
-      properties: [],
+      trendingItems: [],
       builders: [],
       blogs: [],
       heroBannerImage: DEFAULT_HERO_IMAGE,
@@ -108,7 +115,7 @@ async function fetchHomeData() {
 }
 
 export default async function HomePage() {
-  const { properties, builders, blogs, heroBannerImage } = await fetchHomeData();
+  const { trendingItems, builders, blogs, heroBannerImage } = await fetchHomeData();
   const latestBlogs = blogs;
 
   return (
@@ -152,7 +159,7 @@ export default async function HomePage() {
 
       {/* 2. Featured Properties Carousel */}
       <ErrorBoundary>
-        <PropertiesCarousel properties={properties} />
+        <PropertiesCarousel properties={trendingItems} />
       </ErrorBoundary>
 
       {/* 3. Mid-page Consultation CTA */}

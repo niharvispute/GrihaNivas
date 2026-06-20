@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const XLSX = require('xlsx');
 const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiResponse');
 const { sendExcel, formatDate, joinList } = require('../utils/excelExport');
 const { parsePagination } = require('../utils/pagination');
@@ -25,6 +26,7 @@ const Builder = require('../models/mongoose/Builder');
  *   - On configuration create/update/delete:
  *       Project.bhkSummary  is recomputed from active configurations
  *       Project.priceMin / Project.priceMax are recomputed from active configs
+ *       Project.totalUnits is recomputed as the sum of active configs' totalUnits
  *   - On unit create/update/delete:
  *       ProjectConfiguration.availableUnits is recomputed
  *
@@ -66,13 +68,14 @@ const recomputeProjectAggregates = async (projectId) => {
   const configs = await ProjectConfiguration.find({
     projectId,
     isActive: true,
-  }).select('bhkType priceMin priceMax');
+  }).select('bhkType priceMin priceMax totalUnits');
 
   if (!configs.length) {
     await Project.findByIdAndUpdate(projectId, {
       bhkSummary: [],
       priceMin: null,
       priceMax: null,
+      totalUnits: null,
     });
     return;
   }
@@ -80,11 +83,13 @@ const recomputeProjectAggregates = async (projectId) => {
   const bhkSummary = Array.from(new Set(configs.map((c) => c.bhkType))).sort();
   const priceMin = Math.min(...configs.map((c) => c.priceMin || Number.POSITIVE_INFINITY));
   const priceMax = Math.max(...configs.map((c) => c.priceMax || 0));
+  const totalUnits = configs.reduce((sum, c) => sum + (c.totalUnits || 0), 0);
 
   await Project.findByIdAndUpdate(projectId, {
     bhkSummary,
     priceMin: Number.isFinite(priceMin) ? priceMin : null,
     priceMax: priceMax > 0 ? priceMax : null,
+    totalUnits: totalUnits > 0 ? totalUnits : null,
   });
 };
 
@@ -170,6 +175,7 @@ const getOne = async (req, res, next) => {
 const create = async (req, res, next) => {
   try {
     const data = { ...req.body };
+    data.createdBy = req.user.id;
     data.builderId = await resolveBuilderReference(data.builderId);
 
     const baseSlug = data.slug ? generateSlug(data.slug) : generateSlug(data.name);
@@ -235,10 +241,14 @@ const update = async (req, res, next) => {
       updates.slug = await ensureUniqueSlug(generateSlug(updates.slug), id);
     }
 
+    // Extract gallery removal list before passing to Mongoose (not a model field)
+    const removeGalleryIds = Array.isArray(updates.removeGalleryIds) ? updates.removeGalleryIds : [];
+    delete updates.removeGalleryIds;
+
     if (req.files && Object.keys(req.files).length > 0) {
       const media = await uploadProjectMedia(req.files, existing._id.toString());
 
-      // Track old publicIds for cleanup of replaced assets
+      // Track old publicIds for cleanup of replaced single-slot assets
       const oldPublicIds = [];
       if (media.heroImage && existing.heroImage?.publicId) oldPublicIds.push(existing.heroImage.publicId);
       if (media.masterPlan && existing.masterPlan?.publicId) oldPublicIds.push(existing.masterPlan.publicId);
@@ -247,13 +257,25 @@ const update = async (req, res, next) => {
       if (media.heroImage)  updates.heroImage  = media.heroImage;
       if (media.masterPlan) updates.masterPlan = media.masterPlan;
       if (media.brochure)   updates.brochure   = media.brochure;
-      if (media.gallery.length) updates.gallery = media.gallery;
+
+      // Merge gallery: existing minus removed, plus newly uploaded
+      const removeSet = new Set(removeGalleryIds);
+      const galleryToDelete = (existing.gallery || []).filter((g) => removeSet.has(g.publicId)).map((g) => g.publicId);
+      let mergedGallery = (existing.gallery || []).filter((g) => !removeSet.has(g.publicId));
+      if (media.gallery.length) mergedGallery = [...mergedGallery, ...media.gallery];
+      updates.gallery = mergedGallery;
+      if (galleryToDelete.length) deleteFiles(galleryToDelete, 'image').catch(() => {});
 
       if (oldPublicIds.length) {
-        // Brochure is uploaded as resource_type 'raw' — split if needed
         const imageIds = oldPublicIds.filter((_, idx) => idx < 2);
         if (imageIds.length) deleteFiles(imageIds, 'image').catch(() => {});
       }
+    } else if (removeGalleryIds.length) {
+      // Gallery removal without any new file uploads
+      const removeSet = new Set(removeGalleryIds);
+      const toDelete = (existing.gallery || []).filter((g) => removeSet.has(g.publicId)).map((g) => g.publicId);
+      updates.gallery = (existing.gallery || []).filter((g) => !removeSet.has(g.publicId));
+      if (toDelete.length) deleteFiles(toDelete, 'image').catch(() => {});
     }
 
     const project = await Project.findByIdAndUpdate(id, updates, {
@@ -652,6 +674,144 @@ const bulkImportUnits = async (req, res, next) => {
   }
 };
 
+// ── Bulk import from file (CSV / XLSX) ──────────────────────────────────────
+
+const bulkImportUnitsFromFile = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (!req.file) throw new AppError('No file uploaded', 400);
+
+    const project = await Project.findById(id).select('_id slug name');
+    if (!project) throw new AppError('Project not found', 404);
+
+    const workbook = XLSX.read(req.file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    if (!sheetName) throw new AppError('File contains no sheets', 400);
+    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: null });
+
+    if (!rows.length) throw new AppError('File contains no data rows', 400);
+    if (rows.length > MAX_BULK_IMPORT) {
+      throw new AppError(`Bulk import is limited to ${MAX_BULK_IMPORT} units per request`, 400);
+    }
+
+    // Load all configs for this project to build a resolution map.
+    // The "Configuration" column may contain an ObjectId, a bhkType (e.g. "2BHK"),
+    // or a config title — all three are accepted so non-technical users need not
+    // copy MongoDB IDs.
+    const projectConfigs = await ProjectConfiguration.find({ projectId: id })
+      .select('_id bhkType title')
+      .lean();
+
+    if (!projectConfigs.length) {
+      throw new AppError('This project has no configurations. Add them in Step 2 first.', 400);
+    }
+
+    // Build lookup: normalised key → _id string
+    const configLookup = new Map();
+    for (const c of projectConfigs) {
+      configLookup.set(c._id.toString(), c._id.toString());
+      if (c.bhkType) configLookup.set(c.bhkType.toLowerCase().trim(), c._id.toString());
+      if (c.title)   configLookup.set(c.title.toLowerCase().trim(),   c._id.toString());
+    }
+
+    const resolveConfig = (raw) => {
+      if (!raw) return null;
+      const key = String(raw).toLowerCase().trim();
+      return configLookup.get(key) || null;
+    };
+
+    const units = rows.map((row, rowIndex) => {
+      const rawCfg = row.configurationId || row['Configuration ID'] || row['Configuration'] || row['BHK Type'] || null;
+      return {
+        _rawCfg: rawCfg,
+        _rowIndex: rowIndex + 2, // 1-based + header row
+        configurationId: resolveConfig(rawCfg),
+        tower:      row.tower      || row['Tower']        || null,
+        block:      row.block      || row['Block']        || null,
+        floor:      row.floor      != null ? Number(row.floor)      : (row['Floor']      != null ? Number(row['Floor'])      : undefined),
+        unitNumber: row.unitNumber || row['Unit Number']  || null,
+        carpetArea: row.carpetArea != null ? Number(row.carpetArea) : (row['Carpet Area'] != null ? Number(row['Carpet Area']) : undefined),
+        builtupArea:row.builtupArea!= null ? Number(row.builtupArea): (row['Built-up Area']!= null? Number(row['Built-up Area']): undefined),
+        facing:     row.facing     || row['Facing']       || null,
+        viewType:   row.viewType   || row['View']         || row['View Type'] || null,
+        price:      row.price      != null ? Number(row.price)      : (row['Price']      != null ? Number(row['Price'])      : undefined),
+        status:     row.status     || row['Status']       || 'available',
+        notes:      row.notes      || row['Notes']        || null,
+        projectId:  id,
+      };
+    });
+
+    const validUnits   = units.filter((u) => u.configurationId);
+    const skippedUnits = units.filter((u) => !u.configurationId);
+    const skippedCount = skippedUnits.length;
+
+    // Collect human-readable info about unresolved configs
+    const unresolvedNames = Array.from(
+      new Set(skippedUnits.map((u) => u._rawCfg).filter(Boolean))
+    );
+    const availableNames = projectConfigs.map((c) => c.title || c.bhkType);
+
+    if (!validUnits.length) {
+      throw new AppError(
+        `No rows matched any configuration. Available: ${availableNames.join(', ')}. Got: ${unresolvedNames.join(', ')}`,
+        400,
+      );
+    }
+
+    // Strip internal tracking fields before insert
+    validUnits.forEach((u) => { delete u._rawCfg; delete u._rowIndex; });
+
+    // All resolved IDs are already valid — no further ObjectId cast validation needed.
+
+    let inserted = 0;
+    let failed = skippedCount;
+    const errors = skippedUnits.map((u) => ({
+      row: u._rowIndex,
+      message: `Configuration "${u._rawCfg || '(blank)'}" not found. Available: ${availableNames.join(', ')}`,
+    }));
+
+    try {
+      const result = await ProjectUnit.insertMany(validUnits, { ordered: false });
+      inserted = Array.isArray(result) ? result.length : 0;
+    } catch (insertErr) {
+      if (insertErr.insertedDocs && Array.isArray(insertErr.insertedDocs)) {
+        inserted = insertErr.insertedDocs.length;
+      } else if (insertErr.result?.insertedCount != null) {
+        inserted = insertErr.result.insertedCount;
+      } else {
+        inserted = 0;
+      }
+      failed += validUnits.length - inserted;
+
+      const writeErrors =
+        insertErr.writeErrors ||
+        insertErr.result?.writeErrors ||
+        insertErr.err?.writeErrors ||
+        [];
+      for (const we of writeErrors) {
+        errors.push({ index: we.index, code: we.code, message: we.errmsg || we.message || 'Insert error' });
+      }
+    }
+
+    const resolvedConfigIds = Array.from(new Set(validUnits.map((u) => u.configurationId)));
+    await Promise.all(resolvedConfigIds.map((cid) => recomputeConfigAvailability(cid)));
+    await invalidateProjectCaches(project.slug);
+
+    return sendSuccess(res, 200, 'File bulk import processed', {
+      total: units.length,
+      inserted,
+      failed,
+      errors,
+      ...(unresolvedNames.length && {
+        warning: `${unresolvedNames.length} configuration name(s) not found: ${unresolvedNames.join(', ')}. Available: ${availableNames.join(', ')}`,
+      }),
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // ── Export units to Excel ────────────────────────────────────────────────────
 
 const exportUnits = async (req, res, next) => {
@@ -721,6 +881,61 @@ const exportUnits = async (req, res, next) => {
   }
 };
 
+const downloadBulkImportTemplate = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const project = await Project.findById(id).select('name').lean();
+    if (!project) throw new AppError('Project not found', 404);
+
+    const configs = await ProjectConfiguration.find({ projectId: id })
+      .select('bhkType title')
+      .lean();
+
+    // One sample row per config so the user sees exactly what to put in the column
+    const sampleRows = configs.length
+      ? configs.map((c) => ({
+          'Configuration': c.title || c.bhkType,
+          'Tower': 'A',
+          'Block': '',
+          'Floor': 1,
+          'Unit Number': '101',
+          'Carpet Area': '',
+          'Built-up Area': '',
+          'Facing': '',
+          'View': '',
+          'Price': '',
+          'Status': 'available',
+          'Notes': '',
+        }))
+      : [{
+          'Configuration': '2BHK',
+          'Tower': 'A',
+          'Block': '',
+          'Floor': 1,
+          'Unit Number': '101',
+          'Carpet Area': '',
+          'Built-up Area': '',
+          'Facing': '',
+          'View': '',
+          'Price': '',
+          'Status': 'available',
+          'Notes': '',
+        }];
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(sampleRows);
+    XLSX.utils.book_append_sheet(wb, ws, 'Units');
+
+    const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+    const filename = `unit-import-${project.name.replace(/\s+/g, '-').toLowerCase()}.xlsx`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.send(buf);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   adminList,
   getOne,
@@ -736,5 +951,7 @@ module.exports = {
   updateUnit,
   deleteUnit,
   bulkImportUnits,
+  bulkImportUnitsFromFile,
+  downloadBulkImportTemplate,
   exportUnits,
 };

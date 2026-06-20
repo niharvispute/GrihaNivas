@@ -12,6 +12,7 @@ export default function AdminSidebar() {
   const menuItems = [
     { name: 'Dashboard', icon: 'dashboard', href: '/admin' },
     { name: 'Properties', icon: 'real_estate_agent', href: '/admin/properties' },
+    { name: 'Projects', icon: 'domain', href: '/admin/projects' },
     { name: 'Builders', icon: 'apartment', href: '/admin/builders' },
     { name: 'Property Submissions', icon: 'home_work', href: '/admin/property-submissions' },
     { name: 'Leads', icon: 'leaderboard', href: '/admin/leads' },

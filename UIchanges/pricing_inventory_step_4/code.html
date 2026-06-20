@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrihaNivas - Pricing &amp; Inventory</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="custom-colors">
+    :root {
+      --primary-maroon: #800020;
+      --light-bg: #f8f9fa;
+      --border-gray: #e5e7eb;
+      --text-gray: #6b7280;
+    }
+    .text-maroon { color: var(--primary-maroon); }
+    .bg-maroon { background-color: var(--primary-maroon); }
+    .border-maroon { border-color: var(--primary-maroon); }
+    .hover-bg-maroon:hover { background-color: #6a001a; }
+  </style>
+</head>
+<body class="bg-[#F9FAFB] text-gray-800 font-sans min-h-screen">
+<div class="flex min-h-screen">
+<!-- BEGIN: LeftSidebar -->
+<aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full" data-purpose="navigation-sidebar">
+<div class="p-6">
+<div class="flex items-center gap-2 mb-10">
+<img alt="GrihaNivas Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTPnniqPXThbUxSCRDCHCZVcmoZ68gmQrF6IjVxkA77HJB1FZeA2FxqvhVcYmB_4q8WOT48Utl_gK7RbVIsjWgAI-WXs4cAeBWVWYT4brLiBrr6RsBc4xGgAIvZ-LshSTm63Axx2UUExPGkx0oxVouTy3hVvw2sHLXInJTdNGqMOEUA3onfHrELpKdHWVaJ1zYUlNC6JYF7zAc6Imd3OQ9dN-Cv7ubUCyroTT7wKgO8iWhl9cKATpznMkPmnX6TeIDQrrnpHGnRfw" style="clip-path: inset(0 80% 0 0);"/>
+<span class="font-bold text-xl tracking-tight">GrihaNivas</span>
+</div>
+<div class="mb-8">
+<h2 class="text-xl font-semibold mb-1">List Property</h2>
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-medium text-gray-500 uppercase">Step 4 of 5</span>
+<span class="text-xs font-bold text-maroon">80%</span>
+</div>
+<div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
+<div class="bg-maroon h-full" style="width: 80%"></div>
+</div>
+</div>
+<nav class="space-y-1">
+<div class="flex items-center gap-3 p-3 text-gray-500">
+<div class="w-5 h-5 rounded-full border border-green-500 flex items-center justify-center text-green-500">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
+</div>
+<span class="text-sm font-medium">Basic Details</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-gray-500">
+<div class="w-5 h-5 rounded-full border border-green-500 flex items-center justify-center text-green-500">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
+</div>
+<span class="text-sm font-medium">Location &amp; Config</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-gray-500">
+<div class="w-5 h-5 rounded-full border border-green-500 flex items-center justify-center text-green-500">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
+</div>
+<span class="text-sm font-medium">Media</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-red-50 text-maroon rounded-l-md border-r-4 border-maroon">
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 rounded-full bg-maroon flex items-center justify-center text-white text-[10px]">4</div>
+<span class="text-sm font-bold">Pricing</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 text-gray-400">
+<div class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-[10px]">5</div>
+<span class="text-sm font-medium">Review</span>
+</div>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-gray-100">
+<div class="bg-gray-50 p-4 rounded-lg">
+<div class="flex items-start gap-3">
+<div class="p-2 bg-white rounded-md shadow-sm">
+<svg class="w-5 h-5 text-maroon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<div>
+<p class="text-sm font-bold">Need Help?</p>
+<p class="text-[10px] text-gray-500">Our support team is available 9 AM - 8 PM</p>
+</div>
+</div>
+<button class="mt-3 text-xs font-bold text-maroon flex items-center gap-1">
+            Contact Support <svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</aside>
+<!-- END: LeftSidebar -->
+<!-- Main Content Area -->
+<main class="flex-1 ml-64 p-8 pb-32">
+<!-- BEGIN: Header -->
+<header class="mb-8" data-purpose="page-header">
+<h1 class="text-3xl font-serif font-semibold text-gray-900">Pricing &amp; Inventory</h1>
+<p class="text-gray-500 mt-1">Set project price ranges and manage available units.</p>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: Section1 - Project Price Summary -->
+<section class="mb-8 bg-white p-6 rounded-xl border border-gray-100 shadow-sm" data-purpose="price-summary">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">1. PROJECT PRICE SUMMARY</h3>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="space-y-1.5">
+<label class="text-[10px] font-bold text-gray-500 uppercase">Starting Price</label>
+<div class="relative">
+<input class="w-full border-gray-200 rounded-lg py-2.5 px-4 text-sm font-medium focus:ring-maroon focus:border-maroon" type="text" value="₹1.25 Cr"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-[10px] font-bold text-gray-500 uppercase">Maximum Price</label>
+<input class="w-full border-gray-200 rounded-lg py-2.5 px-4 text-sm font-medium focus:ring-maroon focus:border-maroon" type="text" value="₹4.25 Cr"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[10px] font-bold text-gray-500 uppercase">Price per Sq.Ft</label>
+<input class="w-full border-gray-200 rounded-lg py-2.5 px-4 text-sm font-medium focus:ring-maroon focus:border-maroon" type="text" value="₹18,500"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[10px] font-bold text-gray-500 uppercase">Maintenance / Other Charges</label>
+<input class="w-full border-gray-200 rounded-lg py-2.5 px-4 text-sm font-medium focus:ring-maroon focus:border-maroon" type="text" value="₹3.50 / sq.ft / month"/>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2 text-xs text-amber-600 bg-amber-50 p-2 rounded-md inline-flex">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Project price range can be auto-calculated from active configurations.</span>
+</div>
+</section>
+<!-- END: Section1 -->
+<!-- BEGIN: Section2 - Configuration Pricing -->
+<section class="mb-8 bg-white p-6 rounded-xl border border-gray-100 shadow-sm" data-purpose="configuration-pricing">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">2. CONFIGURATION PRICING</h3>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- 1 BHK Card -->
+<div class="border border-gray-200 rounded-xl p-5 hover:border-maroon transition-colors group">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-maroon">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+</div>
+<div>
+<h4 class="text-lg font-bold">1 BHK</h4>
+<p class="text-xs text-gray-500 font-medium">CARPET AREA</p>
+<p class="text-sm font-bold">450 - 550 sq.ft</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div>
+<p class="text-[10px] text-gray-400 font-bold uppercase">Price Min</p>
+<p class="text-sm font-bold">₹1.25 Cr</p>
+</div>
+<div>
+<p class="text-[10px] text-gray-400 font-bold uppercase">Price Max</p>
+<p class="text-sm font-bold">₹1.55 Cr</p>
+</div>
+<div>
+<p class="text-[10px] text-gray-400 font-bold uppercase">Available</p>
+<p class="text-sm font-bold">18</p>
+</div>
+</div>
+<button class="w-full py-2 border border-maroon text-maroon text-xs font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-red-50 transition-colors">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Edit Pricing
+            </button>
+</div>
+<!-- 2 BHK Card -->
+<div class="border border-gray-200 rounded-xl p-5 hover:border-maroon transition-colors group">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-maroon">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+</div>
+<div>
+<h4 class="text-lg font-bold">2 BHK</h4>
+<p class="text-xs text-gray-500 font-medium">CARPET AREA</p>
+<p class="text-sm font-bold">720 - 850 sq.ft</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div>
+<p class="text-[10px] text-gray-400 font-bold uppercase">Price Min</p>
+<p class="text-sm font-bold">₹2.15 Cr</p>
+</div>
+<div>
+<p class="text-[10px] text-gray-400 font-bold uppercase">Price Max</p>
+<p class="text-sm font-bold">₹2.65 Cr</p>
+</div>
+<div>
+<p class="text-[10px] text-gray-400 font-bold uppercase">Available</p>
+<p class="text-sm font-bold">24</p>
+</div>
+</div>
+<button class="w-full py-2 border border-maroon text-maroon text-xs font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-red-50 transition-colors">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Edit Pricing
+            </button>
+</div>
+<!-- 3 BHK Card -->
+<div class="border border-gray-200 rounded-xl p-5 hover:border-maroon transition-colors group">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center text-maroon">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+</div>
+<div>
+<h4 class="text-lg font-bold">3 BHK</h4>
+<p class="text-xs text-gray-500 font-medium">CARPET AREA</p>
+<p class="text-sm font-bold">1050 - 1350 sq.ft</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div>
+<p class="text-[10px] text-gray-400 font-bold uppercase">Price Min</p>
+<p class="text-sm font-bold">₹3.45 Cr</p>
+</div>
+<div>
+<p class="text-[10px] text-gray-400 font-bold uppercase">Price Max</p>
+<p class="text-sm font-bold">₹4.25 Cr</p>
+</div>
+<div>
+<p class="text-[10px] text-gray-400 font-bold uppercase">Available</p>
+<p class="text-sm font-bold">12</p>
+</div>
+</div>
+<button class="w-full py-2 border border-maroon text-maroon text-xs font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-red-50 transition-colors">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Edit Pricing
+            </button>
+</div>
+</div>
+</section>
+<!-- END: Section2 -->
+<!-- BEGIN: Section3 - Unit Inventory -->
+<section class="mb-8 bg-white p-6 rounded-xl border border-gray-100 shadow-sm" data-purpose="unit-inventory">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">3. UNIT INVENTORY</h3>
+<!-- Filters & Actions Bar -->
+<div class="flex flex-wrap items-end gap-4 mb-6">
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-gray-500 uppercase">Tower</label>
+<select class="border-gray-200 rounded-lg text-xs py-2 pr-10 focus:ring-maroon focus:border-maroon">
+<option>All Towers</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-gray-500 uppercase">Floor</label>
+<select class="border-gray-200 rounded-lg text-xs py-2 pr-10 focus:ring-maroon focus:border-maroon">
+<option>All Floors</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-gray-500 uppercase">Configuration</label>
+<select class="border-gray-200 rounded-lg text-xs py-2 pr-10 focus:ring-maroon focus:border-maroon">
+<option>All Configurations</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-gray-500 uppercase">Status</label>
+<select class="border-gray-200 rounded-lg text-xs py-2 pr-10 focus:ring-maroon focus:border-maroon">
+<option>All Statuses</option>
+</select>
+</div>
+<div class="ml-auto flex gap-3">
+<button class="bg-red-50 text-maroon border border-maroon/20 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-red-100">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Add Unit
+            </button>
+<button class="border border-maroon text-maroon px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-red-50">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Download Inventory
+            </button>
+</div>
+</div>
+<!-- Inventory Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse" data-purpose="inventory-table">
+<thead>
+<tr class="text-[10px] text-gray-400 font-bold uppercase border-b border-gray-100">
+<th class="pb-3 px-4">Tower</th>
+<th class="pb-3 px-4">Floor</th>
+<th class="pb-3 px-4">Unit No.</th>
+<th class="pb-3 px-4">Configuration</th>
+<th class="pb-3 px-4">Carpet Area</th>
+<th class="pb-3 px-4">Facing</th>
+<th class="pb-3 px-4">Price</th>
+<th class="pb-3 px-4">Status</th>
+<th class="pb-3 px-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="text-xs">
+<tr class="border-b border-gray-50 hover:bg-gray-50/50">
+<td class="py-3 px-4 font-medium">Tower A</td>
+<td class="py-3 px-4">12</td>
+<td class="py-3 px-4">1203</td>
+<td class="py-3 px-4">2 BHK</td>
+<td class="py-3 px-4 text-gray-500">820 sq.ft</td>
+<td class="py-3 px-4 text-gray-500">East</td>
+<td class="py-3 px-4 font-bold">₹2.45 Cr</td>
+<td class="py-3 px-4"><span class="px-2 py-1 rounded-full bg-green-50 text-green-600 font-bold text-[9px] uppercase">Available</span></td>
+<td class="py-3 px-4 text-right flex justify-end gap-2">
+<button class="p-1 text-maroon hover:bg-red-50 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="p-1 text-gray-400 hover:bg-gray-100 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</td>
+</tr>
+<tr class="border-b border-gray-50 hover:bg-gray-50/50">
+<td class="py-3 px-4 font-medium">Tower A</td>
+<td class="py-3 px-4">13</td>
+<td class="py-3 px-4">1301</td>
+<td class="py-3 px-4">3 BHK</td>
+<td class="py-3 px-4 text-gray-500">1180 sq.ft</td>
+<td class="py-3 px-4 text-gray-500">West</td>
+<td class="py-3 px-4 font-bold">₹3.75 Cr</td>
+<td class="py-3 px-4"><span class="px-2 py-1 rounded-full bg-orange-50 text-orange-600 font-bold text-[9px] uppercase">Hold</span></td>
+<td class="py-3 px-4 text-right flex justify-end gap-2">
+<button class="p-1 text-maroon hover:bg-red-50 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="p-1 text-gray-400 hover:bg-gray-100 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</td>
+</tr>
+<tr class="border-b border-gray-50 hover:bg-gray-50/50">
+<td class="py-3 px-4 font-medium">Tower B</td>
+<td class="py-3 px-4">09</td>
+<td class="py-3 px-4">904</td>
+<td class="py-3 px-4">1 BHK</td>
+<td class="py-3 px-4 text-gray-500">510 sq.ft</td>
+<td class="py-3 px-4 text-gray-500">North</td>
+<td class="py-3 px-4 font-bold">₹1.42 Cr</td>
+<td class="py-3 px-4"><span class="px-2 py-1 rounded-full bg-green-50 text-green-600 font-bold text-[9px] uppercase">Available</span></td>
+<td class="py-3 px-4 text-right flex justify-end gap-2">
+<button class="p-1 text-maroon hover:bg-red-50 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="p-1 text-gray-400 hover:bg-gray-100 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</td>
+</tr>
+<tr class="border-b border-gray-50 hover:bg-gray-50/50">
+<td class="py-3 px-4 font-medium">Tower B</td>
+<td class="py-3 px-4">10</td>
+<td class="py-3 px-4">1002</td>
+<td class="py-3 px-4">2 BHK</td>
+<td class="py-3 px-4 text-gray-500">720 sq.ft</td>
+<td class="py-3 px-4 text-gray-500">East</td>
+<td class="py-3 px-4 font-bold">₹2.10 Cr</td>
+<td class="py-3 px-4"><span class="px-2 py-1 rounded-full bg-blue-50 text-blue-600 font-bold text-[9px] uppercase">Booked</span></td>
+<td class="py-3 px-4 text-right flex justify-end gap-2">
+<button class="p-1 text-maroon hover:bg-red-50 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="p-1 text-gray-400 hover:bg-gray-100 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</td>
+</tr>
+<tr class="border-b border-gray-50 hover:bg-gray-50/50">
+<td class="py-3 px-4 font-medium">Tower C</td>
+<td class="py-3 px-4">14</td>
+<td class="py-3 px-4">1403</td>
+<td class="py-3 px-4">3 BHK</td>
+<td class="py-3 px-4 text-gray-500">1240 sq.ft</td>
+<td class="py-3 px-4 text-gray-500">West</td>
+<td class="py-3 px-4 font-bold">₹3.95 Cr</td>
+<td class="py-3 px-4"><span class="px-2 py-1 rounded-full bg-gray-200 text-gray-700 font-bold text-[9px] uppercase">Sold</span></td>
+<td class="py-3 px-4 text-right flex justify-end gap-2">
+<button class="p-1 text-maroon hover:bg-red-50 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="p-1 text-gray-400 hover:bg-gray-100 rounded"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-6 flex justify-center">
+<button class="px-10 py-2 border border-maroon text-maroon text-xs font-bold rounded-lg hover:bg-red-50 transition-colors">
+            View All Units
+          </button>
+</div>
+</section>
+<!-- END: Section3 -->
+<!-- BEGIN: Section4 - Bulk Import Units -->
+<section class="mb-8 bg-white p-6 rounded-xl border border-gray-100 shadow-sm" data-purpose="bulk-import">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">4. BULK IMPORT UNITS</h3>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Drop Area -->
+<div class="lg:col-span-5">
+<div class="border-2 border-dashed border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-maroon/40 transition-colors cursor-pointer bg-gray-50/30">
+<div class="w-12 h-12 mb-3 text-gray-300">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+</div>
+<p class="text-sm font-semibold">Drag &amp; drop file here</p>
+<p class="text-xs text-gray-400 mt-1">or click to browse</p>
+<p class="text-[10px] text-gray-400 mt-2">CSV, XLSX files only</p>
+</div>
+</div>
+<!-- Template Buttons -->
+<div class="lg:col-span-3 flex flex-col gap-3">
+<button class="w-full py-2.5 border border-maroon text-maroon text-xs font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-red-50 transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Download Template
+            </button>
+<button class="w-full py-2.5 border border-maroon text-maroon text-xs font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-red-50 transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+              Preview Import
+            </button>
+</div>
+<!-- Validation Summary -->
+<div class="lg:col-span-4 flex items-center justify-between gap-3" data-purpose="validation-summary">
+<div class="flex-1 text-right mr-4">
+<p class="text-[10px] font-bold text-gray-400 uppercase">Validation Summary</p>
+</div>
+<div class="flex gap-2">
+<div class="flex flex-col items-center justify-center w-20 h-16 border border-green-100 bg-green-50/30 rounded-xl">
+<div class="w-5 h-5 bg-white rounded-full flex items-center justify-center text-green-500 shadow-sm border border-green-100 mb-1">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
+</div>
+<p class="text-xs font-bold">120</p>
+<p class="text-[8px] text-gray-500 font-bold uppercase">Ready</p>
+</div>
+<div class="flex flex-col items-center justify-center w-20 h-16 border border-amber-100 bg-amber-50/30 rounded-xl">
+<div class="w-5 h-5 bg-white rounded-full flex items-center justify-center text-amber-500 shadow-sm border border-amber-100 mb-1">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<p class="text-xs font-bold">4</p>
+<p class="text-[8px] text-gray-500 font-bold uppercase">Duplicates</p>
+</div>
+<div class="flex flex-col items-center justify-center w-20 h-16 border border-red-100 bg-red-50/30 rounded-xl">
+<div class="w-5 h-5 bg-white rounded-full flex items-center justify-center text-red-500 shadow-sm border border-red-100 mb-1">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path></svg>
+</div>
+<p class="text-xs font-bold">2</p>
+<p class="text-[8px] text-gray-500 font-bold uppercase">Errors</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Section4 -->
+</main>
+<!-- BEGIN: Footer -->
+<footer class="fixed bottom-0 right-0 left-64 bg-white border-t border-gray-200 p-6 flex justify-between items-center z-50">
+<button class="px-10 py-3 border border-gray-300 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-gray-50 transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        BACK
+      </button>
+<div class="flex gap-4">
+<button class="px-10 py-3 border border-maroon text-maroon rounded-lg text-sm font-bold hover:bg-red-50 transition-colors">
+          Save Draft
+        </button>
+<button class="px-16 py-3 bg-maroon text-white rounded-lg text-sm font-bold flex items-center gap-3 hover-bg-maroon transition-colors shadow-lg">
+          NEXT PHASE
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</footer>
+<!-- END: Footer -->
+</div>
+</body></html>

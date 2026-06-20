@@ -1,0 +1,227 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e153]:
+    - complementary [ref=e154]:
+      - generic [ref=e155]:
+        - generic [ref=e157]: Grihanivas
+        - paragraph [ref=e158]: Admin Console
+        - link "arrow_back Back to Home" [ref=e159] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e160]: arrow_back
+          - text: Back to Home
+      - navigation [ref=e161]:
+        - link "dashboard Dashboard" [ref=e162] [cursor=pointer]:
+          - /url: /admin
+          - generic [ref=e163]: dashboard
+          - generic [ref=e164]: Dashboard
+        - link "real_estate_agent Properties" [ref=e165] [cursor=pointer]:
+          - /url: /admin/properties
+          - generic [ref=e166]: real_estate_agent
+          - generic [ref=e167]: Properties
+        - link "domain Projects" [ref=e168] [cursor=pointer]:
+          - /url: /admin/projects
+          - generic [ref=e169]: domain
+          - generic [ref=e170]: Projects
+        - link "apartment Builders" [ref=e171] [cursor=pointer]:
+          - /url: /admin/builders
+          - generic [ref=e172]: apartment
+          - generic [ref=e173]: Builders
+        - link "home_work Property Submissions" [ref=e174] [cursor=pointer]:
+          - /url: /admin/property-submissions
+          - generic [ref=e175]: home_work
+          - generic [ref=e176]: Property Submissions
+        - link "leaderboard Leads" [ref=e177] [cursor=pointer]:
+          - /url: /admin/leads
+          - generic [ref=e178]: leaderboard
+          - generic [ref=e179]: Leads
+        - link "edit_note Blogs" [ref=e180] [cursor=pointer]:
+          - /url: /admin/blogs
+          - generic [ref=e181]: edit_note
+          - generic [ref=e182]: Blogs
+        - link "view_carousel Banners" [ref=e183] [cursor=pointer]:
+          - /url: /admin/banners
+          - generic [ref=e184]: view_carousel
+          - generic [ref=e185]: Banners
+        - link "reviews Testimonials" [ref=e186] [cursor=pointer]:
+          - /url: /admin/testimonials
+          - generic [ref=e187]: reviews
+          - generic [ref=e188]: Testimonials
+        - link "group Users" [ref=e189] [cursor=pointer]:
+          - /url: /admin/users
+          - generic [ref=e190]: group
+          - generic [ref=e191]: Users
+        - link "local_offer Offers" [ref=e192] [cursor=pointer]:
+          - /url: /admin/offers
+          - generic [ref=e193]: local_offer
+          - generic [ref=e194]: Offers
+        - link "receipt_long Stamp Duty Rates" [ref=e195] [cursor=pointer]:
+          - /url: /admin/stamp-duty
+          - generic [ref=e196]: receipt_long
+          - generic [ref=e197]: Stamp Duty Rates
+        - link "tune System Settings" [ref=e198] [cursor=pointer]:
+          - /url: /admin/system
+          - generic [ref=e199]: tune
+          - generic [ref=e200]: System Settings
+    - generic [ref=e201]:
+      - banner [ref=e202]:
+        - generic [ref=e204]:
+          - generic [ref=e205]: search
+          - textbox "Search leads, properties, or transactions..." [ref=e206]
+        - generic [ref=e207]:
+          - button "logout Logout" [ref=e209]:
+            - generic [ref=e210]: logout
+            - text: Logout
+          - generic [ref=e212] [cursor=pointer]:
+            - generic [ref=e213]:
+              - paragraph [ref=e214]: Super Admin
+              - paragraph [ref=e215]: admin access
+            - generic [ref=e217]: SA
+      - main [ref=e218]:
+        - generic [ref=e423]:
+          - complementary [ref=e424]:
+            - generic [ref=e425]:
+              - paragraph [ref=e426]: Admin Console
+              - heading "Edit Project" [level=2] [ref=e536]
+              - generic [ref=e429]:
+                - generic [ref=e430]: Step 2 of 5
+                - generic [ref=e431]: 25%
+            - navigation [ref=e433]:
+              - button "check Basic Information Project details & type" [ref=e538] [cursor=pointer]:
+                - generic [ref=e539]: check
+                - generic [ref=e436]:
+                  - paragraph [ref=e437]: Basic Information
+                  - paragraph [ref=e438]: Project details & type
+              - button "2 Location & Config Address & BHK configs" [ref=e439]:
+                - generic [ref=e440]: "2"
+                - generic [ref=e441]:
+                  - paragraph [ref=e442]: Location & Config
+                  - paragraph [ref=e443]: Address & BHK configs
+              - button "3 Media & Documents Images, plans & brochure" [ref=e444]:
+                - generic [ref=e445]: "3"
+                - generic [ref=e446]:
+                  - paragraph [ref=e447]: Media & Documents
+                  - paragraph [ref=e448]: Images, plans & brochure
+              - button "4 Pricing & Inventory Prices & unit inventory" [ref=e449]:
+                - generic [ref=e450]: "4"
+                - generic [ref=e451]:
+                  - paragraph [ref=e452]: Pricing & Inventory
+                  - paragraph [ref=e453]: Prices & unit inventory
+              - button "5 Review & Publish SEO & go live" [ref=e454]:
+                - generic [ref=e455]: "5"
+                - generic [ref=e456]:
+                  - paragraph [ref=e457]: Review & Publish
+                  - paragraph [ref=e458]: SEO & go live
+            - generic [ref=e459]:
+              - generic [ref=e460]:
+                - generic [ref=e461]: support_agent
+                - paragraph [ref=e462]: Need Help?
+              - paragraph [ref=e463]: Contact support for any issues while listing your project.
+              - button "Contact Support →" [ref=e464]
+          - generic [ref=e465]:
+            - generic [ref=e540]:
+              - generic [ref=e541]:
+                - heading "Location & Configuration" [level=2] [ref=e542]
+                - paragraph [ref=e543]: Set project address, scale, and BHK configurations.
+              - generic [ref=e544]:
+                - heading "Location Details" [level=3] [ref=e545]
+                - generic [ref=e546]:
+                  - generic [ref=e547]:
+                    - generic [ref=e548]: Locality / Building Name
+                    - generic [ref=e549]:
+                      - generic [ref=e550]: location_on
+                      - textbox "Locality or Building Name e.g. Powai, Chandivali" [ref=e551]: Palava City, Dombivli
+                  - generic [ref=e552]:
+                    - generic [ref=e553]: Area *
+                    - textbox "e.g. Powai" [ref=e554]: Dombivli East
+                  - generic [ref=e555]:
+                    - generic [ref=e556]: City
+                    - textbox [ref=e557]: Mumbai
+                  - generic [ref=e558]:
+                    - generic [ref=e559]: State
+                    - combobox [ref=e560]:
+                      - option "Maharashtra" [selected]
+                      - option "Gujarat"
+                      - option "Karnataka"
+                      - option "Delhi"
+                  - generic [ref=e561]:
+                    - generic [ref=e562]: Pincode
+                    - textbox "400076" [ref=e563]: "421204"
+                  - generic [ref=e564]:
+                    - generic [ref=e565]: Complete Address
+                    - textbox "Enter complete address of the project" [ref=e566]: Lodha Palava, Dombivli East, Thane District, Maharashtra 421204
+                - generic [ref=e567]:
+                  - generic [ref=e568]:
+                    - generic [ref=e569]: map
+                    - paragraph [ref=e570]: Map preview
+                    - paragraph [ref=e571]: Geocoding wired in Phase 1
+                  - button "my_location Adjust Location" [ref=e572]:
+                    - generic [ref=e573]: my_location
+                    - text: Adjust Location
+              - generic [ref=e574]:
+                - heading "Project Scale" [level=3] [ref=e575]
+                - generic [ref=e576]:
+                  - generic [ref=e577]:
+                    - generic [ref=e578]:
+                      - generic [ref=e579]: domain
+                      - paragraph [ref=e580]: Total Towers
+                    - spinbutton [ref=e581]: "4"
+                    - paragraph [ref=e582]: Towers
+                  - generic [ref=e583]:
+                    - generic [ref=e584]:
+                      - generic [ref=e585]: layers
+                      - paragraph [ref=e586]: Total Floors
+                    - spinbutton [ref=e587]: "22"
+                    - paragraph [ref=e588]: Floors
+                  - generic [ref=e589]:
+                    - generic [ref=e590]:
+                      - generic [ref=e591]: home
+                      - paragraph [ref=e592]: Total Units
+                    - spinbutton [ref=e593]: "480"
+                    - paragraph [ref=e594]: Units
+                  - generic [ref=e595]:
+                    - generic [ref=e596]:
+                      - generic [ref=e597]: straighten
+                      - paragraph [ref=e598]: Land Area (sq.ft)
+                    - spinbutton [ref=e599]: "125000"
+                    - paragraph [ref=e600]: sq.ft
+              - generic [ref=e601]:
+                - generic [ref=e602]:
+                  - heading "BHK Configurations" [level=3] [ref=e603]
+                  - paragraph [ref=e604]: 2 added
+                - generic [ref=e605]:
+                  - generic [ref=e651]:
+                    - generic [ref=e652]:
+                      - generic [ref=e653]: 2 BHK
+                      - generic [ref=e654]: 2 BHK Premium
+                      - generic [ref=e655]: 850–950 sq.ft
+                      - generic [ref=e656]: 120 units
+                    - generic [ref=e657]:
+                      - button "edit" [ref=e658]:
+                        - generic [ref=e659]: edit
+                      - button "delete" [ref=e660]:
+                        - generic [ref=e661]: delete
+                  - generic [ref=e698]:
+                    - generic [ref=e699]:
+                      - generic [ref=e700]: 3 BHK
+                      - generic [ref=e701]: 3 BHK Luxury
+                      - generic [ref=e702]: 1150–1280 sq.ft
+                      - generic [ref=e703]: 80 units
+                    - generic [ref=e704]:
+                      - button "edit" [ref=e705]:
+                        - generic [ref=e706]: edit
+                      - button "delete" [ref=e707]:
+                        - generic [ref=e708]: delete
+                  - button "add Add Configuration" [ref=e610]:
+                    - generic [ref=e611]: add
+                    - text: Add Configuration
+            - generic [ref=e531]:
+              - button "arrow_back Back" [ref=e613]:
+                - generic [ref=e614]: arrow_back
+                - text: Back
+              - generic [ref=e532]:
+                - button "Save as Draft" [ref=e533]
+                - button "Next Phase arrow_forward" [ref=e534]:
+                  - text: Next Phase
+                  - generic [ref=e535]: arrow_forward
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - alert [ref=e11]

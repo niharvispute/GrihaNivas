@@ -17,6 +17,9 @@ const TYPE_ICON = {
   agreement: 'description',
   rent:      'apartment',
   buy:       'home',
+  project:   'domain',
+  list_property: 'home_work',
+  project_application: 'domain_add',
 };
 
 function formatDate(iso) {

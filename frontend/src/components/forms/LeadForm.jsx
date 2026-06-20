@@ -13,6 +13,7 @@ export default function LeadForm({
   title = 'Inquire About This Property',
   leadType = 'buy',
   propertyId,
+  projectId,
 }) {
   const baseId = useId();
   const nameInputId = `${baseId}-name`;
@@ -97,6 +98,7 @@ export default function LeadForm({
         email: form.email.trim() || undefined,
         leadType,
         propertyId: propertyId || undefined,
+        projectId: projectId || undefined,
         message: form.message.trim() || undefined,
       });
 
@@ -116,7 +118,7 @@ export default function LeadForm({
     } finally {
       setIsSubmitting(false);
     }
-  }, [form, leadType, propertyId]);
+  }, [form, leadType, propertyId, projectId]);
 
   useEffect(() => {
     if (!user || !queuedSubmit || isSubmitting) return;

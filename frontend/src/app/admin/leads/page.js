@@ -192,6 +192,9 @@ export default function LeadCRMPage() {
             <option value="rent">Rent</option>
             <option value="loan">Loan</option>
             <option value="agreement">Agreement</option>
+            <option value="project">Project Enquiry</option>
+            <option value="list_property">List Property</option>
+            <option value="project_application">Bulk Project Application</option>
           </select>
         </div>
         <div className="w-48">
@@ -389,6 +392,15 @@ export default function LeadCRMPage() {
                       full: true,
                     },
                     { label: 'Property', value: viewingLead.propertyId?.title, full: true },
+                    { label: 'Applied Project Name', value: viewingLead.projectApplication?.projectName },
+                    { label: 'Applied Builder/Developer', value: viewingLead.projectApplication?.builderName },
+                    {
+                      label: 'Applied Location',
+                      value: [viewingLead.projectApplication?.locality, viewingLead.projectApplication?.city].filter(Boolean).join(', ') || null,
+                    },
+                    { label: 'Applied Approx. Units', value: viewingLead.projectApplication?.approxUnits },
+                    { label: 'Applied Project Type', value: viewingLead.projectApplication?.projectType },
+                    { label: 'Applied RERA Number', value: viewingLead.projectApplication?.reraNumber },
                     {
                       label: 'Assigned To',
                       value: viewingLead.assignedTo
