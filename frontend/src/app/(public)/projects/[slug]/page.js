@@ -201,30 +201,66 @@ export default async function ProjectDetailPage({ params }) {
           {project.configurations.length > 0 && (
             <section>
               <h2 className="text-2xl font-heading font-black mb-6 sm:mb-8 text-slate-900">Configurations &amp; Pricing</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {project.configurations.map((config) => (
-                  <Link
-                    key={config.id}
-                    href={`/projects/${project.slug}/units/${config.id}`}
-                    className="group block bg-white rounded-2xl border border-slate-100 shadow-sm p-5 hover:border-primary/30 hover:shadow-md transition-all"
-                  >
-                    <h3 className="font-black text-slate-900 text-lg mb-1">{config.title}</h3>
-                    <p className="text-primary font-black text-sm mb-3">
-                      {config.priceMin > 0
-                        ? `₹${config.priceMin.toLocaleString('en-IN')}${config.priceMax > config.priceMin ? ` - ₹${config.priceMax.toLocaleString('en-IN')}` : ''}`
-                        : 'Price on Request'}
-                    </p>
-                    <div className="grid grid-cols-2 gap-2 text-xs text-slate-500 font-bold">
-                      {config.carpetAreaMin && <span>Carpet: {config.carpetAreaMin}{config.carpetAreaMax && config.carpetAreaMax !== config.carpetAreaMin ? `-${config.carpetAreaMax}` : ''} sq.ft</span>}
-                      {config.bathrooms != null && <span>{config.bathrooms} Bathroom{config.bathrooms > 1 ? 's' : ''}</span>}
-                      {config.balconies != null && <span>{config.balconies} Balcon{config.balconies > 1 ? 'ies' : 'y'}</span>}
-                      {config.availableUnits != null && <span>{config.availableUnits} Available</span>}
-                    </div>
-                    <p className="mt-3 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                      View Unit Details →
-                    </p>
-                  </Link>
-                ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {project.configurations.map((config) => {
+                  const thumb = config.gallery?.[0] || config.floorPlans?.[0] || project.image;
+                  return (
+                    <Link
+                      key={config.id}
+                      href={`/projects/${project.slug}/units/${config.id}`}
+                      className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-lg transition-all duration-300"
+                    >
+                      {/* Thumbnail */}
+                      <div className="relative h-36 flex-none overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
+                        {thumb ? (
+                          <CloudinaryImage
+                            src={thumb}
+                            alt={config.title}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 33vw"
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <span className="material-symbols-outlined text-3xl text-slate-200">apartment</span>
+                          </div>
+                        )}
+                        <span className="absolute top-2 left-2 bg-white/90 backdrop-blur px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider text-slate-700 shadow">
+                          {config.title}
+                        </span>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-4 flex flex-col grow gap-2">
+                        <p className="text-primary font-black text-sm">
+                          {config.priceMin > 0
+                            ? `₹${config.priceMin.toLocaleString('en-IN')}${config.priceMax > config.priceMin ? ` - ₹${config.priceMax.toLocaleString('en-IN')}` : ''}`
+                            : 'Price on Request'}
+                        </p>
+                        <div className="flex flex-wrap gap-1.5 text-[10px] font-bold text-slate-500">
+                          {config.carpetAreaMin && (
+                            <span className="bg-slate-100 px-2 py-0.5 rounded-md">
+                              {config.carpetAreaMin}{config.carpetAreaMax && config.carpetAreaMax !== config.carpetAreaMin ? `-${config.carpetAreaMax}` : ''} sq.ft
+                            </span>
+                          )}
+                          {config.bathrooms != null && (
+                            <span className="bg-slate-100 px-2 py-0.5 rounded-md">{config.bathrooms} Bath{config.bathrooms > 1 ? 's' : ''}</span>
+                          )}
+                          {config.balconies != null && (
+                            <span className="bg-slate-100 px-2 py-0.5 rounded-md">{config.balconies} {config.balconies > 1 ? 'Balconies' : 'Balcony'}</span>
+                          )}
+                          {config.availableUnits != null && (
+                            <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md">{config.availableUnits} Available</span>
+                          )}
+                        </div>
+                        <div className="mt-auto pt-2 flex items-center justify-between border-t border-slate-100">
+                          <span className="text-xs font-bold text-primary group-hover:text-primary/80 transition-colors">View Unit Details</span>
+                          <span className="material-symbols-outlined text-primary text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             </section>
           )}
