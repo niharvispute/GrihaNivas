@@ -108,15 +108,53 @@ export const refreshSession = async () => {
   return data;
 };
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Transient = not the user's fault and worth retrying (rate limit, server, network, timeout).
+// A 429 must never be treated as an auth failure.
+const isTransientStatus = (status) =>
+  status === 429 || status === 408 || status === 0 || (status >= 500 && status <= 599);
+
 export const getCurrentUser = async () => {
   const token = getAccessToken();
   if (!token) return null;
 
-  const res = await apiFetch('/api/auth/me', {
-    method: 'GET',
-    token,
-  });
-  return res.data;
+  const maxAttempts = 3;
+  let lastError = null;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    try {
+      const res = await apiFetch('/api/auth/me', {
+        method: 'GET',
+        token: getAccessToken(),
+      });
+      return res.data;
+    } catch (error) {
+      lastError = error;
+      const status = error?.status;
+
+      // Genuine auth failure: try a single refresh, then surface the 401.
+      if (status === 401) {
+        try {
+          const refreshed = await refreshSession();
+          if (refreshed?.accessToken) continue; // retry /me with the new token
+        } catch (_) {
+          // fall through and rethrow the 401
+        }
+        throw error;
+      }
+
+      // Transient failure (e.g. 429): back off and retry. Do NOT treat as logout.
+      if (isTransientStatus(status) && attempt < maxAttempts - 1) {
+        await sleep(400 * 2 ** attempt); // 400ms, 800ms
+        continue;
+      }
+
+      throw error;
+    }
+  }
+
+  throw lastError;
 };
 
 export const logout = async () => {

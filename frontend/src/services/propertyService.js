@@ -32,11 +32,13 @@ export const listProperties = async (query = {}, { map = true } = {}) => {
 
 export const getPropertyBySlug = async (slug, { map = true } = {}) => {
   const res = await apiFetch(`/api/properties/slug/${slug}`);
+  if (!res.data) return null;
   return map ? mapPropertyToDetailVM(res.data) : res.data;
 };
 
 export const getPropertyById = async (id, { map = true } = {}) => {
   const res = await apiFetch(`/api/properties/${id}`);
+  if (!res.data) return null;
   return map ? mapPropertyToDetailVM(res.data) : res.data;
 };
 

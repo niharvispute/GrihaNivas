@@ -64,7 +64,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-center px-4">
-              <span className="material-symbols-outlined text-3xl text-slate-200">image_not_supported</span>
+              <img src="/images/property-placeholder.svg" alt="" aria-hidden="true" className="w-20 max-w-[88px] mx-auto object-contain opacity-50" />
             </div>
           </div>
         )}

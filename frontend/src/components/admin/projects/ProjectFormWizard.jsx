@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useProjectForm } from '@/context/ProjectFormContext';
+import { useToast } from '@/context/ToastContext';
 import {
   createProject,
   updateProject,
@@ -139,6 +140,7 @@ export default function ProjectFormWizard() {
   const [hydrating, setHydrating] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
+  const { addToast } = useToast();
 
   const StepComponent = STEP_COMPONENTS[currentStep];
 
@@ -305,6 +307,19 @@ export default function ProjectFormWizard() {
         pricePerSqft: numOrUndef(s4.pricePerSqft),
         maintenanceCharges: s4.maintenanceCharges || undefined,
       };
+      // Sanity-check pricing (values are full rupee amounts, not lakhs/crores).
+      // Prevents data like "Starting ₹150" from being published.
+      const MIN_PROJECT_PRICE = 100000; // ₹1 Lakh
+      const { priceMin, priceMax } = pricingPayload;
+      if (priceMin !== undefined && priceMin < MIN_PROJECT_PRICE) {
+        throw new Error('Starting price looks too low — enter the full amount in rupees (e.g. 12500000 for ₹1.25 Cr).');
+      }
+      if (priceMax !== undefined && priceMax < MIN_PROJECT_PRICE) {
+        throw new Error('Maximum price looks too low — enter the full amount in rupees (e.g. 42500000 for ₹4.25 Cr).');
+      }
+      if (priceMin !== undefined && priceMax !== undefined && priceMax < priceMin) {
+        throw new Error('Maximum price cannot be less than the starting price.');
+      }
       if (Object.values(pricingPayload).some((v) => v !== undefined)) {
         await updateProject(id, pricingPayload);
       }
@@ -355,10 +370,13 @@ export default function ProjectFormWizard() {
         await saveCurrentStep();
         const target = formData.step5.listingStatus || 'active';
         await setProjectStatus(projectId, target === 'draft' ? 'draft' : 'active');
+        addToast(target === 'draft' ? 'Project saved as draft.' : 'Project published successfully.', 'success');
         router.push('/admin/projects');
       }
     } catch (err) {
-      setError(err?.message || 'Something went wrong while saving');
+      const msg = err?.message || 'Something went wrong while saving';
+      setError(msg);
+      addToast(msg, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -375,8 +393,11 @@ export default function ProjectFormWizard() {
       await saveCurrentStep();
       if (projectId) await setProjectStatus(projectId, 'draft');
       setIsDirty(false);
+      addToast('Draft saved.', 'success');
     } catch (err) {
-      setError(err?.message || 'Failed to save draft');
+      const msg = err?.message || 'Failed to save draft';
+      setError(msg);
+      addToast(msg, 'error');
     } finally {
       setIsLoading(false);
     }

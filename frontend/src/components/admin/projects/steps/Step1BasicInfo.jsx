@@ -41,19 +41,42 @@ export default function Step1BasicInfo() {
 
   const [builders, setBuilders] = useState([]);
   const [buildersError, setBuildersError] = useState(null);
+  const [loadingBuilders, setLoadingBuilders] = useState(true);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
     (async () => {
-      try {
-        const { items } = await listAdminBuilders({ limit: 200 });
-        if (!cancelled) setBuilders(items);
-      } catch (err) {
-        if (!cancelled) setBuildersError(err?.message || 'Failed to load builders');
+      setLoadingBuilders(true);
+      setBuildersError(null);
+      // Retry transient failures (e.g. 429 rate limit) before surfacing an error.
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        try {
+          const { items } = await listAdminBuilders({ limit: 200 });
+          if (!cancelled) {
+            setBuilders(items);
+            setLoadingBuilders(false);
+          }
+          return;
+        } catch (err) {
+          const status = err?.status;
+          const transient = status === 429 || status === 408 || status === 0 || (status >= 500 && status <= 599);
+          if (transient && attempt < 2) {
+            await sleep(500 * 2 ** attempt); // 500ms, 1000ms
+            continue;
+          }
+          if (!cancelled) {
+            setBuildersError(err?.message || 'Failed to load builders');
+            setLoadingBuilders(false);
+          }
+          return;
+        }
       }
     })();
     return () => { cancelled = true; };
-  }, []);
+  }, [reloadKey]);
 
   const set = (key, val) => updateFormData('step1', { [key]: val });
 
@@ -115,14 +138,26 @@ export default function Step1BasicInfo() {
             <select
               value={d.builderId}
               onChange={(e) => handleBuilderChange(e.target.value)}
-              className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+              disabled={loadingBuilders}
+              className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white disabled:opacity-60"
             >
-              <option value="">Select Builder</option>
+              <option value="">{loadingBuilders ? 'Loading builders…' : 'Select Builder'}</option>
               {builders.map((b) => (
                 <option key={b._id} value={b._id}>{b.name}</option>
               ))}
             </select>
-            {buildersError && <p className="text-xs text-red-500 mt-1">{buildersError}</p>}
+            {buildersError && (
+              <p className="text-xs text-red-500 mt-1 flex items-center gap-2">
+                <span>{buildersError}</span>
+                <button
+                  type="button"
+                  onClick={() => setReloadKey((k) => k + 1)}
+                  className="font-bold text-primary underline underline-offset-2 hover:no-underline"
+                >
+                  Retry
+                </button>
+              </p>
+            )}
           </div>
 
           <div>

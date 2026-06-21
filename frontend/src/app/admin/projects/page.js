@@ -108,6 +108,9 @@ export default function AdminProjectsPage() {
     (typeof row.builderId === 'object' && row.builderId?.name) || row.builderName || '—';
 
   const configsLabel = (row) => {
+    if (Array.isArray(row.bhkSummary) && row.bhkSummary.length) {
+      return row.bhkSummary.join(', ');
+    }
     if (Array.isArray(row.bhkConfigurations) && row.bhkConfigurations.length) {
       return row.bhkConfigurations.join(', ');
     }

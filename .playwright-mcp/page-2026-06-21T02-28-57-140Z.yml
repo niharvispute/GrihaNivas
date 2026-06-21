@@ -1,0 +1,250 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e10]: Grihanivas
+        - paragraph [ref=e11]: Admin Console
+        - link "arrow_back Back to Home" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e13]: arrow_back
+          - text: Back to Home
+      - navigation [ref=e14]:
+        - link "dashboard Dashboard" [ref=e15] [cursor=pointer]:
+          - /url: /admin
+          - generic [ref=e16]: dashboard
+          - generic [ref=e17]: Dashboard
+        - link "real_estate_agent Properties" [ref=e18] [cursor=pointer]:
+          - /url: /admin/properties
+          - generic [ref=e19]: real_estate_agent
+          - generic [ref=e20]: Properties
+        - link "domain Projects" [ref=e21] [cursor=pointer]:
+          - /url: /admin/projects
+          - generic [ref=e22]: domain
+          - generic [ref=e23]: Projects
+        - link "apartment Builders" [ref=e24] [cursor=pointer]:
+          - /url: /admin/builders
+          - generic [ref=e25]: apartment
+          - generic [ref=e26]: Builders
+        - link "home_work Property Submissions" [ref=e27] [cursor=pointer]:
+          - /url: /admin/property-submissions
+          - generic [ref=e28]: home_work
+          - generic [ref=e29]: Property Submissions
+        - link "leaderboard Leads" [ref=e30] [cursor=pointer]:
+          - /url: /admin/leads
+          - generic [ref=e31]: leaderboard
+          - generic [ref=e32]: Leads
+        - link "edit_note Blogs" [ref=e33] [cursor=pointer]:
+          - /url: /admin/blogs
+          - generic [ref=e34]: edit_note
+          - generic [ref=e35]: Blogs
+        - link "view_carousel Banners" [ref=e36] [cursor=pointer]:
+          - /url: /admin/banners
+          - generic [ref=e37]: view_carousel
+          - generic [ref=e38]: Banners
+        - link "reviews Testimonials" [ref=e39] [cursor=pointer]:
+          - /url: /admin/testimonials
+          - generic [ref=e40]: reviews
+          - generic [ref=e41]: Testimonials
+        - link "group Users" [ref=e42] [cursor=pointer]:
+          - /url: /admin/users
+          - generic [ref=e43]: group
+          - generic [ref=e44]: Users
+        - link "local_offer Offers" [ref=e45] [cursor=pointer]:
+          - /url: /admin/offers
+          - generic [ref=e46]: local_offer
+          - generic [ref=e47]: Offers
+        - link "receipt_long Stamp Duty Rates" [ref=e48] [cursor=pointer]:
+          - /url: /admin/stamp-duty
+          - generic [ref=e49]: receipt_long
+          - generic [ref=e50]: Stamp Duty Rates
+        - link "tune System Settings" [ref=e51] [cursor=pointer]:
+          - /url: /admin/system
+          - generic [ref=e52]: tune
+          - generic [ref=e53]: System Settings
+    - generic [ref=e54]:
+      - banner [ref=e55]:
+        - generic [ref=e57]:
+          - generic [ref=e58]: search
+          - textbox "Search leads, properties, or transactions..." [ref=e59]
+        - generic [ref=e60]:
+          - button "logout Logout" [ref=e62]:
+            - generic [ref=e63]: logout
+            - text: Logout
+          - generic [ref=e65] [cursor=pointer]:
+            - generic [ref=e66]:
+              - paragraph [ref=e67]: Super Admin
+              - paragraph [ref=e68]: admin access
+            - generic [ref=e70]: SA
+      - main [ref=e71]:
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - generic [ref=e75]:
+              - heading "Projects" [level=1] [ref=e76]
+              - paragraph [ref=e77]: Manage bulk property projects, configurations & inventory
+            - link "add Add Project" [ref=e78] [cursor=pointer]:
+              - /url: /admin/projects/new
+              - generic [ref=e79]: add
+              - text: Add Project
+          - generic [ref=e80]:
+            - generic [ref=e81]:
+              - generic [ref=e82]: search
+              - textbox "Search projects..." [ref=e83]
+            - combobox [ref=e84]:
+              - option "All Statuses" [selected]
+              - option "Active"
+              - option "Draft"
+              - option "Inactive"
+          - table [ref=e86]:
+            - rowgroup [ref=e87]:
+              - row "Project Location Status Listing Configs Units Actions" [ref=e88]:
+                - columnheader "Project" [ref=e89]
+                - columnheader "Location" [ref=e90]
+                - columnheader "Status" [ref=e91]
+                - columnheader "Listing" [ref=e92]
+                - columnheader "Configs" [ref=e93]
+                - columnheader "Units" [ref=e94]
+                - columnheader "Actions" [ref=e95]
+            - rowgroup [ref=e96]:
+              - row "ShaktiTwo star GHP Group Wakad New Launch Active — 170 star edit more_vert" [ref=e244]:
+                - cell "ShaktiTwo star GHP Group" [ref=e245]:
+                  - generic [ref=e246]:
+                    - text: ShaktiTwo
+                    - generic "Featured" [ref=e247]: star
+                  - generic [ref=e248]: GHP Group
+                - cell "Wakad" [ref=e249]
+                - cell "New Launch" [ref=e250]:
+                  - generic [ref=e251]: New Launch
+                - cell "Active" [ref=e252]:
+                  - combobox [ref=e253] [cursor=pointer]:
+                    - option "Active" [selected]
+                    - option "Draft"
+                    - option "Inactive"
+                - cell "—" [ref=e254]
+                - cell "170" [ref=e255]
+                - cell "star edit more_vert" [ref=e256]:
+                  - generic [ref=e257]:
+                    - button "star" [ref=e258]:
+                      - generic [ref=e259]: star
+                    - link "edit" [ref=e260] [cursor=pointer]:
+                      - /url: /admin/projects/6a36a377d8b554beed25ec62/edit
+                      - generic [ref=e261]: edit
+                    - button "more_vert" [ref=e262]:
+                      - generic [ref=e263]: more_vert
+              - row "Nahar Amrit Shakti Kanakia Spaces Realty Pvt. Ltd. Worli Under Construction Active — 10 star_border edit more_vert" [ref=e264]:
+                - cell "Nahar Amrit Shakti Kanakia Spaces Realty Pvt. Ltd." [ref=e265]:
+                  - generic [ref=e266]: Nahar Amrit Shakti
+                  - generic [ref=e267]: Kanakia Spaces Realty Pvt. Ltd.
+                - cell "Worli" [ref=e268]
+                - cell "Under Construction" [ref=e269]:
+                  - generic [ref=e270]: Under Construction
+                - cell "Active" [ref=e271]:
+                  - combobox [ref=e272] [cursor=pointer]:
+                    - option "Active" [selected]
+                    - option "Draft"
+                    - option "Inactive"
+                - cell "—" [ref=e273]
+                - cell "10" [ref=e274]
+                - cell "star_border edit more_vert" [ref=e275]:
+                  - generic [ref=e276]:
+                    - button "star_border" [ref=e277]:
+                      - generic [ref=e278]: star_border
+                    - link "edit" [ref=e279] [cursor=pointer]:
+                      - /url: /admin/projects/6a3601acff4db1359eb58565/edit
+                      - generic [ref=e280]: edit
+                    - button "more_vert" [ref=e281]:
+                      - generic [ref=e282]: more_vert
+              - row "Lodha Palava City Phase 2 Lodha Group (Macrotech Developers Limited) Dombivli East New Launch Active — 480 star_border edit more_vert" [ref=e283]:
+                - cell "Lodha Palava City Phase 2 Lodha Group (Macrotech Developers Limited)" [ref=e284]:
+                  - generic [ref=e285]: Lodha Palava City Phase 2
+                  - generic [ref=e286]: Lodha Group (Macrotech Developers Limited)
+                - cell "Dombivli East" [ref=e287]
+                - cell "New Launch" [ref=e288]:
+                  - generic [ref=e289]: New Launch
+                - cell "Active" [ref=e290]:
+                  - combobox [ref=e291] [cursor=pointer]:
+                    - option "Active" [selected]
+                    - option "Draft"
+                    - option "Inactive"
+                - cell "—" [ref=e292]
+                - cell "480" [ref=e293]
+                - cell "star_border edit more_vert" [ref=e294]:
+                  - generic [ref=e295]:
+                    - button "star_border" [ref=e296]:
+                      - generic [ref=e297]: star_border
+                    - link "edit" [ref=e298] [cursor=pointer]:
+                      - /url: /admin/projects/6a354678762e283801091ae8/edit
+                      - generic [ref=e299]: edit
+                    - button "more_vert" [ref=e300]:
+                      - generic [ref=e301]: more_vert
+              - row "Shakti star Hiranandani Group wakad New Launch Active — 80 star edit more_vert" [ref=e302]:
+                - cell "Shakti star Hiranandani Group" [ref=e303]:
+                  - generic [ref=e304]:
+                    - text: Shakti
+                    - generic "Featured" [ref=e305]: star
+                  - generic [ref=e306]: Hiranandani Group
+                - cell "wakad" [ref=e307]
+                - cell "New Launch" [ref=e308]:
+                  - generic [ref=e309]: New Launch
+                - cell "Active" [ref=e310]:
+                  - combobox [ref=e311] [cursor=pointer]:
+                    - option "Active" [selected]
+                    - option "Draft"
+                    - option "Inactive"
+                - cell "—" [ref=e312]
+                - cell "80" [ref=e313]
+                - cell "star edit more_vert" [ref=e314]:
+                  - generic [ref=e315]:
+                    - button "star" [ref=e316]:
+                      - generic [ref=e317]: star
+                    - link "edit" [ref=e318] [cursor=pointer]:
+                      - /url: /admin/projects/6a339cd0f8265d105ea83109/edit
+                      - generic [ref=e319]: edit
+                    - button "more_vert" [ref=e320]:
+                      - generic [ref=e321]: more_vert
+              - row "first project — — New Launch Draft — — star_border edit more_vert" [ref=e322]:
+                - cell "first project —" [ref=e323]:
+                  - generic [ref=e324]: first project
+                  - generic [ref=e325]: —
+                - cell "—" [ref=e326]
+                - cell "New Launch" [ref=e327]:
+                  - generic [ref=e328]: New Launch
+                - cell "Draft" [ref=e329]:
+                  - combobox [ref=e330] [cursor=pointer]:
+                    - option "Active"
+                    - option "Draft" [selected]
+                    - option "Inactive"
+                - cell "—" [ref=e331]
+                - cell "—" [ref=e332]
+                - cell "star_border edit more_vert" [ref=e333]:
+                  - generic [ref=e334]:
+                    - button "star_border" [ref=e335]:
+                      - generic [ref=e336]: star_border
+                    - link "edit" [ref=e337] [cursor=pointer]:
+                      - /url: /admin/projects/6a34d0b35c0a5fbd65953455/edit
+                      - generic [ref=e338]: edit
+                    - button "more_vert" [ref=e339]:
+                      - generic [ref=e340]: more_vert
+              - row "yjs-test-project — — New Launch Draft — — star_border edit more_vert" [ref=e341]:
+                - cell "yjs-test-project —" [ref=e342]:
+                  - generic [ref=e343]: yjs-test-project
+                  - generic [ref=e344]: —
+                - cell "—" [ref=e345]
+                - cell "New Launch" [ref=e346]:
+                  - generic [ref=e347]: New Launch
+                - cell "Draft" [ref=e348]:
+                  - combobox [ref=e349] [cursor=pointer]:
+                    - option "Active"
+                    - option "Draft" [selected]
+                    - option "Inactive"
+                - cell "—" [ref=e350]
+                - cell "—" [ref=e351]
+                - cell "star_border edit more_vert" [ref=e352]:
+                  - generic [ref=e353]:
+                    - button "star_border" [ref=e354]:
+                      - generic [ref=e355]: star_border
+                    - link "edit" [ref=e356] [cursor=pointer]:
+                      - /url: /admin/projects/6a37478563bea81ced847e18/edit
+                      - generic [ref=e357]: edit
+                    - button "more_vert" [ref=e358]:
+                      - generic [ref=e359]: more_vert
+  - alert [ref=e6]

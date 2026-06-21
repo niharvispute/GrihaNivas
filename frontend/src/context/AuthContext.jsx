@@ -20,7 +20,11 @@ export function AuthProvider({ children }) {
 
     getCurrentUser()
       .then((data) => { if (data) setUser(data); })
-      .catch(() => clearTokens())
+      .catch((error) => {
+        // Only end the session on a genuine auth failure. Transient errors
+        // (e.g. 429 rate limit, 5xx, network) must NOT clear tokens / log the user out.
+        if (error?.status === 401) clearTokens();
+      })
       .finally(() => setLoadingUser(false));
   }, []);
 

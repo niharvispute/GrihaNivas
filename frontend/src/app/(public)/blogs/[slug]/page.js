@@ -88,7 +88,7 @@ export default async function BlogDetailPage({ params }) {
     trendingAssets = [];
   }
 
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://bricksmumbai.com';
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.grihanivas.in';
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',

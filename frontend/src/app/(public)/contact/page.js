@@ -6,6 +6,14 @@ import { useSearchParams } from 'next/navigation';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { submitContactForm } from '@/services/contactService';
+import { SITE_CONTACT } from '@/lib/siteContact';
+import {
+  validateName,
+  validatePhone,
+  validateEmail,
+  validateMessage,
+  collectErrors,
+} from '@/lib/validation/formValidation';
 
 function ContactForm() {
   const searchParams = useSearchParams();
@@ -34,20 +42,37 @@ function ContactForm() {
   }, [propertyTitle, prefilledMessage]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (field) => (event) => {
-    setForm((prev) => ({ ...prev, [field]: event.target.value }));
+    const { value } = event.target;
+    setForm((prev) => ({ ...prev, [field]: value }));
+    // Clear a field's error as soon as the user edits it.
+    setErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
+  };
+
+  const validateAll = () => {
+    const { errors: found, hasError } = collectErrors({
+      name: validateName(form.name),
+      phone: validatePhone(form.phone),
+      email: validateEmail(form.email, { required: false }),
+      message: validateMessage(form.message, { required: true }),
+    });
+    setErrors(found);
+    return !hasError;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const phone = toIndianPhoneE164(form.phone);
 
+    if (!validateAll()) {
+      setFeedback({ type: 'error', message: 'Please fix the highlighted fields and try again.' });
+      return;
+    }
+
+    const phone = toIndianPhoneE164(form.phone);
     if (!phone) {
-      setFeedback({
-        type: 'error',
-        message: 'Please enter a valid Indian mobile number in +91 format.',
-      });
+      setErrors((prev) => ({ ...prev, phone: 'Please enter a valid Indian mobile number in +91 format.' }));
       return;
     }
 
@@ -80,21 +105,21 @@ function ContactForm() {
   const contactInfo = [
     {
       title: "Office Address",
-      desc: "The Pavilion, Worli Sea Face, South Mumbai, Maharashtra 400018",
+      desc: SITE_CONTACT.addressOneLine,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
       )
     },
     {
       title: "Phone Number",
-      desc: "+91 91379 50050",
+      desc: SITE_CONTACT.phoneDisplay,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       )
     },
     {
       title: "Email Address",
-      desc: "contact@grihanivas.in",
+      desc: SITE_CONTACT.email,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
       )
@@ -151,11 +176,7 @@ function ContactForm() {
                 Operations Hours
               </h3>
               <div className="space-y-4 md:space-y-6">
-                {[
-                  { day: "Mon - Fri", time: "09:00 AM - 07:00 PM" },
-                  { day: "Saturday", time: "10:00 AM - 05:00 PM" },
-                  { day: "Sunday", time: "By Appointment", special: true }
-                ].map((row, i) => (
+                {SITE_CONTACT.hours.map((row, i) => (
                   <div key={i} className="flex justify-between items-center border-b border-white/10 pb-3 md:pb-4">
                     <span className="text-white/50 text-[10px] md:text-sm font-black uppercase tracking-widest ">{row.day}</span>
                     <span className={`font-black text-[11px] md:text-sm ${row.special ? 'text-primary' : 'text-white'} `}>{row.time}</span>
@@ -173,48 +194,64 @@ function ContactForm() {
           <form className="space-y-6 md:space-y-8" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               <div className="space-y-2 md:space-y-3">
-                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Full Name</label>
-                <input 
-                  className="w-full px-6 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-slate-50 border-none focus:ring-1 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all text-sm md:text-base" 
-                  placeholder="John Doe" 
+                <label htmlFor="contact-name" className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Full Name</label>
+                <input
+                  id="contact-name"
+                  className={`w-full px-6 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-slate-50 border focus:ring-1 placeholder:text-slate-300 font-bold transition-all text-sm md:text-base ${errors.name ? 'border-red-400 focus:ring-red-200' : 'border-transparent focus:ring-primary/20'}`}
+                  placeholder="John Doe"
                   type="text"
                   value={form.name}
                   onChange={handleChange('name')}
+                  aria-invalid={errors.name ? 'true' : 'false'}
+                  aria-describedby={errors.name ? 'contact-name-error' : undefined}
                   required
                 />
+                {errors.name && <p id="contact-name-error" role="alert" className="text-xs font-bold text-red-600">{errors.name}</p>}
               </div>
               <div className="space-y-2 md:space-y-3">
-                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Phone Number</label>
-                <input 
-                  className="w-full px-6 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-slate-50 border-none focus:ring-1 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all text-sm md:text-base" 
-                  placeholder="+91 00000 00000" 
+                <label htmlFor="contact-phone" className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Phone Number</label>
+                <input
+                  id="contact-phone"
+                  className={`w-full px-6 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-slate-50 border focus:ring-1 placeholder:text-slate-300 font-bold transition-all text-sm md:text-base ${errors.phone ? 'border-red-400 focus:ring-red-200' : 'border-transparent focus:ring-primary/20'}`}
+                  placeholder="+91 00000 00000"
                   type="tel"
                   value={form.phone}
                   onChange={handleChange('phone')}
+                  aria-invalid={errors.phone ? 'true' : 'false'}
+                  aria-describedby={errors.phone ? 'contact-phone-error' : undefined}
                   required
                 />
+                {errors.phone && <p id="contact-phone-error" role="alert" className="text-xs font-bold text-red-600">{errors.phone}</p>}
               </div>
             </div>
             <div className="space-y-2 md:space-y-3">
-              <label className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Email Address</label>
-              <input 
-                className="w-full px-6 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-slate-50 border-none focus:ring-1 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all text-sm md:text-base" 
-                placeholder="john@example.com" 
+              <label htmlFor="contact-email" className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Email Address</label>
+              <input
+                id="contact-email"
+                className={`w-full px-6 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-slate-50 border focus:ring-1 placeholder:text-slate-300 font-bold transition-all text-sm md:text-base ${errors.email ? 'border-red-400 focus:ring-red-200' : 'border-transparent focus:ring-primary/20'}`}
+                placeholder="john@example.com"
                 type="email"
                 value={form.email}
                 onChange={handleChange('email')}
+                aria-invalid={errors.email ? 'true' : 'false'}
+                aria-describedby={errors.email ? 'contact-email-error' : undefined}
               />
+              {errors.email && <p id="contact-email-error" role="alert" className="text-xs font-bold text-red-600">{errors.email}</p>}
             </div>
             <div className="space-y-2 md:space-y-3">
-              <label className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Message</label>
-              <textarea 
-                className="w-full px-6 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-slate-50 border-none focus:ring-1 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all resize-none text-sm md:text-base" 
-                placeholder="How can we assist you today?" 
+              <label htmlFor="contact-message" className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Message</label>
+              <textarea
+                id="contact-message"
+                className={`w-full px-6 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-slate-50 border focus:ring-1 placeholder:text-slate-300 font-bold transition-all resize-none text-sm md:text-base ${errors.message ? 'border-red-400 focus:ring-red-200' : 'border-transparent focus:ring-primary/20'}`}
+                placeholder="How can we assist you today?"
                 rows="4"
                 value={form.message}
                 onChange={handleChange('message')}
+                aria-invalid={errors.message ? 'true' : 'false'}
+                aria-describedby={errors.message ? 'contact-message-error' : undefined}
                 required
               ></textarea>
+              {errors.message && <p id="contact-message-error" role="alert" className="text-xs font-bold text-red-600">{errors.message}</p>}
             </div>
             <button 
               disabled={isSubmitting}
@@ -225,7 +262,7 @@ function ContactForm() {
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="md:w-5 md:h-5"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
             </button>
             {feedback.message && (
-              <p className={`text-xs md:text-sm font-bold ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
+              <p role="alert" aria-live="polite" className={`text-xs md:text-sm font-bold ${feedback.type === 'error' ? 'text-red-600' : 'text-emerald-600'}`}>
                 {feedback.message}
               </p>
             )}
@@ -260,8 +297,8 @@ function ContactForm() {
             <h2 className="text-2xl md:text-4xl font-black text-white tracking-tighter leading-none">Have more questions?</h2>
             <p className="text-white/60 font-bold text-sm md:text-lg max-w-xl">Browse our frequently asked questions about listing and investment processes.</p>
           </div>
-          <Link 
-            href="/faq" 
+          <Link
+            href="/faqs"
             className="px-8 md:px-12 py-3.5 md:py-5 border-2 border-primary text-primary font-black rounded-full hover:bg-primary hover:text-white transition-all duration-500 shadow-2xl relative z-10 text-sm md:text-lg uppercase tracking-tight leading-none"
           >
             Go to FAQs

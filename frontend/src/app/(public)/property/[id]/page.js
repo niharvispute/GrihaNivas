@@ -96,7 +96,7 @@ export default async function PropertyDetailPage({ params }) {
     ? `https://www.google.com/maps?q=${encodeURIComponent(locationQuery)}&output=embed`
     : null;
 
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://bricksmumbai.com';
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.grihanivas.in';
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'RealEstateListing',

@@ -84,11 +84,31 @@ export function validateTotalArea(carpetArea, totalArea) {
   return null;
 }
 
-export function validatePrice(value) {
+// Sanity bounds — the price field is the full amount in rupees, not lakhs/crores.
+// These catch unit-entry mistakes (e.g. typing "4.52" meaning ₹4.52 Lac) and
+// implausible values, while staying loose enough to avoid false positives.
+const MIN_SALE_PRICE = 100000; // ₹1 Lakh — below this is almost always a unit error
+const MAX_SALE_PRICE = 100000000000; // ₹1,000 Cr — generous upper guard
+const MIN_PRICE_PER_SQFT = 1000; // far below any real MMR rate; flags gross errors only
+const MIN_RENT = 1000; // ₹1,000/month
+const MAX_RENT = 50000000; // ₹5 Cr/month — generous upper guard
+
+export function validatePrice(value, { carpetArea } = {}) {
   const v = String(value || '').replace(/,/g, '').trim();
   if (!v) return 'Please enter property price.';
   if (!/^\d+(\.\d+)?$/.test(v)) return 'Property price can contain only numbers.';
-  if (Number(v) <= 0) return 'Property price must be greater than 0.';
+  const amount = Number(v);
+  if (amount <= 0) return 'Property price must be greater than 0.';
+  if (amount < MIN_SALE_PRICE)
+    return 'Price looks too low — enter the full amount in rupees (e.g. 9000000 for ₹90 Lac), not in lakhs.';
+  if (amount > MAX_SALE_PRICE) return 'Price seems too high. Please verify the amount.';
+
+  const area = Number(String(carpetArea || '').replace(/,/g, ''));
+  if (area > 0 && amount / area < MIN_PRICE_PER_SQFT) {
+    return `Price looks too low for the carpet area (₹${Math.round(
+      amount / area
+    )}/sq.ft). Please verify the amount and unit.`;
+  }
   return null;
 }
 
@@ -96,7 +116,11 @@ export function validateRent(value) {
   const v = String(value || '').replace(/,/g, '').trim();
   if (!v) return 'Please enter rent amount.';
   if (!/^\d+(\.\d+)?$/.test(v)) return 'Rent amount can contain only numbers.';
-  if (Number(v) <= 0) return 'Rent amount must be greater than 0.';
+  const amount = Number(v);
+  if (amount <= 0) return 'Rent amount must be greater than 0.';
+  if (amount < MIN_RENT)
+    return 'Rent looks too low — enter the monthly rent in rupees (e.g. 25000).';
+  if (amount > MAX_RENT) return 'Rent seems too high. Please verify the amount.';
   return null;
 }
 

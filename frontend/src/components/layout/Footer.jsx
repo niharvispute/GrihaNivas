@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { SITE_CONTACT } from '@/lib/siteContact';
 
 const SOCIAL_LINKS = [
   {
@@ -63,11 +64,11 @@ export default function Footer() {
         <div>
           <h3 className="font-bold text-slate-900 mb-6">Properties</h3>
           <ul className="space-y-4">
-            <li><Link href="/buy" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Buy</Link></li>
-            <li><Link href="/rent" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Rent</Link></li>
-            <li><Link href="/projects" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Projects</Link></li>
-            <li><Link href="/builders" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Builders</Link></li>
-            <li><Link href="/new-launch" className="hover:translate-x-1 hover:text-primary transition-all inline-block">New Launch</Link></li>
+            <li><Link href="/buy" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">Buy</Link></li>
+            <li><Link href="/rent" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">Rent</Link></li>
+            <li><Link href="/projects" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">Projects</Link></li>
+            <li><Link href="/builders" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">Builders</Link></li>
+            <li><Link href="/new-launch" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">New Launch</Link></li>
           </ul>
         </div>
 
@@ -75,11 +76,11 @@ export default function Footer() {
         <div>
           <h3 className="font-bold text-slate-900 mb-6">Services</h3>
           <ul className="space-y-4">
-            <li><Link href="/home-loan" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Home Loan</Link></li>
-            <li><Link href="/emi-calculator" className="hover:translate-x-1 hover:text-primary transition-all inline-block">EMI Calculator</Link></li>
-            <li><Link href="/stamp-duty" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Stamp Duty</Link></li>
-            <li><Link href="/rent-agreement" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Rent Agreement</Link></li>
-            <li><Link href="/compare" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Comparison</Link></li>
+            <li><Link href="/home-loan" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">Home Loan</Link></li>
+            <li><Link href="/emi-calculator" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">EMI Calculator</Link></li>
+            <li><Link href="/stamp-duty" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">Stamp Duty</Link></li>
+            <li><Link href="/rent-agreement" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">Rent Agreement</Link></li>
+            <li><Link href="/compare" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">Comparison</Link></li>
           </ul>
         </div>
 
@@ -87,10 +88,10 @@ export default function Footer() {
         <div>
           <h3 className="font-bold text-slate-900 mb-6">Resources</h3>
           <ul className="space-y-4">
-            <li><Link href="/blogs" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Blogs</Link></li>
-            <li><Link href="/faqs" className="hover:translate-x-1 hover:text-primary transition-all inline-block">FAQs</Link></li>
-            <li><Link href="/about" className="hover:translate-x-1 hover:text-primary transition-all inline-block">About Us</Link></li>
-            <li><Link href="/contact" className="hover:translate-x-1 hover:text-primary transition-all inline-block">Contact</Link></li>
+            <li><Link href="/blogs" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">Blogs</Link></li>
+            <li><Link href="/faqs" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">FAQs</Link></li>
+            <li><Link href="/about" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">About Us</Link></li>
+            <li><Link href="/contact" prefetch={false} className="hover:translate-x-1 hover:text-primary transition-all inline-block">Contact</Link></li>
           </ul>
         </div>
 
@@ -100,19 +101,19 @@ export default function Footer() {
           <ul className="space-y-4 text-slate-500">
             <li className="flex items-start gap-3">
               <svg className="mt-1 text-primary shrink-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span>Heera Panna Shopping Complex,<br />Powai Hiranandani Garden, Mumbai – 400076</span>
+              <span>{SITE_CONTACT.addressLines[0]}<br />{SITE_CONTACT.addressLines[1]}</span>
             </li>
             <li className="flex items-center gap-3">
               <svg className="text-primary shrink-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-              <a href="tel:+919137950050" className="hover:text-primary transition-colors">+91 91379 50050</a>
+              <a href={SITE_CONTACT.phoneHref} className="hover:text-primary transition-colors">{SITE_CONTACT.phoneDisplay}</a>
             </li>
             <li className="flex items-center gap-3">
               <svg className="text-primary shrink-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="14" x="3" y="5" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-              <a href="mailto:contact@grihanivas.in" className="hover:text-primary transition-colors">contact@grihanivas.in</a>
+              <a href={`mailto:${SITE_CONTACT.email}`} className="hover:text-primary transition-colors">{SITE_CONTACT.email}</a>
             </li>
             <li className="flex items-start gap-3">
               <svg className="mt-0.5 text-primary shrink-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="14" x="3" y="5" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-              <span><span className="font-semibold text-slate-600">RERA:</span> A51700000043</span>
+              <span><span className="font-semibold text-slate-600">RERA:</span> {SITE_CONTACT.rera}</span>
             </li>
           </ul>
         </div>
