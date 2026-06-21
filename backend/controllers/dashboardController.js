@@ -5,6 +5,8 @@ const User = require('../models/mongoose/User');
 const Blog = require('../models/mongoose/Blog');
 const Project = require('../models/mongoose/Project');
 const ProjectUnit = require('../models/mongoose/ProjectUnit');
+const Banner = require('../models/mongoose/Banner');
+const Testimonial = require('../models/mongoose/Testimonial');
 
 /**
  * Dashboard Controller  [admin only]
@@ -34,6 +36,8 @@ const getStats = async (req, res, next) => {
       projectsByProjectStatus,
       projectEnquiries,
       availableProjectUnits,
+      totalBanners,
+      totalTestimonials,
     ] = await Promise.all([
       Property.countDocuments(),
       Property.countDocuments({ isActive: true }),
@@ -49,6 +53,8 @@ const getStats = async (req, res, next) => {
       Project.aggregate([{ $group: { _id: '$projectStatus', count: { $sum: 1 } } }]),
       Lead.countDocuments({ leadType: 'project' }),
       ProjectUnit.countDocuments({ status: 'available' }),
+      Banner.countDocuments(),
+      Testimonial.countDocuments(),
     ]);
 
     const byStatus = Object.fromEntries(leadsByStatus.map(s => [s._id, s.count]));
@@ -71,6 +77,8 @@ const getStats = async (req, res, next) => {
       },
       users: { total: totalUsers },
       blogs: { total: totalBlogs },
+      banners: { total: totalBanners },
+      testimonials: { total: totalTestimonials },
       projects: {
         total: totalProjects,
         active: projectsByListingStatus.find(s => s._id === 'active')?.count ?? 0,

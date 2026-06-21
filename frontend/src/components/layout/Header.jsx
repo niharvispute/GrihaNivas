@@ -140,6 +140,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch={false}
                 className={`py-2 border-b-2 transition-colors ${
                   isActive(link.href)
                     ? 'text-primary border-primary'
@@ -185,6 +186,7 @@ export default function Header() {
                     <Link
                       key={service.href}
                       href={service.href}
+                      prefetch={false}
                       onClick={() => setIsServicesMenuOpen(false)}
                       className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold transition-all ${
                         isActive(service.href)
@@ -202,6 +204,7 @@ export default function Header() {
 
             <Link
               href={CONTACT_LINK.href}
+              prefetch={false}
               className={`py-2 border-b-2 transition-colors ${
                 isActive(CONTACT_LINK.href)
                   ? 'text-primary border-primary'
@@ -377,6 +380,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch={false}
                 className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all ${
                   isActive(link.href)
                     ? 'bg-primary/10 text-primary'
@@ -418,6 +422,7 @@ export default function Header() {
                       <Link
                         key={service.href}
                         href={service.href}
+                        prefetch={false}
                         onClick={() => {
                           setIsMobileServicesOpen(false);
                           setIsMobileMenuOpen(false);
@@ -439,6 +444,7 @@ export default function Header() {
 
             <Link
               href={CONTACT_LINK.href}
+              prefetch={false}
               className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all ${
                 isActive(CONTACT_LINK.href)
                   ? 'bg-primary/10 text-primary'

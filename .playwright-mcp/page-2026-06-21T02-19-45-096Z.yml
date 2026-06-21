@@ -1,0 +1,103 @@
+- generic [ref=e2]:
+  - main [ref=e4]:
+    - generic [ref=e5]: Loading...
+  - contentinfo [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]: GrihaNivas
+        - paragraph [ref=e10]: Mumbai's concierge real estate advisory.
+        - generic [ref=e11]:
+          - link "Instagram" [ref=e12] [cursor=pointer]:
+            - /url: https://www.instagram.com/grihanivas_sgp?igsh=YWwzd2ltc2piY3Fo
+            - img [ref=e13]
+          - link "WhatsApp" [ref=e16] [cursor=pointer]:
+            - /url: https://wa.me/919137950050
+            - img [ref=e17]
+          - link "YouTube" [ref=e19] [cursor=pointer]:
+            - /url: https://www.youtube.com/@GrihaNivas
+            - img [ref=e20]
+      - generic [ref=e23]:
+        - heading "Properties" [level=3] [ref=e24]
+        - list [ref=e25]:
+          - listitem [ref=e26]:
+            - link "Buy" [ref=e27] [cursor=pointer]:
+              - /url: /buy
+          - listitem [ref=e28]:
+            - link "Rent" [ref=e29] [cursor=pointer]:
+              - /url: /rent
+          - listitem [ref=e30]:
+            - link "Projects" [ref=e31] [cursor=pointer]:
+              - /url: /projects
+          - listitem [ref=e32]:
+            - link "Builders" [ref=e33] [cursor=pointer]:
+              - /url: /builders
+          - listitem [ref=e34]:
+            - link "New Launch" [ref=e35] [cursor=pointer]:
+              - /url: /new-launch
+      - generic [ref=e36]:
+        - heading "Services" [level=3] [ref=e37]
+        - list [ref=e38]:
+          - listitem [ref=e39]:
+            - link "Home Loan" [ref=e40] [cursor=pointer]:
+              - /url: /home-loan
+          - listitem [ref=e41]:
+            - link "EMI Calculator" [ref=e42] [cursor=pointer]:
+              - /url: /emi-calculator
+          - listitem [ref=e43]:
+            - link "Stamp Duty" [ref=e44] [cursor=pointer]:
+              - /url: /stamp-duty
+          - listitem [ref=e45]:
+            - link "Rent Agreement" [ref=e46] [cursor=pointer]:
+              - /url: /rent-agreement
+          - listitem [ref=e47]:
+            - link "Comparison" [ref=e48] [cursor=pointer]:
+              - /url: /compare
+      - generic [ref=e49]:
+        - heading "Resources" [level=3] [ref=e50]
+        - list [ref=e51]:
+          - listitem [ref=e52]:
+            - link "Blogs" [ref=e53] [cursor=pointer]:
+              - /url: /blogs
+          - listitem [ref=e54]:
+            - link "FAQs" [ref=e55] [cursor=pointer]:
+              - /url: /faqs
+          - listitem [ref=e56]:
+            - link "About Us" [ref=e57] [cursor=pointer]:
+              - /url: /about
+          - listitem [ref=e58]:
+            - link "Contact" [ref=e59] [cursor=pointer]:
+              - /url: /contact
+      - generic [ref=e60]:
+        - heading "Contact" [level=3] [ref=e61]
+        - list [ref=e62]:
+          - listitem [ref=e63]:
+            - img [ref=e64]
+            - generic [ref=e67]:
+              - text: Heera Panna Shopping Complex,
+              - text: Powai Hiranandani Garden, Mumbai – 400076
+          - listitem [ref=e68]:
+            - img [ref=e69]
+            - link "+91 91379 50050" [ref=e71] [cursor=pointer]:
+              - /url: tel:+919137950050
+          - listitem [ref=e72]:
+            - img [ref=e73]
+            - link "contact@grihanivas.in" [ref=e76] [cursor=pointer]:
+              - /url: mailto:contact@grihanivas.in
+          - listitem [ref=e77]:
+            - img [ref=e78]
+            - generic [ref=e81]: "RERA: A51700000043"
+    - generic [ref=e82]:
+      - generic [ref=e83]: © 2026 GrihaNivas. All rights reserved.
+      - generic [ref=e84]: Powered by Shree Gurudev Properties
+      - generic [ref=e85]:
+        - link "Privacy Policy" [ref=e86] [cursor=pointer]:
+          - /url: /privacy
+        - link "Terms of Use" [ref=e87] [cursor=pointer]:
+          - /url: /terms
+  - generic [ref=e88]:
+    - link "Call us" [ref=e89] [cursor=pointer]:
+      - /url: tel:+919137950050
+      - img [ref=e90]
+    - link "Chat on WhatsApp" [ref=e92] [cursor=pointer]:
+      - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+      - img [ref=e93]

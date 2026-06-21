@@ -1,0 +1,183 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e122]:
+    - banner [ref=e123]:
+      - generic [ref=e124]:
+        - link "GrihaNivas" [ref=e126] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e127]:
+          - link "BUY" [ref=e128] [cursor=pointer]:
+            - /url: /buy
+          - link "RENT" [ref=e129] [cursor=pointer]:
+            - /url: /rent
+          - link "NEW LAUNCH" [ref=e130] [cursor=pointer]:
+            - /url: /new-launch
+          - link "PROJECTS" [ref=e131] [cursor=pointer]:
+            - /url: /projects
+          - link "BUILDERS" [ref=e132] [cursor=pointer]:
+            - /url: /builders
+          - link "BLOGS" [ref=e133] [cursor=pointer]:
+            - /url: /blogs
+          - generic [ref=e134]:
+            - button "SERVICES expand_more" [ref=e135]:
+              - generic [ref=e136]: SERVICES
+              - generic [ref=e137]: expand_more
+            - generic:
+              - generic:
+                - link "account_balance Home Loan":
+                  - /url: /home-loan
+                  - generic: account_balance
+                  - generic: Home Loan
+                - link "calculate EMI Calculator":
+                  - /url: /emi-calculator
+                  - generic: calculate
+                  - generic: EMI Calculator
+                - link "receipt_long Stamp Duty":
+                  - /url: /stamp-duty
+                  - generic: receipt_long
+                  - generic: Stamp Duty
+                - link "description Rent Agreement":
+                  - /url: /rent-agreement
+                  - generic: description
+                  - generic: Rent Agreement
+                - link "compare Comparison":
+                  - /url: /compare
+                  - generic: compare
+                  - generic: Comparison
+          - link "CONTACT" [ref=e138] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e139]:
+          - button "Login / Register" [ref=e140]
+          - button "List Property" [ref=e141]
+    - main [ref=e142]:
+      - main [ref=e143]:
+        - generic [ref=e144]:
+          - generic [ref=e145]:
+            - paragraph [ref=e146]: Secure Access
+            - heading "Account Access" [level=1] [ref=e147]
+            - paragraph [ref=e148]: Login with password, create an account with email OTP verification, or reset password with secure OTP flow.
+            - generic [ref=e149]:
+              - paragraph [ref=e150]: Access saved and compared properties
+              - paragraph [ref=e152]: Track your enquiries in dashboard
+              - paragraph [ref=e154]: Faster form submissions with autofill profile
+          - generic [ref=e156]:
+            - generic [ref=e157]:
+              - button "Login" [ref=e158]
+              - button "Sign Up" [ref=e159]
+              - button "Forgot Password" [ref=e160]
+            - generic [ref=e161]:
+              - generic [ref=e162]:
+                - generic [ref=e163]: Email or Mobile
+                - textbox "you@example.com or +91XXXXXXXXXX" [ref=e164]
+              - generic [ref=e165]:
+                - generic [ref=e166]: Password
+                - textbox "Enter password" [ref=e167]
+              - button "Login" [ref=e168]
+            - paragraph [ref=e169]:
+              - text: By continuing, you agree to our
+              - link "Terms" [ref=e170] [cursor=pointer]:
+                - /url: /terms
+              - text: and
+              - link "Privacy Policy" [ref=e171] [cursor=pointer]:
+                - /url: /privacy
+              - text: .
+    - contentinfo [ref=e172]:
+      - generic [ref=e173]:
+        - generic [ref=e174]:
+          - generic [ref=e175]: GrihaNivas
+          - paragraph [ref=e176]: Mumbai's concierge real estate advisory.
+          - generic [ref=e177]:
+            - link "Instagram" [ref=e178] [cursor=pointer]:
+              - /url: https://www.instagram.com/grihanivas_sgp?igsh=YWwzd2ltc2piY3Fo
+              - img [ref=e179]
+            - link "WhatsApp" [ref=e182] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e183]
+            - link "YouTube" [ref=e185] [cursor=pointer]:
+              - /url: https://www.youtube.com/@GrihaNivas
+              - img [ref=e186]
+        - generic [ref=e189]:
+          - heading "Properties" [level=3] [ref=e190]
+          - list [ref=e191]:
+            - listitem [ref=e192]:
+              - link "Buy" [ref=e193] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e194]:
+              - link "Rent" [ref=e195] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e196]:
+              - link "Projects" [ref=e197] [cursor=pointer]:
+                - /url: /projects
+            - listitem [ref=e198]:
+              - link "Builders" [ref=e199] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e200]:
+              - link "New Launch" [ref=e201] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e202]:
+          - heading "Services" [level=3] [ref=e203]
+          - list [ref=e204]:
+            - listitem [ref=e205]:
+              - link "Home Loan" [ref=e206] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e207]:
+              - link "EMI Calculator" [ref=e208] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e209]:
+              - link "Stamp Duty" [ref=e210] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e211]:
+              - link "Rent Agreement" [ref=e212] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e213]:
+              - link "Comparison" [ref=e214] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e215]:
+          - heading "Resources" [level=3] [ref=e216]
+          - list [ref=e217]:
+            - listitem [ref=e218]:
+              - link "Blogs" [ref=e219] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e220]:
+              - link "FAQs" [ref=e221] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e222]:
+              - link "About Us" [ref=e223] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e224]:
+              - link "Contact" [ref=e225] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e226]:
+          - heading "Contact" [level=3] [ref=e227]
+          - list [ref=e228]:
+            - listitem [ref=e229]:
+              - img [ref=e230]
+              - generic [ref=e233]:
+                - text: Heera Panna Shopping Complex,
+                - text: Powai Hiranandani Garden, Mumbai – 400076
+            - listitem [ref=e234]:
+              - img [ref=e235]
+              - link "+91 91379 50050" [ref=e237] [cursor=pointer]:
+                - /url: tel:+919137950050
+            - listitem [ref=e238]:
+              - img [ref=e239]
+              - link "contact@grihanivas.in" [ref=e242] [cursor=pointer]:
+                - /url: mailto:contact@grihanivas.in
+            - listitem [ref=e243]:
+              - img [ref=e244]
+              - generic [ref=e247]: "RERA: A51700000043"
+      - generic [ref=e248]:
+        - generic [ref=e249]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e250]: Powered by Shree Gurudev Properties
+        - generic [ref=e251]:
+          - link "Privacy Policy" [ref=e252] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e253] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e254]:
+      - link "Call us" [ref=e255] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e256]
+      - link "Chat on WhatsApp" [ref=e258] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e259]
+  - alert [ref=e6]

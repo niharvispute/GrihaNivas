@@ -1,0 +1,183 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e10]: Grihanivas
+        - paragraph [ref=e11]: Admin Console
+        - link "arrow_back Back to Home" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e13]: arrow_back
+          - text: Back to Home
+      - navigation [ref=e14]:
+        - link "dashboard Dashboard" [ref=e15] [cursor=pointer]:
+          - /url: /admin
+          - generic [ref=e16]: dashboard
+          - generic [ref=e17]: Dashboard
+        - link "real_estate_agent Properties" [ref=e18] [cursor=pointer]:
+          - /url: /admin/properties
+          - generic [ref=e19]: real_estate_agent
+          - generic [ref=e20]: Properties
+        - link "domain Projects" [ref=e21] [cursor=pointer]:
+          - /url: /admin/projects
+          - generic [ref=e22]: domain
+          - generic [ref=e23]: Projects
+        - link "apartment Builders" [ref=e24] [cursor=pointer]:
+          - /url: /admin/builders
+          - generic [ref=e25]: apartment
+          - generic [ref=e26]: Builders
+        - link "home_work Property Submissions" [ref=e27] [cursor=pointer]:
+          - /url: /admin/property-submissions
+          - generic [ref=e28]: home_work
+          - generic [ref=e29]: Property Submissions
+        - link "leaderboard Leads" [ref=e30] [cursor=pointer]:
+          - /url: /admin/leads
+          - generic [ref=e31]: leaderboard
+          - generic [ref=e32]: Leads
+        - link "edit_note Blogs" [ref=e33] [cursor=pointer]:
+          - /url: /admin/blogs
+          - generic [ref=e34]: edit_note
+          - generic [ref=e35]: Blogs
+        - link "view_carousel Banners" [ref=e36] [cursor=pointer]:
+          - /url: /admin/banners
+          - generic [ref=e37]: view_carousel
+          - generic [ref=e38]: Banners
+        - link "reviews Testimonials" [ref=e39] [cursor=pointer]:
+          - /url: /admin/testimonials
+          - generic [ref=e40]: reviews
+          - generic [ref=e41]: Testimonials
+        - link "group Users" [ref=e42] [cursor=pointer]:
+          - /url: /admin/users
+          - generic [ref=e43]: group
+          - generic [ref=e44]: Users
+        - link "local_offer Offers" [ref=e45] [cursor=pointer]:
+          - /url: /admin/offers
+          - generic [ref=e46]: local_offer
+          - generic [ref=e47]: Offers
+        - link "receipt_long Stamp Duty Rates" [ref=e48] [cursor=pointer]:
+          - /url: /admin/stamp-duty
+          - generic [ref=e49]: receipt_long
+          - generic [ref=e50]: Stamp Duty Rates
+        - link "tune System Settings" [ref=e51] [cursor=pointer]:
+          - /url: /admin/system
+          - generic [ref=e52]: tune
+          - generic [ref=e53]: System Settings
+    - generic [ref=e54]:
+      - banner [ref=e55]:
+        - generic [ref=e57]:
+          - generic [ref=e58]: search
+          - textbox "Search leads, properties, or transactions..." [ref=e59]
+        - generic [ref=e60]:
+          - button "logout Logout" [ref=e62]:
+            - generic [ref=e63]: logout
+            - text: Logout
+          - generic [ref=e65] [cursor=pointer]:
+            - generic [ref=e66]:
+              - paragraph [ref=e67]: Super Admin
+              - paragraph [ref=e68]: admin access
+            - generic [ref=e70]: SA
+      - main [ref=e71]:
+        - generic [ref=e72]:
+          - complementary [ref=e73]:
+            - generic [ref=e74]:
+              - paragraph [ref=e75]: Admin
+              - heading "Edit Project" [level=2] [ref=e162]
+              - generic [ref=e78]:
+                - generic [ref=e79]: Step 2 of 5
+                - generic [ref=e80]: 25%
+            - navigation [ref=e82]:
+              - button "check Basic Information" [ref=e164] [cursor=pointer]:
+                - generic [ref=e165]: check
+                - paragraph [ref=e85]: Basic Information
+              - button "2 Location & Config" [ref=e86]:
+                - generic [ref=e87]: "2"
+                - paragraph [ref=e88]: Location & Config
+              - button "3 Media & Documents" [ref=e89]:
+                - generic [ref=e90]: "3"
+                - paragraph [ref=e91]: Media & Documents
+              - button "4 Pricing & Inventory" [ref=e92]:
+                - generic [ref=e93]: "4"
+                - paragraph [ref=e94]: Pricing & Inventory
+              - button "5 Review & Publish" [ref=e95]:
+                - generic [ref=e96]: "5"
+                - paragraph [ref=e97]: Review & Publish
+          - generic [ref=e98]:
+            - generic [ref=e166]:
+              - generic [ref=e167]:
+                - heading "Location & Configuration" [level=2] [ref=e168]
+                - paragraph [ref=e169]: Set project address, scale, and BHK configurations.
+              - generic [ref=e170]:
+                - heading "Location Details" [level=3] [ref=e171]
+                - generic [ref=e172]:
+                  - generic [ref=e173]:
+                    - generic [ref=e174]: Locality / Building Name
+                    - generic [ref=e175]:
+                      - generic [ref=e176]: location_on
+                      - textbox "Locality or Building Name e.g. Powai, Chandivali" [ref=e177]: QA Test Locality
+                  - generic [ref=e178]:
+                    - generic [ref=e179]: Area *
+                    - textbox "e.g. Powai" [ref=e180]: Powai
+                  - generic [ref=e181]:
+                    - generic [ref=e182]: City
+                    - textbox [ref=e183]: Mumbai
+                  - generic [ref=e184]:
+                    - generic [ref=e185]: State
+                    - combobox [ref=e186]:
+                      - option "Maharashtra" [selected]
+                      - option "Gujarat"
+                      - option "Karnataka"
+                      - option "Delhi"
+                  - generic [ref=e187]:
+                    - generic [ref=e188]: Pincode
+                    - textbox "400076" [ref=e189]
+                  - generic [ref=e190]:
+                    - generic [ref=e191]: Complete Address
+                    - textbox "Enter complete address of the project" [ref=e192]
+              - generic [ref=e193]:
+                - heading "Project Scale" [level=3] [ref=e194]
+                - generic [ref=e195]:
+                  - generic [ref=e196]:
+                    - generic [ref=e197]:
+                      - generic [ref=e198]: domain
+                      - paragraph [ref=e199]: Total Towers
+                    - spinbutton [ref=e200]
+                    - paragraph [ref=e201]: Towers
+                  - generic [ref=e202]:
+                    - generic [ref=e203]:
+                      - generic [ref=e204]: layers
+                      - paragraph [ref=e205]: Total Floors
+                    - spinbutton [ref=e206]
+                    - paragraph [ref=e207]: Floors
+                  - generic [ref=e208]:
+                    - generic [ref=e209]:
+                      - generic [ref=e210]: straighten
+                      - paragraph [ref=e211]: Land Area (sq.ft)
+                    - spinbutton [ref=e212]
+                    - paragraph [ref=e213]: sq.ft
+                  - generic [ref=e214]:
+                    - generic [ref=e215]:
+                      - generic [ref=e216]: home
+                      - paragraph [ref=e217]: Total Units
+                    - paragraph [ref=e218]: "0"
+                    - paragraph [ref=e219]: Auto-summed from BHK configurations below
+              - generic [ref=e220]:
+                - generic [ref=e221]:
+                  - heading "BHK Configurations" [level=3] [ref=e222]
+                  - paragraph [ref=e223]: 0 added
+                - generic [ref=e224]:
+                  - generic [ref=e225]:
+                    - generic [ref=e226]: apartment
+                    - paragraph [ref=e227]: No configurations added yet
+                    - paragraph [ref=e228]: Click "Add Configuration" to get started
+                  - button "add Add Configuration" [ref=e229]:
+                    - generic [ref=e230]: add
+                    - text: Add Configuration
+            - generic [ref=e157]:
+              - button "arrow_back Back" [ref=e232]:
+                - generic [ref=e233]: arrow_back
+                - text: Back
+              - generic [ref=e158]:
+                - button "Save as Draft" [ref=e159]
+                - button "Next Phase arrow_forward" [ref=e160]:
+                  - text: Next Phase
+                  - generic [ref=e161]: arrow_forward
+  - alert [ref=e6]

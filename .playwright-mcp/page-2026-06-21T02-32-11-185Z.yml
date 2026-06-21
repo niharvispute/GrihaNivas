@@ -1,0 +1,134 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e145]:
+    - complementary [ref=e146]:
+      - link "Grihanivas." [ref=e148] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e149]:
+        - generic [ref=e152]: V
+        - generic [ref=e154]:
+          - paragraph [ref=e155]: Vishal
+          - paragraph [ref=e156]: user Member
+      - navigation [ref=e157]:
+        - link "dashboard My Dashboard" [ref=e158] [cursor=pointer]:
+          - /url: /account
+          - generic [ref=e159]: dashboard
+          - generic [ref=e160]: My Dashboard
+        - link "bookmark Saved Properties" [ref=e161] [cursor=pointer]:
+          - /url: /account/saved
+          - generic [ref=e162]: bookmark
+          - generic [ref=e163]: Saved Properties
+        - link "compare Comparison" [ref=e164] [cursor=pointer]:
+          - /url: /compare
+          - generic [ref=e165]: compare
+          - generic [ref=e166]: Comparison
+        - link "chat_bubble My Enquiries" [ref=e167] [cursor=pointer]:
+          - /url: /account/enquiries
+          - generic [ref=e168]: chat_bubble
+          - generic [ref=e169]: My Enquiries
+        - link "domain My Listings" [ref=e170] [cursor=pointer]:
+          - /url: /account/listings
+          - generic [ref=e171]: domain
+          - generic [ref=e172]: My Listings
+        - link "person My Profile" [ref=e173] [cursor=pointer]:
+          - /url: /account/profile
+          - generic [ref=e174]: person
+          - generic [ref=e175]: My Profile
+      - button "logout Logout" [ref=e177]:
+        - generic [ref=e178]: logout
+        - generic [ref=e179]: Logout
+    - generic [ref=e180]:
+      - banner [ref=e181]:
+        - link "arrow_back Back to Home" [ref=e183] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e184]: arrow_back
+          - text: Back to Home
+        - generic [ref=e187]:
+          - generic [ref=e188]:
+            - paragraph [ref=e189]: Vishal
+            - paragraph [ref=e190]: Active Now
+          - generic [ref=e192] [cursor=pointer]: V
+      - main [ref=e193]:
+        - generic [ref=e195]:
+          - generic [ref=e197]:
+            - heading "Good morning, Vishal" [level=1] [ref=e198]
+            - paragraph [ref=e199]: Today is Sunday, June 21, 2026
+          - generic [ref=e200]:
+            - generic [ref=e201]:
+              - generic [ref=e202]:
+                - generic [ref=e204]: bookmark
+                - generic [ref=e205]: 0 properties
+              - generic [ref=e206]:
+                - paragraph [ref=e207]: Saved Properties
+                - heading "0" [level=3] [ref=e208]
+            - generic [ref=e209]:
+              - generic [ref=e210]:
+                - generic [ref=e212]: compare_arrows
+                - generic [ref=e213]: of 3 max
+              - generic [ref=e214]:
+                - paragraph [ref=e215]: Comparing
+                - heading "3" [level=3] [ref=e216]
+          - generic [ref=e217]:
+            - generic [ref=e219]:
+              - generic [ref=e220]:
+                - heading "Account Overview" [level=2] [ref=e221]
+                - link "View Enquiries arrow_forward" [ref=e222] [cursor=pointer]:
+                  - /url: /account/enquiries
+                  - text: View Enquiries
+                  - generic [ref=e223]: arrow_forward
+              - generic [ref=e224]:
+                - link "compare_arrows 3 properties added for comparison Open comparison view" [ref=e225] [cursor=pointer]:
+                  - /url: /compare
+                  - generic [ref=e228]: compare_arrows
+                  - generic [ref=e230]:
+                    - paragraph [ref=e231]: 3 properties added for comparison
+                    - text: Open comparison view
+                - link "person Your profile is active vishaljangid1226@gmail.com" [ref=e232] [cursor=pointer]:
+                  - /url: /account/profile
+                  - generic [ref=e235]: person
+                  - generic [ref=e236]:
+                    - paragraph [ref=e237]: Your profile is active
+                    - text: vishaljangid1226@gmail.com
+            - generic [ref=e238]:
+              - generic [ref=e239]:
+                - heading "Quick Actions" [level=2] [ref=e240]
+                - link "travel_explore Browse Properties Find your dream home chevron_right" [ref=e241] [cursor=pointer]:
+                  - /url: /buy
+                  - generic [ref=e242]:
+                    - generic [ref=e244]: travel_explore
+                    - generic [ref=e245]:
+                      - paragraph [ref=e246]: Browse Properties
+                      - paragraph [ref=e247]: Find your dream home
+                  - generic [ref=e249]: chevron_right
+                - link "domain My Property Status Published • 1 listing Published chevron_right" [ref=e251] [cursor=pointer]:
+                  - /url: /account/listings
+                  - generic [ref=e252]:
+                    - generic [ref=e254]: domain
+                    - generic [ref=e255]:
+                      - paragraph [ref=e256]: My Property Status
+                      - paragraph [ref=e257]: Published • 1 listing
+                  - generic [ref=e258]:
+                    - generic [ref=e259]: Published
+                    - generic [ref=e260]: chevron_right
+                - link "calculate EMI Calculator Plan your finances chevron_right" [ref=e261] [cursor=pointer]:
+                  - /url: /emi-calculator
+                  - generic [ref=e262]:
+                    - generic [ref=e264]: calculate
+                    - generic [ref=e265]:
+                      - paragraph [ref=e266]: EMI Calculator
+                      - paragraph [ref=e267]: Plan your finances
+                  - generic [ref=e269]: chevron_right
+                - link "add_business List Property Sell or rent your space chevron_right" [ref=e270] [cursor=pointer]:
+                  - /url: /list-property
+                  - generic [ref=e271]:
+                    - generic [ref=e273]: add_business
+                    - generic [ref=e274]:
+                      - paragraph [ref=e275]: List Property
+                      - paragraph [ref=e276]: Sell or rent your space
+                  - generic [ref=e278]: chevron_right
+              - generic [ref=e279]:
+                - img "Featured Guide" [ref=e280]
+                - generic [ref=e281]:
+                  - generic [ref=e282]: Featured Guide
+                  - heading "5 Tips for Investing in Mumbai Real Estate 2024" [level=4] [ref=e283]
+                  - button "Read Article" [ref=e284]
+  - alert [ref=e144]

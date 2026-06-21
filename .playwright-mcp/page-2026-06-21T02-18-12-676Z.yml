@@ -1,0 +1,225 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e4]:
+      - main [ref=e5]:
+        - navigation "Breadcrumb" [ref=e7]:
+          - list [ref=e8]:
+            - listitem [ref=e9]:
+              - link "Home" [ref=e10] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e11]:
+              - img [ref=e12]
+              - generic [ref=e14]: Properties for Sale
+        - generic [ref=e15]:
+          - complementary [ref=e16]:
+            - generic [ref=e17]:
+              - heading "Filters" [level=2] [ref=e20]
+              - generic [ref=e21]:
+                - generic [ref=e22]:
+                  - generic [ref=e23]:
+                    - generic [ref=e24]: location_on
+                    - text: Location
+                  - button "All Locations expand_more" [ref=e26] [cursor=pointer]:
+                    - generic [ref=e27]: All Locations
+                    - generic [ref=e28]: expand_more
+                - generic [ref=e29]:
+                  - generic [ref=e30]:
+                    - generic [ref=e31]:
+                      - generic [ref=e32]:
+                        - generic [ref=e33]: Min Budget
+                        - generic [ref=e34]: ₹50 Lakh
+                      - slider [ref=e36]: "5000000"
+                      - generic [ref=e37]:
+                        - generic [ref=e38]: ₹50 Lakh
+                        - generic [ref=e39]: ₹3 Cr
+                    - generic [ref=e40]:
+                      - generic [ref=e41]:
+                        - generic [ref=e42]: Max Budget
+                        - generic [ref=e43]: ₹3 Cr
+                      - slider [ref=e45]: "30000000"
+                      - generic [ref=e46]:
+                        - generic [ref=e47]: ₹50 Lakh
+                        - generic [ref=e48]: ₹3 Cr
+                  - generic [ref=e50]:
+                    - generic [ref=e51]:
+                      - paragraph [ref=e52]: From
+                      - paragraph [ref=e53]: ₹50 Lakh
+                    - generic [ref=e54]: →
+                    - generic [ref=e55]:
+                      - paragraph [ref=e56]: To
+                      - paragraph [ref=e57]: ₹3 Cr
+                - generic [ref=e58]:
+                  - generic [ref=e59]:
+                    - generic [ref=e60]: home
+                    - text: BHK Type
+                  - button "Any expand_more" [ref=e62] [cursor=pointer]:
+                    - generic [ref=e63]: Any
+                    - generic [ref=e64]: expand_more
+                - generic [ref=e65]:
+                  - generic [ref=e66]:
+                    - generic [ref=e67]: chair
+                    - text: Furnishing
+                  - button "Any expand_more" [ref=e69] [cursor=pointer]:
+                    - generic [ref=e70]: Any
+                    - generic [ref=e71]: expand_more
+                - generic [ref=e72]:
+                  - button "Update Results" [ref=e73]
+                  - link "Reset All" [ref=e74] [cursor=pointer]:
+                    - /url: /buy
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e77]:
+                - generic [ref=e78]: "Sort by:"
+                - generic [ref=e79]:
+                  - link "Newest" [ref=e80] [cursor=pointer]:
+                    - /url: /buy
+                  - link "Price Low-High" [ref=e81] [cursor=pointer]:
+                    - /url: /buy?sortBy=price_asc
+                  - link "Price High-Low" [ref=e82] [cursor=pointer]:
+                    - /url: /buy?sortBy=price_desc
+              - generic [ref=e84]:
+                - link "Grid View" [ref=e85] [cursor=pointer]:
+                  - /url: /buy
+                  - img [ref=e86]
+                - link "List View" [ref=e91] [cursor=pointer]:
+                  - /url: /buy?view=list
+                  - img [ref=e92]
+            - article [ref=e94]:
+              - generic [ref=e95]:
+                - img "Apartment in Nigdi" [ref=e96]
+                - generic [ref=e98]:
+                  - img [ref=e99]
+                  - text: Featured
+                - button "Save to Wishlist" [ref=e101]:
+                  - img [ref=e102]
+              - generic [ref=e104]:
+                - generic [ref=e106]:
+                  - generic [ref=e107]:
+                    - heading "Apartment in Nigdi" [level=3] [ref=e108]
+                    - generic [ref=e109]: Residential
+                  - paragraph [ref=e110]:
+                    - img [ref=e111]
+                    - generic [ref=e114]: Nigdi, Mumbai
+                - generic [ref=e115]:
+                  - generic [ref=e116]:
+                    - generic [ref=e117]: Cost
+                    - generic [ref=e118]:
+                      - generic [ref=e119]: payments
+                      - text: ₹4.52 Lac
+                  - generic [ref=e120]:
+                    - generic [ref=e121]: Area
+                    - generic [ref=e122]:
+                      - generic [ref=e123]: square_foot
+                      - generic [ref=e124]: 1,550 sq.ft
+                - generic [ref=e125]:
+                  - link "View Property" [ref=e126] [cursor=pointer]:
+                    - /url: /property/apartment-in-nigdi-1781967360570
+                  - button "Add to Compare" [ref=e127]:
+                    - img [ref=e128]
+                    - generic [ref=e130]: Compare
+            - generic [ref=e131]:
+              - img [ref=e133]
+              - link "1" [ref=e135] [cursor=pointer]:
+                - /url: /buy
+              - img [ref=e137]
+    - contentinfo [ref=e139]:
+      - generic [ref=e140]:
+        - generic [ref=e141]:
+          - generic [ref=e142]: GrihaNivas
+          - paragraph [ref=e143]: Mumbai's concierge real estate advisory.
+          - generic [ref=e144]:
+            - link "Instagram" [ref=e145] [cursor=pointer]:
+              - /url: https://www.instagram.com/grihanivas_sgp?igsh=YWwzd2ltc2piY3Fo
+              - img [ref=e146]
+            - link "WhatsApp" [ref=e149] [cursor=pointer]:
+              - /url: https://wa.me/919137950050
+              - img [ref=e150]
+            - link "YouTube" [ref=e152] [cursor=pointer]:
+              - /url: https://www.youtube.com/@GrihaNivas
+              - img [ref=e153]
+        - generic [ref=e156]:
+          - heading "Properties" [level=3] [ref=e157]
+          - list [ref=e158]:
+            - listitem [ref=e159]:
+              - link "Buy" [ref=e160] [cursor=pointer]:
+                - /url: /buy
+            - listitem [ref=e161]:
+              - link "Rent" [ref=e162] [cursor=pointer]:
+                - /url: /rent
+            - listitem [ref=e163]:
+              - link "Projects" [ref=e164] [cursor=pointer]:
+                - /url: /projects
+            - listitem [ref=e165]:
+              - link "Builders" [ref=e166] [cursor=pointer]:
+                - /url: /builders
+            - listitem [ref=e167]:
+              - link "New Launch" [ref=e168] [cursor=pointer]:
+                - /url: /new-launch
+        - generic [ref=e169]:
+          - heading "Services" [level=3] [ref=e170]
+          - list [ref=e171]:
+            - listitem [ref=e172]:
+              - link "Home Loan" [ref=e173] [cursor=pointer]:
+                - /url: /home-loan
+            - listitem [ref=e174]:
+              - link "EMI Calculator" [ref=e175] [cursor=pointer]:
+                - /url: /emi-calculator
+            - listitem [ref=e176]:
+              - link "Stamp Duty" [ref=e177] [cursor=pointer]:
+                - /url: /stamp-duty
+            - listitem [ref=e178]:
+              - link "Rent Agreement" [ref=e179] [cursor=pointer]:
+                - /url: /rent-agreement
+            - listitem [ref=e180]:
+              - link "Comparison" [ref=e181] [cursor=pointer]:
+                - /url: /compare
+        - generic [ref=e182]:
+          - heading "Resources" [level=3] [ref=e183]
+          - list [ref=e184]:
+            - listitem [ref=e185]:
+              - link "Blogs" [ref=e186] [cursor=pointer]:
+                - /url: /blogs
+            - listitem [ref=e187]:
+              - link "FAQs" [ref=e188] [cursor=pointer]:
+                - /url: /faqs
+            - listitem [ref=e189]:
+              - link "About Us" [ref=e190] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e191]:
+              - link "Contact" [ref=e192] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e193]:
+          - heading "Contact" [level=3] [ref=e194]
+          - list [ref=e195]:
+            - listitem [ref=e196]:
+              - img [ref=e197]
+              - generic [ref=e200]:
+                - text: Heera Panna Shopping Complex,
+                - text: Powai Hiranandani Garden, Mumbai – 400076
+            - listitem [ref=e201]:
+              - img [ref=e202]
+              - link "+91 91379 50050" [ref=e204] [cursor=pointer]:
+                - /url: tel:+919137950050
+            - listitem [ref=e205]:
+              - img [ref=e206]
+              - link "contact@grihanivas.in" [ref=e209] [cursor=pointer]:
+                - /url: mailto:contact@grihanivas.in
+            - listitem [ref=e210]:
+              - img [ref=e211]
+              - generic [ref=e214]: "RERA: A51700000043"
+      - generic [ref=e215]:
+        - generic [ref=e216]: © 2026 GrihaNivas. All rights reserved.
+        - generic [ref=e217]: Powered by Shree Gurudev Properties
+        - generic [ref=e218]:
+          - link "Privacy Policy" [ref=e219] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Use" [ref=e220] [cursor=pointer]:
+            - /url: /terms
+    - generic [ref=e221]:
+      - link "Call us" [ref=e222] [cursor=pointer]:
+        - /url: tel:+919137950050
+        - img [ref=e223]
+      - link "Chat on WhatsApp" [ref=e225] [cursor=pointer]:
+        - /url: https://wa.me/919137950050?text=Hi!%20I%20found%20your%20listing%20on%20GrihaNivas%20and%20I'd%20like%20to%20know%20more%20about%20available%20properties.
+        - img [ref=e226]
+  - alert [ref=e228]

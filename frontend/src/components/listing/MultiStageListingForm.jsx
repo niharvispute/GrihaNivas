@@ -163,7 +163,7 @@ export default function MultiStageListingForm() {
       }
     } else if (step === 4) {
       if (form.listingType === 'Sale') {
-        validation = { price: validatePrice(form.price) };
+        validation = { price: validatePrice(form.price, { carpetArea: form.carpetArea }) };
       } else {
         validation = {
           rentPerMonth: validateRent(form.rentPerMonth),

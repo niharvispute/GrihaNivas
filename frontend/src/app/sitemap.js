@@ -1,4 +1,4 @@
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://bricksmumbai.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.grihanivas.in';
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
 
 async function fetchJson(path) {

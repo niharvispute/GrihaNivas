@@ -30,7 +30,7 @@ export default function ProjectCard({ project, variant = 'vertical' }) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <span className="material-symbols-outlined text-3xl text-slate-200">image_not_supported</span>
+            <img src="/images/property-placeholder.svg" alt="" aria-hidden="true" className="w-1/2 max-w-[88px] object-contain opacity-50" />
           </div>
         )}
         <div className="absolute top-2 left-2 flex flex-col gap-1">
