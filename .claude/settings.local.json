@@ -127,7 +127,11 @@
       "Skill(run)",
       "Skill(run:*)",
       "Bash(npx next *)",
-      "Bash(echo \"PID: $!\")"
+      "Bash(echo \"PID: $!\")",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_snapshot",
+      "mcp__chrome-devtools__list_network_requests",
+      "mcp__chrome-devtools__list_console_messages"
     ],
     "additionalDirectories": [
       "c:\\Users\\visha\\OneDrive\\Desktop\\Bricks\\frontend\\src\\app\\(public)\\projects\\[slug]\\units"

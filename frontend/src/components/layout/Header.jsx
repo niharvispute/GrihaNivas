@@ -129,7 +129,7 @@ export default function Header() {
         <div className="grid grid-cols-2 nav:grid-cols-[auto_1fr_auto] items-center gap-x-4 lg:gap-x-6 px-5 md:px-8 py-4 max-w-screen-2xl mx-auto">
           {/* Brand Logo */}
           <div className="flex justify-start min-w-0">
-            <Link href="/" className="text-lg nav:text-2xl font-black tracking-tighter text-slate-900 shrink-0 font-heading truncate">
+            <Link href="/" prefetch={false} className="text-lg nav:text-2xl font-black tracking-tighter text-slate-900 shrink-0 font-heading truncate">
               GrihaNivas
             </Link>
           </div>

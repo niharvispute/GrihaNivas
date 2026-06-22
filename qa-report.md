@@ -1,27 +1,19 @@
 # Website QA Testing Report — grihanivas.in
 
-**Tested by:** QA Engineer (Claude Code)
-**Test date:** 2026-06-21
-**Target:** https://grihanivas.in/ (redirects to https://www.grihanivas.in/)
-**Stack detected:** Next.js (App Router / RSC) + Node API under `/api/`, JWT auth, Cloudinary media.
-**Roles tested:** Guest (public), Admin (`+919876543210`), User (`+919172008630`).
-**Method:** Live manual + automated testing via Playwright browser automation (navigation, form fill, click, console & network capture, DOM/SEO inspection, viewport resizing, API probing). Non-destructive; dummy data created and deleted with permission.
+**Date:** 2026-06-21
+**Tester:** Claude Code (Chrome DevTools MCP — live browser automation against production)
+**Roles attempted:** Guest, Admin (Super Admin), User
+**Testing terminated early** due to a critical, reproducible rate-limiting bug (see BUG-001) that locked the tester out of login entirely. Findings below reflect what was verified before the lockout.
 
 ---
 
 ## 1. Executive Summary
 
-GrihaNivas is a functional, well-structured real-estate platform. Core engines work: authentication, role-based access control (RBAC), the 5-step project creation wizard with full CRUD, the EMI calculator (math verified), the user dashboard, and the admin console are all operational. Security fundamentals are notably strong — backend enforces auth + admin role on every protected endpoint, passwords are masked, login errors are generic (no user enumeration), and logout fully clears the session.
-
-However, the site is **not yet production-ready** due to two systemic issues:
-
-1. **Wrong canonical domain across the entire site (Critical SEO).** Every page's `<link rel=canonical>`, `og:image`, `robots.txt` sitemap reference, and `sitemap.xml` URLs point to **`bricksmumbai.com`**, not `grihanivas.in`. Google will consolidate/deindex grihanivas.in toward a different domain. Root cause: one wrong site-base-URL env variable.
-
-2. **Aggressive rate limiting trips on normal use (Critical reliability).** The app prefetches ~50 routes on homepage load and fires 5 parallel API calls; the rate limiter returns **429** on the homepage's own `system/config`, `areas`, `options`, `offers`, `testimonials` calls. Worse, a 429/transient failure causes the app to **wipe tokens and force-logout** mid-session. Real visitors and admins will hit degraded pages and random logouts.
-
-Plus a set of data-quality and UX/SEO defects (implausible prices, missing price units, broken/missing project image, duplicate page titles, soft-404s, leftover test data in production).
-
-**Production readiness status: ❌ Not ready — major fixes required** (primarily the two systemic issues above; both are config/logic-level and fixable quickly).
+- **Website tested:** https://www.grihanivas.in/
+- **Roles tested:** Guest (public site — partial), Admin (login + dashboard + 3 sections — partial), User (not reached — blocked by lockout before user-credential testing began)
+- **Overall quality:** The UI is polished and the core browsing experience (homepage, hero search, project/builder cards, login modal, admin dashboard shell) works and looks production-grade. However, a critical session/rate-limiting defect was discovered that locks users — including admins — out of login entirely after a short burst of normal navigation.
+- **Major risk:** **BUG-001** — the app's own client-side request behavior (duplicate Next.js route prefetches) appears to trip a server-side rate limiter, which then rejects legitimate calls including `POST /api/auth/login` and `GET /api/auth/me`. This silently logs out an active admin session and then blocks all subsequent login attempts for a period. This is a launch-blocking defect.
+- **Production readiness status:** **Not ready, major fixes required**
 
 ---
 
@@ -29,250 +21,136 @@ Plus a set of data-quality and UX/SEO defects (implausible prices, missing price
 
 | Area | Status | Notes |
 |---|---|---|
-| Public Pages | ⚠️ Partial | Render & navigate well; SEO/canonical broken sitewide; data-quality defects; 429 degradation |
-| Admin Dashboard | ✅ Pass | Dashboard + Project CRUD verified end-to-end; 2 dashboard stat cards blank |
-| User Dashboard | ✅ Pass | Account, profile, listings, comparison all load correctly |
-| Authentication | ✅ Pass | Valid/invalid/masking/logout/back-button all correct |
-| Authorization (RBAC) | ✅ Pass | UI + API both enforce admin-only; user gets 403 |
-| Forms | ⚠️ Partial | Submit/validate work; no styled/aria error messaging |
-| Performance | ⚠️ Partial | Fast TTFB but FCP ~3.3s; prefetch storm; unoptimized external images |
-| Responsiveness | ⚠️ Partial | Nav collapses well; horizontal overflow at mobile (8px) & tablet (44px) |
-| UI/UX | ✅ Pass | Clean, consistent design; minor missing toasts/empty-state polish |
-| SEO | ❌ Fail | Wrong canonical/og/sitemap domain; duplicate titles; no JSON-LD |
-| Accessibility | ⚠️ Partial | Alt text/labels/single-H1 good; icon-font noise, no aria-invalid |
-| Security Checks | ✅ Pass | Strong RBAC, masking, session hygiene; tokens in localStorage (XSS risk) |
+| Public Pages | Partial | Homepage fully reviewed; other public pages not reached before lockout |
+| Admin Dashboard | Partial | Login, dashboard overview, Properties list, Property Submissions list reviewed; CRUD/forms/uploads not tested |
+| User Dashboard | Fail (not tested) | Blocked — lockout occurred before user-credential testing began |
+| Authentication | Partial | Empty-field, wrong-password, valid-login all verified; logout/session-expiry behavior surfaced the critical bug |
+| Forms | Partial | Login form validation verified; lead/property/contact forms not submitted (avoided creating data once instability was found) |
+| Performance | Not tested | Lighthouse/trace audits not run — blocked by lockout |
+| Responsiveness | Not tested | Blocked by lockout |
+| UI/UX | Partial | Homepage and admin shell reviewed visually |
+| SEO | Partial | Only homepage `<title>` captured; meta/OG/canonical not audited |
+| Accessibility | Partial | DevTools a11y issues captured incidentally on every page visited |
+| Security Checks | Partial | No-enumeration on login confirmed; role-boundary tests (admin-only URL as normal user) not completed — blocked |
 
 ---
 
 ## 3. Pages Tested
 
-| Page | URL | Role | Status | Notes |
+| Page Name | URL | Role | Status | Notes |
 |---|---|---|---|---|
-| Home | `/` | Guest | ⚠️ | Renders well; 429 on own APIs; data defects; wrong canonical |
-| Buy listings | `/buy` | Guest | ✅ | Filters/sort/pagination work; 1 listing only; slider min mismatch |
-| Rent / New Launch / Projects / Builders / Blogs | various | Guest | ✅ | Reachable, 200 |
-| Contact | `/contact` | Guest | ⚠️ | Form works; office address differs from footer; no styled validation |
-| EMI Calculator | `/emi-calculator` | Guest | ✅ | Math verified correct |
-| FAQs | `/faqs` (`/faq` alias) | Guest | ✅ | Both render FAQ |
-| About / Privacy / Terms / Home-loan / Stamp-duty / Rent-agreement / Compare | various | Guest | ⚠️ | Load OK; some duplicate/missing titles; wrong canonical |
-| Login | `/login` | Guest | ✅ | Tabs (Login/Sign Up/Forgot); masking; generic errors |
-| Admin Dashboard | `/admin` | Admin | ✅ | Stats + recent leads; 2 cards blank |
-| Admin Projects + Create wizard | `/admin/projects`, `/new` | Admin | ✅ | Full CRUD verified; 429 broke form once |
-| Admin Users | `/admin/users` | Admin | ⚠️ | Got force-logged-out en route (429/session bug) |
-| User Dashboard | `/account` | User | ✅ | Clean; stats, quick actions |
-| User Profile | `/account/profile` | User | ✅ | Name editable; phone/email locked |
-| Invalid property slug | `/property/<bad>` | Guest | ❌ | Soft-404 (returns 200 shell) |
+| Homepage | https://www.grihanivas.in/ | Guest | Pass (with issues) | Loads correctly; 4 API calls aborted (see BUG-003) |
+| Login modal | (overlay on homepage) | Guest | Pass | Validation correct, no credential enumeration |
+| Login page (`/login`) | https://www.grihanivas.in/login | Guest | Pass | Same form as modal, full-page variant |
+| Admin Dashboard | https://www.grihanivas.in/admin | Admin | Pass (once) | Loaded with live stats; later inaccessible due to BUG-001 |
+| Admin Properties | https://www.grihanivas.in/admin/properties | Admin | Pass | List, search, filter, export-to-Excel UI present |
+| Admin Property Submissions | https://www.grihanivas.in/admin/property-submissions | Admin | Fail | Triggered BUG-001 — session dropped, redirected to `/login` |
+| Admin Leads | https://www.grihanivas.in/admin/leads | Admin | Not reached | Blocked by BUG-001 |
+| User dashboard / any user-role page | — | User | Not reached | Blocked by BUG-001 before user credentials were tried |
 
 ---
 
 ## 4. Bugs Found
 
-#### BUG-001 — Canonical / OG / sitemap point to wrong domain (bricksmumbai.com)
-- **Severity:** Critical · **Priority:** P0
-- **Page URL:** All pages, plus `/robots.txt`, `/sitemap.xml`
-- **Role:** Guest (SEO/crawlers)
-- **Steps:** View source of any page → inspect `<link rel="canonical">` and `og:image`; fetch `/robots.txt` and `/sitemap.xml`.
-- **Expected:** Canonical/og/sitemap use `https://www.grihanivas.in/...`.
-- **Actual:** Canonical = `https://bricksmumbai.com/` on all 17 routes checked; `og:image` = `https://bricksmumbai.com/og-default.jpg`; robots `Sitemap:` line and all sitemap `<loc>` entries = `bricksmumbai.com`.
-- **Impact:** Google treats bricksmumbai.com as the canonical source → grihanivas.in loses rankings / gets deindexed; broken social-share preview image.
-- **Suggested fix:** Set the site base-URL env var (e.g. `NEXT_PUBLIC_SITE_URL`) to `https://www.grihanivas.in` and redeploy. One change fixes canonical, og, robots, and sitemap.
-- **Screenshot needed:** No (evidence in source).
+### BUG-001
+- **Title:** Server-side rate limiting locks out legitimate users, including active admin sessions and the login endpoint itself
+- **Severity:** Critical
+- **Priority:** P0 — blocks launch
+- **Page URL:** Site-wide (observed on `/admin/property-submissions` navigation, then `/admin`, then `/login`)
+- **Role:** Admin (Super Admin)
+- **Steps to Reproduce:**
+  1. Log in as admin at `/login` or via the homepage modal.
+  2. Navigate through a few admin sidebar links in normal succession (Dashboard → Properties → Property Submissions).
+  3. Observe `GET /api/auth/me`, `/api/system/config`, `/api/system/areas`, `/api/offers` etc. start returning `429`.
+  4. The app interprets the failed `/api/auth/me` as "not authenticated" and redirects to `/login`.
+  5. Attempt to log back in with correct credentials — `POST /api/auth/login` itself now also returns `429`, displaying "Request failed" with no way to log in.
+- **Expected Result:** Normal navigation should never exhaust a rate limit; an authenticated session should persist across admin page navigation; login should remain available even if other endpoints are throttled.
+- **Actual Result:** Active admin session is silently dropped mid-task, and the login endpoint becomes unusable for a sustained period afterward, with no countdown, retry-after messaging, or graceful degradation shown to the user.
+- **Impact:** Any real user (admin or customer) browsing normally for a short time can be locked out of login/checkout entirely. This is especially dangerous for users on shared/NAT IPs (offices, cafes) where one rate-limit bucket may be shared across multiple real visitors, locking all of them out simultaneously.
+- **Likely root cause:** Next.js Link/Router prefetching is firing duplicate requests to the same API routes on every render (see BUG-002 evidence — the same `/admin/banners` route was fetched 5 times within seconds, `/api/system/config` 2–3 times per page). This request volume appears to be exhausting a per-IP or global rate-limit bucket shared with auth endpoints. Auth-critical endpoints (`/api/auth/me`, `/api/auth/login`) should be excluded from the same limiter as bulk content-prefetch routes, or prefetching should be deduplicated/throttled client-side.
+- **Suggested Fix:**
+  1. Exclude or use a separate, more generous rate-limit bucket for `/api/auth/*` endpoints.
+  2. De-duplicate/cancel redundant Next.js prefetch requests (cache-control / `dedupe` on fetch, or disable aggressive `<Link prefetch>` on the admin sidebar where it provides little benefit).
+  3. Add exponential backoff and a clear "Too many requests, retry in Xs" UI state instead of silently treating 429 as "logged out."
+  4. Add server-side logging/alerting on 429 spikes so this is caught before users report it.
+- **Screenshot Needed:** Yes (network panel + the "Request failed" login screen)
 
-#### BUG-002 — Aggressive rate limiting (429) degrades the public homepage
-- **Severity:** Critical · **Priority:** P0
-- **Page URL:** `/` (and admin forms)
-- **Role:** Guest + Admin
-- **Steps:** Load homepage normally → observe Network/Console.
-- **Expected:** All first-party API calls return 200.
-- **Actual:** `429 Too Many Requests` on `/api/system/config`, `/api/system/areas`, `/api/system/options`, `/api/offers`, `/api/testimonials`. The homepage also prefetches ~50 RSC routes (every nav link, many duplicated e.g. `/contact` ×6) which inflates request volume.
-- **Impact:** Testimonials/offers/config sections fail to load for real visitors; admin forms break (see BUG-003). Self-inflicted under normal traffic.
-- **Suggested fix:** Raise/relax the per-IP rate limit for read endpoints; deduplicate and reduce route prefetching (`prefetch={false}` on non-critical links); batch `system/*` into one endpoint; add client retry with backoff.
-- **Screenshot needed:** No (console evidence).
+### BUG-002
+- **Title:** Duplicate/redundant API and route prefetch requests on every page
+- **Severity:** High
+- **Priority:** P1
+- **Page URL:** Site-wide, clearly observed on `/admin/properties` and `/`
+- **Role:** Guest & Admin
+- **Steps to Reproduce:** Load any page and open the Network tab; observe the same RSC/API route (e.g. `/admin/banners?_rsc=...`, `/api/system/config`) requested 2–5 times within a few seconds with different cache-busting query params.
+- **Expected Result:** Each distinct resource should be fetched once per navigation (or served from cache on repeat).
+- **Actual Result:** Sidebar links and homepage cards appear to trigger hover/render-time prefetches for every nav item simultaneously, multiplying request volume needlessly.
+- **Impact:** Wastes bandwidth/server capacity and is the direct contributing cause of BUG-001.
+- **Suggested Fix:** Audit `<Link prefetch>` usage; disable prefetch on admin sidebar (low navigation-speed benefit, high request cost) or set `prefetch={false}` selectively; ensure SWR/React Query (or equivalent) dedupes in-flight identical requests.
+- **Screenshot Needed:** No (network log sufficient)
 
-#### BUG-003 — Transient/429 error force-logs-out the user and wipes tokens
-- **Severity:** Critical · **Priority:** P0
-- **Page URL:** `/admin/*` (observed navigating `/admin` → `/admin/users`)
-- **Role:** Admin
-- **Steps:** Log in as admin → navigate between admin pages while system APIs are rate-limited.
-- **Expected:** A 429/transient API failure does not affect the session.
-- **Actual:** App cleared `bricks_access_token` + `bricks_refresh_token` from localStorage and redirected to `/login` mid-session.
-- **Impact:** Admins doing normal work get randomly ejected and lose unsaved context.
-- **Suggested fix:** In the API/axios interceptor, only clear tokens + redirect on a genuine `401` with a failed refresh — never on `429`/`5xx`/network errors. Implement refresh-token retry before logout.
-- **Screenshot needed:** No.
-
-#### BUG-004 — Add Project form unusable when builders API is rate-limited
-- **Severity:** High · **Priority:** P1
-- **Page URL:** `/admin/projects/new`
-- **Role:** Admin
-- **Steps:** Open Add Project when `/api/admin/builders` returns 429.
-- **Expected:** Builder list loads or retries; clear recoverable error.
-- **Actual:** Builder dropdown (required field `*`) shows only "Select Builder" with tiny "Request failed" text, no retry; form cannot be submitted. Required manual page reload.
-- **Impact:** Core admin task (create project) blocked intermittently.
-- **Suggested fix:** Retry-with-backoff on dependency loads; show a "Retry" button; disable submit with explicit "Builders failed to load" message.
-- **Screenshot needed:** Yes (builder dropdown error state).
-
-#### BUG-005 — Implausible / unit-less property & project pricing
-- **Severity:** High · **Priority:** P1
-- **Page URL:** `/`, `/buy`, project cards
+### BUG-003
+- **Title:** Four API calls aborted on homepage initial load (`net::ERR_ABORTED`)
+- **Severity:** Medium
+- **Priority:** P2
+- **Page URL:** https://www.grihanivas.in/
 - **Role:** Guest
-- **Steps:** View "Apartment in Nigdi" and "ShaktiTwo" cards.
-- **Expected:** Sensible price with correct unit.
-- **Actual:** "Apartment in Nigdi" = **₹4.52 Lac** for **1,550 sq.ft** (implausibly low for Mumbai); "ShaktiTwo" = **"Starting ₹150"** (no unit — Lac/Cr?).
-- **Impact:** Destroys credibility on a real-estate site; misleads buyers.
-- **Suggested fix:** Add price validation (min/max sanity + mandatory unit) on the property/project form; backfill correct data.
-- **Screenshot needed:** Yes.
+- **Steps to Reproduce:** Load the homepage fresh and check Network tab.
+- **Expected Result:** `/api/system/config`, `/api/system/areas`, `/api/testimonials`, `/api/offers` should return 200 and populate their respective UI sections.
+- **Actual Result:** All four requests show `net::ERR_ABORTED`. Consistent with this, **no testimonials section renders on the homepage** despite the design clearly having one planned (admin has a "Testimonials" management section with content).
+- **Impact:** A built feature (testimonials, possibly offers banner) is invisible to visitors; looks like a silent content/feature regression.
+- **Suggested Fix:** Investigate whether these fetches are being aborted by a competing navigation/unmount (e.g., `AbortController` tied to a component that re-renders before the fetch resolves), or if it's another symptom of the BUG-001 request-cancellation pattern.
+- **Screenshot Needed:** No (network log sufficient)
 
-#### BUG-006 — Missing/broken project image renders placeholder
-- **Severity:** Medium · **Priority:** P1
-- **Page URL:** `/` (Trending), `/admin/projects`
-- **Role:** Guest
-- **Steps:** View "Shakti" (Hiranandani) project card.
-- **Expected:** Project thumbnail.
-- **Actual:** `image_not_supported` placeholder (no image / broken URL).
-- **Impact:** Looks unfinished on the landing page.
-- **Suggested fix:** Make project image required on publish; add a branded fallback image instead of the raw icon.
-- **Screenshot needed:** Yes.
+### BUG-004
+- **Title:** Form inputs missing associated `<label>` and `id`/`name` attributes (recurring across the app)
+- **Severity:** Medium
+- **Priority:** P2
+- **Page URL:** Login modal (homepage + `/login`), `/admin/properties` filters, `/admin/property-submissions` filters — pattern repeats on every form encountered
+- **Role:** Guest & Admin
+- **Steps to Reproduce:** Open browser DevTools console (Issues tab) on any page with a form/search input.
+- **Expected Result:** Every input should have a programmatically associated label and an `id`/`name` attribute for accessibility tooling and autofill.
+- **Actual Result:** Chrome DevTools consistently reports "No label associated with a form field" and "A form field element should have an id or name attribute" — seen on at least 4 different pages/forms during this short session.
+- **Impact:** Screen reader users cannot reliably determine field purpose; autofill/password managers may not work correctly (browser also separately warned the password field is missing an `autocomplete="current-password"` hint).
+- **Suggested Fix:** Add `<label htmlFor>` + matching `id` to every input across the shared form components; add `name` attributes; add `autoComplete` hints to login/password fields.
+- **Screenshot Needed:** No
 
-#### BUG-007 — "Mumbai" platform showing Pune projects; inconsistent location casing
-- **Severity:** Medium · **Priority:** P2
-- **Page URL:** `/`, `/admin/projects`
-- **Role:** Guest
-- **Steps:** Read "Trending Projects in Mumbai".
-- **Expected:** Mumbai projects, consistent casing.
-- **Actual:** ShaktiTwo & Shakti are in **Wakad, Pune**; casing inconsistent ("Wakad" vs "wakad"). "Apartment in Nigdi" labeled "Nigdi, Mumbai" (Nigdi is Pune).
-- **Impact:** Brand/SEO mismatch; data integrity.
-- **Suggested fix:** Validate/normalize city field; either expand branding beyond Mumbai or restrict listings to Mumbai.
-- **Screenshot needed:** No.
-
-#### BUG-008 — Inconsistent office address (NAP) between pages
-- **Severity:** Medium · **Priority:** P2
-- **Page URL:** `/contact` vs footer/home
-- **Role:** Guest
-- **Actual:** Contact page: "The Pavilion, Worli Sea Face, South Mumbai 400018". Footer/home: "Heera Panna Shopping Complex, Powai Hiranandani Garden, Mumbai 400076".
-- **Impact:** Confuses customers; harms local-SEO (inconsistent Name/Address/Phone).
-- **Suggested fix:** Single source of truth for address; pick the correct one.
-- **Screenshot needed:** No.
-
-#### BUG-009 — Duplicate/missing page titles
-- **Severity:** Medium · **Priority:** P2
-- **Page URL:** `/about`, `/rent-agreement`, `/login` (and admin pages)
-- **Actual:** All use the generic homepage title "GrihaNivas — Mumbai Real Estate" instead of page-specific titles.
-- **Impact:** Weak SEO; poor browser-tab/bookmark UX.
-- **Suggested fix:** Add `generateMetadata`/`<title>` per route. Set `/login` and `/admin/*` to `noindex`.
-- **Screenshot needed:** No.
-
-#### BUG-010 — Soft-404 for invalid property slug
-- **Severity:** Medium · **Priority:** P2
-- **Page URL:** `/property/<nonexistent>`
-- **Actual:** Returns HTTP **200** with a "Property Details" shell instead of a 404. (Garbage non-property URLs correctly 404.)
-- **Impact:** SEO indexes empty pages; users see a blank/error shell with a success status.
-- **Suggested fix:** Return `notFound()` (404) when the property/project ID doesn't exist.
-- **Screenshot needed:** No.
-
-#### BUG-011 — Admin dashboard "Banners" & "Testimonials" stat cards blank
-- **Severity:** Medium · **Priority:** P2
-- **Page URL:** `/admin`
-- **Actual:** Both cards show "—" instead of a count (other cards show numbers).
-- **Impact:** Incomplete analytics; looks broken.
-- **Suggested fix:** Wire the count queries (or render `0`); handle the API failure gracefully.
-- **Screenshot needed:** Yes.
-
-#### BUG-012 — Horizontal overflow on tablet/mobile
-- **Severity:** Medium · **Priority:** P2
-- **Page URL:** `/` at 768px (44px overflow) and 360px (8px overflow)
-- **Actual:** Page scrolls horizontally; offenders are the horizontal carousels (Master Builders / Trending, `min-w-[270px]` cards) not fully clipped, plus the BUY/RENT toggle pill on mobile.
-- **Impact:** Janky mobile/tablet experience.
-- **Suggested fix:** Wrap carousels in `overflow-x: hidden` parent / contain the scroll track; constrain toggle width to viewport.
-- **Screenshot needed:** Yes.
-
-#### BUG-013 — No styled / accessible form validation feedback
-- **Severity:** Medium · **Priority:** P2
-- **Page URL:** `/contact`, `/admin/projects/new`
-- **Actual:** Empty/invalid submit relies on native HTML5 popups only (contact) or silently fails to advance (wizard) with no field-level error text or `aria-invalid`/`role=alert`.
-- **Impact:** Users unsure why submission failed; screen readers get no error announcement.
-- **Suggested fix:** Add inline error messages + `aria-invalid`/`aria-describedby`; show which step/field is invalid in the wizard.
-- **Screenshot needed:** No.
-
-#### BUG-014 — No success confirmation after save (admin create/draft)
-- **Severity:** Low · **Priority:** P3
-- **Page URL:** `/admin/projects/new`
-- **Actual:** "Save as Draft" creates the record (201) but shows no toast and does not redirect — looks like nothing happened.
-- **Impact:** Admin may re-click and create duplicates.
-- **Suggested fix:** Success toast + redirect to list (or "saved" badge).
-- **Screenshot needed:** No.
-
-#### BUG-015 — "Configs" column always shows "—" in admin Projects
-- **Severity:** Low · **Priority:** P3
-- **Page URL:** `/admin/projects`
-- **Actual:** Configs column is "—" for every project even when Units = 170/480.
-- **Suggested fix:** Populate config count or remove the column.
-
-#### BUG-016 — Leftover test data in production
-- **Severity:** Low · **Priority:** P3
-- **Page URL:** `/admin/projects`
-- **Actual:** "first project" and "yjs-test-project" exist as live (draft) projects.
-- **Suggested fix:** Remove test records before launch.
-
-#### BUG-017 — Stale hardcoded year in user dashboard
-- **Severity:** Low · **Priority:** P3
-- **Page URL:** `/account`
-- **Actual:** Featured guide reads "5 Tips for Investing in Mumbai Real Estate **2024**" (current year 2026).
-- **Suggested fix:** Remove hardcoded year or make it dynamic/content-driven.
-
-#### BUG-018 — Provided admin username is malformed
-- **Severity:** Info (credential note) · **Priority:** P3
-- **Detail:** Supplied admin login `+91987653210` is 9 digits and is rejected by validation ("Identifier must be a valid email or phone +91XXXXXXXXXX"). Working number is **`+919876543210`** (10 digits). Validation behavior is correct; flagging the credential typo.
+### BUG-005 (data point, not a confirmed bug — needs your input)
+- **Title:** Provided admin credential was off by one digit
+- **Severity:** N/A (test-data issue, not a site defect)
+- **Notes:** The admin phone number you originally supplied (`+91987653210`) had only 9 digits. You confirmed the correct number was `+919876543210`, which logged in successfully. Flagging only so the credential on file gets corrected wherever it's stored/documented.
 
 ---
 
 ## 5. Performance Report
 
-> Note: exact Google Lighthouse scores were not runnable against this remote site through the automation harness. Scores below are **estimates** derived from observed Navigation Timing, paint timing, resource counts, network status, and DOM inspection. Field metrics will vary with cache/network.
+**Not completed.** `lighthouse_audit` / `performance_start_trace` were not run because live testing was halted after BUG-001 to avoid extending the rate-limit lockout window. Recommend re-running this section once BUG-001 is fixed:
 
 | Page URL | Performance | Accessibility | Best Practices | SEO | Key Issue | Recommendation |
 |---|---|---|---|---|---|---|
-| `/` (Home) | ~55–65 (est.) | ~85 (est.) | ~75 (est.) | ~60 (est.) | FCP ~3.3s; 429 on own APIs; ~50 prefetches; unoptimized ext. images | Fix rate limit/prefetch; optimize images; SSR critical data |
-| `/buy` | ~70 (est.) | ~85 | ~80 | ~80 | Light page, few listings | OK; add image lazy-load |
-| `/emi-calculator` | ~75 (est.) | ~85 | ~80 | ~85 | Mostly client compute | OK |
-| `/admin` | ~60 (est.) | ~80 | ~75 | n/a (noindex rec.) | Multiple system calls + 429 | Batch calls; cache config |
-| `/account` | ~70 (est.) | ~85 | ~80 | n/a | Clean | OK |
+| `/` | Not tested | Not tested | Not tested | Not tested | — | Re-run after fix |
+| `/login` | Not tested | Not tested | Not tested | Not tested | — | Re-run after fix |
+| `/admin` | Not tested | Not tested | Not tested | Not tested | — | Re-run after fix |
+| Property/project detail page | Not tested | Not tested | Not tested | Not tested | — | Re-run after fix |
+| User dashboard | Not tested | Not tested | Not tested | Not tested | — | Re-run after fix |
 
-**Detailed notes (home page):**
-- TTFB ~33ms, DOMContentLoaded ~261ms, load ~700ms — **server/transport is fast**.
-- **FCP ~3.3s** is the headline problem: first paint is blocked well after the DOM is interactive, consistent with client-side data fetching (config/areas/options/offers/testimonials) plus 429 retries gating render.
-- ~100 resources, 22 images; many from `images.unsplash.com`, `res.cloudinary.com`, `lh3.googleusercontent.com` — served without `next/image` optimization and lacking `Timing-Allow-Origin` (no perf visibility).
-- Preload warnings: images preloaded via `<link rel=preload>` but never used (wasted bandwidth).
-- ~50 RSC route prefetches on load (many duplicated) — network waste + the trigger for rate-limit 429s.
-
-**Optimizations:** server-render or cache the `system/*`/testimonials/offers data; use `next/image` for thumbnails; reduce/disable prefetch on secondary links; remove unused preloads; add CDN caching headers for first-party APIs.
+One observation without formal Lighthouse numbers: the homepage requests several large hero/card images directly from Unsplash and Cloudinary without an obvious `loading="lazy"` strategy visible in the accessibility tree below the fold, and the console flagged multiple `<link rel=preload>` resources that went unused within a few seconds of load — both are easy wins once revisited.
 
 ---
 
 ## 6. Admin Testing Report
 
-- **Login:** ✅ via `+919876543210 / Aadmin@1234` → `/admin`.
-- **Sections present:** Dashboard, Properties, Projects, Builders, Property Submissions, Leads, Blogs, Banners, Testimonials, Users, Offers, Stamp Duty Rates, System Settings (13).
-- **Dashboard:** Leads 7, Properties 2, New Leads 7, Closed 0, Users 8, Blogs 4. **Banners & Testimonials cards blank (BUG-011).** Recent Leads table shows real customer names/phones (acceptable — admin-only CRM).
-- **CRUD tested — Projects (full):**
-  - **Create:** 5-step wizard (Basic / Location / Media / Pricing / Review). Advancing Step 1 auto-creates a draft → `POST /api/projects` **201**. ✅
-  - **Edit:** wizard auto-saves (`PUT /api/projects/:id` 200, `PATCH .../status` 200). ✅
-  - **Persistence:** "QA Test Project - Do Not Use" appeared in list after refresh. ✅
-  - **Delete:** confirmation modal ("cannot be undone") → `DELETE /api/projects/:id` **200** → row removed. ✅
-- **Data created:** 1 dummy project ("QA Test Project - Do Not Use", builder GHP Group, Powai). **Data deleted:** the same dummy project (cleaned up). No production data altered.
-- **Validation:** empty required fields block step progression (no field-level error text — BUG-013).
-- **Issues found:** BUG-003, BUG-004, BUG-011, BUG-014, BUG-015, BUG-016.
-- **Admin UX feedback:** Clean console layout, good iconography, inline status dropdowns and delete confirmation are nice. Needs success toasts, builder-load resilience, and protection against rate-limit logouts.
-- **Not exhaustively covered (time/rate-limit constraints):** Property CRUD (same wizard pattern, likely equivalent), image upload execution, Blogs/Banners/Testimonials/Users/Offers/Stamp-Duty CRUD, status-change persistence. Recommend a follow-up pass once rate limiting is relaxed.
+- **Admin login status:** Successful with corrected credential `+919876543210` / `Aadmin@1234`.
+- **Features tested:** Login, dashboard overview (stat cards: Total Leads 7, Properties Listed 2, New Leads 7, Leads Closed 0; Recent Leads table with name/type/phone/status), Properties list (search/filter/export-to-Excel UI, status & "New Launch" toggle buttons, Featured star toggle), Property Submissions list (9 pending submissions, owner/phone/locality/RERA-presence flag, "Move To…" action).
+- **CRUD operations tested:** None completed — session was lost (BUG-001) before any create/edit/delete action was attempted. Deliberately avoided mutating the 9 real property submissions or 7 real leads visible in the data.
+- **Data created / edited / deleted:** None.
+- **Issues found:** BUG-001 (critical), BUG-002, BUG-004 (forms in admin filters).
+- **Admin UX feedback:** The dashboard layout, stat cards, and table design are clean and readable. The "Properties" list lacks an obvious "Add Property" button — properties appear to be created exclusively via approving a Property Submission, which is a reasonable workflow but should be confirmed as intentional (or surfaced as a documented flow) rather than discovered by exploration.
 
 ---
 
 ## 7. User Testing Report
 
-- **Login:** ✅ via `+919172008630 / Vishal1226@` → `/account`.
-- **Features tested:** Dashboard (saved 0, comparing 3/3, quick actions), My Profile (name editable; phone + email locked, "Email cannot be changed"), sidebar nav (Saved, Comparison, Enquiries, My Listings, Profile).
-- **Restrictions tested:** Navigating to `/admin` → redirected to `/account` (no admin UI). User JWT against admin APIs → **403 "Access denied. Admin privileges required."** ✅
-- **Issues found:** stale "2024" content (BUG-017); no change-password on profile (minor).
-- **User UX feedback:** Clean, friendly dashboard with sensible quick actions and clear empty/active states. 0 console errors on the account pages.
+**Not completed.** The lockout (BUG-001) occurred while exploring the admin side, before user-credential (`+919172008630` / `Vishal1226@`) testing began. No findings to report for the user role. Recommend re-running the full Section 3 (User Dashboard Testing) plan from `test-plan.md` once the rate-limit bug is fixed.
 
 ---
 
@@ -280,21 +158,15 @@ Plus a set of data-quality and UX/SEO defects (implausible prices, missing price
 
 | Test Case | Expected | Actual | Status |
 |---|---|---|---|
-| Valid admin login | Success → admin area | `/admin`, token issued | ✅ |
-| Valid user login | Success → account | `/account`, role "user" | ✅ |
-| Invalid password | Reject, generic error | 401 "Invalid credentials." | ✅ |
-| Malformed mobile (9-digit) | Validation error | 400 clear field message | ✅ |
-| Password masking | Hidden input | `type=password` | ✅ |
-| Guest → `/admin` | Block/redirect | Redirect to `/login` | ✅ |
-| User → `/admin` | Block/redirect | Redirect to `/account` | ✅ |
-| User JWT → admin API | 403 | 403 "Admin privileges required" | ✅ |
-| No token → admin API | 401 | 401 "Access denied. No token provided." | ✅ |
-| Logout clears session | Tokens removed | localStorage emptied | ✅ |
-| Back button after logout | No session restore | Redirected to `/login` | ✅ |
-| Brute-force on login | Throttled | 429 after burst | ✅ (good) |
-| 429 during session | Stay logged in | **Force logout + tokens wiped** | ❌ (BUG-003) |
-
-**Verdict:** Authentication and authorization are a **strength** — the only failure is the session-destroying reaction to 429 (BUG-003), which is a logic fix, not an access-control hole.
+| Empty login submission | Inline validation error, no request sent for malformed input | Correct error shown: "Enter a valid email or +91 mobile number." | Pass |
+| Wrong password, valid format | Generic "Invalid credentials" error, no enumeration of which field is wrong | Correct: "Invalid credentials." shown, no hint whether phone or password was wrong | Pass |
+| Valid admin login | Authenticated, header updates to show role, dashboard accessible | Header showed "Super Admin", `/admin` loaded with live data | Pass |
+| Session persistence across admin navigation | Should remain logged in while clicking sidebar links | **Failed** — session dropped after a few navigations, redirected to `/login` (BUG-001) | **Fail** |
+| Re-login after session drop | Should be able to log back in immediately | **Failed** — `POST /api/auth/login` itself returned 429 ("Request failed") | **Fail** |
+| User login | Not tested | Not tested | Not tested |
+| Guest access to admin-only URL | Should redirect to login / show 403 | Not formally tested, but indirectly confirmed: once logged out, navigating to `/admin` redirected to `/login` rather than showing an error page — acceptable behavior | Pass (incidental) |
+| Password field masking | Password should be masked with a reveal toggle | Confirmed — masked dots shown, "visibility" eye-icon toggle present | Pass |
+| Direct URL access without login | Protected route should not render without a session | Confirmed via the forced-logout scenario above | Pass (incidental) |
 
 ---
 
@@ -302,49 +174,40 @@ Plus a set of data-quality and UX/SEO defects (implausible prices, missing price
 
 | Form | Page | Validation Status | Submission Status | Issues |
 |---|---|---|---|---|
-| Login | `/login` | ✅ generic error, masking | ✅ 401/200 correct | No "remember me" / show-password |
-| Contact "Send Message" | `/contact` | ⚠️ HTML5 required only (email optional) | Submits | No styled/aria errors (BUG-013) |
-| Home "Get Free Consultation" | `/` | ⚠️ Phone required | Submits | Same as contact |
-| Project Create (5-step) | `/admin/projects/new` | ⚠️ blocks but no field errors | ✅ 201 create / draft | Builder-load failure (BUG-004), no toast (BUG-014) |
-| Profile update | `/account/profile` | Name editable; phone/email locked | Save Changes present | Not submitted (no change desired) |
-| EMI calculator | `/emi-calculator` | n/a (live compute) | ✅ correct math | — |
+| Login (Email/Phone + Password) | Homepage modal & `/login` | Working — rejects malformed phone, rejects wrong password with generic message | Working for valid creds (until BUG-001 hit) | BUG-004 (missing label/id/name) |
+| Admin Properties search/filter | `/admin/properties` | Not submitted/tested | N/A | BUG-004 |
+| Admin Property Submissions search/filter | `/admin/property-submissions` | Not submitted/tested | N/A | BUG-004 |
+| Homepage "Get Free Consultation" lead form | `/` | Not tested | Not tested | Not reached |
+| Homepage hero property search (Buy/Rent/New Launch + Location + BHK) | `/` | Not tested | Not tested | Not reached |
+| "List Property" submission form | Not reached | Not tested | Not tested | Not reached |
 
 ---
 
 ## 10. UI/UX Improvement Suggestions
 
-#### High Priority
-- Fix the rate-limit / prefetch storm so sections (testimonials, offers) actually render for visitors (BUG-002).
-- Never log users out on transient errors (BUG-003).
-- Add success/error **toasts** for all admin create/edit/delete actions (BUG-014).
-- Fix data credibility: price units + sanity validation, real images (BUG-005, BUG-006).
+**High Priority**
+- Fix the session/rate-limit interaction (BUG-001) — this is a trust-breaking, launch-blocking defect.
+- Add a visible "Add Property" / "Add Project" entry point in the admin Properties/Projects list if one is meant to exist outside the submission-approval flow; otherwise document the submission-only workflow for the admin team.
 
-#### Medium Priority
-- Inline, accessible form validation messages with `aria-invalid` (BUG-013).
-- Resolve horizontal overflow on tablet/mobile carousels (BUG-012).
-- Single source of truth for office address; fix Mumbai/Pune data (BUG-007, BUG-008).
-- Fill or hide the blank admin dashboard stat cards (BUG-011).
-- Per-page titles + `noindex` on login/admin (BUG-009).
+**Medium Priority**
+- Restore the testimonials section on the homepage (BUG-003) — it's clearly designed for but not rendering.
+- Add labels/`id`/`name` to all form inputs site-wide (BUG-004) for accessibility and autofill support.
+- Add retry/backoff messaging instead of a bare "Request failed" on login.
 
-#### Low Priority
-- Add show/hide password toggle and "remember me" on login.
-- Add change-password to user profile.
-- Redirect to list after "Save as Draft".
-- Remove leftover test projects and stale "2024" copy (BUG-016, BUG-017).
-- Branded fallback image instead of raw `image_not_supported` icon.
+**Low Priority**
+- Clean up unused `<link rel=preload>` warnings logged in the console on the homepage.
+- Add `loading="lazy"` to below-the-fold images (builder cards, blog cards) if not already present.
 
 ---
 
 ## 11. Responsiveness Report
 
-| Page | Mobile (360/390) | Tablet (768) | Desktop (1366/1920) | Issues |
-|---|---|---|---|---|
-| Home | ⚠️ usable, ~8px overflow, hamburger ✅ | ⚠️ ~44px overflow from carousels | ✅ no overflow, full nav | Carousel/toggle overflow (BUG-012) |
-| Buy / listings | ✅ (filters stack) | ✅ | ✅ | — |
-| Contact / forms | ✅ | ✅ | ✅ | — |
-| Admin console | not retested mobile* | — | ✅ | *logged out before mobile admin pass |
+**Not completed** — blocked by BUG-001 before the responsiveness sweep began. Recommend re-running at 360px, 390px, 768px, 1366px, 1920px on homepage, login, admin dashboard, and a property detail page once the lockout issue is resolved.
 
-Nav correctly collapses to a hamburger ("Open menu") below the desktop breakpoint; hero, search, and cards reflow cleanly. Main defect is page-level horizontal scroll caused by horizontal carousels not being clipped to the viewport.
+| Page | Mobile | Tablet | Desktop | Issues |
+|---|---|---|---|---|
+| Homepage | Not tested | Not tested | Verified at default desktop viewport only | — |
+| Admin Dashboard | Not tested | Not tested | Verified at default desktop viewport only | — |
 
 ---
 
@@ -352,15 +215,7 @@ Nav correctly collapses to a hamburger ("Open menu") below the desktop breakpoin
 
 | Page | Title | Meta Description | H1 | SEO Issues | Recommendation |
 |---|---|---|---|---|---|
-| `/` | ✅ | ✅ | ✅ single | **canonical+og = bricksmumbai.com**; no JSON-LD | Fix base URL; add Organization/RealEstate schema |
-| `/buy` | ✅ | ✅ | ✅ | wrong canonical; budget slider mismatch | Fix base URL |
-| `/contact` | ✅ | ✅ | ✅ | wrong canonical; NAP mismatch | Fix base URL + address |
-| `/about` | ❌ generic | ✅ | ✅ | duplicate title; wrong canonical | Per-page title |
-| `/rent-agreement` | ❌ generic | ❌ generic | ✅ | duplicate title/desc; wrong canonical | Per-page metadata |
-| `/login` | ❌ generic | ❌ | ✅ | indexable login page | `noindex` + title |
-| sitewide | — | — | — | sitemap.xml + robots `Sitemap:` on bricksmumbai.com | Fix base URL |
-
-Positives: `robots.txt` correctly disallows `/admin/`, `/api/`, dashboard; meta descriptions present on most pages; clean URL structure; single H1 per page.
+| Homepage | Present — "GrihaNivas — Mumbai Real Estate" | Not captured (audit incomplete) | Present — "Still Looking for a Place That Feels Right?" | Heading hierarchy looks correct (single H1, H2s for sections) | Re-run full Lighthouse SEO audit once BUG-001 fixed; verify meta description, canonical, and OG tags directly in `<head>` |
 
 ---
 
@@ -368,64 +223,98 @@ Positives: `robots.txt` correctly disallows `/admin/`, `/api/`, dashboard; meta 
 
 | Area | Issue | Impact | Recommendation |
 |---|---|---|---|
-| Images | Homepage: all 20 imgs have alt ✅ | Good | Maintain on all pages |
-| Headings | Single H1, logical order ✅ | Good | Keep |
-| Forms | No `aria-invalid`/`role=alert` on errors | SR users miss errors | Add ARIA + inline messages |
-| Icon fonts | Material-Symbols text ("expand_more", "payments", "square_foot") announced as content | Noise for SR | `aria-hidden="true"` on decorative icons |
-| Password | Masked ✅ | Good | Add toggle (still accessible) |
-| Keyboard/focus | Focus states & skip-link not verified | Possible nav friction | Add visible focus + skip-to-content |
-| Lang/viewport | `lang=en`, viewport set ✅ | Good | Keep |
-
-Estimated accessibility score ~85/100 — solid foundation, mainly ARIA/error-state and icon-font cleanup needed.
+| Login form (modal & full page) | Inputs lack associated `<label>`, `id`, `name` | Screen readers can't announce field purpose; password manager autofill degraded | Add proper label association + autocomplete hints |
+| Admin filter/search inputs | Same missing label/id/name pattern | Same as above, affects admin staff using assistive tech | Same fix, applied to shared input component |
+| Password field | Missing `autocomplete="current-password"` | Browser/password-manager autofill suggestions degraded | Add the attribute |
+| Heading structure (homepage) | Appears correct (H1 → H2 → H3 nesting observed in accessibility tree) | None observed | No action needed, but verify with full axe/Lighthouse pass |
 
 ---
 
-## 14. Security Observations (safe checks only)
+## 14. Security Observations
 
-**Strengths**
-- Backend enforces auth on every protected endpoint: no token → **401**; user token on admin route → **403**. UI guards mirror this (`/admin` → redirect). RBAC is robust.
-- Login errors are generic ("Invalid credentials") — no user enumeration.
-- Password input masked; brute-force throttling present (login 429 on burst).
-- Logout clears tokens; back-button cannot restore the session.
-- `robots.txt` blocks `/admin/` and `/api/`.
-- API errors return clean JSON messages — no stack traces leaked.
-
-**Concerns**
-- **JWTs in localStorage:** both `bricks_access_token` and a long-lived (~30-day) `bricks_refresh_token` live in `localStorage`, readable by any injected script → XSS = full token theft. Prefer httpOnly, Secure, SameSite cookies for the refresh token.
-- **Login response returns full tokens + PII** (admin email `shreegurudevproperties@gmail.com`, role, phone) in the JSON body. Expected for token auth, but minimize PII in the payload.
-- **Session destroyed on 429** (BUG-003) — reliability, but also means a rate-limit can be used to nuisance-logout users.
-- File-upload restrictions (type/size) were **not** exercised in this pass — recommend verifying server-side validation and Cloudinary signed uploads.
-- Recommend `noindex` on `/login` and `/admin/*`.
-
-No destructive or intrusive testing was performed.
+- **No credential enumeration:** Wrong password returns a generic "Invalid credentials" message rather than revealing whether the phone/email or the password was incorrect. Good practice, confirmed.
+- **Session handling concern:** The most significant security-adjacent observation is that the app conflates "API rate-limited" with "user logged out" — this is not a classic vulnerability, but it's a session-integrity defect that an attacker could potentially weaponize as a cheap, unauthenticated denial-of-service against login for all users sharing a rate-limit scope (e.g., spamming a few endpoints from one IP could lock out everyone behind that IP, or — if the limiter is global rather than per-IP — every visitor to the site). **This should be verified and treated as a priority fix regardless of QA timeline.**
+- No tokens or secrets were observed exposed in URLs during this session.
+- No destructive actions, exploit payloads, or data deletion were performed. The 9 real property submissions and 7 real leads visible in the admin were not modified.
 
 ---
 
 ## 15. Final Recommendation
 
-**Can it go live now?** No — fix the two systemic blockers first; both are config/logic-level and quick.
+**Can this website go live? No, not in its current state.** The rate-limit/session-drop defect (BUG-001) is severe enough that real users — not just an automated tester — will get logged out mid-session and then be unable to log back in, which is launch-blocking for a real-estate lead-generation site where login/lead-capture is core to the business model.
 
-**Must fix before launch (blockers):**
-1. **BUG-001** — Correct the site base URL so canonical/og/sitemap/robots use `grihanivas.in` (kills the SEO/deindex risk).
-2. **BUG-002** — Relax rate limiting + cut the prefetch storm so the public site and admin forms stop hitting 429.
-3. **BUG-003** — Stop wiping tokens / logging out on 429 & transient errors.
-4. **BUG-005 / BUG-006** — Fix pricing (units + sanity) and missing project images (credibility).
-5. **BUG-004** — Make the Add-Project builder load resilient (retry/error).
+**Must be fixed before launch:**
+1. BUG-001 — rate-limit/session-drop lockout (Critical)
+2. BUG-002 — duplicate prefetch requests driving BUG-001 (High)
+3. BUG-004 — accessibility label/id/name gaps across forms (Medium, but cheap and wide-reaching)
 
-**Fix soon (post-launch acceptable):** BUG-007–BUG-013 (data consistency, titles, soft-404, dashboard cards, responsive overflow, form a11y).
+**Can be improved later:**
+- BUG-003 (missing testimonials section)
+- Preload/lazy-load cleanup
+- Full performance/responsiveness/SEO audit (re-run once BUG-001 is resolved — this report could not complete those sections live against production)
 
-**Polish later:** BUG-014–BUG-017 (toasts, configs column, test-data cleanup, stale copy), password toggle, change-password, JSON-LD, image optimization, move refresh token to httpOnly cookie.
-
-### Top 5 Priority Fixes
-1. Set correct site base URL → fixes canonical, og:image, robots, sitemap (BUG-001).
-2. Relax rate limits + remove duplicate route prefetching + batch `system/*` (BUG-002).
-3. Don't logout on 429/transient — only on confirmed 401 + failed refresh (BUG-003).
-4. Validate property/project pricing (unit + sanity) and require valid images (BUG-005, BUG-006).
-5. Add resilient loading + success toasts in admin create flows (BUG-004, BUG-014).
+**Top 5 priority fixes:**
+1. Fix rate-limiter scope/threshold so `/api/auth/*` is never starved by bulk content prefetch (BUG-001).
+2. De-duplicate Next.js route prefetching across the admin sidebar and homepage cards (BUG-002).
+3. Restore the testimonials/offers homepage sections that are silently failing to load (BUG-003).
+4. Add proper label/id/name/autocomplete attributes to all form inputs (BUG-004).
+5. Re-run the full performance, responsiveness, SEO, and user-role testing plan (Sections 5, 7, 11, 12 of this report) once #1 is fixed — this audit was cut short specifically because of that bug, not because those areas are known-good.
 
 ---
 
-### Appendix — Evidence & Limitations
-- Raw working notes: `qa-findings-raw.md`. Mobile screenshot: `mobile-home-360.jpeg`.
-- Dummy data created and deleted: project "QA Test Project - Do Not Use" (id `6a374b9269427aa304809117`). No production data modified.
-- Limitations: exact Lighthouse scores estimated (remote site, harness); deep Property/Blog/Banner/Testimonial/User CRUD and file-upload execution not fully exercised due to aggressive API rate limiting during the session — recommend a follow-up pass after BUG-002 is fixed.
+## Testing Notes / Limitations
+
+This QA pass was cut short by the discovery of BUG-001. Per your instruction, I stopped live interaction with the production site rather than risk extending or worsening the lockout. Sections marked "Not tested" or "Not completed" above are not implicitly "Pass" — they simply were not reached. I'd recommend a follow-up session focused specifically on: (1) verifying the BUG-001 fix, (2) the User-role walkthrough, (3) performance/Lighthouse audits, and (4) the responsiveness matrix.
+
+---
+
+## 16. Root Cause Findings & Fixes Applied (2026-06-21, follow-up)
+
+### BUG-001 root cause: NOT in this codebase
+
+Audited `backend/middleware/rateLimiter.js` and every route file. Finding:
+
+- All four limiters (`globalLimiter`, `authLimiter`, `otpLimiter`, `uploadLimiter`) are **already no-op pass-throughs** in this repo — the real `express-rate-limit` code is commented out with a note "temporarily disabled."
+- No other in-app mechanism rate-limits `/api/auth/me`, `/api/auth/login`, or `/api/system/*`. The only other `429`s in the backend are the OTP brute-force guess-attempt cap in `otpService.js` (unrelated, and per your decision, left in place — it's a legitimate anti-brute-force control, not the bug).
+- **Conclusion: the 429 lockout is coming from infrastructure in front of this app** — confirmed with you to be Cloudflare (proxied DNS) plus an Nginx reverse proxy on the Hostinger VPS, neither of which lives in this git repo.
+
+**Action needed from you (infra layer, outside this repo):**
+1. **Cloudflare dashboard** → Security → WAF / Rate Limiting Rules: delete or disable any rate-limiting rule scoped to `grihanivas.in`. Also check Security Level and "Bot Fight Mode" / "I'm Under Attack Mode" — these can independently trigger challenge/block behavior that looks like a 429/lockout.
+2. **Nginx on the VPS**: search the active config for throttling directives and remove them:
+   ```
+   grep -rn "limit_req\|limit_conn" /etc/nginx/
+   ```
+   Remove any `limit_req_zone` / `limit_req` / `limit_conn_zone` / `limit_conn` directives found, then `nginx -t && systemctl reload nginx`.
+3. I don't have SSH or Cloudflare dashboard access from this session — I can't verify or apply this part myself. Paste the relevant config back here if you want me to confirm there's nothing left, or grant terminal access via `!<command>` in this session if Nginx is reachable that way.
+
+### BUG-002 root cause found and fixed in code
+
+The actual trigger for the 429 cascade: **`AdminSidebar.jsx`** rendered all 13 admin nav links without `prefetch={false}`. Since the sidebar is permanently on-screen, Next.js auto-prefetched all 13 admin routes (and their server-side data) simultaneously on every render — this is what produced the "fetched 5 times" duplicate request pattern observed in the network log and is the proximate cause that exhausted whatever infra-level limiter is in place.
+
+The same missing-`prefetch={false}` pattern also existed on the homepage for the project/builder "View" card links and the header logo link, matching the duplicate `/?_rsc=...` and `/projects/...?_rsc=...` calls seen during testing.
+
+**Fixed in this session** (additive, low-risk, not yet deployed):
+- `frontend/src/components/layout/AdminSidebar.jsx` — added `prefetch={false}` to all 13 nav links + "Back to Home" link.
+- `frontend/src/components/layout/Header.jsx` — added `prefetch={false}` to the logo link.
+- `frontend/src/components/home/TrendingProjectCard.jsx` — added `prefetch={false}` to both card links (image wrapper + "View Project" CTA).
+- `frontend/src/components/home/TrendingBuilderCard.jsx` — added `prefetch={false}` to the "View Builder" CTA link.
+
+This won't fully replace fixing the infra-level rate limiter/WAF rule (BUG-001's actual block), but it removes the load spike that was tripping it, and is good practice regardless (Header/Footer nav links already followed this pattern — admin sidebar and home cards were the inconsistent outliers).
+
+### BUG-003 (aborted testimonials/offers/config/areas calls) — likely related, not separately fixed
+
+No dedicated bug found in `HomePageTestimonials.jsx` or `systemService.js` — both already guard against state updates after unmount. The `net::ERR_ABORTED` pattern is consistent with the same request-volume spike from BUG-002 competing for connections/render cycles right after initial page load. Recommend re-testing the homepage after deploying the BUG-002 fix; if testimonials/offers still fail to load, this needs a separate investigation pass (likely an `AbortController` tied to an unrelated component lifecycle).
+
+### BUG-004 root cause found and fixed in code
+
+Found the exact source: the shared `Field` component in `frontend/src/components/auth/AuthModal.jsx` rendered `<label>` with no `htmlFor` and `<input>` with no `id`/`name`. This single component is reused by **every** auth form in the app (login, signup, forgot-password, reset-password), so one fix resolves the recurring issue seen across all of them.
+
+**Fixed in this session:**
+- Added `useId()`-generated unique `id` per field, wired to the `<label htmlFor>`.
+- Added a `name` attribute derived from the field's label (e.g. "Email or Phone" → `email-or-phone`).
+
+**Not yet checked:** the admin Properties/Property Submissions filter inputs that also showed this DevTools issue — those likely use a different, admin-specific input component. Flagging as a follow-up if you want it fixed in the same pass.
+
+### Status: code changes are local, not deployed
+
+The four files above were edited in the working tree only. Nothing has been committed, built, or deployed. Let me know if you want these committed/pushed, and confirm whether your deploy pipeline needs anything else (e.g., `next build` regenerating the admin route prefetch manifest).
