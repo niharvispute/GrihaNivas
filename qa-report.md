@@ -318,3 +318,107 @@ Found the exact source: the shared `Field` component in `frontend/src/components
 ### Status: code changes are local, not deployed
 
 The four files above were edited in the working tree only. Nothing has been committed, built, or deployed. Let me know if you want these committed/pushed, and confirm whether your deploy pipeline needs anything else (e.g., `next build` regenerating the admin route prefetch manifest).
+
+---
+
+## 17. Lighthouse & Performance Audit (live site, frontend-only, 2026-06-21 follow-up)
+
+Run directly against the deployed site since these are read-only, frontend-only checks with no auth/admin navigation involved — no lockout risk, and confirmed none occurred.
+
+| Page | Device | Performance (Core Web Vitals) | Accessibility | Best Practices | SEO | Status |
+|---|---|---|---|---|---|---|
+| Homepage `/` | Desktop | LCP 458ms, CLS 0.05, TTFB 26ms — all "good" | 96 | 100 | 100 | — |
+| Homepage `/` | Mobile | Not traced separately; Lighthouse mobile run scored same categories | 96 | 100 | 100 | — |
+| Property detail `/property/apartment-in-nigdi-...` | Desktop | Not traced | 96 | 100 | 92 (live) | BUG-006 fixed locally, pending deploy + re-verify on live |
+| Project detail `/projects/shakti` | Desktop | Not traced | 96 | 100 | 92 (live) | BUG-006 fixed locally, pending deploy + re-verify on live |
+| Login `/login` | Desktop | Not traced | 90 (live) | 100 | 58 (live) | BUG-007 fixed locally, pending deploy + re-verify on live |
+
+**Core Web Vitals (homepage) are genuinely good** — LCP 458ms and CLS 0.05 both sit well inside Google's "good" thresholds (LCP <2.5s, CLS <0.1). No performance red flags on the homepage.
+
+### New findings from this pass
+
+**BUG-006 — Missing `<meta name="description">` on property/project detail pages (SEO, Medium) — ✅ FIXED (local, pending deploy)**
+- Confirmed on both a property page and a project page — homepage has one (SEO 100), detail pages don't (SEO 92, "Document does not have a meta description").
+- **Root cause:** both `generateMetadata()` functions had a non-empty description on the happy path, but the "not found" branch and the `catch` (fetch-error) branch returned only `{ title }` with no description — so any record that 404s or hits a transient API error silently loses its meta description. The project page additionally had a description fallback chain (`seoDescription || shortDescription || description?.slice(0,160)`) that resolves to `undefined` if a project has none of those three fields populated.
+- **Fix applied:**
+  - `frontend/src/app/(public)/property/[id]/page.js` — added a fallback `description` string to both the "Property Not Found" and `catch` branches.
+  - `frontend/src/app/(public)/projects/[slug]/page.js` — same for "Project Not Found"/`catch`, plus added a final fallback string at the end of the description chain so it can never resolve to `undefined`.
+- **Verified:** confirmed locally (`localhost:3000`) that the meta description tag renders correctly on the sampled property page.
+
+**BUG-007 — Login page SEO/a11y issues (Low priority, mostly by design) — ✅ FIXED (local, pending deploy)**
+- `is-crawlable` fails because `<meta name="robots" content="noindex, nofollow">` is set — **this is intentional and correct**, you don't want a bare login form ranking in search. Not a bug, no change made.
+- `canonical` — **root cause found:** the root layout (`frontend/src/app/layout.js`) sets a sitewide default `alternates: { canonical: SITE_URL }` (the homepage). `/login` never overrode it, so it inherited the homepage's canonical instead of pointing at itself. **Fix applied:** added `alternates: { canonical: '/login' }` to `frontend/src/app/(public)/login/layout.js`. Verified locally — canonical now correctly resolves to `https://www.grihanivas.in/login`.
+- `heading-order` — the page jumped from `<h1>Account Access</h1>` straight to the footer's `<h3>Properties</h3>` with no `<h2>` in between (footer section labels are real `<h3>` elements, sitewide — only becomes a violation on pages with no `<h2>` in their main content). **Fix applied:** added a visually-hidden `<h2 className="sr-only">Sign in or create your GrihaNivas account</h2>` to the login form panel in `frontend/src/app/(public)/login/page.js`. Verified locally.
+- `link-in-text-block` — the "Terms"/"Privacy Policy" links in the login page's consent text used `hover:underline` (no permanent visual distinction from surrounding text in the resting state). **Fix applied:** changed to permanent `underline underline-offset-2` in the same file. Verified locally. (Checked the homepage's "Get Free Consultation" form and the auth modal for the same pattern — both already use a permanent `underline` class, no fix needed there.)
+- **Not yet deployed** — same as the other fixes in this report, these are local working-tree changes only.
+
+**BUG-008 — Pervasive low-contrast gray text (Accessibility, Medium, sitewide)**
+- `color-contrast` failed on every page audited (homepage, property, project, login). Same root pattern each time: small uppercase labels styled `text-slate-400` / `text-slate-300` / `text-slate-500` on light backgrounds fail WCAG AA contrast, especially at the 8-10px sizes used for labels like "LOCATION", "AREA", "EST.", blog category tags, etc.
+- **Fix:** darken these utility classes (e.g. `text-slate-400` → `text-slate-500`/`600` depending on background) for any text under ~12px, or increase font-weight/size as a secondary mitigation. This is a Tailwind-class-level fix, not a structural one — likely a 30-60 minute pass across the affected components.
+
+**BUG-009 — `label-content-name-mismatch` on the RERA verification button (Accessibility, Low)**
+- The property page's "Open RERA verification" button has an `aria-label` that doesn't match its visible text content, confusing screen readers that expect the accessible name to contain the visible label text.
+- **Fix:** align the `aria-label` with the visible button text, or remove the redundant `aria-label` if the visible text is already descriptive enough.
+
+**BUG-010 — 337.8 kB of oversized images on the homepage's "Choose Your Property Path" cards (Performance, Medium)**
+- The five path cards (Buy/Rent/Builders/New Launch + one more) load raw Unsplash images at 900–1200px width but display them at ~470–740px — confirmed via performance trace `ImageDelivery` insight.
+- Breakdown: `photo-1600607687920...` wastes 98.7 kB, `photo-1600607687939...` wastes 94.2 kB, `photo-1486406146926...` wastes 62.7 kB, `photo-1600566753190...` wastes 45.8 kB, `photo-1494526585095...` wastes 36.4 kB.
+- **Fix:** either route these through Next.js `<Image>` with correctly sized `sizes`/`w` query params matching actual display dimensions, or adjust the existing Unsplash URL `w=` parameter down to match (e.g. `w=500` instead of `w=900`/`w=1200`). Quick, isolated fix — five URLs in one component.
+
+### Not yet run
+Lighthouse/performance audits for the admin dashboard, user dashboard, and other public pages (buy/rent/builders listing, blog) — these either require auth (admin/user) or weren't sampled in this pass. Happy to extend coverage on request.
+
+---
+
+## 18. Local Environment Testing — User Dashboard, Admin CRUD, Responsiveness (2026-06-22 follow-up)
+
+Run against `localhost:3000`/`localhost:5000` (both running in production mode locally) specifically to safely complete the sections blocked by the live-site lockout: User Dashboard, Admin CRUD, role-boundary checks, and Responsiveness. No lockout occurred at any point in this session.
+
+### BUG-001/002 fix verification — ✅ CONFIRMED WORKING
+
+Navigated through all 13 admin sidebar sections in rapid succession (the exact pattern that caused the live-site lockout). Result: session stayed authenticated throughout, `GET /api/auth/me` returned 200 (not 429) every time, and each system endpoint (`/api/system/config`, `/api/system/areas`, etc.) was called once per page instead of the previous 2-5x. The `prefetch={false}` fix to `AdminSidebar.jsx` is confirmed effective. One minor residual duplicate noted: `/api/leads?page=1&limit=15` fired twice on the Leads page — small, not impactful enough to cause throttling, not investigated further.
+
+### Admin CRUD — ✅ Full cycle validated (Builders)
+
+- **Create**: Used the 5-step "Create Builder" wizard with dummy data (`QA Test Builder - Do Not Use`). Empty-submission validation correctly blocked progression ("Builder name is required."). Required field on step 4 ("Detailed Description") also correctly enforced. Submission succeeded, slug auto-generated correctly (`qa-test-builder-do-not-use`).
+- **Persistence**: Refreshed the Builders list — new record present, count incremented 7 → 8.
+- **Delete**: Used the row action menu → Delete → native confirm dialog → accepted. Refreshed — record gone, count back to 7. No other real builder records were touched.
+- Not tested in this pass: Properties/Projects CRUD, image upload validation, duplicate-entry handling, very-long-text/special-character stress tests. Recommend a follow-up pass if you want full coverage of those.
+
+### Role security — ✅ Confirmed
+
+- Logged in as the **normal user** (`+919172008630`), navigated directly to `/admin` — correctly redirected to `/account` instead of rendering the admin console.
+- Logged out, then attempted direct navigation to the protected `/account` route — correctly redirected to `/login`.
+
+### New bugs found this session
+
+**BUG-011 — User's own listing shows "Untitled Property" instead of its real title (Medium)**
+- On `/account/listings`, the logged-in user's own property (the same record that correctly shows as "Apartment in Nigdi" on the homepage and in the admin Properties list) renders as **"Untitled Property"**. Title field mapping is broken specifically in this view's data binding.
+
+**BUG-012 — Duplicate site-name suffix in page `<title>` (Low)**
+- `/account/enquiries` renders as `My Enquiries | GrihaNivas | GrihaNivas` — the page sets its own `"My Enquiries | GrihaNivas"` title while the root layout's title template appends `| GrihaNivas` again. Cosmetic (browser tab title only), but likely affects other account pages using the same pattern.
+
+**BUG-013 — "Comparing" count inconsistent between Dashboard and Profile (Medium)**
+- `/account` (Dashboard) correctly shows **Comparing: 3** for the logged-in user's session. `/account/profile` shows **Comparing: 00** for the same session at the same time. One of the two views is reading stale/hardcoded data instead of the live comparison-list count.
+
+**BUG-014 — Admin console has no responsive/mobile layout (High)**
+- The admin sidebar (`AdminSidebar.jsx`) is a fixed-width (256px) element with no breakpoint behavor — at 768px (tablet) it visibly cramps the dashboard content and overlaps the header; at ~500px (the narrowest width achievable in this local testing environment — see note below) the sidebar consumes the majority of the screen, clipping the "Super Admin / Admin Access" header text entirely and leaving only a sliver for actual content. The public site already has a working hamburger-menu pattern (`Header.jsx`) — the admin console needs the equivalent (collapsible drawer or hamburger toggle below some breakpoint, e.g. `lg`).
+- **Impact:** the admin console is effectively unusable on tablet and unusable on mobile. If any admin staff manage the site from a tablet/phone, this blocks them entirely.
+
+**BUG-015 — Floating action buttons overlap homepage stat card at tablet width (Low)**
+- At exactly 768px, the floating offer-tag/call/WhatsApp buttons (bottom-right, fixed position) visually overlap the "3,200+ BUYERS ADVISED" stat card text on the homepage hero. Not present at 1366px+ or at mobile widths (buttons reflow lower on the page at mobile). Narrow-range CSS/layout collision specific to the tablet breakpoint.
+
+**BUG-016 — Admin System Settings page has 11 unlabeled form fields (same family as BUG-004)**
+- `/admin/system` triggers DevTools' "form field missing label/id/name" issue with a count of 11 — the largest single instance of this pattern found. Confirms the issue isn't limited to the auth forms already fixed; it's a broader pattern across admin form components built independently of the shared `Field` component in `AuthModal.jsx`. Not fixed in this pass — flagging for a dedicated cleanup pass across admin forms if wanted.
+- The user's own `/account/profile` form also shows the same issue (count: 3).
+
+### Tooling note — true 360px/390px mobile widths not testable in this environment
+This local Windows Chrome instance enforces a minimum window width of approximately 500px regardless of the `resize_page` target — confirmed by reading `window.innerWidth` after each resize attempt (requests for 360/390 actually landed at ~500px). All "mobile" observations in this session (including BUG-014's mobile severity) were made at this ~500px floor, not true 360-390px. The admin sidebar bug is already severe at 500px and would only be worse at 360-390px — treat the mobile severity rating as a conservative floor, not the worst case.
+
+### Updated Responsiveness Report
+
+| Page | ~500px (mobile floor) | 768px (tablet) | 1366px | 1920px | Issues |
+|---|---|---|---|---|---|
+| Homepage `/` | Clean — hamburger nav, stacked search | Floating buttons overlap stat card (BUG-015) | Clean | Clean | BUG-015 at 768px only |
+| Login `/login` | Clean — stacked layout, hamburger nav | Not separately tested, expected clean (same pattern as mobile/desktop) | Clean (tested earlier) | Not tested | None found |
+| Admin Dashboard `/admin` | Broken — sidebar consumes most of viewport, header text clipped (BUG-014) | Broken — sidebar cramps content, header overlap (BUG-014) | Clean (used throughout this session) | Not tested | BUG-014, High priority |

@@ -23,20 +23,29 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   try {
     const raw = await getProjectBySlug(slug);
-    if (!raw) return { title: 'Project Not Found' };
+    if (!raw) {
+      return {
+        title: 'Project Not Found',
+        description: 'This project could not be found. Browse other verified new-launch and ongoing projects in Mumbai on GrihaNivas.',
+      };
+    }
     const project = mapProjectToDetailVM(raw);
+    const fallbackDescription = `${project.name} — ${project.location || 'Mumbai'}. View pricing, floor plans, amenities, and availability.`;
 
     return {
       title: project.seoTitle || `${project.name} in ${project.location || 'Mumbai'}`,
-      description: project.seoDescription || project.shortDescription || project.description?.slice(0, 160),
+      description: project.seoDescription || project.shortDescription || project.description?.slice(0, 160) || fallbackDescription,
       openGraph: {
         title: `${project.name} | GrihaNivas`,
-        description: project.shortDescription || project.description?.slice(0, 160),
+        description: project.shortDescription || project.description?.slice(0, 160) || fallbackDescription,
         ...(project.image && { images: [{ url: project.image, width: 1200, height: 630, alt: project.name }] }),
       },
     };
   } catch {
-    return { title: 'Project Details' };
+    return {
+      title: 'Project Details',
+      description: 'View verified project details, pricing, floor plans, and availability on GrihaNivas — Mumbai real estate advisory.',
+    };
   }
 }
 

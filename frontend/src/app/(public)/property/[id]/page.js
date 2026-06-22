@@ -21,7 +21,12 @@ export async function generateMetadata({ params }) {
   const { id } = await params;
   try {
     const property = await getPropertyBySlug(id).catch(() => getPropertyById(id));
-    if (!property) return { title: 'Property Not Found' };
+    if (!property) {
+      return {
+        title: 'Property Not Found',
+        description: 'This property listing could not be found. Browse other verified properties in Mumbai on GrihaNivas.',
+      };
+    }
 
     const title = property.title || 'Property in Mumbai';
     const area = property.raw?.location?.area || 'Mumbai';
@@ -43,7 +48,10 @@ export async function generateMetadata({ params }) {
       },
     };
   } catch {
-    return { title: 'Property Details' };
+    return {
+      title: 'Property Details',
+      description: 'View verified property details, photos, floor plans, and pricing on GrihaNivas — Mumbai real estate advisory.',
+    };
   }
 }
 
