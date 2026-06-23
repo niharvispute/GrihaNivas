@@ -21,7 +21,8 @@ export default function ListedPropertyCard({ property, onDeactivate, onReactivat
 
   const status = STATUS_STYLES[property.status] || STATUS_STYLES.new;
   const imageSrc = resolveFirstImageSrc(property?.images);
-  const imageAlt = resolveImageAlt(property?.title, 'Listed property image');
+  const displayTitle = property.title || `${property.propertyType || 'Property'} in ${property.locality || 'Mumbai'}`;
+  const imageAlt = resolveImageAlt(displayTitle, 'Listed property image');
 
   const handleDeactivate = async () => {
     if (!confirming) {
@@ -77,7 +78,7 @@ export default function ListedPropertyCard({ property, onDeactivate, onReactivat
             <div className="flex justify-between items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
               <div>
                 <h3 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-black text-slate-900 tracking-tight leading-tight line-clamp-1">
-                  {property.title || 'Untitled Property'}
+                  {displayTitle}
                 </h3>
                 <div className="flex items-center gap-1.5 mt-1 text-slate-400 font-bold uppercase tracking-[0.15em] text-[8px] sm:text-[10px]">
                   <span className="material-symbols-outlined text-xs sm:text-sm text-primary">location_on</span>

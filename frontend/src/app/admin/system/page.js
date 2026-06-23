@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { getErrorMessage } from '@/lib/api/errors';
 import { useToast } from '@/context/ToastContext';
 import {
@@ -402,11 +402,16 @@ export default function AdminSystemConfigPage() {
   );
 }
 
+const toFieldName = (label) => (label ? label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '');
+
 function Field({ label, value, onChange, placeholder = '' }) {
+  const fieldId = useId();
   return (
-    <label className="block rounded-2xl border border-slate-100 bg-slate-50 p-4">
+    <label htmlFor={fieldId} className="block rounded-2xl border border-slate-100 bg-slate-50 p-4">
       <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">{label}</span>
       <input
+        id={fieldId}
+        name={toFieldName(label)}
         type="text"
         value={value}
         onChange={(event) => onChange(event.target.value)}
@@ -418,10 +423,13 @@ function Field({ label, value, onChange, placeholder = '' }) {
 }
 
 function TextAreaField({ label, value, onChange, placeholder = '' }) {
+  const fieldId = useId();
   return (
-    <label className="block rounded-2xl border border-slate-100 bg-slate-50 p-4">
+    <label htmlFor={fieldId} className="block rounded-2xl border border-slate-100 bg-slate-50 p-4">
       <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">{label}</span>
       <textarea
+        id={fieldId}
+        name={toFieldName(label)}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
@@ -433,13 +441,16 @@ function TextAreaField({ label, value, onChange, placeholder = '' }) {
 }
 
 function ToggleCard({ label, description, checked, onChange }) {
+  const fieldId = useId();
   return (
-    <label className="flex items-start justify-between gap-4 rounded-2xl border border-slate-100 bg-slate-50 p-5 cursor-pointer">
+    <label htmlFor={fieldId} className="flex items-start justify-between gap-4 rounded-2xl border border-slate-100 bg-slate-50 p-5 cursor-pointer">
       <span>
         <span className="block text-sm font-black text-slate-800 tracking-tight">{label}</span>
         <span className="block text-xs font-bold text-slate-500 mt-1">{description}</span>
       </span>
       <input
+        id={fieldId}
+        name={toFieldName(label)}
         type="checkbox"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}

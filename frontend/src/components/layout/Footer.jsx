@@ -130,7 +130,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-slate-200 py-6 px-8 max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="text-slate-600 text-xs">© {currentYear} GrihaNivas. All rights reserved.</div>
-        <div className="text-slate-400 text-xs">Powered by Shree Gurudev Properties</div>
+        <div className="text-slate-600 text-xs">Powered by Shree Gurudev Properties</div>
         <div className="flex gap-6 text-xs font-bold text-slate-500">
           <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-primary transition-colors">Terms of Use</Link>

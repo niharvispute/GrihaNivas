@@ -48,8 +48,11 @@ export default function ProfileForm({ user, onUpdate }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
             {/* Full Name */}
             <div className="space-y-1.5 sm:space-y-2">
-              <label className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Full Name</label>
+              <label htmlFor="profile-full-name" className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Full Name</label>
               <input
+                id="profile-full-name"
+                name="name"
+                autoComplete="name"
                 className={`w-full px-4 py-2.5 sm:py-3 md:py-3.5 rounded-xl border focus:ring-4 transition-all bg-slate-50 focus:bg-white font-sans text-slate-700 font-bold text-xs sm:text-sm ${nameError ? 'border-red-400 focus:ring-red-100 focus:border-red-400' : 'border-slate-100 focus:ring-primary/5 focus:border-primary'}`}
                 placeholder="Enter your full name"
                 type="text"
@@ -61,9 +64,12 @@ export default function ProfileForm({ user, onUpdate }) {
 
             {/* Mobile Number (Locked) */}
             <div className="space-y-1.5 sm:space-y-2">
-              <label className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Mobile Number</label>
+              <label htmlFor="profile-mobile" className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Mobile Number</label>
               <div className="relative group">
                 <input
+                  id="profile-mobile"
+                  name="phone"
+                  autoComplete="tel"
                   className="w-full px-4 py-2.5 sm:py-3 md:py-3.5 pr-10 rounded-xl border border-slate-50 bg-slate-50/50 text-slate-400 font-sans font-bold cursor-not-allowed text-xs sm:text-sm"
                   disabled
                   type="text"
@@ -78,9 +84,12 @@ export default function ProfileForm({ user, onUpdate }) {
 
             {/* Email */}
             <div className="space-y-1.5 sm:space-y-2">
-              <label className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Email Address</label>
+              <label htmlFor="profile-email" className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-400 px-1">Email Address</label>
               <div className="relative group">
                 <input
+                  id="profile-email"
+                  name="email"
+                  autoComplete="email"
                   className="w-full px-4 py-2.5 sm:py-3 md:py-3.5 pr-10 rounded-xl border border-slate-50 bg-slate-50/50 text-slate-400 font-sans font-bold cursor-not-allowed text-xs sm:text-sm"
                   placeholder="Email cannot be changed"
                   type="email"

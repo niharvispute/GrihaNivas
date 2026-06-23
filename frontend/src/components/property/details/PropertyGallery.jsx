@@ -194,7 +194,7 @@ export default function PropertyGallery({ images, property }) {
               setIsReraModalOpen(true);
             }}
             className="absolute left-3 sm:left-5 bottom-3 sm:bottom-5 z-10 flex items-center gap-2 bg-emerald-50/95 hover:bg-emerald-100 px-2.5 sm:px-3.5 py-2 rounded-xl border border-emerald-100 shadow-lg transition-all"
-            aria-label="Open RERA verification"
+            aria-label="RERA View QR — open RERA verification"
           >
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-lg flex items-center justify-center border border-emerald-50">
               <Image

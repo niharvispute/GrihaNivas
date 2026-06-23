@@ -52,7 +52,7 @@ export default function WhatsAppCTA({ propertyTitle }) {
 
   return (
     <>
-      <div className="hidden sm:flex fixed bottom-6 right-6 z-50 flex-col items-center gap-2">
+      <div className="hidden sm:flex fixed bottom-6 md:bottom-0 lg:bottom-6 right-4 md:right-6 z-50 flex-col items-center gap-2">
 
         {/* Offer Button — only when active offer exists */}
         {offer && (

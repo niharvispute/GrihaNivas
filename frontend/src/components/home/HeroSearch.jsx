@@ -113,7 +113,7 @@ export default function HeroSearch() {
           <div className="flex flex-col text-left flex-1 min-w-0">
             <label
               htmlFor={locationInputId}
-              className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-0.5"
+              className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5"
             >
               Location
             </label>
@@ -143,7 +143,7 @@ export default function HeroSearch() {
             </span>
           </div>
           <div className="flex flex-col text-left flex-1 min-w-0">
-            <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-0.5">
+            <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">
               BHK Type
             </span>
             <button
@@ -151,7 +151,7 @@ export default function HeroSearch() {
               onClick={() => setBhkOpen((o) => !o)}
               className="flex items-center justify-between gap-1 text-sm font-bold w-full focus:outline-none"
             >
-              <span className={bhk ? 'text-slate-900' : 'text-slate-300'}>
+              <span className={bhk ? 'text-slate-900' : 'text-slate-500'}>
                 {bhk ? `${bhk} BHK` : 'Any'}
               </span>
               <span

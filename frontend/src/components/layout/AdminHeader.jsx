@@ -25,9 +25,12 @@ export default function AdminHeader() {
       <div className="flex items-center gap-6 flex-1">
         <div className="relative w-full max-w-lg group">
           <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
-          <input 
-            className="w-full bg-slate-50 border-none rounded-2xl py-3.5 pl-14 pr-6 text-sm font-bold focus:ring-2 focus:ring-primary/20 text-slate-900 transition-all placeholder:text-slate-400" 
-            placeholder="Search leads, properties, or transactions..." 
+          <input
+            id="admin-global-search"
+            name="search"
+            aria-label="Search leads, properties, or transactions"
+            className="w-full bg-slate-50 border-none rounded-2xl py-3.5 pl-14 pr-6 text-sm font-bold focus:ring-2 focus:ring-primary/20 text-slate-900 transition-all placeholder:text-slate-400"
+            placeholder="Search leads, properties, or transactions..."
             type="text"
           />
         </div>

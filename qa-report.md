@@ -422,3 +422,30 @@ This local Windows Chrome instance enforces a minimum window width of approximat
 | Homepage `/` | Clean — hamburger nav, stacked search | Floating buttons overlap stat card (BUG-015) | Clean | Clean | BUG-015 at 768px only |
 | Login `/login` | Clean — stacked layout, hamburger nav | Not separately tested, expected clean (same pattern as mobile/desktop) | Clean (tested earlier) | Not tested | None found |
 | Admin Dashboard `/admin` | Broken — sidebar consumes most of viewport, header text clipped (BUG-014) | Broken — sidebar cramps content, header overlap (BUG-014) | Clean (used throughout this session) | Not tested | BUG-014, High priority |
+
+---
+
+## 19. Fix Pass — BUG-003, 008, 009, 010, 011, 012, 013, 015, 016 (2026-06-23 follow-up)
+
+Per your instruction, fixed every open bug **except BUG-001 (rate limiting — infra-level, out of scope) and BUG-014 (admin responsive layout — explicitly deferred)**. All fixes below were applied to local code and verified against the local dev server (`localhost:3000`/`:5000`). None have been deployed.
+
+| Bug | Status | Verification method |
+|---|---|---|
+| BUG-003 (aborted testimonials/offers calls) | ✅ Fixed (was a side effect of BUG-002) | Network panel: all 8 homepage API calls now return 200, no duplicates. The testimonials section still renders empty, but that's confirmed to be real DB data (`"data":[]`) — zero testimonial records exist, not a bug. |
+| BUG-008 (low-contrast gray text) | ✅ Fixed (majority) | Lighthouse color-contrast failures on homepage dropped from ~37 elements to 0–3 residual (see note below). Fixed `HeroSearch.jsx`, `TrendingBuilderCard.jsx`, `PropertyCard.jsx`, `ProjectCard.jsx`, `SectionHeader.jsx`, `SectionCarousel.jsx`, `Footer.jsx`, homepage `page.js`, plus the amber-500 status badges and the FEATURED gradient badge's transparent tail. |
+| BUG-009 (RERA button aria-label mismatch) | ✅ Fixed | Direct DOM check: `aria-label` now reads "RERA View QR — open RERA verification", containing the visible text. |
+| BUG-010 (oversized homepage images) | ✅ Fixed | Converted plain `<img>` to Next.js `<Image fill sizes=...>` in `page.js` (5 path cards + concierge photo). Confirmed via `currentSrc`: now served through `/_next/image` at `w=640,q=75` instead of the raw 900-1200px Unsplash originals, and lazy-loaded. |
+| BUG-011 ("Untitled Property" in My Listings) | ✅ Fixed | `ListedPropertyCard.jsx` now falls back to `${propertyType} in ${locality}` (matching the backend's own title-generation pattern in `propertySubmissionPublishingService.js`) instead of a generic placeholder. |
+| BUG-012 (duplicate title suffix) | ✅ Fixed | `/account/enquiries` title corrected to `'My Enquiries'` (template adds the `| GrihaNivas` suffix once). Checked `/buy`, `/rent`, `/projects` for the same pattern — confirmed they render correctly already, left untouched. |
+| BUG-013 (Comparing count inconsistent) | ✅ Fixed — real root cause found | The user's `comparedProperties` array held 3 references to **already-deleted** properties. `/api/auth/me` returned the raw stale IDs (length 3); `/api/users/me`'s `.populate()` silently dropped the dangling refs (length 0) — hence the mismatch. Added a cleanup step to `propertyController.js`'s delete handler (`User.updateMany` pulling the deleted ID from `savedProperties`/`comparedProperties` everywhere) so this can't recur, and manually cleared the 3 existing dangling refs for the test account. Verified both endpoints now return `comparedProperties: []` consistently. |
+| BUG-015 (floating buttons overlap stat card at 768px) | ✅ Fixed | `WhatsAppCTA.jsx`: floating stack now sits at `bottom-6 md:bottom-0 lg:bottom-6 right-4 md:right-6` instead of a flat `bottom-6 right-6`. Verified via screenshot at 768px — "BUYERS ADVISED" text fully clear of the buttons. |
+| BUG-016 (unlabeled fields beyond the auth forms) | ✅ Fixed | Added `id`/`name` (+ `htmlFor` where needed) to: `admin/system/page.js`'s `Field`/`TextAreaField`/`ToggleCard` components (covers ~11 instances across the page), `ProfileForm.jsx`'s 3 fields (also added `autoComplete`), and the shared `AdminHeader.jsx` global search input. Verified via console: zero "missing label/id/name" issues remain on either page. |
+
+### Note on BUG-008 residual elements
+Two FEATURED gradient badges and one subtitle paragraph (`SectionCarousel.jsx`) showed in a Lighthouse re-run as still failing despite the source being verifiably correct (confirmed via direct DOM inspection — same caching/staleness pattern observed elsewhere in this session with this dev environment's Lighthouse runs). Given repeated confirmation that the source fix is correct and the audit tool itself is unreliable here, I'm treating BUG-008 as resolved; recommend a final Lighthouse re-check once deployed to confirm with a clean cache.
+
+### Lighthouse tooling caveat (this session)
+Multiple times in this session, Lighthouse continued reporting a failure for an element that direct DOM inspection (`evaluate_script` reading `getComputedStyle`/`meta.content`/`aria-label` etc.) confirmed was already fixed and rendering correctly. This affected verification of BUG-006, BUG-008, and BUG-009 at different points. Treat Lighthouse scores from this local session as a useful signal but not fully authoritative — direct DOM checks were used as the tiebreaker throughout, and are noted per-bug above.
+
+### Status: all changes are local, not deployed or committed
+Every fix in this report (sections 16 through 19) exists only in the local working tree. Nothing has been committed, built for production, or deployed to the live site. Recommend a full re-test against the live URL after deployment, particularly for: BUG-001 (requires the Cloudflare/Nginx fix you're handling separately) and BUG-014 (deferred — admin responsive layout still needs a dedicated pass).
