@@ -67,6 +67,46 @@ const propertySubmissionSchema = new mongoose.Schema(
       trim: true,
       maxlength: [100, 'Property type cannot exceed 100 characters'],
     },
+    commercialType: {
+      type: String,
+      enum: ['Office', 'Retail', 'Warehouse', 'Plot'],
+      default: null,
+    },
+    workstations: {
+      type: Number,
+      min: [0, 'Workstations cannot be negative'],
+      default: null,
+    },
+    cabins: {
+      type: Number,
+      min: [0, 'Cabins cannot be negative'],
+      default: null,
+    },
+    carParking: {
+      type: Number,
+      min: [0, 'Car parking cannot be negative'],
+      default: null,
+    },
+    bikeParking: {
+      type: Number,
+      min: [0, 'Bike parking cannot be negative'],
+      default: null,
+    },
+    powerBackupKva: {
+      type: Number,
+      min: [0, 'Power backup cannot be negative'],
+      default: null,
+    },
+    commercialTaxStatus: {
+      type: String,
+      enum: ['Paid', 'Pending', 'Not Applicable'],
+      default: null,
+    },
+    ocStatus: {
+      type: String,
+      enum: ['Received', 'Applied', 'Pending', 'Not Applicable'],
+      default: null,
+    },
     city: {
       type: String,
       required: true,
@@ -79,6 +119,18 @@ const propertySubmissionSchema = new mongoose.Schema(
       required: [true, 'Locality is required'],
       trim: true,
       maxlength: [200, 'Locality cannot exceed 200 characters'],
+    },
+    pincode: {
+      type: String,
+      trim: true,
+      maxlength: [10, 'Pincode cannot exceed 10 characters'],
+      default: null,
+    },
+    landmarks: {
+      type: String,
+      trim: true,
+      maxlength: [300, 'Landmarks cannot exceed 300 characters'],
+      default: null,
     },
     possession: {
       type: String,

@@ -295,8 +295,18 @@ const schemas = {
       listingType: z.enum(['Sale', 'Rent']),
       buildingType: z.enum(['Residential', 'Commercial']),
       propertyType: z.string().trim().min(2).max(100),
+      commercialType: z.enum(['Office', 'Retail', 'Warehouse', 'Plot']).optional(),
+      workstations: z.coerce.number().int().min(0).optional(),
+      cabins: z.coerce.number().int().min(0).optional(),
+      carParking: z.coerce.number().int().min(0).optional(),
+      bikeParking: z.coerce.number().int().min(0).optional(),
+      powerBackupKva: z.coerce.number().min(0).optional(),
+      commercialTaxStatus: z.enum(['Paid', 'Pending', 'Not Applicable']).optional(),
+      ocStatus: z.enum(['Received', 'Applied', 'Pending', 'Not Applicable']).optional(),
       city: z.string().trim().min(2).max(100).default('Mumbai'),
       locality: z.string().trim().min(2).max(200),
+      pincode: z.string().trim().max(10).optional(),
+      landmarks: z.string().trim().max(300).optional(),
       possession: z.enum(['Ready to Move', 'Under Construction', 'Available Now', 'Available Soon']),
       age: z.string().trim().min(1).max(20),
       bathrooms: z.string().trim().min(1).max(20),
@@ -323,7 +333,10 @@ const schemas = {
       title: z.string().trim().max(200).optional(),
       description: z.string().trim().max(5000).optional(),
       readyToProceed: z.coerce.boolean().optional(),
-    }),
+    }).refine(
+      (data) => data.buildingType !== 'Commercial' || Boolean(data.commercialType),
+      { message: 'commercialType is required when buildingType is Commercial', path: ['commercialType'] }
+    ),
 
     list: z.object({
       page: z.coerce.number().int().min(1).default(1),

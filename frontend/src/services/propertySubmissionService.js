@@ -4,6 +4,11 @@ export const createPropertySubmission = async (payload) => {
   const res = await authedApiFetch('/api/property-submissions', {
     method: 'POST',
     body: payload,
+    // Submission can include up to 20 images + a walkthrough video; the
+    // default API_TIMEOUT_MS (20s) is too short for that upload + Cloudinary
+    // processing round trip, causing a client-side timeout even though the
+    // server finishes and sends the confirmation email (Bug-102).
+    timeoutMs: 90000,
   });
   return res.data;
 };
