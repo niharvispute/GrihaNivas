@@ -91,6 +91,11 @@ const propertySchema = new mongoose.Schema(
         trim: true,
         default: null,
       },
+      landmarks: {
+        type: String,
+        trim: true,
+        default: null,
+      },
       coordinates: {
         lat: { type: Number, default: null },
         lng: { type: Number, default: null },
@@ -150,6 +155,46 @@ const propertySchema = new mongoose.Schema(
     parking: {
       type: Number,
       default: 0,
+    },
+    commercialType: {
+      type: String,
+      enum: ['Office', 'Retail', 'Warehouse', 'Plot'],
+      default: null,
+    },
+    workstations: {
+      type: Number,
+      min: [0, 'Workstations cannot be negative'],
+      default: null,
+    },
+    cabins: {
+      type: Number,
+      min: [0, 'Cabins cannot be negative'],
+      default: null,
+    },
+    carParking: {
+      type: Number,
+      min: [0, 'Car parking cannot be negative'],
+      default: null,
+    },
+    bikeParking: {
+      type: Number,
+      min: [0, 'Bike parking cannot be negative'],
+      default: null,
+    },
+    powerBackupKva: {
+      type: Number,
+      min: [0, 'Power backup cannot be negative'],
+      default: null,
+    },
+    commercialTaxStatus: {
+      type: String,
+      enum: ['Paid', 'Pending', 'Not Applicable'],
+      default: null,
+    },
+    ocStatus: {
+      type: String,
+      enum: ['Received', 'Applied', 'Pending', 'Not Applicable'],
+      default: null,
     },
 
     // ── Details ───────────────────────────────────────────────────────────

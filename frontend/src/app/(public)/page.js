@@ -2,6 +2,7 @@ import LeadForm from '@/components/forms/LeadForm';
 import SectionHeader from '@/components/common/SectionHeader';
 import HeroSearch from '@/components/home/HeroSearch';
 import Link from 'next/link';
+import Image from 'next/image';
 import PropertiesCarousel from '@/components/home/PropertiesCarousel';
 import BuildersCarousel from '@/components/home/BuildersCarousel';
 import HomePageTestimonials from '@/components/home/HomePageTestimonials';
@@ -149,7 +150,7 @@ export default async function HomePage() {
                 <span className="material-symbols-outlined text-primary text-lg sm:text-xl">{item.icon}</span>
                 <div>
                   <p className="text-xs sm:text-sm font-black text-slate-950 leading-none">{item.value}</p>
-                  <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-0.5 sm:mt-1">{item.label}</p>
+                  <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-600 mt-0.5 sm:mt-1">{item.label}</p>
                 </div>
               </div>
             ))}
@@ -166,7 +167,7 @@ export default async function HomePage() {
       <section className="py-10 px-4 sm:px-6 lg:px-8 bg-primary">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
-            <p className="text-white/70 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Free Consultation</p>
+            <p className="text-white text-[10px] font-black uppercase tracking-[0.3em] mb-1">Free Consultation</p>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               Not sure where to start? Talk to an expert.
             </h2>
@@ -201,10 +202,12 @@ export default async function HomePage() {
                 href={cat.href}
                 className="group relative h-36 sm:h-52 lg:h-64 rounded-2xl overflow-hidden cursor-pointer block border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-slate-200/80 transition-all duration-500"
               >
-                <img
+                <Image
                   src={cat.img}
                   alt={cat.title}
-                  className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 320px"
+                  className="object-cover transition-all duration-1000 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-slate-950/95 via-slate-900/35 to-transparent"></div>
                 <div className="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-primary shadow-sm">
@@ -253,7 +256,7 @@ export default async function HomePage() {
               We Don&apos;t Just Find Homes. We Curate{' '}
               <span className="text-primary">Lifestyles.</span>
             </h2>
-            <p className="type-body-16 text-slate-500 mb-8 md:mb-12 md:text-lg">
+            <p className="type-body-16 text-slate-600 mb-8 md:mb-12 md:text-lg">
               GrihaNivas is more than a portal. We are a boutique real estate
               advisory dedicated to the city&apos;s most discerning residents.
             </p>
@@ -288,17 +291,19 @@ export default async function HomePage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-900 mb-1">{item.title}</h3>
-                    <p className="text-xs text-slate-500 leading-relaxed font-bold">{item.desc}</p>
+                    <p className="text-xs text-slate-600 leading-relaxed font-bold">{item.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="relative overflow-hidden rounded-2xl border border-white shadow-2xl shadow-slate-200/90">
-            <img
+          <div className="relative overflow-hidden rounded-2xl border border-white shadow-2xl shadow-slate-200/90 min-h-90">
+            <Image
               src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80"
               alt="Premium Mumbai apartment living room"
-              className="h-full min-h-90 w-full object-cover"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-linear-to-t from-slate-950/50 via-transparent to-transparent"></div>
             <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/20 bg-white/90 p-4 shadow-lg backdrop-blur-md">
@@ -318,7 +323,7 @@ export default async function HomePage() {
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tighter mb-3 md:mb-4">
                 Inside Mumbai Real Estate
               </h2>
-              <p className="text-slate-400 text-sm md:text-base font-bold">
+              <p className="text-slate-600 text-sm md:text-base font-bold">
                 Expert analysis, neighborhood deep-dives, and market forecasts.
               </p>
             </div>
@@ -360,7 +365,7 @@ export default async function HomePage() {
                   <h3 className="text-sm sm:text-lg md:text-xl font-black mb-1.5 sm:mb-3 group-hover:text-primary transition-colors leading-tight line-clamp-2 uppercase">
                     {blog.title}
                   </h3>
-                  <p className="text-slate-400 text-[10px] sm:text-sm line-clamp-1 sm:line-clamp-2 font-bold leading-relaxed">
+                  <p className="text-slate-500 text-[10px] sm:text-sm line-clamp-1 sm:line-clamp-2 font-bold leading-relaxed">
                     {blog.excerpt}
                   </p>
                 </Link>
@@ -479,7 +484,7 @@ export default async function HomePage() {
                     <path d="m6 9 6 6 6-6" />
                   </svg>
                 </summary>
-                <p className="mt-4 text-slate-500 leading-relaxed font-bold">{faq.a}</p>
+                <p className="mt-4 text-slate-600 leading-relaxed font-bold">{faq.a}</p>
               </details>
             ))}
           </div>

@@ -602,6 +602,11 @@ const remove = async (req, res, next) => {
       cache.delByPrefix('props:list:'),
       cache.delByPrefix(`props:id:${property._id}`),
       cache.delByPrefix(`props:slug:${property.slug}`),
+      // Remove dangling references so saved/compared lists never point at a deleted property.
+      User.updateMany(
+        {},
+        { $pull: { savedProperties: property._id, comparedProperties: property._id } }
+      ),
     ]);
     return sendNoContent(res);
   } catch (err) {

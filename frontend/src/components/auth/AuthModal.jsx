@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useId } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import {
   signupRequest,
@@ -87,15 +87,19 @@ function OtpBoxes({ onChange, disabled }) {
 function Field({ label, type = 'text', value, onChange, placeholder, disabled, autoComplete, labelRight, error }) {
   const [showPw, setShowPw] = useState(false);
   const isPassword = type === 'password';
+  const inputId = useId();
+  const name = label ? label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : inputId;
 
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
-        <label className="text-sm font-bold text-slate-700">{label}</label>
+        <label htmlFor={inputId} className="text-sm font-bold text-slate-700">{label}</label>
         {labelRight}
       </div>
       <div className="relative">
         <input
+          id={inputId}
+          name={name}
           type={isPassword ? (showPw ? 'text' : 'password') : type}
           value={value}
           onChange={onChange}

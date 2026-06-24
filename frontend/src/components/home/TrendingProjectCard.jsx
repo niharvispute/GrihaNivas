@@ -30,7 +30,7 @@ export default function TrendingProjectCard({ property }) {
   return (
     <article className="group rounded-2xl overflow-hidden">
       <div className="relative h-44 rounded-2xl overflow-hidden mb-2.5">
-        <Link href={detailHref} className="block w-full h-full">
+        <Link href={detailHref} prefetch={false} className="block w-full h-full">
         {property?.image && !imgErrored ? (
           <Image
             src={property.image}
@@ -99,6 +99,7 @@ export default function TrendingProjectCard({ property }) {
 
         <Link
           href={detailHref}
+          prefetch={false}
           className="w-full h-10 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center gap-1.5 hover:bg-primary/90 transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>

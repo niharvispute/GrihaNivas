@@ -34,6 +34,7 @@ export default function AdminSidebar() {
         <p className="text-primary font-black text-[9px] uppercase tracking-[0.3em] opacity-80 mb-3">Admin Console</p>
         <Link
           href="/"
+          prefetch={false}
           className="flex items-center gap-1.5 text-slate-400 hover:text-white text-[9px] font-black uppercase tracking-[0.3em] transition-colors group"
         >
           <span className="material-symbols-outlined text-sm group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
@@ -48,9 +49,10 @@ export default function AdminSidebar() {
               ? pathname === item.href
               : pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
-            <Link 
+            <Link
               key={item.name}
-              href={item.href} 
+              href={item.href}
+              prefetch={false}
               className={`flex items-center gap-4 px-5 py-3.5 rounded-2xl transition-all group ${
                 isActive
                   ? 'bg-primary text-white shadow-lg'

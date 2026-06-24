@@ -87,20 +87,26 @@ const buildPropertyPayloadFromSubmission = (submission, options = {}) => {
       submission.listingType || 'sale'
     ).toLowerCase()} in ${locality}, ${city}.`;
 
+  const category = deriveCategory(submission);
+  const isRent = category === 'rent';
+  const isCommercial = category === 'commercial';
+
   const coveredParking = parseCount(submission.coveredParking);
   const openParking = parseCount(submission.openParking);
-  const totalParking = [coveredParking, openParking].reduce(
-    (total, count) => total + (Number.isFinite(count) ? count : 0),
-    0
-  );
+  const totalParking = isCommercial
+    ? [submission.carParking, submission.bikeParking].reduce(
+        (total, count) => total + (Number.isFinite(count) ? count : 0),
+        0
+      )
+    : [coveredParking, openParking].reduce(
+        (total, count) => total + (Number.isFinite(count) ? count : 0),
+        0
+      );
   const mediaItems = toSubmissionMediaItems(submission);
   const bhk =
     parseCount(submission?.bhk) ||
     parseCount(submission?.propertyType) ||
     parseBhkFromText(submission?.title);
-
-  const category = deriveCategory(submission);
-  const isRent = category === 'rent';
 
   // For rent listings, the primary price is the monthly rent
   const priceValue = isRent 
@@ -126,7 +132,8 @@ const buildPropertyPayloadFromSubmission = (submission, options = {}) => {
       area: locality,
       city,
       address: null,
-      pincode: null,
+      pincode: submission.pincode || null,
+      landmarks: submission.landmarks || null,
       coordinates: {
         lat: null,
         lng: null,
@@ -134,6 +141,14 @@ const buildPropertyPayloadFromSubmission = (submission, options = {}) => {
     },
     bhk,
     bathrooms: parseCount(submission.bathrooms),
+    commercialType: submission.commercialType || null,
+    workstations: Number.isFinite(submission.workstations) ? submission.workstations : null,
+    cabins: Number.isFinite(submission.cabins) ? submission.cabins : null,
+    carParking: Number.isFinite(submission.carParking) ? submission.carParking : null,
+    bikeParking: Number.isFinite(submission.bikeParking) ? submission.bikeParking : null,
+    powerBackupKva: Number.isFinite(submission.powerBackupKva) ? submission.powerBackupKva : null,
+    commercialTaxStatus: submission.commercialTaxStatus || null,
+    ocStatus: submission.ocStatus || null,
     carpetArea: submission.carpetArea || null,
     totalArea: submission.totalArea || null,
     areaSqft: submission.totalArea || submission.carpetArea || null,
@@ -200,6 +215,17 @@ const ensureSubmissionPublished = async (submission, options = {}) => {
     if (!property.reraUrl && payload.reraUrl) property.reraUrl = payload.reraUrl;
 
     // 🆕 Update new fields
+    property.commercialType = payload.commercialType;
+    property.workstations = payload.workstations;
+    property.cabins = payload.cabins;
+    property.carParking = payload.carParking;
+    property.bikeParking = payload.bikeParking;
+    property.powerBackupKva = payload.powerBackupKva;
+    property.commercialTaxStatus = payload.commercialTaxStatus;
+    property.ocStatus = payload.ocStatus;
+    property.parking = payload.parking;
+    if (payload.location?.pincode) property.location.pincode = payload.location.pincode;
+    if (payload.location?.landmarks) property.location.landmarks = payload.location.landmarks;
     property.carpetArea = payload.carpetArea;
     property.totalArea = payload.totalArea;
     property.rentPerMonth = payload.rentPerMonth;

@@ -322,6 +322,7 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 md:p-10">
+          <h2 className="sr-only">Sign in or create your GrihaNivas account</h2>
           <div className="grid grid-cols-3 gap-2 bg-slate-100 p-1 rounded-xl mb-6">
             <button
               type="button"
@@ -602,7 +603,7 @@ export default function LoginPage() {
           )}
 
           <p className="mt-6 text-xs text-slate-500">
-            By continuing, you agree to our <Link href="/terms" className="text-primary hover:underline">Terms</Link> and <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
+            By continuing, you agree to our <Link href="/terms" className="text-primary underline underline-offset-2">Terms</Link> and <Link href="/privacy" className="text-primary underline underline-offset-2">Privacy Policy</Link>.
           </p>
         </div>
       </section>

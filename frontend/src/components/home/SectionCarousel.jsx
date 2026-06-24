@@ -133,7 +133,7 @@ export default function SectionCarousel({
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight mb-2 md:mb-3 ">
               {title}
             </h2>
-            <p className="text-xs sm:text-sm md:text-base text-slate-500 font-bold leading-relaxed max-w-lg ">
+            <p className="text-xs sm:text-sm md:text-base text-slate-600 font-bold leading-relaxed max-w-lg ">
               {subtitle}
             </p>
           </div>

@@ -26,6 +26,9 @@ import ProjectApplicationForm from './ProjectApplicationForm';
 
 const MIN_PROPERTY_IMAGES = 5;
 const MAX_PROPERTY_IMAGES = 10;
+const COMMERCIAL_FURNISHING_OPTIONS = ['Furnished', 'Semi-Furnished', 'Bare Shell'];
+const COMMERCIAL_TAX_STATUS_OPTIONS = ['Paid', 'Pending', 'Not Applicable'];
+const OC_STATUS_OPTIONS = ['Received', 'Applied', 'Pending', 'Not Applicable'];
 
 const toFileKey = (file) => `${file.name}-${file.size}-${file.lastModified}`;
 
@@ -58,10 +61,20 @@ export default function MultiStageListingForm() {
     propertyType: 'Apartment',
     city: 'Mumbai',
     locality: '',
+    pincode: '',
+    landmarks: '',
     ownerName: '',
     phone: '',
     email: '',
     bhk: '',
+    commercialType: '', // Office, Retail, Warehouse, Plot — only when buildingType === 'Commercial'
+    workstations: '',
+    cabins: '',
+    carParking: '',
+    bikeParking: '',
+    commercialTaxStatus: '',
+    ocStatus: '',
+    powerBackupKva: '',
 
     // Step 2: Basics
     possession: 'Ready to Move',
@@ -146,6 +159,9 @@ export default function MultiStageListingForm() {
         ownerName: validateOwnerName(form.ownerName),
         phone: validatePhone(form.phone),
         email: validateEmail(form.email),
+        ...(form.buildingType === 'Commercial'
+          ? { commercialType: form.commercialType ? null : 'Please select a commercial type.' }
+          : {}),
       };
     } else if (step === 2) {
       validation = {
@@ -352,6 +368,8 @@ export default function MultiStageListingForm() {
       payload.append('propertyType', form.propertyType);
       payload.append('city', form.city || 'Mumbai');
       payload.append('locality', form.locality);
+      if (form.pincode) payload.append('pincode', form.pincode);
+      if (form.landmarks) payload.append('landmarks', form.landmarks);
       payload.append('possession', form.possession);
       if (form.listingType === 'Rent' && form.possession === 'Available Soon' && form.availableFrom) {
         payload.append('availableFrom', form.availableFrom);
@@ -359,6 +377,18 @@ export default function MultiStageListingForm() {
       if (form.age) payload.append('age', form.age);
       payload.append('bathrooms', form.bathrooms);
       if (form.bhk) payload.append('bhk', form.bhk);
+      if (form.buildingType === 'Commercial' && form.commercialType) {
+        payload.append('commercialType', form.commercialType);
+        if (form.commercialType === 'Office') {
+          if (form.workstations) payload.append('workstations', form.workstations);
+          if (form.cabins) payload.append('cabins', form.cabins);
+        }
+        if (form.carParking) payload.append('carParking', form.carParking);
+        if (form.bikeParking) payload.append('bikeParking', form.bikeParking);
+        if (form.powerBackupKva) payload.append('powerBackupKva', form.powerBackupKva);
+        if (form.commercialTaxStatus) payload.append('commercialTaxStatus', form.commercialTaxStatus);
+        if (form.ocStatus) payload.append('ocStatus', form.ocStatus);
+      }
       if (form.balconies) payload.append('balconies', form.balconies);
       if (form.coveredParking) payload.append('coveredParking', form.coveredParking);
       if (form.openParking) payload.append('openParking', form.openParking);
@@ -631,9 +661,20 @@ export default function MultiStageListingForm() {
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Property Type</label>
                   <div className="flex flex-wrap gap-2 md:gap-3">
                     {['Apartment', 'Penthouse', 'Villa', 'Bungalow', 'Commercial'].map(type => (
-                      <button 
+                      <button
                         key={type}
-                        onClick={() => handleToggle('propertyType', type)}
+                        onClick={() => setForm(prev => ({
+                          ...prev,
+                          propertyType: type,
+                          buildingType: type === 'Commercial' ? 'Commercial' : 'Residential',
+                          ...(type === 'Commercial'
+                            ? { bhk: '', appliances: [], amenities: [], furnishing: '' }
+                            : {
+                                commercialType: '', workstations: '', cabins: '',
+                                carParking: '', bikeParking: '', commercialTaxStatus: '',
+                                ocStatus: '', powerBackupKva: '', furnishing: 'unfurnished',
+                              }),
+                        }))}
                         className={`px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest border-2 transition-all ${form.propertyType === type ? 'border-primary bg-primary/5 text-primary' : 'border-slate-50 md:border-slate-100 bg-white text-slate-400 hover:border-slate-200'}`}
                       >
                         {type}
@@ -655,20 +696,53 @@ export default function MultiStageListingForm() {
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">BHK</label>
-                  <div className="flex gap-2 flex-wrap">
-                    {['1', '2', '3', '4', '5+'].map(bhk => (
-                      <button
-                        key={bhk}
-                        onClick={() => handleToggle('bhk', bhk)}
-                        className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all ${form.bhk === bhk ? 'bg-primary text-white shadow-lg' : 'bg-white border border-slate-100 text-slate-400 hover:border-slate-200'}`}
-                      >
-                        {bhk}
-                      </button>
-                    ))}
+                {form.buildingType === 'Commercial' ? (
+                  <>
+                    <div className="space-y-4">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Commercial Type</label>
+                      <div className="flex gap-2 flex-wrap">
+                        {['Office', 'Retail', 'Warehouse', 'Plot'].map(ctype => (
+                          <button
+                            key={ctype}
+                            onClick={() => handleToggle('commercialType', ctype)}
+                            className={`px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest border-2 transition-all ${form.commercialType === ctype ? 'border-primary bg-primary/5 text-primary' : 'border-slate-50 md:border-slate-100 bg-white text-slate-400 hover:border-slate-200'}`}
+                          >
+                            {ctype}
+                          </button>
+                        ))}
+                      </div>
+                      {stepErrors.commercialType && <p className="text-xs font-bold text-red-600">{stepErrors.commercialType}</p>}
+                    </div>
+
+                    {form.commercialType === 'Office' && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div className="space-y-3 md:space-y-4">
+                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Workstations</label>
+                          <input type="number" min="0" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. 25" value={form.workstations} onChange={handleChange('workstations')} />
+                        </div>
+                        <div className="space-y-3 md:space-y-4">
+                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Cabins</label>
+                          <input type="number" min="0" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. 4" value={form.cabins} onChange={handleChange('cabins')} />
+                        </div>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">BHK</label>
+                    <div className="flex gap-2 flex-wrap">
+                      {['1', '2', '3', '4', '5+'].map(bhk => (
+                        <button
+                          key={bhk}
+                          onClick={() => handleToggle('bhk', bhk)}
+                          className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-black text-[10px] md:text-xs transition-all ${form.bhk === bhk ? 'bg-primary text-white shadow-lg' : 'bg-white border border-slate-100 text-slate-400 hover:border-slate-200'}`}
+                        >
+                          {bhk}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
 
@@ -696,7 +770,18 @@ export default function MultiStageListingForm() {
                       <p className="text-[9px] text-slate-400 font-bold max-w-xs text-center">Pin precisely for higher visibility. Mumbai Island & Suburbs Coverage.</p>
                   </div> */}
                 </div>
-                
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                  <div className="space-y-3 md:space-y-4">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Pincode (Optional)</label>
+                    <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. 400018" value={form.pincode} onChange={handleChange('pincode')} maxLength={10} />
+                  </div>
+                  <div className="space-y-3 md:space-y-4">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Nearby Landmarks (Optional)</label>
+                    <input className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. Near Metro Station, Bandra" value={form.landmarks} onChange={handleChange('landmarks')} maxLength={300} />
+                  </div>
+                </div>
+
                 <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Availability Status</label>
                   <div className="flex gap-4">
@@ -764,7 +849,7 @@ export default function MultiStageListingForm() {
                 <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Furnishing Status</label>
                   <div className="flex gap-2 flex-wrap">
-                    {furnishingOptions.map(opt => (
+                    {(form.buildingType === 'Commercial' ? COMMERCIAL_FURNISHING_OPTIONS : furnishingOptions).map(opt => (
                       <button
                         key={opt}
                         onClick={() => handleToggle('furnishing', opt)}
@@ -776,6 +861,58 @@ export default function MultiStageListingForm() {
                   </div>
                 </div>
 
+                {form.buildingType === 'Commercial' && (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                      <div className="space-y-3 md:space-y-4">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Dedicated Car Parking</label>
+                        <input type="number" min="0" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. 2" value={form.carParking} onChange={handleChange('carParking')} />
+                      </div>
+                      <div className="space-y-3 md:space-y-4">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Dedicated Bike Parking</label>
+                        <input type="number" min="0" className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. 4" value={form.bikeParking} onChange={handleChange('bikeParking')} />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Power Backup (KVA, Optional)</label>
+                      <input type="number" min="0" className="w-full max-w-xs bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all" placeholder="e.g. 15" value={form.powerBackupKva} onChange={handleChange('powerBackupKva')} />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Commercial Tax Status</label>
+                        <div className="flex gap-2 flex-wrap">
+                          {COMMERCIAL_TAX_STATUS_OPTIONS.map(opt => (
+                            <button
+                              key={opt}
+                              onClick={() => handleToggle('commercialTaxStatus', opt)}
+                              className={`px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest border-2 transition-all ${form.commercialTaxStatus === opt ? 'border-primary bg-primary/5 text-primary' : 'border-slate-50 bg-white text-slate-400 hover:border-slate-100'}`}
+                            >
+                              {opt}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Zoning Approval / OC Status</label>
+                        <div className="flex gap-2 flex-wrap">
+                          {OC_STATUS_OPTIONS.map(opt => (
+                            <button
+                              key={opt}
+                              onClick={() => handleToggle('ocStatus', opt)}
+                              className={`px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest border-2 transition-all ${form.ocStatus === opt ? 'border-primary bg-primary/5 text-primary' : 'border-slate-50 bg-white text-slate-400 hover:border-slate-100'}`}
+                            >
+                              {opt}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {form.buildingType !== 'Commercial' && (
                 <div className="space-y-4">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Appliances Included</label>
                   <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
@@ -815,6 +952,7 @@ export default function MultiStageListingForm() {
                     </div>
                   )}
                 </div>
+                )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                   <div className="space-y-3 md:space-y-4">
@@ -970,11 +1108,12 @@ export default function MultiStageListingForm() {
                   </div>
                 )}
 
+                {form.buildingType !== 'Commercial' && (
                 <div className="space-y-6">
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Premium Amenities</label>
                   <div className="grid grid-cols-2 gap-3 md:gap-4">
                     {['Infinity Pool', 'Private Gym', 'Concierge', 'Home Automation', 'Vastu Compliant', 'Sea View'].map(amenity => (
-                      <button 
+                      <button
                         key={amenity}
                         onClick={() => handleAmenityToggle(amenity)}
                         className={`flex items-center gap-3 px-4 md:px-6 py-3.5 md:py-4 rounded-xl md:rounded-2xl border-2 font-black text-[10px] md:text-xs transition-all ${form.amenities.includes(amenity) ? 'border-primary bg-primary/5 text-primary' : 'border-slate-50 bg-white text-slate-400'}`}
@@ -987,6 +1126,7 @@ export default function MultiStageListingForm() {
                     ))}
                   </div>
                 </div>
+                )}
 
                 <div className="space-y-6">
                     <div className="space-y-3">

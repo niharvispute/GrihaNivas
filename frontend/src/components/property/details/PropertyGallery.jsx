@@ -156,6 +156,16 @@ export default function PropertyGallery({ images, property }) {
     return property?.possession || property?.raw?.possession || 'Ready to Move';
   };
 
+  const isCommercial = property?.raw?.category === 'commercial';
+  const commercialType = property?.raw?.commercialType;
+  const workstations = property?.raw?.workstations;
+  const cabins = property?.raw?.cabins;
+  const carParking = property?.raw?.carParking;
+  const bikeParking = property?.raw?.bikeParking;
+  const powerBackupKva = property?.raw?.powerBackupKva;
+  const commercialTaxStatus = property?.raw?.commercialTaxStatus;
+  const ocStatus = property?.raw?.ocStatus;
+
   const isRent = property?.raw?.category === 'rent';
   const reraId = property?.reraNumber || property?.raw?.reraNumber || '';
   const reraUrl = property?.reraUrl || property?.raw?.reraUrl || '';
@@ -194,7 +204,7 @@ export default function PropertyGallery({ images, property }) {
               setIsReraModalOpen(true);
             }}
             className="absolute left-3 sm:left-5 bottom-3 sm:bottom-5 z-10 flex items-center gap-2 bg-emerald-50/95 hover:bg-emerald-100 px-2.5 sm:px-3.5 py-2 rounded-xl border border-emerald-100 shadow-lg transition-all"
-            aria-label="Open RERA verification"
+            aria-label="RERA View QR — open RERA verification"
           >
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-lg flex items-center justify-center border border-emerald-50">
               <Image
@@ -310,6 +320,60 @@ export default function PropertyGallery({ images, property }) {
           <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Possession</span>
           <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{getPossessionStatus()}</span>
         </div>
+        {isCommercial && commercialType && (
+          <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Commercial Type</span>
+            <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{commercialType}</span>
+          </div>
+        )}
+        {isCommercial && commercialType === 'Office' && Number.isFinite(Number(workstations)) && (
+          <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Workstations</span>
+            <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{workstations}</span>
+          </div>
+        )}
+        {isCommercial && commercialType === 'Office' && Number.isFinite(Number(cabins)) && (
+          <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Cabins</span>
+            <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{cabins}</span>
+          </div>
+        )}
+        {isCommercial && (Number.isFinite(Number(carParking)) || Number.isFinite(Number(bikeParking))) && (
+          <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Parking</span>
+            <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">
+              {[
+                Number.isFinite(Number(carParking)) ? `${carParking} Car` : null,
+                Number.isFinite(Number(bikeParking)) ? `${bikeParking} Bike` : null,
+              ].filter(Boolean).join(' + ')}
+            </span>
+          </div>
+        )}
+        {isCommercial && Number.isFinite(Number(powerBackupKva)) && (
+          <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Power Backup</span>
+            <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{powerBackupKva} KVA</span>
+          </div>
+        )}
+        {isCommercial && commercialTaxStatus && (
+          <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">Commercial Tax</span>
+            <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{commercialTaxStatus}</span>
+          </div>
+        )}
+        {isCommercial && ocStatus && (
+          <div className="group relative bg-white/30 backdrop-blur-2xl border border-white/40 hover:border-white/60 px-4 sm:px-5 py-4 sm:py-5 rounded-2xl flex flex-col transition-all duration-300 hover:bg-white/40 hover:shadow-lg shadow-lg hover:shadow-blue-200/30">
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background: 'radial-gradient(circle at top right, rgba(47, 111, 237, 0.1), transparent)'}} />
+            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-500 mb-2 relative z-10">OC Status</span>
+            <span className="text-base sm:text-lg font-black text-slate-900 relative z-10 break-all">{ocStatus}</span>
+          </div>
+        )}
       </div>
 
       {isViewerOpen && (

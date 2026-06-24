@@ -453,6 +453,14 @@ export const mapPropertyToDetailVM = (property) => {
     availableFrom: property?.availableFrom || null,
     appliances: normalizeAppliancesVM(property),
     category,
+    commercialType: property?.commercialType || property?.raw?.commercialType || null,
+    workstations: property?.workstations ?? property?.raw?.workstations ?? null,
+    cabins: property?.cabins ?? property?.raw?.cabins ?? null,
+    carParking: property?.carParking ?? property?.raw?.carParking ?? null,
+    bikeParking: property?.bikeParking ?? property?.raw?.bikeParking ?? null,
+    powerBackupKva: property?.powerBackupKva ?? property?.raw?.powerBackupKva ?? null,
+    commercialTaxStatus: property?.commercialTaxStatus || property?.raw?.commercialTaxStatus || null,
+    ocStatus: property?.ocStatus || property?.raw?.ocStatus || null,
     raw: property,
   };
 };
