@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to List a Project — GrihaNivas Admin Guide</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 14px;
+      color: #1a1a2e;
+      background: #f5f7fa;
+      line-height: 1.6;
+    }
+
+    /* ── Cover Page ── */
+    .cover {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+      text-align: center;
+      page-break-after: always;
+    }
+    .cover-logo { font-size: 42px; font-weight: 800; color: #e94560; letter-spacing: 2px; margin-bottom: 8px; }
+    .cover-sub  { font-size: 13px; color: #a0aec0; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 60px; }
+    .cover-title { font-size: 38px; font-weight: 700; color: #fff; line-height: 1.25; margin-bottom: 16px; max-width: 640px; }
+    .cover-desc  { font-size: 15px; color: #a0aec0; max-width: 500px; margin-bottom: 60px; }
+    .cover-meta  { display: flex; gap: 40px; }
+    .cover-meta-item { text-align: center; }
+    .cover-meta-item .label { font-size: 10px; color: #718096; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+    .cover-meta-item .value { font-size: 13px; color: #e2e8f0; font-weight: 600; }
+    .cover-badge {
+      display: inline-block;
+      background: rgba(233,69,96,0.15);
+      border: 1px solid rgba(233,69,96,0.4);
+      color: #e94560;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 32px;
+    }
+
+    /* ── Layout ── */
+    .page {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    /* ── TOC ── */
+    .toc-page {
+      background: #fff;
+      border-radius: 12px;
+      padding: 48px 56px;
+      margin: 40px auto;
+      max-width: 900px;
+      page-break-after: always;
+      box-shadow: 0 2px 20px rgba(0,0,0,.06);
+    }
+    .toc-title { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #e94560; margin-bottom: 8px; }
+    .toc-heading { font-size: 28px; font-weight: 700; color: #1a1a2e; margin-bottom: 32px; }
+    .toc-section-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #a0aec0; margin: 24px 0 8px; }
+    .toc-item { display: flex; align-items: baseline; gap: 8px; padding: 7px 0; border-bottom: 1px dotted #e2e8f0; }
+    .toc-num  { font-size: 11px; color: #e94560; font-weight: 700; min-width: 22px; }
+    .toc-name { font-size: 14px; color: #2d3748; flex: 1; }
+    .toc-page-num { font-size: 12px; color: #a0aec0; }
+
+    /* ── Section ── */
+    .section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 48px 56px;
+      margin: 32px auto;
+      max-width: 900px;
+      box-shadow: 0 2px 20px rgba(0,0,0,.06);
+      page-break-inside: avoid;
+    }
+    .section-eyebrow {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #e94560;
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+    .section-subtitle {
+      font-size: 14px;
+      color: #718096;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid #f0f4f8;
+    }
+
+    /* ── Steps ── */
+    .step {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 36px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid #f0f4f8;
+    }
+    .step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .step-num {
+      min-width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e94560;
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-content { flex: 1; }
+    .step-title { font-size: 17px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .step-desc  { font-size: 14px; color: #4a5568; margin-bottom: 14px; }
+
+    /* ── Screenshot ── */
+    .screenshot {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      margin: 14px 0;
+      display: block;
+      box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    }
+    .screenshot-caption {
+      font-size: 11px;
+      color: #a0aec0;
+      text-align: center;
+      margin-top: 6px;
+      margin-bottom: 4px;
+      font-style: italic;
+    }
+
+    /* ── Info boxes ── */
+    .info-box {
+      background: #ebf4ff;
+      border-left: 4px solid #3182ce;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #2c5282;
+    }
+    .tip-box {
+      background: #f0fff4;
+      border-left: 4px solid #38a169;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #276749;
+    }
+    .warn-box {
+      background: #fffbeb;
+      border-left: 4px solid #d69e2e;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #744210;
+    }
+    .info-box strong, .tip-box strong, .warn-box strong { font-weight: 700; }
+
+    /* ── Field table ── */
+    .field-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+    .field-table th {
+      background: #f7fafc;
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #718096;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .field-table td { padding: 10px 14px; border-bottom: 1px solid #f0f4f8; color: #2d3748; vertical-align: top; }
+    .field-table tr:last-child td { border-bottom: none; }
+    .field-table .required { color: #e94560; font-weight: 700; }
+    .field-table .optional { color: #a0aec0; }
+    .field-table code { background: #f0f4f8; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+
+    /* ── Flow diagram ── */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 20px 0;
+      justify-content: center;
+    }
+    .flow-node {
+      background: #f7fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #2d3748;
+      text-align: center;
+      min-width: 110px;
+    }
+    .flow-node.active { background: #e94560; border-color: #e94560; color: #fff; }
+    .flow-node.green  { background: #38a169; border-color: #38a169; color: #fff; }
+    .flow-arrow { font-size: 18px; color: #cbd5e0; padding: 0 8px; }
+
+    /* ── Status badges ── */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+    .badge-new       { background: #ebf4ff; color: #3182ce; }
+    .badge-contacted { background: #fef3c7; color: #b45309; }
+    .badge-qualified { background: #d1fae5; color: #059669; }
+    .badge-closed    { background: #ede9fe; color: #7c3aed; }
+    .badge-active    { background: #d1fae5; color: #059669; }
+    .badge-draft     { background: #f0f4f8; color: #718096; }
+
+    /* ── Divider ── */
+    .divider { border: none; border-top: 2px solid #f0f4f8; margin: 32px 0; }
+
+    /* ── Summary card ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .summary-card {
+      background: #f7fafc;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .summary-card .s-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #a0aec0; margin-bottom: 6px; }
+    .summary-card .s-value { font-size: 22px; font-weight: 700; color: #1a1a2e; }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; }
+      .section, .toc-page { box-shadow: none; margin: 0; border-radius: 0; padding: 40px 48px; }
+      .cover { min-height: auto; padding: 80px 48px; }
+      .section { page-break-inside: avoid; }
+    }
+
+    /* ── Sidebar note ── */
+    .side-note {
+      float: right;
+      width: 200px;
+      margin-left: 20px;
+      margin-bottom: 12px;
+      background: #fef9e7;
+      border: 1px solid #f6d860;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 12px;
+      color: #78610a;
+    }
+    .side-note strong { display: block; margin-bottom: 4px; color: #5d4a0a; }
+
+    ul.checklist { list-style: none; padding: 0; margin: 12px 0; }
+    ul.checklist li { padding: 5px 0 5px 24px; position: relative; font-size: 13px; color: #4a5568; }
+    ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: #38a169; font-weight: 700; }
+
+    .page-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #a0aec0;
+      text-align: right;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ COVER ══════════════ -->
+<div class="cover">
+  <div class="cover-logo">GrihaNivas</div>
+  <div class="cover-sub">Admin Operations</div>
+  <div class="cover-badge">Internal Guide · Confidential</div>
+  <div class="cover-title">How to List a Project on the Platform</div>
+  <div class="cover-desc">A complete step-by-step walkthrough for admin staff — from logging in and creating a project listing to managing the resulting leads in the CRM.</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="label">Prepared for</div>
+      <div class="value">Admin / Operations Staff</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Platform</div>
+      <div class="value">GrihaNivas Admin Console</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Date</div>
+      <div class="value">June 2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ TABLE OF CONTENTS ══════════════ -->
+<div class="toc-page">
+  <div class="toc-title">Contents</div>
+  <div class="toc-heading">What's In This Guide</div>
+
+  <div class="toc-section-label">Part A — Builder Submission Flow</div>
+  <div class="toc-item"><span class="toc-num">01</span><span class="toc-name">How a Builder Requests a Project Listing</span><span class="toc-page-num">Builder</span></div>
+  <div class="toc-item"><span class="toc-num">02</span><span class="toc-name">The Bulk Project Submission Form</span><span class="toc-page-num">Builder</span></div>
+  <div class="toc-item"><span class="toc-num">03</span><span class="toc-name">Submission Confirmation</span><span class="toc-page-num">Builder</span></div>
+  <div class="toc-item"><span class="toc-num">04</span><span class="toc-name">Admin Receives the Lead</span><span class="toc-page-num">Admin</span></div>
+  <div class="toc-item"><span class="toc-num">05</span><span class="toc-name">Viewing Full Application Details</span><span class="toc-page-num">Admin</span></div>
+  <div class="toc-item"><span class="toc-num">06</span><span class="toc-name">Admin Contacts the Builder</span><span class="toc-page-num">Admin</span></div>
+
+  <div class="toc-section-label">Part B — Admin Creates the Project Listing</div>
+  <div class="toc-item"><span class="toc-num">07</span><span class="toc-name">Logging into the Admin Console</span><span class="toc-page-num">Admin</span></div>
+  <div class="toc-item"><span class="toc-num">08</span><span class="toc-name">Navigating to Projects</span><span class="toc-page-num">Admin</span></div>
+  <div class="toc-item"><span class="toc-num">09</span><span class="toc-name">Step 1 — Basic Information</span><span class="toc-page-num">Admin</span></div>
+  <div class="toc-item"><span class="toc-num">10</span><span class="toc-name">Step 2 — Location &amp; Configurations</span><span class="toc-page-num">Admin</span></div>
+  <div class="toc-item"><span class="toc-num">11</span><span class="toc-name">Step 3 — Media &amp; Documents</span><span class="toc-page-num">Admin</span></div>
+  <div class="toc-item"><span class="toc-num">12</span><span class="toc-name">Step 4 — Pricing &amp; Inventory</span><span class="toc-page-num">Admin</span></div>
+  <div class="toc-item"><span class="toc-num">13</span><span class="toc-name">Step 5 — Review &amp; Publish</span><span class="toc-page-num">Admin</span></div>
+
+  <div class="toc-section-label">Part C — User Enquiry Flow</div>
+  <div class="toc-item"><span class="toc-num">14</span><span class="toc-name">How a User Finds the Listing</span><span class="toc-page-num">User</span></div>
+  <div class="toc-item"><span class="toc-num">15</span><span class="toc-name">Project Detail Page</span><span class="toc-page-num">User</span></div>
+  <div class="toc-item"><span class="toc-num">16</span><span class="toc-name">Submitting an Enquiry</span><span class="toc-page-num">User</span></div>
+
+  <div class="toc-section-label">Part D — CRM Lead Management</div>
+  <div class="toc-item"><span class="toc-num">17</span><span class="toc-name">User Enquiry Appears in Admin CRM</span><span class="toc-page-num">Admin</span></div>
+  <div class="toc-item"><span class="toc-num">18</span><span class="toc-name">Updating Lead Status</span><span class="toc-page-num">Admin</span></div>
+  <div class="toc-item"><span class="toc-num">19</span><span class="toc-name">Full Flow Summary</span><span class="toc-page-num">Reference</span></div>
+</div>
+
+
+<!-- ══════════════ SECTION A: OVERVIEW ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Overview</div>
+  <div class="section-title">The Complete Project Listing Flow</div>
+  <div class="section-subtitle">There are two parallel journeys — a <strong>Builder</strong> who wants their project listed, and a <strong>User</strong> who eventually enquires. The Admin connects both.</div>
+
+  <p style="font-size:13px;color:#4a5568;margin-bottom:20px;font-weight:600;">PART A — Builder Requests the Listing</p>
+  <div class="flow">
+    <div class="flow-node active">Builder fills<br/>List Property form</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Lead lands in<br/>Admin CRM</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Admin contacts<br/>builder externally</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Admin collects<br/>full details</div>
+  </div>
+
+  <p style="font-size:13px;color:#4a5568;margin:24px 0 20px;font-weight:600;">PART B — Admin Creates &amp; Publishes the Listing</p>
+  <div class="flow">
+    <div class="flow-node active">Admin logs in</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Creates project<br/>(5 Steps)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green">Publishes listing<br/>live on platform</div>
+  </div>
+
+  <p style="font-size:13px;color:#4a5568;margin:24px 0 20px;font-weight:600;">PART C &amp; D — User Enquires &amp; Admin Manages Lead</p>
+  <div class="flow">
+    <div class="flow-node active">User browses<br/>projects page</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Views project<br/>detail page</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Submits enquiry</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green">Admin tracks<br/>in CRM</div>
+  </div>
+
+  <div class="info-box" style="margin-top:24px">
+    <strong>Example used in this guide:</strong> Builder <strong>Rahul Mehta</strong> from Lodha Group submits a request to list <strong>Lodha Skyline</strong> — a New Launch in Andheri West, 2 BHK &amp; 3 BHK, 200 units. All screenshots are taken from the live platform.
+  </div>
+</div>
+
+<!-- ══════════════ PART A: BUILDER SUBMISSION ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part A — Builder Submission Flow</div>
+  <div class="section-title">How a Builder Requests a Project Listing</div>
+  <div class="section-subtitle">Before the admin creates anything, the builder discovers GrihaNivas and submits a project application through the public website.</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Builder clicks "LIST PROPERTY" in the header</div>
+      <div class="step-desc">On any page of the GrihaNivas website, the builder clicks the <strong>LIST PROPERTY</strong> button visible in the top navigation. This opens the property listing wizard.</div>
+      <img src="../guide_screenshots/lp_01_list_property_page.png" alt="List Property Page" class="screenshot" />
+      <div class="screenshot-caption">The List Property wizard — Step 1 of 5, showing listing type options: SALE, RENT, BULK PROJECT</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Builder selects "BULK PROJECT"</div>
+      <div class="step-desc">The wizard shows three listing types — SALE, RENT, and <strong>BULK PROJECT</strong>. For a builder with a multi-unit development (tower, society, plotted development), they select <strong>BULK PROJECT</strong>. This immediately switches to a dedicated project application form — skipping the standard individual property steps.</div>
+      <div class="info-box">
+        <strong>Why BULK PROJECT?</strong> Individual SALE/RENT listings go through a 5-step property form suited for single units. BULK PROJECT is specifically designed for builders/developers listing an entire project with multiple units and configurations.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: BULK PROJECT FORM -->
+<div class="section">
+  <div class="section-eyebrow">Part A — Step 02</div>
+  <div class="section-title">The Bulk Project Submission Form</div>
+  <div class="section-subtitle">A single-page form where the builder provides the essential details needed for the GrihaNivas team to follow up.</div>
+
+  <img src="../guide_screenshots/lp_02_bulk_project_form.png" alt="Bulk Project Form" class="screenshot" />
+  <div class="screenshot-caption">The Bulk Project application form — a dedicated single-page form for builder/developer project submissions</div>
+
+  <br/>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Field</th><th>Description</th><th>Required?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Your Name</strong></td><td>The contact person's full name at the builder company</td><td class="required">Required</td></tr>
+      <tr><td><strong>Contact Number</strong></td><td>Mobile number (10 digits) for the admin to call back</td><td class="required">Required</td></tr>
+      <tr><td><strong>Email</strong></td><td>Business email address for follow-up communication</td><td class="optional">Optional</td></tr>
+      <tr><td><strong>Project Name</strong></td><td>The official name of the project (e.g. Lodha Skyline)</td><td class="required">Required</td></tr>
+      <tr><td><strong>Builder / Developer</strong></td><td>Company/developer name (e.g. Lodha Group)</td><td class="required">Required</td></tr>
+      <tr><td><strong>City</strong></td><td>Pre-filled as Mumbai</td><td class="required">Required</td></tr>
+      <tr><td><strong>Locality / Area</strong></td><td>The neighbourhood or micro-market (e.g. Andheri West)</td><td class="required">Required</td></tr>
+      <tr><td><strong>Project Type</strong></td><td>Residential / Commercial / Mixed Use / Plotting</td><td class="required">Required</td></tr>
+      <tr><td><strong>Approx. Total Units</strong></td><td>Estimated total unit count across all configurations</td><td class="optional">Optional</td></tr>
+      <tr><td><strong>RERA Number</strong></td><td>MahaRERA registration number if already registered</td><td class="optional">Optional</td></tr>
+      <tr><td><strong>Anything else?</strong></td><td>Free-text field — builder can add possession date, pricing, BHK types, or any other details they want to share upfront</td><td class="optional">Optional</td></tr>
+    </tbody>
+  </table>
+
+  <img src="../guide_screenshots/lp_03_form_filled.png" alt="Bulk Project Form Filled" class="screenshot" />
+  <div class="screenshot-caption">Example filled by Rahul Mehta — Lodha Skyline, Andheri West, 200 units, RERA P51800047291</div>
+
+  <div class="tip-box">
+    <strong>Tip for builders:</strong> The more detail provided in the <em>Anything else?</em> field (BHK types, price range, possession timeline, amenities), the faster the admin can prepare the listing without multiple follow-up calls.
+  </div>
+</div>
+
+<!-- SECTION: SUBMISSION CONFIRMATION -->
+<div class="section">
+  <div class="section-eyebrow">Part A — Step 03</div>
+  <div class="section-title">Submission Confirmation</div>
+  <div class="section-subtitle">After the builder submits the form, they immediately see a confirmation screen.</div>
+
+  <img src="../guide_screenshots/lp_04_submission_success.png" alt="Application Received" class="screenshot" />
+  <div class="screenshot-caption">"Application Received!" — the builder sees this confirmation immediately after submitting</div>
+
+  <br/>
+
+  <div class="info-box">
+    <strong>What the confirmation says:</strong> <em>"Thanks for telling us about your project. Our team will personally contact you within 24 hours to take this forward."</em>
+    <br/><br/>The submission is now live in the Admin CRM. No further action is needed from the builder — the GrihaNivas team takes over from here.
+  </div>
+
+  <div class="warn-box" style="margin-top:16px">
+    <strong>Response commitment:</strong> The platform confirms a <strong>24-hour callback window</strong>. Ensure the admin team reviews new PROJECT APPLICATION leads daily so this SLA is met.
+  </div>
+</div>
+
+<!-- SECTION: ADMIN RECEIVES LEAD -->
+<div class="section">
+  <div class="section-eyebrow">Part A — Step 04</div>
+  <div class="section-title">Admin Receives the Lead in CRM</div>
+  <div class="section-subtitle">The builder's submission instantly appears in the Lead CRM under Admin → Leads, tagged as "PROJECT APPLICATION".</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Open Admin → Leads</div>
+      <div class="step-desc">Navigate to <code>/admin/leads</code> from the sidebar. The new PROJECT APPLICATION lead from the builder appears at the top of the list with status <span class="badge badge-new">NEW</span>.</div>
+      <img src="../guide_screenshots/lp_05_lead_in_crm.png" alt="Builder Lead in CRM" class="screenshot" />
+      <div class="screenshot-caption">Admin Lead CRM — Rahul Mehta's "PROJECT APPLICATION" lead at the top, status NEW, dated 27 Jun 2026</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Filter by "Bulk Project Application"</div>
+      <div class="step-desc">Use the <strong>LEAD TYPE</strong> dropdown and select <em>Bulk Project Application</em> to isolate only builder project submissions — keeping them separate from regular buyer/renter enquiries.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: VIEW LEAD DETAILS -->
+<div class="section">
+  <div class="section-eyebrow">Part A — Step 05</div>
+  <div class="section-title">Viewing Full Application Details</div>
+  <div class="section-subtitle">The admin can open the full lead detail panel to see everything the builder submitted — without leaving the CRM page.</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Click ⋮ Lead Options → View</div>
+      <div class="step-desc">On the lead row, click the <strong>⋮ Lead options</strong> button, then select <strong>View</strong>. A slide-in detail panel opens on the right side of the screen.</div>
+      <img src="../guide_screenshots/lp_07_lead_detail_panel.png" alt="Lead Detail Panel" class="screenshot" />
+      <div class="screenshot-caption">Lead Detail panel — shows all submitted project details: name, phone, email, project name, builder, location, units, RERA, and an Activity Notes section</div>
+    </div>
+  </div>
+
+  <br/>
+
+  <table class="field-table">
+    <thead><tr><th>Detail shown</th><th>Value (example)</th></tr></thead>
+    <tbody>
+      <tr><td>Name</td><td>Rahul Mehta</td></tr>
+      <tr><td>Phone</td><td>+91 98765 43210</td></tr>
+      <tr><td>Email</td><td>rahul.mehta@lodharealty.com</td></tr>
+      <tr><td>Lead Type</td><td>project application</td></tr>
+      <tr><td>Status</td><td><span class="badge badge-new">new</span></td></tr>
+      <tr><td>Submitted On</td><td>27 Jun 2026</td></tr>
+      <tr><td>Source</td><td>website</td></tr>
+      <tr><td>Applied Project Name</td><td>Lodha Skyline</td></tr>
+      <tr><td>Applied Builder / Developer</td><td>Lodha Group (Macrotech Developers Limited)</td></tr>
+      <tr><td>Applied Location</td><td>Andheri West, Mumbai</td></tr>
+      <tr><td>Applied Approx. Units</td><td>200</td></tr>
+      <tr><td>Applied Project Type</td><td>residential</td></tr>
+      <tr><td>Applied RERA Number</td><td>P51800047291</td></tr>
+      <tr><td>Activity Notes</td><td>Add call outcomes and follow-up notes here — logged with timestamp</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <strong>Use Activity Notes:</strong> After every call or WhatsApp with the builder, add a note in the <em>Activity Notes</em> section. This creates a clear call log so any team member can pick up the conversation without re-briefing.
+  </div>
+</div>
+
+<!-- SECTION: ADMIN CONTACTS BUILDER -->
+<div class="section">
+  <div class="section-eyebrow">Part A — Step 06</div>
+  <div class="section-title">Admin Contacts the Builder</div>
+  <div class="section-subtitle">Contact is made externally — by phone, WhatsApp, or email — using the contact details from the lead. The goal is to collect all remaining details needed to create the full project listing.</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Advance the lead to "CONTACTED"</div>
+      <div class="step-desc">Before calling, click <strong>→ CONTACTED</strong> on the lead row to update the status. This signals to the team that this lead is being worked on.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Collect full project details from the builder</div>
+      <div class="step-desc">During the call, gather all the information needed for the 5-step admin listing wizard. Use this checklist:</div>
+      <ul class="checklist">
+        <li>Project name, builder name, and contact person</li>
+        <li>RERA registration number and MahaRERA URL</li>
+        <li>Complete address and pincode</li>
+        <li>Number of towers, floors, and total land area</li>
+        <li>All BHK configurations — carpet area range, bathrooms, balconies, units per config</li>
+        <li>Price range (starting price, max price, price per sq.ft)</li>
+        <li>Possession timeline and project status (New Launch / Under Construction / Ready)</li>
+        <li>High-res images — hero image, gallery photos, floor plans per BHK, master plan</li>
+        <li>Project brochure (PDF)</li>
+        <li>YouTube/Vimeo video link (if available)</li>
+        <li>Amenities and highlights</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Log the call outcome in Activity Notes</div>
+      <div class="step-desc">After the call, open the Lead Detail panel and add a note — e.g. <em>"Called Rahul Mehta. Confirmed 2BHK (720–850 sqft) and 3BHK (1050–1250 sqft). Images to be shared by email by 28 Jun. Price ₹1.25–2.2 Cr."</em></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-title">Advance lead to "QUALIFIED" once details are received</div>
+      <div class="step-desc">Once all images, pricing, and documents are in hand, click <strong>→ QUALIFIED</strong> on the lead. This means the project is ready to be listed. Proceed to Part B.</div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <strong>Important:</strong> Do not start creating the project listing until you have at least: project name, location, BHK configurations with unit counts, starting price, and a hero image. A listing without these will appear incomplete to users.
+  </div>
+</div>
+
+<!-- ══════════════ PART B DIVIDER ══════════════ -->
+<div class="section" style="background: linear-gradient(135deg, #1a1a2e, #0f3460); color:#fff; text-align:center; padding: 40px 56px;">
+  <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#e94560;margin-bottom:8px;">Moving to Part B</div>
+  <div style="font-size:28px;font-weight:700;margin-bottom:10px;">Admin Creates the Project Listing</div>
+  <div style="font-size:14px;color:#a0aec0;max-width:500px;margin:0 auto;">Now that the admin has collected all details from the builder, they log into the Admin Console and create the full listing using the 5-step project wizard.</div>
+</div>
+
+
+<!-- ══════════════ SECTION 1: LOGIN ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part B — Step 07</div>
+  <div class="section-title">Logging into the Admin Console</div>
+  <div class="section-subtitle">Access the platform at <code style="background:#f0f4f8;padding:2px 8px;border-radius:4px">grihanivas.in/login</code> and sign in with your admin credentials.</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Go to the Login page</div>
+      <div class="step-desc">Open your browser and navigate to the platform URL. Click <strong>Login</strong> if not already selected. You will see fields for email/mobile and password.</div>
+      <img src="../guide_screenshots/02_login_page.png" alt="Login Page" class="screenshot" />
+      <div class="screenshot-caption">The GrihaNivas login page — Account Access</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Enter admin credentials</div>
+      <div class="step-desc">Type your registered mobile number (without the +91 country code prefix) or email, and your password. Then click <strong>Login</strong>.</div>
+      <div class="warn-box"><strong>Important:</strong> Enter the mobile number as 10 digits only (e.g. <code>9876543210</code>), not with +91 prefix.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Access the Admin Console</div>
+      <div class="step-desc">After login, click <strong>My Account</strong> in the top navigation or navigate directly to <code>/admin</code>. You will land on the Admin Dashboard.</div>
+      <img src="../guide_screenshots/04_admin_dashboard.png" alt="Admin Dashboard" class="screenshot" />
+      <div class="screenshot-caption">Admin Dashboard — showing key stats: leads, properties, users, blogs</div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <strong>Tip:</strong> The Admin Console sidebar gives you quick access to all sections — Properties, Projects, Leads, Blogs, Banners, Users, and more. The Dashboard is your overview at a glance.
+  </div>
+</div>
+
+
+<!-- ══════════════ SECTION 2: NAVIGATE TO PROJECTS ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part B — Step 08</div>
+  <div class="section-title">Navigating to Projects</div>
+  <div class="section-subtitle">The Projects section manages all bulk housing projects (not individual resale/rental listings).</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Click "Projects" in the sidebar</div>
+      <div class="step-desc">In the left sidebar, click the <strong>domain Projects</strong> menu item. This takes you to the Projects management page which lists all existing projects.</div>
+      <img src="../guide_screenshots/05_admin_projects_list.png" alt="Projects List" class="screenshot" />
+      <div class="screenshot-caption">Projects list — shows all projects with status, configs, unit count, and quick-edit actions</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Click "+ Add Project"</div>
+      <div class="step-desc">At the top right of the projects page, click the <strong>+ Add Project</strong> button. This opens the 5-step project creation wizard.</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>Projects vs Properties:</strong> <em>Projects</em> are large-scale developments (e.g., Lodha Skyline — 200 units across 4 towers). <em>Properties</em> are individual units for buy/rent listings. Use Projects for builder launches, Under Construction, and New Launch developments.
+  </div>
+</div>
+
+
+<!-- ══════════════ SECTION 3: STEP 1 ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part B — Step 09</div>
+  <div class="section-title">Step 1 — Basic Information</div>
+  <div class="section-subtitle">Set up the project's identity: name, builder, type, status, and available BHK configurations.</div>
+
+  <img src="../guide_screenshots/06_add_project_step1.png" alt="Step 1 - Basic Information" class="screenshot" />
+  <div class="screenshot-caption">Step 1 of 5 — Basic Information form</div>
+
+  <br/>
+
+  <table class="field-table">
+    <thead>
+      <tr><th>Field</th><th>Description</th><th>Required?</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Listing Type</strong></td><td>Sale / Rent / New Launch / Commercial — choose the category the project falls under</td><td class="required">Required</td></tr>
+      <tr><td><strong>Project Name</strong></td><td>The official project name (e.g. <em>Lodha Skyline</em>)</td><td class="required">Required</td></tr>
+      <tr><td><strong>Builder / Developer</strong></td><td>Select from the dropdown of registered builders. If the builder is not listed, add them under <strong>Builders</strong> first.</td><td class="required">Required</td></tr>
+      <tr><td><strong>Contact Person Name</strong></td><td>Name of the SPOC for this project</td><td class="optional">Optional</td></tr>
+      <tr><td><strong>Contact Number</strong></td><td>10-digit mobile number for the project contact</td><td class="optional">Optional</td></tr>
+      <tr><td><strong>RERA Number</strong></td><td>Official MahaRERA registration number (e.g. P51800047291)</td><td class="optional">Optional</td></tr>
+      <tr><td><strong>RERA URL</strong></td><td>Direct link to the MahaRERA listing page</td><td class="optional">Optional</td></tr>
+      <tr><td><strong>Project Type</strong></td><td>Residential / Commercial / Mixed Use / Plotting</td><td class="required">Required</td></tr>
+      <tr><td><strong>Project Status</strong></td><td>New Launch / Under Construction / Ready To Move</td><td class="required">Required</td></tr>
+      <tr><td><strong>Configurations Available</strong></td><td>Multi-select — tick all BHK types available (e.g. 2 BHK + 3 BHK). These drive the floor plan tabs in Step 3.</td><td class="required">Required</td></tr>
+    </tbody>
+  </table>
+
+  <img src="../guide_screenshots/07_step1_filled.png" alt="Step 1 Filled" class="screenshot" />
+  <div class="screenshot-caption">Example filled — Lodha Skyline, New Launch, Residential, 2 BHK + 3 BHK selected</div>
+
+  <div class="tip-box">
+    <strong>Tip:</strong> The <strong>Configurations Available</strong> selection here determines which BHK tabs appear in Step 3 (floor plans). Always select all configurations before moving forward.
+  </div>
+
+  <p style="margin-top:16px;font-size:13px;color:#4a5568;">Click <strong>Next Phase →</strong> to proceed to Step 2, or <strong>Save as Draft</strong> to save progress without advancing.</p>
+</div>
+
+
+<!-- ══════════════ SECTION 4: STEP 2 ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part B — Step 10</div>
+  <div class="section-title">Step 2 — Location &amp; Configuration</div>
+  <div class="section-subtitle">Set the project address, scale (towers, floors, land area), and add individual BHK configurations with carpet area and unit count.</div>
+
+  <img src="../guide_screenshots/08_step2_location.png" alt="Step 2 - Location" class="screenshot" />
+  <div class="screenshot-caption">Step 2 of 5 — Location details and project scale fields</div>
+
+  <br/>
+
+  <div class="step">
+    <div class="step-num">A</div>
+    <div class="step-content">
+      <div class="step-title">Fill Location Details</div>
+      <div class="step-desc">Enter the locality name, area (e.g. Andheri West), city (auto-filled as Mumbai), state, pincode, and the complete address.</div>
+      <table class="field-table">
+        <thead><tr><th>Field</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Locality / Building Name</td><td>Andheri West</td></tr>
+          <tr><td>Area <span class="required">*</span></td><td>Andheri West</td></tr>
+          <tr><td>City</td><td>Mumbai (pre-filled)</td></tr>
+          <tr><td>State</td><td>Maharashtra (pre-filled)</td></tr>
+          <tr><td>Pincode</td><td>400058</td></tr>
+          <tr><td>Complete Address</td><td>Lodha Skyline, S.V. Road, Andheri West, Mumbai - 400058</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">B</div>
+    <div class="step-content">
+      <div class="step-title">Enter Project Scale</div>
+      <div class="step-desc">Fill in the physical scale of the project. <strong>Total Units</strong> is auto-calculated from BHK configurations — do not enter it manually.</div>
+      <table class="field-table">
+        <thead><tr><th>Field</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Total Towers</td><td>4</td></tr>
+          <tr><td>Total Floors</td><td>32</td></tr>
+          <tr><td>Land Area (sq.ft)</td><td>85,000</td></tr>
+          <tr><td>Total Units</td><td><em>Auto-calculated</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">C</div>
+    <div class="step-content">
+      <div class="step-title">Add BHK Configurations</div>
+      <div class="step-desc">Click <strong>+ Add Configuration</strong> for each BHK type. A modal opens — fill in the type, title, carpet area range, bathrooms, balconies, parking, and unit count. Repeat for each BHK type.</div>
+      <img src="../guide_screenshots/09_bhk_config_modal.png" alt="BHK Config Modal" class="screenshot" />
+      <div class="screenshot-caption">Add Configuration modal — 2 BHK Premium, 720–850 sq.ft, 120 units</div>
+    </div>
+  </div>
+
+  <img src="../guide_screenshots/10_step2_complete.png" alt="Step 2 Complete" class="screenshot" />
+  <div class="screenshot-caption">Step 2 complete — 2 configurations added (2 BHK + 3 BHK), Total Units auto-summed to 200</div>
+
+  <div class="tip-box">
+    <strong>Tip:</strong> Every configuration you add here auto-increments the <strong>Total Units</strong> counter. For Lodha Skyline: 2 BHK (120 units) + 3 BHK (80 units) = 200 total.
+  </div>
+</div>
+
+
+<!-- ══════════════ SECTION 5: STEP 3 ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part B — Step 11</div>
+  <div class="section-title">Step 3 — Media &amp; Documents</div>
+  <div class="section-subtitle">Upload all visual and document assets for the project listing page.</div>
+
+  <img src="../guide_screenshots/11_step3_media.png" alt="Step 3 - Media" class="screenshot" />
+  <div class="screenshot-caption">Step 3 of 5 — Media uploads: hero image, gallery, floor plans, brochure, video URL</div>
+
+  <br/>
+
+  <table class="field-table">
+    <thead><tr><th>Asset</th><th>Spec</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Hero Image</strong></td><td>1600×900px · JPG/PNG · Max 5MB</td><td>The main banner image shown at the top of the project detail page</td></tr>
+      <tr><td><strong>Project Gallery</strong></td><td>Up to 20 images · JPG/PNG · Max 5MB each</td><td>Multiple exterior/interior photos — select all at once</td></tr>
+      <tr><td><strong>Master Plan</strong></td><td>JPG/PNG · Max 5MB</td><td>Site layout / master plan image</td></tr>
+      <tr><td><strong>Project Brochure</strong></td><td>PDF · Max 20MB</td><td>Downloadable brochure — users can request this from the detail page</td></tr>
+      <tr><td><strong>Project Video</strong></td><td>YouTube or Vimeo URL</td><td>Embed a walkthrough or promo video</td></tr>
+      <tr><td><strong>Floor Plans (per BHK)</strong></td><td>JPG/PNG · Max 5MB each</td><td>Tabs auto-created for each BHK type selected in Step 1</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <strong>Note:</strong> Media uploads are optional to proceed, but a listing <strong>without a hero image</strong> will show a placeholder on the public-facing page. Always upload at least a hero image before publishing.
+  </div>
+</div>
+
+
+<!-- ══════════════ SECTION 6: STEP 4 ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part B — Step 12</div>
+  <div class="section-title">Step 4 — Pricing &amp; Inventory</div>
+  <div class="section-subtitle">Set the overall project price range and optionally manage individual unit inventory.</div>
+
+  <img src="../guide_screenshots/12_step4_pricing.png" alt="Step 4 - Pricing" class="screenshot" />
+  <div class="screenshot-caption">Step 4 of 5 — Price summary, per-configuration pricing, and unit inventory management</div>
+
+  <br/>
+
+  <div class="step">
+    <div class="step-num">A</div>
+    <div class="step-content">
+      <div class="step-title">Project Price Summary</div>
+      <div class="step-desc">Enter the starting price, maximum price, price per sq.ft, and maintenance charges. These populate the price range shown on the public listing card.</div>
+      <table class="field-table">
+        <thead><tr><th>Field</th><th>Example (Lodha Skyline)</th></tr></thead>
+        <tbody>
+          <tr><td>Starting Price (₹)</td><td>₹1,25,00,000 (1.25 Cr)</td></tr>
+          <tr><td>Maximum Price (₹)</td><td>₹2,20,00,000 (2.2 Cr)</td></tr>
+          <tr><td>Price per Sq.Ft (₹)</td><td>₹18,500</td></tr>
+          <tr><td>Maintenance / Other</td><td>₹3.50 / sq.ft / month</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">B</div>
+    <div class="step-content">
+      <div class="step-title">Configuration Pricing (Optional)</div>
+      <div class="step-desc">Click <strong>Edit Pricing</strong> next to each BHK type to set a specific price range per configuration. If left blank, the listing shows <em>"Price on Request"</em> for that config.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">C</div>
+    <div class="step-content">
+      <div class="step-title">Unit Inventory (Optional)</div>
+      <div class="step-desc">Add individual units manually via <strong>+ Add Unit</strong>, or bulk import using the CSV/XLSX template. This enables per-unit availability tracking (Available / Hold / Booked / Sold).</div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <strong>Tip:</strong> You can skip unit inventory for now and add it later by editing the project. The listing will still go live with the configuration-level data.
+  </div>
+</div>
+
+
+<!-- ══════════════ SECTION 7: STEP 5 ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part B — Step 13</div>
+  <div class="section-title">Step 5 — Review &amp; Publish</div>
+  <div class="section-subtitle">Final review of all details, SEO settings, lead capture toggles, and publishing the listing live.</div>
+
+  <img src="../guide_screenshots/13_step5_review.png" alt="Step 5 - Review" class="screenshot" />
+  <div class="screenshot-caption">Step 5 of 5 — Full review summary with SEO preview and lead capture settings</div>
+
+  <br/>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Review the Project Summary</div>
+      <div class="step-desc">Check the auto-generated summary: Project Name, Builder, RERA Number, Location, Type, Status, and Configuration table with unit counts.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Configure Lead Capture Settings</div>
+      <div class="step-desc">Toggle on/off which enquiry options appear on the public page:</div>
+      <ul class="checklist">
+        <li>Enable Price Request</li>
+        <li>Enable Callback</li>
+        <li>Enable Brochure Download</li>
+        <li>WhatsApp CTA Enabled</li>
+        <li>Enable Site Visit</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Check SEO Settings</div>
+      <div class="step-desc">The SEO Title, Meta Description, and URL Slug are auto-generated from the project name and location. You can edit them if needed. The Google Search preview shows exactly how it will appear in search results.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-title">Set Status to "Published" and Click Publish</div>
+      <div class="step-desc">Change the <strong>Listing Status</strong> dropdown from <em>Draft</em> to <em>Published</em>, then click <strong>Publish Project</strong>. The listing goes live immediately.</div>
+      <img src="../guide_screenshots/14_publish_button.png" alt="Publish Button" class="screenshot" />
+      <div class="screenshot-caption">Status set to "Published" — click "Publish Project" to go live</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <div class="step-title">Confirmation — Project is Live</div>
+      <div class="step-desc">After publishing, you are redirected to the Projects list. The new project appears at the top with status <span class="badge badge-active">Active</span>, listing type, configurations, and unit count visible.</div>
+      <img src="../guide_screenshots/15_project_published.png" alt="Project Published" class="screenshot" />
+      <div class="screenshot-caption">Lodha Skyline now appears in the Projects list as Active — 2BHK, 3BHK · 200 units</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════ SECTION 8: USER VIEW ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part C — Step 14</div>
+  <div class="section-title">How a User Finds the Listing</div>
+  <div class="section-subtitle">Once published, the project immediately appears on the public-facing Projects page for all users to browse.</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">User visits the Projects page</div>
+      <div class="step-desc">Any visitor to <code>/projects</code> will see the new listing. The project card shows the builder name, location, BHK types, starting price, and a <strong>VIEW PROJECT</strong> button.</div>
+      <img src="../guide_screenshots/16_public_projects_page.png" alt="Public Projects Page" class="screenshot" />
+      <div class="screenshot-caption">Public Projects page — Lodha Skyline appears at the top as a New Launch with ₹1.25 Cr starting price</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>What users see on the card:</strong> NEW LAUNCH badge · Project name · BHK types · Builder · Location · Starting price · VIEW PROJECT button
+  </div>
+</div>
+
+
+<!-- ══════════════ SECTION 9: DETAIL PAGE ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part C — Step 15</div>
+  <div class="section-title">Project Detail Page</div>
+  <div class="section-subtitle">The full project detail page users see when they click VIEW PROJECT.</div>
+
+  <img src="../guide_screenshots/17_project_detail_page.png" alt="Project Detail Page" class="screenshot" />
+  <div class="screenshot-caption">Lodha Skyline detail page — RERA verified badge, price range, configurations, enquiry form, and builder info</div>
+
+  <br/>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Hero Section</div>
+      <div class="step-desc">Shows the <strong>NEW LAUNCH</strong> badge, RERA number with verified icon, project name, builder name, and location. The price range (₹1.25 Cr – ₹2.20 Cr) is displayed prominently.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Project Stats Bar</div>
+      <div class="step-desc">At-a-glance stats: Configurations (2BHK, 3BHK), Total Units (200), Possession, Land Area (85,000 sq.ft), Total Towers (4), Total Floors (32).</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Configurations &amp; Pricing</div>
+      <div class="step-desc">Each BHK configuration is shown as a clickable card with carpet area, bathrooms, balconies, and a <strong>View Unit Details</strong> link to the unit-level page.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-title">Enquiry Form &amp; WhatsApp CTA</div>
+      <div class="step-desc">The enquiry form is pre-filled with the logged-in user's name, email, and phone. There is also a direct <strong>Chat on WhatsApp</strong> button for immediate contact.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════ SECTION 10: ENQUIRY ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part C — Step 16</div>
+  <div class="section-title">User Submits an Enquiry</div>
+  <div class="section-subtitle">The user fills in the enquiry form on the project detail page — this creates a lead in the admin CRM.</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Fill the Enquiry Form</div>
+      <div class="step-desc">If logged in, Name, Email, and Phone are auto-filled from the user's profile. The user types their message and clicks <strong>Send Inquiry</strong>.</div>
+      <img src="../guide_screenshots/18_enquiry_form_filled.png" alt="Enquiry Form" class="screenshot" />
+      <div class="screenshot-caption">Enquiry form pre-filled with user details and a custom message about 2 BHK floor plans</div>
+      <div class="warn-box" style="margin-top:12px"><strong>Phone format:</strong> The form requires a 10-digit number without the +91 country code (e.g. <code>9172008630</code>).</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Confirmation Message</div>
+      <div class="step-desc">On successful submission, a green success message appears: <em>"Inquiry submitted! Our team will contact you shortly."</em> The form resets.</div>
+      <img src="../guide_screenshots/20_enquiry_success.png" alt="Enquiry Success" class="screenshot" />
+      <div class="screenshot-caption">Success confirmation — "Inquiry submitted! Our team will contact you shortly."</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════ SECTION 11: LEAD IN CRM ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part D — Step 17</div>
+  <div class="section-title">User Enquiry Appears in Admin CRM</div>
+  <div class="section-subtitle">Every enquiry submitted on the platform is immediately visible in the Lead CRM under Admin → Leads.</div>
+
+  <img src="../guide_screenshots/21_leads_crm_new_lead.png" alt="Leads CRM" class="screenshot" />
+  <div class="screenshot-caption">Admin Lead CRM — new PROJECT enquiry from Super Admin at the top, status NEW, dated 27 Jun 2026</div>
+
+  <br/>
+
+  <table class="field-table">
+    <thead><tr><th>Column</th><th>What It Shows</th></tr></thead>
+    <tbody>
+      <tr><td><strong>NAME</strong></td><td>User's name and avatar initials</td></tr>
+      <tr><td><strong>CONTACT</strong></td><td>Phone number and email address</td></tr>
+      <tr><td><strong>TYPE</strong></td><td>Lead type — PROJECT, BUY, RENT, LOAN, AGREEMENT, etc.</td></tr>
+      <tr><td><strong>DATE</strong></td><td>Date the enquiry was submitted</td></tr>
+      <tr><td><strong>STATUS</strong></td><td><span class="badge badge-new">NEW</span> → <span class="badge badge-contacted">CONTACTED</span> → <span class="badge badge-qualified">QUALIFIED</span> → <span class="badge badge-closed">CLOSED</span></td></tr>
+      <tr><td><strong>ACTION</strong></td><td>One-click button to advance to the next status stage</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <strong>Filter leads by type:</strong> Use the <strong>LEAD TYPE</strong> dropdown to filter for <em>Project Enquiry</em> specifically — this isolates leads from project detail pages.
+  </div>
+</div>
+
+
+<!-- ══════════════ SECTION 12: STATUS MANAGEMENT ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Part D — Step 18</div>
+  <div class="section-title">Updating Lead Status in the CRM</div>
+  <div class="section-subtitle">The CRM uses a 4-stage pipeline to track every lead from first contact to closure.</div>
+
+  <div class="flow">
+    <div class="flow-node active">NEW</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">CONTACTED</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">QUALIFIED</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green">CLOSED</div>
+  </div>
+
+  <br/>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Advance the Lead Status</div>
+      <div class="step-desc">Click the <strong>→ CONTACTED</strong> button on any NEW lead to immediately advance it. The button label updates to reflect the next stage (→ QUALIFIED, → CLOSED). There is also an <strong>undo</strong> button to revert the status.</div>
+      <img src="../guide_screenshots/22_lead_status_updated.png" alt="Lead Status Updated" class="screenshot" />
+      <div class="screenshot-caption">Lead advanced to CONTACTED — next action shows "→ QUALIFIED", with undo option</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Use the Lead Options Menu</div>
+      <div class="step-desc">Click the <strong>⋮ Lead options</strong> button on any row to access additional actions: view full lead details, add notes, assign to a team member, or delete the lead.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Export Leads</div>
+      <div class="step-desc">Click <strong>EXPORT EXCEL</strong> at the top of the Leads page to download all leads as an .xlsx file — useful for offline follow-up and reporting.</div>
+    </div>
+  </div>
+
+  <table class="field-table">
+    <thead><tr><th>Status</th><th>Meaning</th><th>Next Action</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-new">NEW</span></td><td>Lead just submitted, not yet contacted</td><td>Call / WhatsApp the user</td></tr>
+      <tr><td><span class="badge badge-contacted">CONTACTED</span></td><td>Initial contact made, discussion in progress</td><td>Qualify intent and budget</td></tr>
+      <tr><td><span class="badge badge-qualified">QUALIFIED</span></td><td>User is a genuine buyer/renter with confirmed intent</td><td>Schedule site visit / send brochure</td></tr>
+      <tr><td><span class="badge badge-closed">CLOSED</span></td><td>Deal closed or lead dropped</td><td>Mark with notes on outcome</td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ══════════════ SECTION 13: SUMMARY ══════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Step 19 — Reference</div>
+  <div class="section-title">Full Flow Summary</div>
+  <div class="section-subtitle">The complete journey from admin action to lead management — on one page.</div>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="s-label">Builder Steps</div>
+      <div class="s-value">3</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-label">Admin Steps</div>
+      <div class="s-value">5 + setup</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-label">User Actions</div>
+      <div class="s-value">3</div>
+    </div>
+  </div>
+
+  <table class="field-table" style="margin-top:24px">
+    <thead>
+      <tr><th>#</th><th>Who</th><th>Action</th><th>Result</th></tr>
+    </thead>
+    <tbody>
+      <tr style="background:#fef9e7"><td>1</td><td><strong>Builder</strong></td><td>Clicks LIST PROPERTY → selects BULK PROJECT</td><td>Dedicated project submission form opens</td></tr>
+      <tr style="background:#fef9e7"><td>2</td><td><strong>Builder</strong></td><td>Fills and submits the Bulk Project form</td><td>"Application Received!" shown to builder</td></tr>
+      <tr style="background:#fef9e7"><td>3</td><td><strong>Admin</strong></td><td>Sees new PROJECT APPLICATION in Leads CRM</td><td>Lead visible with all submitted project details</td></tr>
+      <tr style="background:#fef9e7"><td>4</td><td><strong>Admin</strong></td><td>Contacts builder by phone/WhatsApp/email</td><td>Collects full project details, images, pricing</td></tr>
+      <tr style="background:#fef9e7"><td>5</td><td><strong>Admin</strong></td><td>Marks lead → QUALIFIED; logs notes in CRM</td><td>Ready to create the listing</td></tr>
+      <tr><td>6</td><td>Admin</td><td>Logs into Admin Console → Projects → Add Project</td><td>5-step wizard opens</td></tr>
+      <tr><td>7</td><td>Admin</td><td>Step 1 — Name, builder, type, BHK configs</td><td>Basic identity saved</td></tr>
+      <tr><td>8</td><td>Admin</td><td>Step 2 — Location, scale, BHK configurations</td><td>200 units auto-calculated</td></tr>
+      <tr><td>9</td><td>Admin</td><td>Step 3 — Uploads hero, gallery, floor plans, brochure</td><td>Media assets stored on Cloudinary</td></tr>
+      <tr><td>10</td><td>Admin</td><td>Step 4 — Sets price range and optional inventory</td><td>₹1.25 Cr – ₹2.20 Cr range saved</td></tr>
+      <tr><td>11</td><td>Admin</td><td>Step 5 — Reviews, sets Published, clicks Publish</td><td>Listing goes live at <code>/projects/lodha-skyline</code></td></tr>
+      <tr style="background:#f0fff4"><td>12</td><td><strong>User</strong></td><td>Visits <code>/projects</code> page</td><td>Sees Lodha Skyline card with price and configs</td></tr>
+      <tr style="background:#f0fff4"><td>13</td><td><strong>User</strong></td><td>Clicks VIEW PROJECT → views detail page</td><td>Full page with RERA, configs, enquiry form</td></tr>
+      <tr style="background:#f0fff4"><td>14</td><td><strong>User</strong></td><td>Fills and submits enquiry form</td><td>Success message shown to user</td></tr>
+      <tr><td>15</td><td>Admin</td><td>Opens Leads CRM</td><td>New PROJECT enquiry at top, status NEW</td></tr>
+      <tr><td>16</td><td>Admin</td><td>Advances lead through pipeline</td><td>NEW → CONTACTED → QUALIFIED → CLOSED</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="divider" />
+
+  <div class="tip-box">
+    <strong>Quick Links (Admin Console):</strong>
+    <ul style="margin-top:8px;padding-left:20px;font-size:13px">
+      <li>Projects list: <code>/admin/projects</code></li>
+      <li>Add new project: <code>/admin/projects/new</code></li>
+      <li>Leads CRM: <code>/admin/leads</code></li>
+      <li>Builders: <code>/admin/builders</code> (add new builders here first)</li>
+    </ul>
+  </div>
+
+  <div style="margin-top:40px;padding-top:24px;border-top:2px solid #f0f4f8;text-align:center;color:#a0aec0;font-size:12px">
+    GrihaNivas Admin Operations Guide · Confidential · June 2026<br/>
+    For support, contact the development team or raise an issue in the project tracker.
+  </div>
+</div>
+
+</body>
+</html>
