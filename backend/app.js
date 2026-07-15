@@ -108,7 +108,7 @@ app.use('/api', globalLimiter);
 app.get('/health', (req, res) => {
   res.status(200).json({
     success: true,
-    status: 'healthy V1',
+    status: 'healthy V1 from Contabo VPS',
     environment: process.env.NODE_ENV,
     timestamp: new Date().toISOString(),
   });

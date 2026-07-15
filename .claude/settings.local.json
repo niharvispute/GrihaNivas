@@ -133,7 +133,9 @@
       "mcp__chrome-devtools__list_network_requests",
       "mcp__chrome-devtools__list_console_messages",
       "mcp__chrome-devtools__lighthouse_audit",
-      "mcp__chrome-devtools__click"
+      "mcp__chrome-devtools__click",
+      "mcp__chrome-devtools__list_pages",
+      "Skill(claude-in-chrome)"
     ],
     "additionalDirectories": [
       "c:\\Users\\visha\\OneDrive\\Desktop\\Bricks\\frontend\\src\\app\\(public)\\projects\\[slug]\\units"
