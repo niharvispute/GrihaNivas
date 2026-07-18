@@ -198,7 +198,7 @@ function ContactForm() {
                 <input
                   id="contact-name"
                   className={`w-full px-6 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-slate-50 border focus:ring-1 placeholder:text-slate-300 font-bold transition-all text-sm md:text-base ${errors.name ? 'border-red-400 focus:ring-red-200' : 'border-transparent focus:ring-primary/20'}`}
-                  placeholder="John Doe"
+                  placeholder="Suresh Patil"
                   type="text"
                   value={form.name}
                   onChange={handleChange('name')}
@@ -229,7 +229,7 @@ function ContactForm() {
               <input
                 id="contact-email"
                 className={`w-full px-6 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-slate-50 border focus:ring-1 placeholder:text-slate-300 font-bold transition-all text-sm md:text-base ${errors.email ? 'border-red-400 focus:ring-red-200' : 'border-transparent focus:ring-primary/20'}`}
-                placeholder="john@example.com"
+                placeholder="suresh@example.com"
                 type="email"
                 value={form.email}
                 onChange={handleChange('email')}

@@ -186,7 +186,7 @@ export default function ProjectApplicationForm({ onBack }) {
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Project Name</label>
               <input
                 className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all"
-                placeholder="e.g. Skyline Heights"
+                placeholder="e.g. Lodha Palava"
                 value={form.projectName}
                 onChange={handleChange('projectName')}
               />
@@ -195,7 +195,7 @@ export default function ProjectApplicationForm({ onBack }) {
               <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Builder / Developer</label>
               <input
                 className="w-full bg-white border-2 border-slate-50 rounded-2xl p-4 font-black placeholder:text-slate-200 text-sm focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all"
-                placeholder="Company name"
+                placeholder="e.g. Lodha Group"
                 value={form.builderName}
                 onChange={handleChange('builderName')}
               />

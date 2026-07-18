@@ -135,7 +135,9 @@
       "mcp__chrome-devtools__lighthouse_audit",
       "mcp__chrome-devtools__click",
       "mcp__chrome-devtools__list_pages",
-      "Skill(claude-in-chrome)"
+      "Skill(claude-in-chrome)",
+      "mcp__chrome-devtools__new_page",
+      "mcp__chrome-devtools__take_screenshot"
     ],
     "additionalDirectories": [
       "c:\\Users\\visha\\OneDrive\\Desktop\\Bricks\\frontend\\src\\app\\(public)\\projects\\[slug]\\units"
