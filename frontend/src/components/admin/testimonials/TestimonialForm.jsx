@@ -43,7 +43,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
                 <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Full Name</label>
                 <input 
                   className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300" 
-                  placeholder="e.g. Client Name" 
+                  placeholder="e.g. Priya Kulkarni"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -84,7 +84,7 @@ const TestimonialForm = ({ initialData = {}, onSave, onCancel, saving = false })
                 <label className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400 px-1">Company</label>
                 <input
                   className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none shadow-inner focus:ring-2 focus:ring-primary/20 transition-all outline-none font-bold text-slate-900 placeholder:text-slate-300"
-                  placeholder="e.g. Acme Corp"
+                  placeholder="e.g. Tata Consultancy Services"
                   type="text"
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}

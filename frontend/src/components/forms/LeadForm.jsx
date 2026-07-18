@@ -148,7 +148,7 @@ export default function LeadForm({
             name="name"
             type="text"
             className={`w-full bg-slate-50 border rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 transition-all placeholder:text-slate-400 ${fieldErrors.name ? 'border-red-400 focus:ring-red-100' : 'border-slate-200 focus:ring-primary/20 focus:border-primary/30'}`}
-            placeholder="John Doe"
+            placeholder="Suresh Patil"
             value={form.name}
             onChange={handleChange('name')}
             autoComplete="name"
@@ -163,7 +163,7 @@ export default function LeadForm({
             name="email"
             type="email"
             className={`w-full bg-slate-50 border rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 transition-all placeholder:text-slate-400 ${fieldErrors.email ? 'border-red-400 focus:ring-red-100' : 'border-slate-200 focus:ring-primary/20 focus:border-primary/30'}`}
-            placeholder="john@example.com"
+            placeholder="suresh@example.com"
             value={form.email}
             onChange={handleChange('email')}
             autoComplete="email"

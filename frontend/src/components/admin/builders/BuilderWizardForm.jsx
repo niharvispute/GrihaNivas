@@ -465,7 +465,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                         patchForm(patch);
                       }}
                       className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-4 py-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
-                      placeholder="Skyline Apex Group"
+                      placeholder="Shree Sai Developers"
                     />
                   </Field>
 
@@ -474,7 +474,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                       value={form.slug}
                       onChange={(e) => patchForm({ slug: toSlug(e.target.value) })}
                       className="w-full rounded-2xl bg-slate-50 border border-slate-100 px-4 py-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20"
-                      placeholder="skyline-apex-group"
+                      placeholder="shree-sai-developers"
                     />
                   </Field>
 
@@ -746,13 +746,13 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                         value={item.author}
                         onChange={(e) => updateTestimonial(index, 'author', e.target.value)}
                         className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
-                        placeholder="Author"
+                        placeholder="e.g. Rahul Deshmukh"
                       />
                       <input
                         value={item.role}
                         onChange={(e) => updateTestimonial(index, 'role', e.target.value)}
                         className="rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
-                        placeholder="Role"
+                        placeholder="e.g. Homebuyer, Andheri"
                       />
                       <input
                         value={item.avatar}
@@ -775,7 +775,7 @@ export default function BuilderWizardForm({ mode = 'create', builderId = '' }) {
                           onChange={(e) => updateTestimonial(index, 'content', e.target.value)}
                           rows={3}
                           className="flex-1 rounded-xl bg-white border border-slate-100 px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-primary/20"
-                          placeholder="Testimonial content"
+                          placeholder="e.g. Excellent build quality, on-time possession..."
                         />
                         {form.testimonials.length > 1 && (
                           <button
