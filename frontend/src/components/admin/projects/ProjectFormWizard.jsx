@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useProjectForm } from '@/context/ProjectFormContext';
 import { useToast } from '@/context/ToastContext';
+import { getErrorMessage } from '@/lib/api/errors';
 import {
   createProject,
   updateProject,
@@ -139,6 +140,7 @@ export default function ProjectFormWizard() {
   const [isLoading, setIsLoading] = useState(false);
   const [hydrating, setHydrating] = useState(false);
   const [error, setError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState(null);
   const router = useRouter();
   const { addToast } = useToast();
 
@@ -268,6 +270,13 @@ export default function ProjectFormWizard() {
     }
 
     if (currentStep === 3) {
+      // Client-side validation before hitting the API
+      if (s3.videoUrl) {
+        try { new URL(s3.videoUrl); } catch {
+          throw new Error('Video URL is not valid — use the full URL including https:// (e.g. https://youtu.be/…)');
+        }
+      }
+
       const fd = new FormData();
       if (s3.heroImage instanceof File) fd.append('heroImage', s3.heroImage);
       if (s3.masterPlan instanceof File) fd.append('masterPlan', s3.masterPlan);
@@ -276,11 +285,20 @@ export default function ProjectFormWizard() {
         if (g instanceof File) fd.append('images', g);
       });
       if (s3.videoUrl) fd.append('videoUrl', s3.videoUrl);
-      // Include gallery removals (publicIds of already-uploaded images to delete)
+
       const removedIds = s3.removedGalleryPublicIds || [];
-      if (removedIds.length) fd.append('removeGalleryIds', JSON.stringify(removedIds));
-      // Only call if there is something to send
-      if (Array.from(fd.keys()).length > 0) await updateProject(id, fd);
+      const hasFileChanges =
+        (s3.heroImage instanceof File) ||
+        (s3.masterPlan instanceof File) ||
+        (s3.brochure instanceof File) ||
+        (s3.gallery || []).some((g) => g instanceof File);
+
+      if (hasFileChanges || removedIds.length || s3.videoUrl) {
+        // Always include removeGalleryIds (even as '[]') so req.body is never empty
+        // after multer strips file fields — otherwise Zod's update refine rejects the request
+        fd.append('removeGalleryIds', JSON.stringify(removedIds));
+        await updateProject(id, fd);
+      }
       // Clear the removal queue now that the backend has processed it
       updateFormData('step3', { removedGalleryPublicIds: [] });
 
@@ -295,7 +313,11 @@ export default function ProjectFormWizard() {
         newFiles.forEach((f) => cfgFd.append('floorPlans', f));
         // sortOrder makes the body non-empty so Zod's "at least one field" passes
         cfgFd.append('sortOrder', String(cfg.sortOrder ?? 0));
-        await updateConfiguration(cfg._id, cfgFd);
+        try {
+          await updateConfiguration(cfg._id, cfgFd);
+        } catch (e) {
+          throw new Error(`Failed to upload floor plans for ${bhkType}: ${e.message}`);
+        }
       }
       return id;
     }
@@ -359,6 +381,7 @@ export default function ProjectFormWizard() {
 
   const handleNext = async () => {
     setError(null);
+    setFieldErrors(null);
     setIsLoading(true);
     try {
       if (currentStep < 5) {
@@ -374,9 +397,11 @@ export default function ProjectFormWizard() {
         router.push('/admin/projects');
       }
     } catch (err) {
-      const msg = err?.message || 'Something went wrong while saving';
-      setError(msg);
-      addToast(msg, 'error');
+      const details = Array.isArray(err?.details) && err.details.length ? err.details : null;
+      const msg = getErrorMessage(err, 'Something went wrong while saving');
+      setFieldErrors(details);
+      setError(details ? null : msg);
+      addToast(details ? `${details.length} field error${details.length > 1 ? 's' : ''} — see details above` : msg, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -388,6 +413,7 @@ export default function ProjectFormWizard() {
 
   const handleSaveDraft = async () => {
     setError(null);
+    setFieldErrors(null);
     setIsLoading(true);
     try {
       await saveCurrentStep();
@@ -395,9 +421,11 @@ export default function ProjectFormWizard() {
       setIsDirty(false);
       addToast('Draft saved.', 'success');
     } catch (err) {
-      const msg = err?.message || 'Failed to save draft';
-      setError(msg);
-      addToast(msg, 'error');
+      const details = Array.isArray(err?.details) && err.details.length ? err.details : null;
+      const msg = getErrorMessage(err, 'Failed to save draft');
+      setFieldErrors(details);
+      setError(details ? null : msg);
+      addToast(details ? `${details.length} field error${details.length > 1 ? 's' : ''} — see details above` : msg, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -412,9 +440,21 @@ export default function ProjectFormWizard() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-4xl mx-auto px-8 py-8">
-            {error && (
+            {(error || fieldErrors) && (
               <div className="mb-5 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
-                {error}
+                {fieldErrors ? (
+                  <>
+                    <p className="font-semibold mb-1">Please fix the following before continuing:</p>
+                    <ul className="list-disc pl-4 space-y-0.5">
+                      {fieldErrors.map((d, i) => (
+                        <li key={i}>
+                          <span className="font-medium capitalize">{d.field?.replace(/\./g, ' › ')}:</span>{' '}
+                          {d.message}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : error}
               </div>
             )}
             {hydrating ? (
