@@ -2,10 +2,60 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { toIndianPhoneE164 } from '@/lib/validation/phone';
+import { createLead } from '@/services/leadService';
+import { getErrorMessage } from '@/lib/api/errors';
+import SuccessModal from '@/components/common/SuccessModal';
 
 export default function RentAgreementPage() {
   const [role, setRole] = useState('landlord');
   const [expandedFaq, setExpandedFaq] = useState(null);
+
+  const [form, setForm] = useState({ name: '', phone: '', email: '', location: '' });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleFieldChange = (field) => (e) => {
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    if (formErrors[field]) setFormErrors((prev) => ({ ...prev, [field]: undefined }));
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const errs = {};
+    if (!form.name.trim()) errs.name = 'Full name is required.';
+    if (!form.phone.trim()) {
+      errs.phone = 'Phone number is required.';
+    } else {
+      const phone = toIndianPhoneE164(form.phone);
+      if (!phone) errs.phone = 'Please enter a valid 10-digit Indian mobile number.';
+    }
+    if (Object.keys(errs).length) {
+      setFormErrors(errs);
+      return;
+    }
+    const phone = toIndianPhoneE164(form.phone);
+    setIsSubmitting(true);
+    setSubmitError('');
+    try {
+      await createLead({
+        name: form.name.trim(),
+        phone,
+        email: form.email.trim() || undefined,
+        leadType: 'agreement',
+        message: `Role: ${role}. Location: ${form.location || 'Not specified'}.`,
+      });
+      setShowSuccess(true);
+      setForm({ name: '', phone: '', email: '', location: '' });
+      setRole('landlord');
+    } catch (err) {
+      setSubmitError(getErrorMessage(err, 'Unable to submit request. Please try again.'));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const steps = [
     { title: "Submit Details", desc: "Fill out a simple form with landlord, tenant, and property details securely on our portal.", icon: "1" },
@@ -30,6 +80,13 @@ export default function RentAgreementPage() {
   ];
 
   return (
+    <>
+    <SuccessModal
+      isOpen={showSuccess}
+      onClose={() => setShowSuccess(false)}
+      title="Request Submitted!"
+      message="Our legal consultant will call you within 15 minutes."
+    />
     <div className="w-full">
       {/* 🏙️ Hero Section */}
       <section className="relative px-8 pt-6 pb-20 lg:pt-16 lg:pb-32 overflow-hidden bg-slate-50/50">
@@ -183,45 +240,71 @@ export default function RentAgreementPage() {
             </div>
           </div>
           <div className="bg-white p-12 md:p-16 rounded-2xl shadow-2xl border border-slate-50 relative">
-            <form className="space-y-8">
+            <form className="space-y-8" onSubmit={handleFormSubmit} noValidate>
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Full Name</label>
-                  <input className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" placeholder="Anjali Deshmukh" type="text"/>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Full Name *</label>
+                  <input
+                    className={`w-full px-8 py-5 rounded-2xl bg-slate-50 placeholder:text-slate-300 font-bold transition-all border focus:ring-2 ${formErrors.name ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:ring-primary/20'}`}
+                    placeholder="Anjali Deshmukh"
+                    type="text"
+                    value={form.name}
+                    onChange={handleFieldChange('name')}
+                  />
+                  {formErrors.name && <p className="text-xs font-bold text-red-600">{formErrors.name}</p>}
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Phone Number</label>
-                  <input className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" placeholder="+91 98XXX XXXXX" type="tel"/>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Phone Number *</label>
+                  <input
+                    className={`w-full px-8 py-5 rounded-2xl bg-slate-50 placeholder:text-slate-300 font-bold transition-all border focus:ring-2 ${formErrors.phone ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:ring-primary/20'}`}
+                    placeholder="+91 98XXX XXXXX"
+                    type="tel"
+                    value={form.phone}
+                    onChange={handleFieldChange('phone')}
+                  />
+                  {formErrors.phone && <p className="text-xs font-bold text-red-600">{formErrors.phone}</p>}
                 </div>
               </div>
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Email Address</label>
-                <input className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" placeholder="anjali@example.com" type="email"/>
+                <input
+                  className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-transparent border focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all"
+                  placeholder="anjali@example.com"
+                  type="email"
+                  value={form.email}
+                  onChange={handleFieldChange('email')}
+                />
               </div>
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Property Location</label>
-                  <input className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" placeholder="E.g. Worli, Andheri" type="text"/>
+                  <input
+                    className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-transparent border focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all"
+                    placeholder="E.g. Worli, Andheri"
+                    type="text"
+                    value={form.location}
+                    onChange={handleFieldChange('location')}
+                  />
                 </div>
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">I am a...</label>
                   <div className="flex p-1.5 bg-slate-50 rounded-2xl">
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setRole('landlord')}
                       className={`flex-1 py-3.5 text-[10px] font-black uppercase tracking-tight rounded-xl transition-all ${role === 'landlord' ? 'bg-white text-primary shadow-xl' : 'text-slate-400'}`}
                     >
                       Landlord
                     </button>
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setRole('tenant')}
                       className={`flex-1 py-3.5 text-[10px] font-black uppercase tracking-tight rounded-xl transition-all ${role === 'tenant' ? 'bg-white text-primary shadow-xl' : 'text-slate-400'}`}
                     >
                       Tenant
                     </button>
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setRole('other')}
                       className={`flex-1 py-3.5 text-[10px] font-black uppercase tracking-tight rounded-xl transition-all ${role === 'other' ? 'bg-white text-primary shadow-xl' : 'text-slate-400'}`}
                     >
@@ -230,15 +313,16 @@ export default function RentAgreementPage() {
                   </div>
                 </div>
               </div>
-              {role === 'other' && (
-                <div className="space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Please Specify</label>
-                  <input className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all" placeholder="E.g. Broker, Legal Advisor" type="text"/>
-                </div>
-              )}
-              <button className="w-full bg-primary text-white py-6 rounded-2xl font-black text-xl shadow-2xl hover:scale-[1.02] active:scale-95 transition-all">
-                Submit Request
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-primary text-white py-6 rounded-2xl font-black text-xl shadow-2xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit Request'}
               </button>
+              {submitError && (
+                <p className="text-sm font-bold text-red-600 text-center">{submitError}</p>
+              )}
               <p className="text-[9px] text-center text-slate-400 uppercase tracking-[0.2em] font-bold">
                 By submitting, you agree to our privacy policy and terms.
               </p>
@@ -267,5 +351,6 @@ export default function RentAgreementPage() {
         </div>
       </section>
     </div>
+    </>
   );
 }

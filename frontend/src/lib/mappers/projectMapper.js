@@ -19,6 +19,12 @@ const getMediaUrls = (collection) => {
   return collection.map(getMediaUrl).filter(Boolean);
 };
 
+const normalizeAmenities = (raw) =>
+  (Array.isArray(raw) ? raw : []).map((item) => {
+    if (item && typeof item === 'object') return item;
+    return { icon: 'done', label: String(item) };
+  });
+
 const buildLocation = (locationObj) => {
   const area = (locationObj?.area || '').trim();
   const city = (locationObj?.city || '').trim();
@@ -156,7 +162,7 @@ export const mapProjectToDetailVM = (project = {}) => {
     masterPlanUrl: getMediaUrl(project?.masterPlan),
     brochureUrl: getMediaUrl(project?.brochure),
     videoUrl: project?.videoUrl || '',
-    amenities: Array.isArray(project?.amenities) ? project.amenities : [],
+    amenities: normalizeAmenities(project?.amenities),
     configurations,
     floorPlans,
     builder: mapBuilderForProject(builder),

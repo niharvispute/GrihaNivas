@@ -6,6 +6,7 @@ import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { validateName, validateEmail, validatePhone, validateMessage, collectErrors } from '@/lib/validation/formValidation';
 import { createLead } from '@/services/leadService';
+import SuccessModal from '@/components/common/SuccessModal';
 
 const DRAFT_KEY = 'lead_draft:generic';
 
@@ -32,6 +33,7 @@ export default function LeadForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
   const [fieldErrors, setFieldErrors] = useState({});
+  const [showSuccess, setShowSuccess] = useState(false);
 
   // Load session draft
   useEffect(() => {
@@ -102,10 +104,8 @@ export default function LeadForm({
         message: form.message.trim() || undefined,
       });
 
-      setFeedback({
-        type: 'success',
-        message: 'Inquiry submitted! Our team will contact you shortly.',
-      });
+      setShowSuccess(true);
+      setFeedback({ type: '', message: '' });
       setForm({ name: '', email: '', phone: '', message: '' });
       if (typeof window !== 'undefined') {
         window.sessionStorage.removeItem(DRAFT_KEY);
@@ -138,6 +138,13 @@ export default function LeadForm({
   };
 
   return (
+    <>
+    <SuccessModal
+      isOpen={showSuccess}
+      onClose={() => setShowSuccess(false)}
+      title="Inquiry Submitted!"
+      message="Our team will contact you shortly."
+    />
     <div className="bg-white p-7 rounded-moderate shadow-2xl border border-slate-50">
       <h3 className="text-xl font-black text-slate-900 mb-6 tracking-tight">{title}</h3>
       <form className="space-y-4" onSubmit={handleSubmit}>
@@ -240,5 +247,6 @@ export default function LeadForm({
         </p>
       </form>
     </div>
+    </>
   );
 }

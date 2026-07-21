@@ -291,11 +291,11 @@ const EMICalculator = () => {
                 </label>
                 <div className="relative">
                   <span className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs md:text-base">₹</span>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={loanAmount.toLocaleString('en-IN')}
                     onChange={(e) => {
-                      const val = parseInt(e.target.value.replace(/,/g, '')) || 0;
+                      const val = Math.max(0, parseInt(e.target.value.replace(/,/g, '')) || 0);
                       setLoanAmount(val);
                     }}
                     className="pl-6 md:pl-8 pr-3 md:pr-4 py-1.5 md:py-2 bg-slate-50 border-none rounded-lg md:rounded-xl text-right font-bold text-slate-900 focus:ring-1 focus:ring-primary/20 w-32 md:w-40 text-sm md:text-base"
@@ -324,11 +324,12 @@ const EMICalculator = () => {
                   Interest Rate (%)
                 </label>
                 <div className="relative">
-                  <input 
-                    type="number" 
+                  <input
+                    type="number"
                     step="0.1"
+                    min="0"
                     value={interestRate}
-                    onChange={(e) => setInterestRate(parseFloat(e.target.value) || 0)}
+                    onChange={(e) => setInterestRate(Math.max(0, parseFloat(e.target.value) || 0))}
                     className="pr-6 md:pr-8 pl-3 md:pl-4 py-1.5 md:py-2 bg-slate-50 border-none rounded-lg md:rounded-xl text-right font-bold text-slate-900 focus:ring-1 focus:ring-primary/20 w-24 md:w-32 text-sm md:text-base"
                   />
                   <span className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs md:text-base">%</span>
@@ -356,10 +357,11 @@ const EMICalculator = () => {
                   Loan Tenure
                 </label>
                 <div className="relative">
-                  <input 
-                    type="number" 
+                  <input
+                    type="number"
+                    min="0"
                     value={tenure}
-                    onChange={(e) => setTenure(parseInt(e.target.value) || 0)}
+                    onChange={(e) => setTenure(Math.max(0, parseInt(e.target.value) || 0))}
                     className="pr-10 md:pr-12 pl-3 md:pl-4 py-1.5 md:py-2 bg-slate-50 border-none rounded-lg md:rounded-xl text-right font-bold text-slate-900 focus:ring-1 focus:ring-primary/20 w-24 md:w-32 text-sm md:text-base"
                   />
                   <span className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs md:text-base">Yrs</span>

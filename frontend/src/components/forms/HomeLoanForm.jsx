@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { createLead } from '@/services/leadService';
+import SuccessModal from '@/components/common/SuccessModal';
 
 const DRAFT_KEY = 'lead_draft:loan';
 
@@ -22,6 +23,8 @@ export default function HomeLoanForm({ title = "Apply for Home Loan" }) {
   const [queuedSubmit, setQueuedSubmit] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
+  const [phoneError, setPhoneError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -49,6 +52,7 @@ export default function HomeLoanForm({ title = "Apply for Home Loan" }) {
 
   const handleChange = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
+    if (field === 'phone') setPhoneError('');
   };
 
   const submitLead = useCallback(async () => {
@@ -79,10 +83,8 @@ export default function HomeLoanForm({ title = "Apply for Home Loan" }) {
         message: `Preferred bank: ${form.preferredBank}`,
       });
 
-      setFeedback({
-        type: 'success',
-        message: 'Loan request submitted. Our expert will call you soon.',
-      });
+      setShowSuccess(true);
+      setFeedback({ type: '', message: '' });
       setForm({
         name: '',
         phone: '',
@@ -124,6 +126,13 @@ export default function HomeLoanForm({ title = "Apply for Home Loan" }) {
   };
 
   return (
+    <>
+    <SuccessModal
+      isOpen={showSuccess}
+      onClose={() => setShowSuccess(false)}
+      title="Request Submitted!"
+      message="Our loan expert will call you soon."
+    />
     <div className="bg-white p-10 rounded-2xl shadow-2xl relative border border-slate-50 overflow-hidden">
       <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary rounded-full blur-3xl opacity-10"></div>
       <form className="space-y-6 relative" onSubmit={handleSubmit}>
@@ -143,14 +152,15 @@ export default function HomeLoanForm({ title = "Apply for Home Loan" }) {
           </div>
           <div className="space-y-2">
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 px-1">Phone Number</label>
-            <input 
-              className="w-full bg-slate-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-primary/20 transition-all font-medium text-slate-900" 
-              placeholder="+91 98765 43210" 
+            <input
+              className={`w-full bg-slate-50 rounded-2xl p-4 focus:ring-2 transition-all font-medium text-slate-900 border ${phoneError ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:ring-primary/20'}`}
+              placeholder="+91 98765 43210"
               type="tel"
               value={form.phone}
               onChange={handleChange('phone')}
               required
             />
+            {phoneError && <p className="text-xs font-bold text-red-600">{phoneError}</p>}
           </div>
         </div>
 
@@ -226,5 +236,6 @@ export default function HomeLoanForm({ title = "Apply for Home Loan" }) {
         </p>
       </form>
     </div>
+    </>
   );
 }

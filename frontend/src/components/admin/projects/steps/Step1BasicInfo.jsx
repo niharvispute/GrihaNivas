@@ -24,7 +24,6 @@ const PROJECT_STATUSES = [
   { value: 'ready_to_move',       label: 'Ready To Move' },
 ];
 
-// Values must match backend enum (no spaces) — labels show with spaces
 const BHK_OPTIONS = [
   { value: 'studio',    label: 'Studio' },
   { value: '1BHK',      label: '1 BHK' },
@@ -35,6 +34,16 @@ const BHK_OPTIONS = [
   { value: 'penthouse', label: 'Penthouse' },
 ];
 
+function isValidIndianPhone(val) {
+  const digits = String(val || '').replace(/\D/g, '');
+  return digits.length === 10 && /^[6-9]/.test(digits);
+}
+
+function FieldError({ msg }) {
+  if (!msg) return null;
+  return <p className="mt-1 text-xs font-semibold text-red-500">{msg}</p>;
+}
+
 export default function Step1BasicInfo() {
   const { formData, updateFormData } = useProjectForm();
   const d = formData.step1;
@@ -43,6 +52,7 @@ export default function Step1BasicInfo() {
   const [buildersError, setBuildersError] = useState(null);
   const [loadingBuilders, setLoadingBuilders] = useState(true);
   const [reloadKey, setReloadKey] = useState(0);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     let cancelled = false;
@@ -51,7 +61,6 @@ export default function Step1BasicInfo() {
     (async () => {
       setLoadingBuilders(true);
       setBuildersError(null);
-      // Retry transient failures (e.g. 429 rate limit) before surfacing an error.
       for (let attempt = 0; attempt < 3; attempt += 1) {
         try {
           const { items } = await listAdminBuilders({ limit: 200 });
@@ -64,7 +73,7 @@ export default function Step1BasicInfo() {
           const status = err?.status;
           const transient = status === 429 || status === 408 || status === 0 || (status >= 500 && status <= 599);
           if (transient && attempt < 2) {
-            await sleep(500 * 2 ** attempt); // 500ms, 1000ms
+            await sleep(500 * 2 ** attempt);
             continue;
           }
           if (!cancelled) {
@@ -80,15 +89,53 @@ export default function Step1BasicInfo() {
 
   const set = (key, val) => updateFormData('step1', { [key]: val });
 
+  const clearError = (key) => setErrors((prev) => ({ ...prev, [key]: undefined }));
+
+  const validateField = (key, val) => {
+    if (key === 'projectName') {
+      if (!String(val || '').trim()) return 'Project name is required.';
+    }
+    if (key === 'builderId') {
+      if (!val) return 'Please select a builder / developer.';
+    }
+    if (key === 'contactPhone') {
+      if (val && !isValidIndianPhone(val)) return 'Enter a valid 10-digit Indian mobile number starting with 6–9.';
+    }
+    if (key === 'contactPerson') {
+      const v = String(val || '').trim();
+      if (v && v.length < 2) return 'Name must be at least 2 characters.';
+      if (v && /[0-9]/.test(v)) return 'Name cannot contain numbers.';
+      if (v && /[^a-zA-Z\s.'\-]/.test(v)) return 'Name can only contain letters, spaces, or . \' -';
+    }
+    if (key === 'reraUrl') {
+      if (val && !/^https?:\/\/.+/.test(val.trim())) return 'Must be a full URL starting with https://';
+    }
+    return null;
+  };
+
+  const handleBlur = (key, val) => {
+    const err = validateField(key, val);
+    setErrors((prev) => ({ ...prev, [key]: err || undefined }));
+  };
+
   const handleBuilderChange = (id) => {
     const b = builders.find((x) => x._id === id);
     updateFormData('step1', { builderId: id, builderName: b?.name || '' });
+    const err = validateField('builderId', id);
+    setErrors((prev) => ({ ...prev, builderId: err || undefined }));
   };
 
   const toggleBhk = (val) => {
     const current = d.configurations || [];
     set('configurations', current.includes(val) ? current.filter((v) => v !== val) : [...current, val]);
   };
+
+  const inputClass = (key) =>
+    `w-full px-3.5 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-colors ${
+      errors[key]
+        ? 'border-red-400 focus:ring-red-200 bg-red-50'
+        : 'border-slate-200 focus:ring-primary/20 focus:border-primary'
+    }`;
 
   return (
     <div>
@@ -122,24 +169,33 @@ export default function Step1BasicInfo() {
       <section className="mb-8">
         <h3 className="text-sm font-bold text-slate-700 mb-4">Project Details</h3>
         <div className="grid grid-cols-2 gap-5">
+
+          {/* Project Name */}
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Project Name <span className="text-red-500">*</span></label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1.5">
+              Project Name <span className="text-red-500">*</span>
+            </label>
             <input
               type="text"
               value={d.projectName}
-              onChange={(e) => set('projectName', e.target.value)}
+              onChange={(e) => { set('projectName', e.target.value); clearError('projectName'); }}
+              onBlur={(e) => handleBlur('projectName', e.target.value)}
               placeholder="e.g. Nahar Amrit Shakti"
-              className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              className={inputClass('projectName')}
             />
+            <FieldError msg={errors.projectName} />
           </div>
 
+          {/* Builder */}
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Builder / Developer <span className="text-red-500">*</span></label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1.5">
+              Builder / Developer <span className="text-red-500">*</span>
+            </label>
             <select
               value={d.builderId}
               onChange={(e) => handleBuilderChange(e.target.value)}
               disabled={loadingBuilders}
-              className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white disabled:opacity-60"
+              className={`${inputClass('builderId')} bg-white disabled:opacity-60`}
             >
               <option value="">{loadingBuilders ? 'Loading builders…' : 'Select Builder'}</option>
               {builders.map((b) => (
@@ -158,52 +214,78 @@ export default function Step1BasicInfo() {
                 </button>
               </p>
             )}
+            <FieldError msg={errors.builderId} />
           </div>
 
+          {/* Contact Person Name */}
           <div>
             <label className="block text-xs font-semibold text-slate-600 mb-1.5">Contact Person Name</label>
             <input
               type="text"
               value={d.contactPerson}
-              onChange={(e) => set('contactPerson', e.target.value)}
-              placeholder="Enter contact person name"
-              className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              onChange={(e) => {
+                // Strip digits immediately as user types
+                const val = e.target.value.replace(/[0-9]/g, '');
+                set('contactPerson', val);
+                clearError('contactPerson');
+              }}
+              onBlur={(e) => handleBlur('contactPerson', e.target.value)}
+              placeholder="e.g. Rajesh Sharma"
+              className={inputClass('contactPerson')}
             />
+            <FieldError msg={errors.contactPerson} />
           </div>
 
+          {/* Contact Phone */}
           <div>
             <label className="block text-xs font-semibold text-slate-600 mb-1.5">Contact Number</label>
             <input
               type="tel"
               value={d.contactPhone}
-              onChange={(e) => set('contactPhone', e.target.value)}
-              placeholder="Enter 10 digit mobile number"
+              onChange={(e) => {
+                const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                set('contactPhone', digits);
+                clearError('contactPhone');
+              }}
+              onBlur={(e) => handleBlur('contactPhone', e.target.value)}
+              placeholder="e.g. 9876543210"
               maxLength={10}
-              className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              className={inputClass('contactPhone')}
             />
+            {d.contactPhone && !errors.contactPhone && isValidIndianPhone(d.contactPhone) && (
+              <p className="mt-1 text-xs text-emerald-600 font-semibold flex items-center gap-1">
+                <span className="material-symbols-outlined text-sm">check_circle</span> Valid mobile number
+              </p>
+            )}
+            <FieldError msg={errors.contactPhone} />
           </div>
 
+          {/* RERA Number */}
           <div>
             <label className="block text-xs font-semibold text-slate-600 mb-1.5">RERA Number</label>
             <input
               type="text"
               value={d.reraNumber}
               onChange={(e) => set('reraNumber', e.target.value)}
-              placeholder="Enter RERA number"
+              placeholder="e.g. P51800012345"
               className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
             />
           </div>
 
+          {/* RERA URL */}
           <div>
             <label className="block text-xs font-semibold text-slate-600 mb-1.5">RERA URL</label>
             <input
               type="url"
               value={d.reraUrl}
-              onChange={(e) => set('reraUrl', e.target.value)}
-              placeholder="https://maharera.mahaonline.gov.in"
-              className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              onChange={(e) => { set('reraUrl', e.target.value); clearError('reraUrl'); }}
+              onBlur={(e) => handleBlur('reraUrl', e.target.value)}
+              placeholder="https://maharera.mahaonline.gov.in/…"
+              className={inputClass('reraUrl')}
             />
+            <FieldError msg={errors.reraUrl} />
           </div>
+
         </div>
       </section>
 

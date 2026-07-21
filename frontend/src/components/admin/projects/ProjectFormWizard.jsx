@@ -93,6 +93,7 @@ function mapProjectToFormData(p) {
       totalFloors: p.totalFloors ?? '',
       totalUnits: p.totalUnits ?? '',
       landArea: p.landArea ?? '',
+      amenities: Array.isArray(p.amenities) ? p.amenities : [],
       configurations: configs,
     },
     step3: {
@@ -224,6 +225,28 @@ export default function ProjectFormWizard() {
     let id = projectId;
 
     if (currentStep === 1) {
+      // Client-side validation before hitting the API
+      const validationErrors = [];
+      if (!s1.projectName?.trim()) validationErrors.push({ field: 'projectName', message: 'Project name is required.' });
+      if (!s1.builderId) validationErrors.push({ field: 'builderId', message: 'Please select a builder / developer.' });
+      if (s1.contactPerson && /[0-9]/.test(s1.contactPerson)) {
+        validationErrors.push({ field: 'contactPerson', message: 'Contact person name cannot contain numbers.' });
+      }
+      if (s1.contactPhone) {
+        const digits = String(s1.contactPhone).replace(/\D/g, '');
+        if (digits.length !== 10 || !/^[6-9]/.test(digits)) {
+          validationErrors.push({ field: 'contactPhone', message: 'Contact number must be a valid 10-digit Indian mobile.' });
+        }
+      }
+      if (s1.reraUrl && !/^https?:\/\/.+/.test(s1.reraUrl.trim())) {
+        validationErrors.push({ field: 'reraUrl', message: 'RERA URL must start with https://' });
+      }
+      if (validationErrors.length) {
+        const err = new Error('Please fix the highlighted fields before continuing.');
+        err.details = validationErrors.map((e) => e.message);
+        throw err;
+      }
+
       // Create on first advance, else update. location.area is required by the
       // backend at create time but is only collected in Step 2 — use a placeholder
       // (the project name) when area is not yet known; Step 2 overwrites it.
@@ -264,6 +287,7 @@ export default function ProjectFormWizard() {
         totalTowers: numOrUndef(s2.totalTowers),
         totalFloors: numOrUndef(s2.totalFloors),
         landArea: numOrUndef(s2.landArea),
+        amenities: Array.isArray(s2.amenities) ? s2.amenities : [],
       });
       await syncConfigurations(id);
       return id;
