@@ -6,6 +6,7 @@ import CloudinaryImage from '@/components/CloudinaryImage';
 import ProjectUnitGallery from '@/components/property/details/ProjectUnitGallery';
 import PropertyBuilderProfile from '@/components/property/details/PropertyBuilderProfile';
 import PropertyFloorPlans from '@/components/property/details/PropertyFloorPlans';
+import PropertyAmenities from '@/components/property/details/PropertyAmenities';
 import LeadForm from '@/components/forms/LeadForm';
 import { getProjectBySlug } from '@/services/projectService';
 import { mapProjectToDetailVM } from '@/lib/mappers/projectMapper';
@@ -275,19 +276,7 @@ export default async function ProjectDetailPage({ params }) {
           )}
 
           {/* Amenities */}
-          {project.amenities.length > 0 && (
-            <section>
-              <h2 className="text-2xl font-heading font-black mb-6 sm:mb-8 text-slate-900">Amenities</h2>
-              <div className="flex flex-wrap gap-2">
-                {project.amenities.map((amenity, idx) => (
-                  <span key={idx} className="bg-tertiary text-primary px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[14px]">done</span>
-                    {amenity}
-                  </span>
-                ))}
-              </div>
-            </section>
-          )}
+          <PropertyAmenities amenities={project.amenities} />
 
           {/* Floor plans / brochure */}
           {(project.floorPlans.length > 0 || project.brochureUrl) && (

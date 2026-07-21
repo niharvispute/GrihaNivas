@@ -31,6 +31,7 @@ const INITIAL_FORM_DATA = {
     totalFloors: '',
     totalUnits: '',
     landArea: '',
+    amenities: [],                // [string]
     configurations: [],           // [{bhkType,title,carpetAreaMin,carpetAreaMax,bathrooms,balconies,parking,totalUnits,_tempId}]
   },
   step3: {

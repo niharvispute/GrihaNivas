@@ -5,6 +5,15 @@ import { useProjectForm } from '@/context/ProjectFormContext';
 import { deleteConfiguration } from '@/services/projectService';
 import ConfigSidePanel from '../ConfigSidePanel';
 
+const PRESET_AMENITIES = [
+  'Swimming Pool', 'Gymnasium', 'Club House', "Children's Play Area",
+  '24×7 Security', 'CCTV Surveillance', 'Power Backup', 'Lift / Elevator',
+  'Covered Parking', 'Visitor Parking', 'Landscaped Garden', 'Jogging Track',
+  'Multipurpose Hall', 'Indoor Games Room', 'Intercom', 'Fire Safety Systems',
+  'Vastu Compliant', 'Smart Home Automation', 'Concierge Service', 'EV Charging',
+  'Rooftop Terrace', 'Yoga / Meditation Area', 'Squash Court', 'Badminton Court',
+];
+
 const BHK_LABEL = {
   studio: 'Studio', '1BHK': '1 BHK', '2BHK': '2 BHK', '3BHK': '3 BHK',
   '4BHK': '4 BHK', '4+BHK': '4+ BHK', penthouse: 'Penthouse', commercial: 'Commercial',
@@ -18,6 +27,7 @@ export default function Step2LocationConfig() {
   const [editingConfig, setEditingConfig] = useState(null);
   const [deletingKey, setDeletingKey] = useState(null);
   const [configError, setConfigError] = useState(null);
+  const [customAmenity, setCustomAmenity] = useState('');
 
   const cfgKey = (c) => c._id || c._tempId;
 
@@ -175,8 +185,12 @@ export default function Step2LocationConfig() {
               </div>
               <input
                 type="number"
+                min="0"
                 value={d[key]}
-                onChange={(e) => set(key, e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  set(key, val === '' ? '' : String(Math.max(0, Number(val))));
+                }}
                 placeholder="0"
                 className="w-full text-xl font-bold text-slate-800 bg-transparent border-none focus:outline-none focus:ring-0 placeholder:text-slate-300"
               />
@@ -195,6 +209,95 @@ export default function Step2LocationConfig() {
             <p className="text-xs text-slate-400 mt-0.5">Auto-summed from BHK configurations below</p>
           </div>
         </div>
+      </section>
+
+      {/* Amenities */}
+      <section className="mb-8">
+        <h3 className="text-sm font-bold text-slate-700 mb-1">Amenities</h3>
+        <p className="text-xs text-slate-400 mb-4">Select all that apply. Add custom ones below.</p>
+
+        {/* Preset checkboxes — same style as property listing form */}
+        <div className="grid grid-cols-3 gap-2.5 mb-4">
+          {PRESET_AMENITIES.map((amenity) => {
+            const selected = (d.amenities || []).includes(amenity);
+            return (
+              <button
+                key={amenity}
+                type="button"
+                onClick={() => {
+                  const current = d.amenities || [];
+                  set('amenities', selected ? current.filter((a) => a !== amenity) : [...current, amenity]);
+                }}
+                className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 font-semibold text-xs transition-all text-left ${
+                  selected
+                    ? 'border-primary bg-primary/5 text-primary'
+                    : 'border-slate-100 bg-white text-slate-400 hover:border-slate-200'
+                }`}
+              >
+                <span className="material-symbols-outlined text-base shrink-0">
+                  {selected ? 'check_box' : 'check_box_outline_blank'}
+                </span>
+                {amenity}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Custom amenity input */}
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={customAmenity}
+            onChange={(e) => setCustomAmenity(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && customAmenity.trim()) {
+                e.preventDefault();
+                const tag = customAmenity.trim();
+                if (!(d.amenities || []).includes(tag)) {
+                  set('amenities', [...(d.amenities || []), tag]);
+                }
+                setCustomAmenity('');
+              }
+            }}
+            placeholder="Add custom amenity and press Enter…"
+            className="flex-1 px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              const tag = customAmenity.trim();
+              if (tag && !(d.amenities || []).includes(tag)) {
+                set('amenities', [...(d.amenities || []), tag]);
+              }
+              setCustomAmenity('');
+            }}
+            className="px-4 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary/90 transition-colors"
+          >
+            Add
+          </button>
+        </div>
+
+        {/* Custom amenity chips (non-preset ones) */}
+        {(d.amenities || []).filter((a) => !PRESET_AMENITIES.includes(a)).length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {(d.amenities || []).filter((a) => !PRESET_AMENITIES.includes(a)).map((amenity, idx) => (
+              <span key={idx} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary text-xs font-semibold rounded-full">
+                {amenity}
+                <button
+                  type="button"
+                  onClick={() => set('amenities', (d.amenities || []).filter((a) => a !== amenity))}
+                  className="hover:text-red-500 transition-colors leading-none"
+                >
+                  <span className="material-symbols-outlined text-sm">close</span>
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {(d.amenities || []).length > 0 && (
+          <p className="text-xs text-slate-400 mt-2">{(d.amenities || []).length} amenit{(d.amenities || []).length === 1 ? 'y' : 'ies'} selected</p>
+        )}
       </section>
 
       {/* BHK Configurations */}

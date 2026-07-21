@@ -7,6 +7,7 @@ import { getErrorMessage } from '@/lib/api/errors';
 import { toIndianPhoneE164 } from '@/lib/validation/phone';
 import { submitContactForm } from '@/services/contactService';
 import { SITE_CONTACT } from '@/lib/siteContact';
+import SuccessModal from '@/components/common/SuccessModal';
 import {
   validateName,
   validatePhone,
@@ -43,6 +44,7 @@ function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
   const [errors, setErrors] = useState({});
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleChange = (field) => (event) => {
     const { value } = event.target;
@@ -87,10 +89,8 @@ function ContactForm() {
         message: form.message.trim(),
       });
 
-      setFeedback({
-        type: 'success',
-        message: 'Message sent successfully. We will get back to you shortly.',
-      });
+      setShowSuccess(true);
+      setFeedback({ type: '', message: '' });
       setForm({ name: '', phone: '', email: '', message: '' });
     } catch (error) {
       setFeedback({
@@ -127,6 +127,13 @@ function ContactForm() {
   ];
 
   return (
+    <>
+    <SuccessModal
+      isOpen={showSuccess}
+      onClose={() => setShowSuccess(false)}
+      title="Message Sent!"
+      message="We will get back to you shortly."
+    />
     <div className="w-full">
       {/* 🏙️ Hero Section */}
       <section className="px-3 md:px-8 max-w-screen-2xl mx-auto pt-4 md:pt-20 pb-6 md:pb-16">
@@ -306,8 +313,8 @@ function ContactForm() {
         </div>
       </section>
 
-      
     </div>
+    </>
   );
 }
 

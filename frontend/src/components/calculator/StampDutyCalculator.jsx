@@ -173,7 +173,7 @@ const PurchaseCalculator = ({ allRates, propertyValue, setPropertyValue }) => {
             <LabelTag>Property Value (INR)</LabelTag>
             <MoneyInput
               value={propertyValue.toLocaleString('en-IN')}
-              onChange={(e) => setPropertyValue(parseInt(e.target.value.replace(/,/g, '')) || 0)}
+              onChange={(e) => setPropertyValue(Math.max(0, parseInt(e.target.value.replace(/,/g, '')) || 0))}
               placeholder="50,000,000"
             />
           </div>

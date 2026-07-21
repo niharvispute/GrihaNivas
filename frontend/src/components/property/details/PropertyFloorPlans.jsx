@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
 
 function toDownloadUrl(url, filename = 'brochure.pdf') {
   if (!url) return url;
@@ -6,6 +9,7 @@ function toDownloadUrl(url, filename = 'brochure.pdf') {
 }
 
 export default function PropertyFloorPlans({ floorPlans = [], brochureUrl = '' }) {
+  const { user, openModal } = useAuth();
   const hasFloorPlans = Array.isArray(floorPlans) && floorPlans.length > 0;
   const primaryFloorPlan = hasFloorPlans ? floorPlans[0] : null;
 
@@ -48,14 +52,25 @@ export default function PropertyFloorPlans({ floorPlans = [], brochureUrl = '' }
                   : 'Owner has not uploaded floor plans yet. Contact us for updated documents.'}
               </p>
               {brochureUrl ? (
-                <a
-                  href={toDownloadUrl(brochureUrl, 'brochure.pdf')}
-                  rel="noreferrer"
-                  className="w-full justify-center bg-primary text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-bold text-xs sm:text-sm flex items-center gap-2 hover:scale-105 transition-transform shadow-lg"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  Download Brochure
-                </a>
+                user ? (
+                  <a
+                    href={toDownloadUrl(brochureUrl, 'brochure.pdf')}
+                    rel="noreferrer"
+                    className="w-full justify-center bg-primary text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-bold text-xs sm:text-sm flex items-center gap-2 hover:scale-105 transition-transform shadow-lg"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download Brochure
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => openModal('login')}
+                    className="w-full justify-center bg-primary text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-bold text-xs sm:text-sm flex items-center gap-2 hover:scale-105 transition-transform shadow-lg"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Login to Download Brochure
+                  </button>
+                )
               ) : (
                 <button
                   type="button"
