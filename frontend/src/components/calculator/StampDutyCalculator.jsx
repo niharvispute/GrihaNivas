@@ -677,24 +677,42 @@ const StampDutyCalculator = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="mt-16 md:mt-32 relative h-80 md:h-125 rounded-2xl overflow-hidden group shadow-2xl bg-slate-900">
+      <section className="mt-16 md:mt-32 relative rounded-2xl overflow-hidden group shadow-2xl bg-slate-900">
         <div className="absolute inset-0 bg-linear-to-br from-slate-900 via-slate-800 to-primary/20" />
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #b80049 0%, transparent 60%)' }} />
-        <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-24 md:max-w-3xl">
-          <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-3 md:mb-6">Concierge Advisory</span>
-          <h2 className="text-3xl md:text-6xl font-black text-white mb-4 md:mb-8 leading-tight tracking-tighter">
-            Complexity, <br />Simplified.
-          </h2>
-          <p className="text-slate-300 text-sm md:text-xl mb-6 md:mb-12 font-bold leading-relaxed max-w-sm md:max-w-none">
-            Our experts manage the intricacies of Mumbai real estate documentation, ensuring a seamless transition.
-          </p>
-          <div className="flex">
-            <Link
-              href={`/contact?message=I would like to request a professional consultation regarding property documentation and stamp duty.`}
-              className="px-8 md:px-12 py-3.5 md:py-5 bg-primary text-white font-black text-sm md:text-lg rounded-full shadow-2xl hover:bg-primary/90 transition-all leading-none text-center"
-            >
-              Get Consultation
-            </Link>
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-10 md:gap-0 px-8 md:px-0 py-12 md:py-0 md:min-h-[500px]">
+          {/* Left: text */}
+          <div className="flex flex-col justify-center md:px-24 md:py-16 md:w-1/2">
+            <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-3 md:mb-6">Concierge Advisory</span>
+            <h2 className="text-3xl md:text-6xl font-black text-white mb-4 md:mb-8 leading-tight tracking-tighter">
+              Complexity, <br />Simplified.
+            </h2>
+            <p className="text-slate-300 text-sm md:text-xl mb-6 md:mb-12 font-bold leading-relaxed max-w-sm md:max-w-none">
+              Our experts manage the intricacies of Mumbai real estate documentation, ensuring a seamless transition.
+            </p>
+            <div className="flex">
+              <Link
+                href={`/contact?message=I would like to request a professional consultation regarding property documentation and stamp duty.`}
+                className="px-8 md:px-12 py-3.5 md:py-5 bg-primary text-white font-black text-sm md:text-lg rounded-full shadow-2xl hover:bg-primary/90 transition-all leading-none text-center"
+              >
+                Get Consultation
+              </Link>
+            </div>
+          </div>
+          {/* Right: stats + features */}
+          <div className="md:w-1/2 md:px-16 md:py-16 grid grid-cols-2 gap-4 md:gap-6 w-full">
+            {[
+              { icon: 'verified', stat: '500+', label: 'Registrations Handled' },
+              { icon: 'schedule', stat: '48 hrs', label: 'Avg. Processing Time' },
+              { icon: 'support_agent', stat: '24/7', label: 'Expert Support' },
+              { icon: 'currency_rupee', stat: '₹0 Hidden', label: 'Fees — Full Transparency' },
+            ].map(({ icon, stat, label }) => (
+              <div key={label} className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-6 flex flex-col gap-2 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                <span className="material-symbols-outlined text-primary text-2xl">{icon}</span>
+                <p className="text-white font-black text-xl md:text-2xl leading-none">{stat}</p>
+                <p className="text-slate-400 text-xs font-bold leading-snug">{label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
