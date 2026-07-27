@@ -53,9 +53,10 @@ export function validateConfirmPassword(password, confirmValue) {
   return null;
 }
 
-export function validateMessage(value, { required = false, max = 500 } = {}) {
+export function validateMessage(value, { required = false, min = 10, max = 500 } = {}) {
   const v = String(value || '').trim();
   if (!v) return required ? 'Please enter your message.' : null;
+  if (v.length < min) return `Message must be at least ${min} characters long.`;
   if (v.length > max) return `Message must not exceed ${max} characters.`;
   return null;
 }

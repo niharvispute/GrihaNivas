@@ -259,6 +259,7 @@ export default function RentAgreementPage() {
                     className={`w-full px-8 py-5 rounded-2xl bg-slate-50 placeholder:text-slate-300 font-bold transition-all border focus:ring-2 ${formErrors.phone ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:ring-primary/20'}`}
                     placeholder="+91 98XXX XXXXX"
                     type="tel"
+                    maxLength={15}
                     value={form.phone}
                     onChange={handleFieldChange('phone')}
                   />
