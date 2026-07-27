@@ -130,7 +130,7 @@ export default function SectionCarousel({
               <span className="w-10 h-1 bg-gradient-to-r from-primary to-primary/60 rounded-full"></span>
               <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/80 ">{eyebrow}</p>
             </div>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight mb-2 md:mb-3 ">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-900 tracking-tight leading-tight mb-2 md:mb-3 ">
               {title}
             </h2>
             <p className="text-xs sm:text-sm md:text-base text-slate-600 font-bold leading-relaxed max-w-lg ">
