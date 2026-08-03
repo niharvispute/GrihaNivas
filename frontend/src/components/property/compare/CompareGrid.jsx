@@ -115,9 +115,12 @@ const CompareGrid = ({ properties }) => {
         <div className="px-2 md:px-8 py-2 md:py-6" />
         {properties.map((property) => (
           <div key={`actions-${property.id}`} className="px-1 md:px-8 flex flex-col gap-2 md:gap-3">
-            <button className="w-full py-2 md:py-4 bg-primary text-white rounded-full font-black text-[8px] md:text-xs uppercase tracking-tight md:tracking-widest shadow-lg hover:bg-primary/90 transition-all leading-none">
+            <Link
+              href={`${getPropertyHref(property)}#lead-form`}
+              className="w-full py-2 md:py-4 bg-primary text-white rounded-full font-black text-[8px] md:text-xs uppercase tracking-tight md:tracking-widest shadow-lg hover:bg-primary/90 transition-all leading-none text-center"
+            >
               Contact
-            </button>
+            </Link>
             <Link
               href={getPropertyHref(property)}
               className="w-full py-2 md:py-4 bg-white text-primary border border-primary/20 rounded-full font-black text-[8px] md:text-xs uppercase tracking-tight md:tracking-widest hover:bg-primary/5 transition-all leading-none text-center"
