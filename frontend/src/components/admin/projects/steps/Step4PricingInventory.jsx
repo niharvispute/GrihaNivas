@@ -294,10 +294,10 @@ export default function Step4PricingInventory() {
         )}
 
         {/* Table */}
-        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-xl overflow-visible">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200">
+              <tr className="bg-slate-50 border-b border-slate-200 [&>th:first-child]:rounded-tl-xl [&>th:last-child]:rounded-tr-xl">
                 {['Tower','Floor','Unit No.','Config','Area','Facing','Price','Status',''].map((h) => (
                   <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500">{h}</th>
                 ))}
@@ -340,7 +340,7 @@ export default function Step4PricingInventory() {
                         <span className="material-symbols-outlined text-base">more_vert</span>
                       </button>
                       {openActionFor === unit._id && (
-                        <div className="absolute right-0 top-full mt-1 w-32 bg-white border border-slate-200 rounded-xl shadow-lg z-10 py-1">
+                        <div className="absolute right-0 top-full mt-1 w-32 bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1">
                           <button onClick={() => handleDeleteUnit(unit._id)} className="w-full text-left px-3 py-2 text-xs text-red-600 hover:bg-red-50">Delete</button>
                         </div>
                       )}
