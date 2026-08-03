@@ -61,7 +61,7 @@ export default function HomeLoanForm({ title = "Apply for Home Loan" }) {
     if (!phone) {
       setFeedback({
         type: 'error',
-        message: 'Please enter 10 digits without +91',
+        message: 'Please enter a valid 10-digit Indian mobile number.',
       });
       return;
     }

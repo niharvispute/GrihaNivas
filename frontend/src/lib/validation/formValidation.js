@@ -32,7 +32,8 @@ export function validateEmail(value, { required = false } = {}) {
 export function validatePhone(value) {
   const raw = String(value || '').trim();
   if (!raw) return 'Please enter your mobile number.';
-  const digits = raw.replace(/\D/g, '');
+  let digits = raw.replace(/\D/g, '');
+  if (digits.length > 10) digits = digits.slice(-10);
   if (digits.length !== 10) return 'Mobile number must be exactly 10 digits.';
   if (!PHONE_DIGITS_REGEX.test(digits)) return 'Please enter a valid Indian mobile number.';
   return null;
