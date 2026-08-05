@@ -41,13 +41,21 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
       if (availableFrom) {
         try {
           const d = new Date(availableFrom);
-          if (!isNaN(d.getTime())) return `Avail. ${d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}`;
+          if (!isNaN(d.getTime())) {
+            const now = new Date();
+            const isPast =
+              d.getFullYear() < now.getFullYear() ||
+              (d.getFullYear() === now.getFullYear() && d.getMonth() <= now.getMonth());
+            if (isPast) return 'Available Now';
+            return `Avail. ${d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}`;
+          }
         } catch { /* ignore */ }
       }
       return 'Available Soon';
     }
     return null;
   })();
+  const isAvailableNow = availabilityLabel === 'Available Now';
 
   return (
     <article className={`group relative bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-primary/25 shadow-sm hover:shadow-lg transition-all duration-500 flex ${isHorizontal ? 'flex-col lg:flex-row col-span-full' : 'flex-col h-full'}`}>
@@ -76,7 +84,7 @@ export default function PropertyCard({ property, variant = 'vertical' }) {
             </span>
           )}
           {availabilityLabel && (
-            <span className={`px-2 sm:px-3 py-1 rounded-full text-[8px] sm:text-[9px] font-black tracking-wider uppercase flex items-center gap-1 shadow-lg ${showAvailabilitySoon ? 'bg-amber-600 text-white' : 'bg-emerald-500 text-white'}`}>
+            <span className={`px-2 sm:px-3 py-1 rounded-full text-[8px] sm:text-[9px] font-black tracking-wider uppercase flex items-center gap-1 shadow-lg ${isAvailableNow ? 'bg-emerald-500 text-white' : 'bg-amber-600 text-white'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               {availabilityLabel}
             </span>
