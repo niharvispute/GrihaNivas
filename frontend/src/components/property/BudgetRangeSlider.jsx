@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useToast } from '@/context/ToastContext';
 
 const BUY_MIN = 5000000;   // 50 Lakh
 const BUY_MAX = 30000000;  // 3 Cr
@@ -32,7 +31,6 @@ export default function BudgetRangeSlider({
   const STEP = budgetStep;
   minValue = minValue ?? MIN_BUDGET;
   maxValue = maxValue ?? MAX_BUDGET;
-  const { addToast } = useToast();
   const [min, setMin] = useState(minValue);
   const [max, setMax] = useState(maxValue);
 
@@ -60,15 +58,6 @@ export default function BudgetRangeSlider({
   const range = MAX_BUDGET - MIN_BUDGET || 1;
   const minPercent = ((min - MIN_BUDGET) / range) * 100;
   const maxPercent = ((max - MIN_BUDGET) / range) * 100;
-
-  const validateOnSubmit = (e) => {
-    if (min > max) {
-      e.preventDefault();
-      addToast('Minimum budget should not exceed maximum budget', 'error');
-      return false;
-    }
-    return true;
-  };
 
   return (
     <div className="space-y-6">

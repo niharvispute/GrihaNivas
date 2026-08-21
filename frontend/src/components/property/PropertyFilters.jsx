@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useToast } from '@/context/ToastContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import BudgetRangeSlider from './BudgetRangeSlider';
@@ -119,7 +120,14 @@ const CustomSelect = ({ name, options, defaultValue, label, icon }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
-  const selectedOption = options.find((o) => o.value === selected) || options[0] || { label: 'Select...', value: '' };
+  const selectedOption =
+    options.find((o) => o.value === selected) ||
+    // Selection may not exist in a dynamically-refreshed options list yet.
+    // Keep showing the chosen value rather than silently falling back to the
+    // first option, which looked like the filter had reset itself.
+    (selected ? { label: String(selected), value: selected } : null) ||
+    options[0] ||
+    { label: 'Select...', value: '' };
 
   return (
     <div className="space-y-2" ref={dropdownRef}>
@@ -169,6 +177,93 @@ const CustomSelect = ({ name, options, defaultValue, label, icon }) => {
   );
 };
 
+// Rendered as a stable top-level component. Declaring this inside
+// PropertyFilters created a brand-new component type on every render, so React
+// unmounted/remounted the whole form on each state change — which aborted
+// in-progress budget slider drags and reset the CustomSelect selections
+// (Location / BHK / Furnishing) back to their defaults.
+function FilterContent({
+  isMobile = false,
+  basePath,
+  category,
+  sortBy,
+  currentQuery,
+  areaOptions,
+  bhkOptions,
+  furnishingOptions,
+  minPrice,
+  maxPrice,
+  budgetMin,
+  budgetMax,
+  budgetStep,
+  isRentPage,
+  onBudgetChange,
+  onSubmit,
+  onMobileSubmit,
+  resetHref,
+}) {
+  return (
+    <form className="space-y-6 text-sm" method="GET" action={basePath} onSubmit={onSubmit}>
+      {category !== 'buy' ? <input type="hidden" name="category" value={category} /> : null}
+      <input type="hidden" name="sortBy" value={sortBy} />
+
+      {/* Location Filter */}
+      <CustomSelect
+        name="area"
+        defaultValue={currentQuery?.area || ''}
+        options={areaOptions}
+        label="Location"
+        icon="location_on"
+      />
+
+      {/* Budget Slider Filter */}
+      <BudgetRangeSlider
+        minValue={minPrice}
+        maxValue={maxPrice}
+        onChange={onBudgetChange}
+        budgetMin={budgetMin}
+        budgetMax={budgetMax}
+        budgetStep={budgetStep}
+        isRent={isRentPage}
+      />
+
+      {/* BHK Type */}
+      <CustomSelect
+        name="bhk"
+        defaultValue={currentQuery?.bhk || ''}
+        options={bhkOptions}
+        label="BHK Type"
+        icon="home"
+      />
+
+      {/* Furnishing */}
+      <CustomSelect
+        name="furnishing"
+        defaultValue={currentQuery?.furnishing || ''}
+        options={furnishingOptions}
+        label="Furnishing"
+        icon="chair"
+      />
+
+      <div className="pt-6 space-y-4">
+        <button
+          type="submit"
+          onClick={() => isMobile && onMobileSubmit?.()}
+          className="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary/90 transition-all active:scale-95 shadow-xl text-sm uppercase tracking-widest"
+        >
+          Update Results
+        </button>
+        <Link
+          href={resetHref}
+          className="block w-full text-center text-slate-400 text-xs font-bold hover:text-primary transition-colors underline underline-offset-8 decoration-slate-200"
+        >
+          Reset All
+        </Link>
+      </div>
+    </form>
+  );
+}
+
 export default function PropertyFilters({ basePath, currentQuery }) {
   const router = useRouter();
   const isRentPage = basePath?.includes('/rent');
@@ -176,6 +271,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
   const budgetMax = isRentPage ? RENT_MAX : BUY_MAX;
   const budgetStep = isRentPage ? RENT_STEP : BUY_STEP;
 
+  const { addToast } = useToast();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [minPrice, setMinPrice] = useState(currentQuery?.minPrice || budgetMin);
   const [maxPrice, setMaxPrice] = useState(currentQuery?.maxPrice || budgetMax);
@@ -194,7 +290,7 @@ export default function PropertyFilters({ basePath, currentQuery }) {
   const handleFormSubmit = (e) => {
     if (minPrice > maxPrice) {
       e.preventDefault();
-      // Toast will be shown by BudgetRangeSlider
+      addToast('Minimum budget should not exceed maximum budget', 'error');
       return false;
     }
   };
@@ -270,67 +366,6 @@ export default function PropertyFilters({ basePath, currentQuery }) {
     setMaxPrice(max);
   };
 
-  const FilterContent = ({ isMobile = false }) => (
-    <form className="space-y-6 text-sm" method="GET" action={basePath} onSubmit={handleFormSubmit}>
-      {category !== 'buy' ? <input type="hidden" name="category" value={category} /> : null}
-      <input type="hidden" name="sortBy" value={sortBy} />
-
-      {/* Location Filter */}
-      <CustomSelect
-        name="area"
-        defaultValue={currentQuery?.area || ''}
-        options={areaOptions}
-        label="Location"
-        icon="location_on"
-      />
-
-      {/* Budget Slider Filter */}
-      <BudgetRangeSlider
-        minValue={minPrice}
-        maxValue={maxPrice}
-        onChange={handleBudgetChange}
-        budgetMin={budgetMin}
-        budgetMax={budgetMax}
-        budgetStep={budgetStep}
-        isRent={isRentPage}
-      />
-
-      {/* BHK Type */}
-      <CustomSelect
-        name="bhk"
-        defaultValue={currentQuery?.bhk || ''}
-        options={bhkOptions}
-        label="BHK Type"
-        icon="home"
-      />
-
-      {/* Furnishing */}
-      <CustomSelect
-        name="furnishing"
-        defaultValue={currentQuery?.furnishing || ''}
-        options={furnishingOptions}
-        label="Furnishing"
-        icon="chair"
-      />
-
-      <div className="pt-6 space-y-4">
-        <button
-          type="submit"
-          onClick={() => isMobile && setIsDrawerOpen(false)}
-          className="w-full bg-primary text-white font-black py-4 rounded-2xl hover:bg-primary/90 transition-all active:scale-95 shadow-xl text-sm uppercase tracking-widest"
-        >
-          Update Results
-        </button>
-        <Link
-          href={resetHref}
-          className="block w-full text-center text-slate-400 text-xs font-bold hover:text-primary transition-colors underline underline-offset-8 decoration-slate-200"
-        >
-          Reset All
-        </Link>
-      </div>
-    </form>
-  );
-
   return (
     <>
       {/* Mobile Sticky Bar */}
@@ -377,7 +412,24 @@ export default function PropertyFilters({ basePath, currentQuery }) {
             )}
           </div>
 
-          <FilterContent />
+          <FilterContent
+            basePath={basePath}
+            category={category}
+            sortBy={sortBy}
+            currentQuery={currentQuery}
+            areaOptions={areaOptions}
+            bhkOptions={bhkOptions}
+            furnishingOptions={furnishingOptions}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            budgetMin={budgetMin}
+            budgetMax={budgetMax}
+            budgetStep={budgetStep}
+            isRentPage={isRentPage}
+            onBudgetChange={handleBudgetChange}
+            onSubmit={handleFormSubmit}
+            resetHref={resetHref}
+          />
         </div>
       </aside>
 
@@ -407,7 +459,26 @@ export default function PropertyFilters({ basePath, currentQuery }) {
             </button>
           </div>
           
-          <FilterContent isMobile={true} />
+          <FilterContent
+            isMobile
+            basePath={basePath}
+            category={category}
+            sortBy={sortBy}
+            currentQuery={currentQuery}
+            areaOptions={areaOptions}
+            bhkOptions={bhkOptions}
+            furnishingOptions={furnishingOptions}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            budgetMin={budgetMin}
+            budgetMax={budgetMax}
+            budgetStep={budgetStep}
+            isRentPage={isRentPage}
+            onBudgetChange={handleBudgetChange}
+            onSubmit={handleFormSubmit}
+            onMobileSubmit={() => setIsDrawerOpen(false)}
+            resetHref={resetHref}
+          />
         </div>
         </div>
       )}

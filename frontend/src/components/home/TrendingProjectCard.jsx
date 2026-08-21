@@ -5,11 +5,25 @@ import Image from 'next/image';
 import { useState } from 'react';
 import WishlistButton from '@/components/property/WishlistButton';
 import { SYSTEM_DEFAULT_CITY } from '@/lib/system/defaults';
+import { SITE_CONTACT } from '@/lib/siteContact';
+import { toBrochureDownloadUrl } from '@/lib/api/downloadFile';
+import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/context/ToastContext';
 
 const PLACEHOLDER = '/images/property-placeholder.svg';
 
+// A `tel:` link on a device with no dialler (most desktops) opens a blank tab
+// instead of starting a call, so only follow it where calls are possible.
+const canPlaceCall = () => {
+  if (typeof window === 'undefined') return false;
+  if (typeof window.matchMedia !== 'function') return false;
+  return window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+};
+
 export default function TrendingProjectCard({ property }) {
   const [imgErrored, setImgErrored] = useState(false);
+  const { user, openModal } = useAuth();
+  const { addToast } = useToast();
   const detailKey = property?.slug || property?.id;
   const detailHref = detailKey ? `/property/${detailKey}` : '/buy';
   const locationLabel = property?.location || SYSTEM_DEFAULT_CITY;
@@ -21,6 +35,14 @@ export default function TrendingProjectCard({ property }) {
     : fallbackPriceText
       ? `₹ ${fallbackPriceText.replace(/^₹\s?/, '')}`
       : 'Price on Request';
+
+  const brochureUrl = property?.brochureUrl || '';
+
+  const handleQuickCall = (event) => {
+    if (canPlaceCall()) return;
+    event.preventDefault();
+    addToast(`Call us at ${SITE_CONTACT.phoneDisplay}`, 'info', 6000);
+  };
 
   const configurationLabel =
     property?.bhk && property.bhk !== '-'
@@ -90,21 +112,46 @@ export default function TrendingProjectCard({ property }) {
 
       <div className="space-y-2">
         <a
-          href="tel:+919137950050"
+          href={SITE_CONTACT.phoneHref}
+          onClick={handleQuickCall}
           className="w-full h-10 rounded-full border border-primary/30 text-primary text-sm font-bold flex items-center justify-center gap-1.5 hover:bg-primary/5 transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.63 2.63a2 2 0 0 1-.45 2.11L8.1 9.91a16 16 0 0 0 6 6l1.45-1.19a2 2 0 0 1 2.11-.45c.85.3 1.73.51 2.63.63A2 2 0 0 1 22 16.92z"/></svg>
           Quick Call
         </a>
 
-        <Link
-          href={detailHref}
-          prefetch={false}
-          className="w-full h-10 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center gap-1.5 hover:bg-primary/90 transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-          Download Brochure
-        </Link>
+        {brochureUrl ? (
+          user ? (
+            <a
+              href={toBrochureDownloadUrl(brochureUrl, 'brochure.pdf')}
+              rel="noreferrer"
+              className="w-full h-10 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center gap-1.5 hover:bg-primary/90 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Download Brochure
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={() => openModal('login')}
+              className="w-full h-10 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center gap-1.5 hover:bg-primary/90 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Login to Download Brochure
+            </button>
+          )
+        ) : (
+          // No brochure on this listing — don't offer a download that can't
+          // happen; send the user to the full listing instead.
+          <Link
+            href={detailHref}
+            prefetch={false}
+            className="w-full h-10 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center gap-1.5 hover:bg-primary/90 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            View Details
+          </Link>
+        )}
       </div>
     </article>
   );

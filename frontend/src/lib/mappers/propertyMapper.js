@@ -359,6 +359,7 @@ export const mapPropertyToCardVM = (property) => {
     isNew: property?.category === 'new_launch',
     isVerified: Boolean(property?.reraNumber),
     savedCount: Number(property?.savedCount || 0),
+    brochureUrl: getMediaUrl(property?.brochure) || asNonEmptyString(property?.brochureUrl),
     raw: property,
   };
 };

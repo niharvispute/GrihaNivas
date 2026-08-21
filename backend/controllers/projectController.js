@@ -1,6 +1,7 @@
 const { sendSuccess, sendCreated } = require('../utils/apiResponse');
 const { parsePagination } = require('../utils/pagination');
 const AppError = require('../utils/AppError');
+const { escapeRegex } = require('../utils/regex');
 const cache = require('../services/cacheService');
 const Project = require('../models/mongoose/Project');
 const ProjectConfiguration = require('../models/mongoose/ProjectConfiguration');
@@ -47,7 +48,7 @@ const buildMongoFilter = async (query) => {
 
   if (projectStatus) filter.projectStatus = projectStatus;
   if (projectType)   filter.projectType   = projectType;
-  if (area)          filter['location.area'] = new RegExp(area, 'i');
+  if (area)          filter['location.area'] = new RegExp(escapeRegex(area), 'i');
 
   if (search) {
     const regex = new RegExp(search, 'i');

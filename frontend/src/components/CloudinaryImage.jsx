@@ -31,6 +31,11 @@ export default function CloudinaryImage({
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
   const isCloudinary = typeof src === 'string' && src.includes('res.cloudinary.com');
+  // next/image throws a hard render error for any remote host missing from
+  // next.config `images.remotePatterns`, and onError can't catch it. Serving
+  // every remote URL unoptimized skips that hostname check, so one stray
+  // image URL in a project's gallery can no longer break the whole page.
+  const isRemote = typeof src === 'string' && /^https?:\/\//i.test(src);
   const activeSrc = errored ? PLACEHOLDER : src;
   const optimizedSrc = !errored && isCloudinary
     ? optimizeCloudinaryUrl(src, fill ? {} : { width, height })
@@ -45,7 +50,7 @@ export default function CloudinaryImage({
       width={!fill ? width : undefined}
       height={!fill ? height : undefined}
       sizes={sizes}
-      unoptimized={isCloudinary}
+      unoptimized={isRemote}
       loading={eager ? 'eager' : 'lazy'}
       priority={!!eager}
       className={className}

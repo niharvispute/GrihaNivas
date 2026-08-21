@@ -179,7 +179,7 @@ export default function LoginPage() {
         otp: String(signupOtp).trim(),
       });
 
-      onAuthSuccess(data.user);
+      onAuthSuccess(data.user, 'register');
       routeAfterAuth(router, data);
     } catch (error) {
       setFeedback({

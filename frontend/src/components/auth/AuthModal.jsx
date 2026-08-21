@@ -396,7 +396,7 @@ function RegisterOtpView({ ctx }) {
     setLoading(true);
     try {
       const data = await completeSignupVerification({ otp });
-      onAuthSuccess(data.user);
+      onAuthSuccess(data.user, 'register');
     } catch (err) {
       setError(getErrorMessage(err, 'OTP verification failed.'));
     } finally {

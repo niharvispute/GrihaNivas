@@ -5,6 +5,7 @@ const { sendSuccess, sendCreated, sendNoContent } = require('../utils/apiRespons
 const { sendExcel, formatDate, joinList } = require('../utils/excelExport');
 const cache = require('../services/cacheService');
 const AppError = require('../utils/AppError');
+const { escapeRegex } = require('../utils/regex');
 const Property = require('../models/mongoose/Property');
 const Builder = require('../models/mongoose/Builder');
 const User = require('../models/mongoose/User');
@@ -49,7 +50,7 @@ const buildMongoFilter = async (query) => {
   if (category)    filter.category = category;
   if (builder)     filter.builder = builder;
   if (bhk)         filter.bhk = Number(bhk);
-  if (area)        filter['location.area'] = new RegExp(area, 'i');
+  if (area)        filter['location.area'] = new RegExp(escapeRegex(area), 'i');
   if (furnishing)  filter.furnishing = furnishing;
   if (isFeatured !== undefined) filter.isFeatured = isFeatured === 'true' || isFeatured === true;
 

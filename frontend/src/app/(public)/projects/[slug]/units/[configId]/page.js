@@ -7,13 +7,18 @@ import LeadForm from '@/components/forms/LeadForm';
 import { getProjectBySlug } from '@/services/projectService';
 import { mapProjectToDetailVM } from '@/lib/mappers/projectMapper';
 
+// Configuration ids arrive as route strings; compare as strings so a valid unit
+// is never treated as missing (which rendered a 404 instead of the unit page).
+const findConfiguration = (project, configId) =>
+  (project?.configurations || []).find((c) => String(c?.id) === String(configId)) || null;
+
 export async function generateMetadata({ params }) {
   const { slug, configId } = await params;
   try {
     const raw = await getProjectBySlug(slug);
     if (!raw) return { title: 'Unit Not Found' };
     const project = mapProjectToDetailVM(raw);
-    const config = project.configurations.find((c) => c.id === configId);
+    const config = findConfiguration(project, configId);
     if (!config) return { title: 'Unit Not Found' };
     const title = `${config.title || config.bhkType} — ${project.name}`;
     return {
@@ -42,7 +47,7 @@ export default async function ProjectUnitPage({ params }) {
   if (!raw) notFound();
 
   const project = mapProjectToDetailVM(raw);
-  const config = project.configurations.find((c) => c.id === configId);
+  const config = findConfiguration(project, configId);
 
   if (!config) notFound();
 
