@@ -120,8 +120,14 @@ const CustomSelect = ({ name, options, defaultValue, label, icon }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
+  const sameValue = (a, b) =>
+    String(a ?? '').trim().toLowerCase() === String(b ?? '').trim().toLowerCase();
+
   const selectedOption =
     options.find((o) => o.value === selected) ||
+    // Config-driven options may differ in casing from the URL value
+    // (e.g. 'Semi_Furnished' vs 'semi_furnished') — still show its real label.
+    options.find((o) => sameValue(o.value, selected)) ||
     // Selection may not exist in a dynamically-refreshed options list yet.
     // Keep showing the chosen value rather than silently falling back to the
     // first option, which looked like the filter had reset itself.
@@ -159,13 +165,13 @@ const CustomSelect = ({ name, options, defaultValue, label, icon }) => {
                   setIsOpen(false);
                 }}
                 className={`w-full text-left px-4 py-3 text-sm font-bold transition-all flex items-center justify-between ${
-                  selected === option.value 
+                  sameValue(selected, option.value)
                     ? 'bg-primary/10 text-primary' 
                     : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                 }`}
               >
                 {option.label}
-                {selected === option.value && (
+                {sameValue(selected, option.value) && (
                   <span className="material-symbols-outlined text-base">check</span>
                 )}
               </button>

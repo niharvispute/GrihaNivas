@@ -4,6 +4,8 @@ import PropertyGrid from '@/components/property/PropertyGrid';
 import PropertySortBar from '@/components/property/PropertySortBar';
 import Link from 'next/link';
 import { listProperties } from '@/services/propertyService';
+import { getSystemBootstrap } from '@/services/systemService';
+import { resolveAreaInput } from '@/lib/system/areaMatch';
 
 export const metadata = {
   title: 'Rent Property in Mumbai',
@@ -51,8 +53,13 @@ const normalizeSort = (value) => {
 };
 
 const normalizeFurnishing = (value) => {
-  if (!ALLOWED_FURNISHING.has(value)) return '';
-  return value;
+  // The filter dropdown is populated from live config, which uses mixed casing
+  // ('Semi_Furnished'). Compare case-insensitively so a valid selection is not
+  // silently discarded, and return the canonical lowercase value.
+  if (typeof value !== 'string') return '';
+  const normalized = value.trim().toLowerCase();
+  if (!ALLOWED_FURNISHING.has(normalized)) return '';
+  return normalized;
 };
 
 const buildListingHref = (basePath, query, page) => {
@@ -106,12 +113,19 @@ export default async function PropertiesPage({ searchParams }) {
     loadFailed = true;
   }
 
-  // A location filter that returns nothing is almost always a mistyped /
-  // unsupported area — say so instead of showing the generic empty state.
-  // Never claim this when the request itself failed: an unreachable API would
-  // otherwise blame the user's spelling for a server outage.
-  const isUnknownArea =
-    Boolean(currentQuery.area) && properties.length === 0 && !loadFailed;
+  // Only call a location invalid when it is genuinely outside the areas we
+  // cover. A known area with no matches is an inventory gap, not a typo, and a
+  // failed request is a server problem — both get the generic empty state.
+  let isUnknownArea = false;
+  if (currentQuery.area && properties.length === 0 && !loadFailed) {
+    try {
+      const knownAreas = (await getSystemBootstrap())?.areas || [];
+      isUnknownArea =
+        knownAreas.length > 0 && !resolveAreaInput(currentQuery.area, knownAreas);
+    } catch {
+      isUnknownArea = false;
+    }
+  }
 
   const totalPages = Math.max(1, Number(meta?.totalPages || 1));
   const prevPage = currentPage > 1 ? currentPage - 1 : null;
@@ -164,7 +178,7 @@ export default async function PropertiesPage({ searchParams }) {
               </span>
               <p className="text-slate-500 font-bold text-sm text-center px-4">
                 {isUnknownArea
-                  ? `Invalid location — we don't have any rental listings for "${currentQuery.area}".`
+                  ? `Invalid location — we don't cover "${currentQuery.area}" yet.`
                   : 'No rental listings available right now. Check back shortly.'}
               </p>
             </div>
