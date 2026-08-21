@@ -85,6 +85,7 @@ export default async function PropertiesPage({ searchParams }) {
 
   let properties = [];
   let meta = null;
+  let loadFailed = false;
   try {
     const response = await listProperties({
       category: 'rent',
@@ -102,7 +103,15 @@ export default async function PropertiesPage({ searchParams }) {
   } catch {
     properties = [];
     meta = null;
+    loadFailed = true;
   }
+
+  // A location filter that returns nothing is almost always a mistyped /
+  // unsupported area — say so instead of showing the generic empty state.
+  // Never claim this when the request itself failed: an unreachable API would
+  // otherwise blame the user's spelling for a server outage.
+  const isUnknownArea =
+    Boolean(currentQuery.area) && properties.length === 0 && !loadFailed;
 
   const totalPages = Math.max(1, Number(meta?.totalPages || 1));
   const prevPage = currentPage > 1 ? currentPage - 1 : null;
@@ -150,8 +159,14 @@ export default async function PropertiesPage({ searchParams }) {
 
           {properties.length === 0 && (
             <div className="flex flex-col items-center justify-center py-20 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 mt-8">
-              <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">home_work</span>
-              <p className="text-slate-500 font-bold text-sm">No rental listings available right now. Check back shortly.</p>
+              <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">
+                {isUnknownArea ? 'wrong_location' : 'home_work'}
+              </span>
+              <p className="text-slate-500 font-bold text-sm text-center px-4">
+                {isUnknownArea
+                  ? `Invalid location — we don't have any rental listings for "${currentQuery.area}".`
+                  : 'No rental listings available right now. Check back shortly.'}
+              </p>
             </div>
           )}
 

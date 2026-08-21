@@ -2,11 +2,7 @@
 
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
-
-function toDownloadUrl(url, filename = 'brochure.pdf') {
-  if (!url) return url;
-  return `/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
-}
+import { toBrochureDownloadUrl } from '@/lib/api/downloadFile';
 
 export default function PropertyFloorPlans({ floorPlans = [], brochureUrl = '' }) {
   const { user, openModal } = useAuth();
@@ -54,7 +50,7 @@ export default function PropertyFloorPlans({ floorPlans = [], brochureUrl = '' }
               {brochureUrl ? (
                 user ? (
                   <a
-                    href={toDownloadUrl(brochureUrl, 'brochure.pdf')}
+                    href={toBrochureDownloadUrl(brochureUrl, 'brochure.pdf')}
                     rel="noreferrer"
                     className="w-full justify-center bg-primary text-white px-5 sm:px-8 py-2 sm:py-3 rounded-full font-bold text-xs sm:text-sm flex items-center gap-2 hover:scale-105 transition-transform shadow-lg"
                   >

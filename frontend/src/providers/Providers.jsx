@@ -12,12 +12,14 @@ export default function Providers({ children }) {
     });
   }, []);
 
+  // ToastProvider must wrap AuthProvider so auth flows (login / registration)
+  // can raise success toasts via useToast().
   return (
-    <AuthProvider>
-      <ToastProvider>
+    <ToastProvider>
+      <AuthProvider>
         {children}
-        <Toaster />
-      </ToastProvider>
-    </AuthProvider>
+      </AuthProvider>
+      <Toaster />
+    </ToastProvider>
   );
 }

@@ -8,6 +8,16 @@ import {
 import { refreshTokenPair } from '@/services/authService';
 
 /**
+ * Builds the proxied download URL for a remote (Cloudinary) asset so the
+ * browser saves the file instead of navigating to it. Used by every
+ * "Download Brochure" affordance.
+ */
+export const toBrochureDownloadUrl = (url, filename = 'brochure.pdf') => {
+  if (!url) return '';
+  return `/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
+};
+
+/**
  * Fetch a binary file (e.g. .xlsx export) with authentication and trigger browser download.
  * Automatically retries once after refreshing the access token on 401.
  *

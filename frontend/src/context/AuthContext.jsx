@@ -1,6 +1,7 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { getCurrentUser, logout as logoutService } from '@/services/authService';
+import { useToast } from '@/context/ToastContext';
 import { clearTokens, hasSession } from '@/lib/auth/tokenStore';
 
 const AuthContext = createContext(null);
@@ -10,6 +11,7 @@ export function AuthProvider({ children }) {
   const [view, setView] = useState('login');
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
+  const { addToast } = useToast();
 
   // Restore session on mount
   useEffect(() => {
@@ -35,9 +37,15 @@ export function AuthProvider({ children }) {
 
   const closeModal = () => setIsOpen(false);
 
-  const onAuthSuccess = (userData) => {
+  // `mode` decides the confirmation message: 'register' after signup OTP
+  // verification, 'login' (default) after a password sign-in.
+  const onAuthSuccess = (userData, mode = 'login') => {
     setUser(userData);
     closeModal();
+    addToast(
+      mode === 'register' ? 'Registration successful' : 'Login successful',
+      'success'
+    );
   };
 
   const logout = async () => {

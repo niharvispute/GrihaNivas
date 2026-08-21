@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { getSystemBootstrap } from '@/services/systemService';
 import { SYSTEM_DEFAULT_CITY } from '@/lib/system/defaults';
+import { resolveAreaInput } from '@/lib/system/areaMatch';
 
 const INTENT_OPTIONS = [
   { label: 'Buy', value: 'buy', route: '/buy' },
@@ -13,6 +14,16 @@ const INTENT_OPTIONS = [
 
 const BHK_OPTIONS = ['1', '2', '3', '4', '5+'];
 const POPULAR_AREA_FALLBACK = ['Bandra West', 'Worli', 'South Mumbai', 'Powai'];
+// Mirrors the service-level default area list so validation stays permissive
+// until the live area list arrives.
+const KNOWN_AREA_FALLBACK = [
+  'South Mumbai',
+  'Bandra West',
+  'Juhu',
+  'Worli',
+  'Andheri West',
+  'Powai',
+];
 
 export default function HeroSearch() {
   const router = useRouter();
@@ -23,6 +34,9 @@ export default function HeroSearch() {
   const [bhkOpen, setBhkOpen] = useState(false);
   const [bhkOptions, setBhkOptions] = useState(BHK_OPTIONS);
   const [popularAreas, setPopularAreas] = useState(POPULAR_AREA_FALLBACK);
+  const [knownAreas, setKnownAreas] = useState(KNOWN_AREA_FALLBACK);
+  const [areasLoaded, setAreasLoaded] = useState(false);
+  const [locationError, setLocationError] = useState('');
   const [defaultCity, setDefaultCity] = useState(SYSTEM_DEFAULT_CITY);
   const bhkRef = useRef(null);
 
@@ -38,7 +52,11 @@ export default function HeroSearch() {
           ? bootstrap.areas.map((v) => String(v))
           : [];
         if (dynamicBhk.length > 0) setBhkOptions(dynamicBhk);
-        if (dynamicAreas.length > 0) setPopularAreas(dynamicAreas.slice(0, 4));
+        if (dynamicAreas.length > 0) {
+          setKnownAreas(dynamicAreas);
+          setPopularAreas(dynamicAreas.slice(0, 4));
+          setAreasLoaded(true);
+        }
         if (bootstrap?.config?.city) setDefaultCity(String(bootstrap.config.city));
       })
       .catch(() => {});
@@ -62,7 +80,25 @@ export default function HeroSearch() {
     const selected = INTENT_OPTIONS.find((o) => o.value === intent) || INTENT_OPTIONS[0];
     const params = new URLSearchParams();
     const trimmedLocation = location.trim();
-    if (trimmedLocation) params.set('area', trimmedLocation);
+
+    if (trimmedLocation) {
+      // Match case-insensitively so "bandra" finds Bandra properties, and stop
+      // unrecognised locations from loading an unfiltered "All Locations" page.
+      const resolvedArea = resolveAreaInput(trimmedLocation, knownAreas);
+      if (!resolvedArea) {
+        // Only reject once the live area list is in — never block a search
+        // because the bootstrap request hasn't resolved yet.
+        if (areasLoaded) {
+          setLocationError(`Invalid location — we don't cover "${trimmedLocation}" yet.`);
+          return;
+        }
+        params.set('area', trimmedLocation);
+      } else {
+        params.set('area', resolvedArea);
+      }
+    }
+
+    setLocationError('');
     if (bhk) params.set('bhk', bhk);
     const queryString = params.toString();
     router.push(queryString ? `${selected.route}?${queryString}` : selected.route);
@@ -123,7 +159,12 @@ export default function HeroSearch() {
               className="bg-transparent border-none outline-none focus:outline-none focus:ring-0 p-0 m-0 text-slate-900 text-sm font-bold placeholder:text-slate-300 w-full"
               placeholder={`${defaultCity} — area or locality`}
               value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={(e) => {
+                setLocation(e.target.value);
+                if (locationError) setLocationError('');
+              }}
+              aria-invalid={locationError ? 'true' : undefined}
+              aria-describedby={locationError ? 'hero-search-location-error' : undefined}
               suppressHydrationWarning
             />
           </div>
@@ -214,6 +255,17 @@ export default function HeroSearch() {
           </button>
         </div>
       </div>
+
+      {/* ── Invalid location message ── */}
+      {locationError && (
+        <p
+          id="hero-search-location-error"
+          role="alert"
+          className="mt-3 text-center text-xs font-bold text-red-600 bg-white/85 backdrop-blur-sm border border-red-100 rounded-full px-4 py-2 inline-block mx-auto w-full max-w-md"
+        >
+          {locationError}
+        </p>
+      )}
 
       {/* ── Popular Areas ── */}
       <div className="mt-4 flex items-center gap-2 justify-center flex-wrap px-2">
