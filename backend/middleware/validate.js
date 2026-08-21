@@ -483,7 +483,13 @@ const schemas = {
       minPrice:  z.coerce.number().min(0).optional(),
       maxPrice:  z.coerce.number().min(0).optional(),
       area:      z.string().trim().optional(),
-      furnishing: z.enum(['unfurnished', 'semi_furnished', 'furnished']).optional(),
+      // Listings were stored with mixed casing ('Semi_Furnished'), and the
+      // filter dropdown can submit either form, so accept any casing here and
+      // normalise to the canonical lowercase value.
+      furnishing: z.preprocess(
+        (value) => (typeof value === 'string' ? value.trim().toLowerCase() : value),
+        z.enum(['unfurnished', 'semi_furnished', 'furnished']).optional()
+      ),
       isFeatured: z.coerce.boolean().optional(),
       hasMedia: z.coerce.boolean().optional(),
       sortBy:    z.enum(['price_asc', 'price_desc', 'newest']).default('newest'),

@@ -191,8 +191,13 @@ export default async function ProjectUnitPage({ params }) {
               <div className="flex flex-wrap gap-2">
                 {project.amenities.map((amenity, idx) => (
                   <span key={idx} className="bg-tertiary text-primary px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-[14px]">done</span>
-                    {amenity}
+                    <span className="material-symbols-outlined text-[14px]">
+                      {amenity?.icon || 'done'}
+                    </span>
+                    {/* Amenities are normalised to { icon, label } objects — rendering
+                        the object directly threw "Objects are not valid as a React
+                        child" and returned a 500 for any project with amenities. */}
+                    {amenity?.label || (typeof amenity === 'string' ? amenity : '')}
                   </span>
                 ))}
               </div>

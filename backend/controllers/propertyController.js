@@ -51,7 +51,9 @@ const buildMongoFilter = async (query) => {
   if (builder)     filter.builder = builder;
   if (bhk)         filter.bhk = Number(bhk);
   if (area)        filter['location.area'] = new RegExp(escapeRegex(area), 'i');
-  if (furnishing)  filter.furnishing = furnishing;
+  // Match case-insensitively: existing documents store values like
+  // 'Semi_Furnished' while the query is normalised to lowercase.
+  if (furnishing)  filter.furnishing = new RegExp(`^${escapeRegex(furnishing)}$`, 'i');
   if (isFeatured !== undefined) filter.isFeatured = isFeatured === 'true' || isFeatured === true;
 
   const andConditions = [];
