@@ -61,9 +61,27 @@ function FilterDropdown({ label, value, onChange, options }) {
 }
 
 export default function BuilderPortfolio({ builder, properties = [] }) {
+  // Draft selections are what the dropdowns show; applied selections are what
+  // the list is filtered by. They are separated so "Update Results" (which the
+  // section previously lacked entirely — only Reset was offered) has an effect.
+  const [draftBhk, setDraftBhk] = useState('all');
+  const [draftPriceRange, setDraftPriceRange] = useState('all');
+  const [draftStatus, setDraftStatus] = useState('all');
+
   const [selectedBhk, setSelectedBhk] = useState('all');
   const [selectedPriceRange, setSelectedPriceRange] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
+
+  const hasPendingChanges =
+    draftBhk !== selectedBhk ||
+    draftPriceRange !== selectedPriceRange ||
+    draftStatus !== selectedStatus;
+
+  const applyFilters = () => {
+    setSelectedBhk(draftBhk);
+    setSelectedPriceRange(draftPriceRange);
+    setSelectedStatus(draftStatus);
+  };
 
   // Carousel
   const [scrollX, setScrollX] = useState(0);
@@ -145,6 +163,9 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
   );
 
   const resetFilters = () => {
+    setDraftBhk('all');
+    setDraftPriceRange('all');
+    setDraftStatus('all');
     setSelectedBhk('all');
     setSelectedPriceRange('all');
     setSelectedStatus('all');
@@ -190,13 +211,17 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
           <div>
             <h2 className="text-3xl! sm:text-4xl! font-extrabold text-zinc-900 mb-3 sm:mb-4 font-headline uppercase tracking-tight">Portfolio Showcase</h2>
             <p className="text-zinc-600 max-w-xl font-body text-sm sm:text-base">Explore our current residential masterpieces across the Mumbai Metropolitan Region.</p>
+            <p className="mt-2 text-[11px] font-black uppercase tracking-widest text-zinc-400">
+              Showing {filteredPortfolio.length} of {portfolioItems.length}
+              {portfolioItems.length === 1 ? ' property' : ' properties'}
+            </p>
           </div>
           
           <div className="w-full md:w-auto flex flex-col sm:flex-row sm:flex-wrap gap-2.5 sm:gap-3">
             <FilterDropdown
               label="Configuration"
-              value={selectedBhk}
-              onChange={setSelectedBhk}
+              value={draftBhk}
+              onChange={setDraftBhk}
               options={[
                 { value: 'all', label: 'Configuration' },
                 { value: '2', label: '2 BHK' },
@@ -206,8 +231,8 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
             />
             <FilterDropdown
               label="Price Range"
-              value={selectedPriceRange}
-              onChange={setSelectedPriceRange}
+              value={draftPriceRange}
+              onChange={setDraftPriceRange}
               options={[
                 { value: 'all', label: 'Price Range' },
                 { value: '2to5', label: '₹2 Cr – ₹5 Cr' },
@@ -217,8 +242,8 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
             />
             <FilterDropdown
               label="Status"
-              value={selectedStatus}
-              onChange={setSelectedStatus}
+              value={draftStatus}
+              onChange={setDraftStatus}
               options={[
                 { value: 'all', label: 'Status' },
                 { value: 'ready', label: 'Ready to Move' },
@@ -226,6 +251,19 @@ export default function BuilderPortfolio({ builder, properties = [] }) {
                 { value: 'new', label: 'New Launch' },
               ]}
             />
+            <button
+              type="button"
+              onClick={applyFilters}
+              disabled={!hasPendingChanges}
+              className={`w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider transition-all shadow-sm ${
+                hasPendingChanges
+                  ? 'bg-primary text-white hover:bg-primary/90 active:scale-95'
+                  : 'bg-zinc-100 text-zinc-400 cursor-not-allowed'
+              }`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              Update Results
+            </button>
             <button
               type="button"
               onClick={resetFilters}

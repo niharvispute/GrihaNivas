@@ -1,6 +1,7 @@
 import BlogCard from '@/components/blog/BlogCard';
 import NewsletterSubscribeCard from '@/components/blog/NewsletterSubscribeCard';
 import Link from 'next/link';
+import BlogCategoryTabs from '@/components/blog/BlogCategoryTabs';
 import CloudinaryImage from '@/components/CloudinaryImage';
 import { listBlogs } from '@/services/blogService';
 
@@ -93,17 +94,14 @@ export default async function BlogsPage({ searchParams }) {
         <h1 className="sr-only">Mumbai Real Estate Blogs</h1>
         {/* 🔍 Category & Search Console */}
         <section className="mb-10 sm:mb-14 lg:mb-16 flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8 lg:gap-10">
-          <div className="flex flex-wrap gap-2 sm:gap-3">
-            {BLOG_CATEGORIES.map((cat) => (
-              <Link
-                key={cat.label}
-                href={buildBlogsHref(1, { category: cat.value })}
-                className={`px-5 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm font-black tracking-tight transition-all ${currentCategory === cat.value ? 'bg-primary text-white shadow-xl' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}
-              >
-                {cat.label}
-              </Link>
-            ))}
-          </div>
+          <BlogCategoryTabs
+            currentCategory={currentCategory}
+            items={BLOG_CATEGORIES.map((cat) => ({
+              label: cat.label,
+              value: cat.value,
+              href: buildBlogsHref(1, { category: cat.value }),
+            }))}
+          />
           <form action="/blogs" method="GET" className="w-full lg:max-w-md group flex flex-col sm:flex-row items-stretch gap-2 sm:gap-3">
             {currentCategory ? <input type="hidden" name="category" value={currentCategory} /> : null}
             <div className="relative flex-1">
