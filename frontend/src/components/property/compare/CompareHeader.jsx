@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const CompareHeader = ({ properties, onRemove }) => {
@@ -58,11 +59,17 @@ const CompareHeader = ({ properties, onRemove }) => {
           </div>
         ))}
 
-        {/* Empty placeholder */}
+        {/* Empty slot — a real link so "+ Add" actually takes the user to the
+            listings to pick another property. It used to be an inert <div>. */}
         {Array.from({ length: 3 - properties.length }).map((_, idx) => (
-          <div key={`empty-${idx}`} className="border-2 border-dashed border-slate-100 rounded-xl md:rounded-2xl h-16 md:h-28 flex items-center justify-center text-slate-300 px-2 text-center">
+          <Link
+            key={`empty-${idx}`}
+            href="/buy"
+            aria-label="Add a property to compare"
+            className="border-2 border-dashed border-slate-200 hover:border-primary/60 hover:bg-primary/5 rounded-xl md:rounded-2xl h-16 md:h-28 flex items-center justify-center text-slate-400 hover:text-primary px-2 text-center transition-all cursor-pointer"
+          >
             <span className="text-[8px] md:text-xs font-black uppercase tracking-widest">+ Add</span>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
