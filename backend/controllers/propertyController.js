@@ -133,10 +133,12 @@ const buildMongoSort = (sortBy) => {
 };
 
 const buildAdminFilter = (query) => {
-  const { status, search, builder, noBuilder, isActive } = query;
+  const { status, search, builder, noBuilder, isActive, category } = query;
   const filter = {
     status: status || 'pending',
   };
+
+  if (category) filter.category = category;
 
   if (search) {
     const regex = new RegExp(search, 'i');
