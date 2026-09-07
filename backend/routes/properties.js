@@ -31,6 +31,14 @@ router.patch('/:id/hero-image', protect, adminOnly, validate(schemas.property.mo
 // Public detail routes
 router.get('/:id', optionalAuth, validate(schemas.property.moderationParams, 'params'), propertyController.getOne);
 
+// Parses a JSON `data` field from multipart FormData into req.body before validation
+const parseFormBodyJson = (req, _res, next) => {
+  if (req.body?.data) {
+    try { req.body = JSON.parse(req.body.data); } catch { /* leave as-is */ }
+  }
+  next();
+};
+
 // Admin only
 router.post(
   '/',
@@ -38,6 +46,7 @@ router.post(
   adminOnly,
   uploadRateLimit,
   propertyUploadFields,
+  parseFormBodyJson,
   validate(schemas.property.create),
   propertyController.create
 );

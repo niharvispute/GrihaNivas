@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import CloudinaryImage from '@/components/CloudinaryImage';
 import { adminListProperties, deleteProperty, getPropertyById, updateProperty, exportProperties, updatePropertyActiveStatus } from '@/services/propertyService';
 import ExportButton from '@/components/admin/ExportButton';
@@ -24,6 +25,7 @@ function hasValue(value) {
 }
 
 export default function PropertyManagementPage() {
+  const router = useRouter();
   const [properties, setProperties] = useState([]);
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -230,6 +232,14 @@ export default function PropertyManagementPage() {
               {meta.total} total listings
             </span>
           )}
+          <button
+            type="button"
+            onClick={() => router.push('/admin/properties/new')}
+            className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl text-sm font-black hover:bg-primary/90 transition-all"
+          >
+            <span className="material-symbols-outlined text-lg">add</span>
+            Add Property
+          </button>
           <ExportButton
             onExport={() => {
               const query = {};
