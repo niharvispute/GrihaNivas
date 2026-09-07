@@ -453,6 +453,7 @@ const schemas = {
       page: z.coerce.number().int().min(1).default(1),
       limit: z.coerce.number().int().min(1).max(100).default(10),
       status: z.enum(['pending', 'approved', 'rejected']).optional(),
+      category: z.enum(['buy', 'rent', 'commercial', 'new_launch']).optional(),
       search: z.string().trim().max(100).optional(),
       builder: objectIdSchema.optional(),
       noBuilder: z.preprocess((v) => v === 'true' || v === true, z.boolean()).optional(),
