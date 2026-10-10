@@ -44,7 +44,7 @@ export default function ListingTrust() {
                 <div key={idx} className="bg-slate-50 p-8 rounded-2xl flex flex-col items-center justify-center text-center border border-slate-100 group hover:bg-white hover:shadow-xl transition-all">
                   <div className="h-16 flex items-center justify-center mb-4 opacity-70 text-primary group-hover:scale-110 transition-transform">
                     {badge.icon === 'verified' || badge.icon === 'stars' ? (
-                       <span className="font-heading font-black text-2xl text-slate-400 tracking-tighter group-hover:text-primary">{badge.title}</span>
+                       <span className="font-heading font-bold text-2xl text-slate-400 tracking-tighter group-hover:text-primary">{badge.title}</span>
                     ) : (
                        <span className="material-symbols-outlined text-4xl text-slate-400 group-hover:text-primary">{badge.icon}</span>
                     )}

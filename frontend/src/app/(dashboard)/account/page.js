@@ -34,7 +34,7 @@ export default function UserDashboardPage() {
       {/* Header & Greeting */}
       <div className="flex flex-col md:flex-row justify-between items-end gap-3">
         <div>
-          <h1 className="text-lg sm:text-2xl md:text-3xl font-heading font-black text-slate-900 tracking-tight">
+          <h1 className="text-lg sm:text-2xl md:text-3xl font-heading font-bold text-slate-900 tracking-tight">
             Good morning, <span className="text-primary underline decoration-primary/20 decoration-8 underline-offset-4">{firstName}</span>
           </h1>
           <p className="text-slate-400 mt-1 font-bold uppercase tracking-[0.2em] text-[8px] sm:text-[10px]">

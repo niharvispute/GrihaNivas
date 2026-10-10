@@ -52,7 +52,7 @@ export default function EnquiryTable() {
     return (
       <div className="bg-white rounded-2xl shadow-sm border border-dashed border-slate-200 py-16 text-center mb-8">
         <span className="material-symbols-outlined text-5xl text-slate-300 mb-4 block">inbox</span>
-        <h3 className="font-heading font-black text-slate-900 text-lg mb-1">No enquiries yet</h3>
+        <h3 className="font-heading font-bold text-slate-900 text-lg mb-1">No enquiries yet</h3>
         <p className="text-slate-400 text-sm font-bold">Your submitted enquiries will appear here.</p>
       </div>
     );
@@ -85,7 +85,7 @@ export default function EnquiryTable() {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="font-heading font-black text-slate-900 text-xs sm:text-sm md:text-base leading-snug mb-1 line-clamp-2 hover:text-primary transition-colors">
+                <h4 className="font-heading font-bold text-slate-900 text-xs sm:text-sm md:text-base leading-snug mb-1 line-clamp-2 hover:text-primary transition-colors">
                   {propertyTitle}
                 </h4>
                 <div className="flex items-center gap-1.5 text-[8px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest">

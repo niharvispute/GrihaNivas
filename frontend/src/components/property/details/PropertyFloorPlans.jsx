@@ -12,7 +12,7 @@ export default function PropertyFloorPlans({ floorPlans = [], brochureUrl = '' }
   return (
     <section className="py-4 sm:py-0">
       <div className="flex items-center justify-between gap-2 mb-4 sm:mb-8">
-        <h2 className="text-lg sm:text-2xl font-heading font-black text-slate-900">Floor Plans</h2>
+        <h2 className="text-lg sm:text-2xl font-heading font-bold text-slate-900">Floor Plans</h2>
         <span className="text-slate-400 font-bold text-xs sm:text-sm shrink-0">
           {hasFloorPlans ? `${floorPlans.length} Layout${floorPlans.length > 1 ? 's' : ''} Available` : 'No layouts uploaded'}
         </span>

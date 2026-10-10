@@ -136,7 +136,7 @@ function ContactForm() {
     />
     <div className="w-full">
       {/* 🏙️ Hero Section */}
-      <section className="px-3 md:px-8 max-w-screen-2xl mx-auto pt-4 md:pt-20 pb-6 md:pb-16">
+      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-4 md:pt-20 pb-6 md:pb-16">
         <div className="relative overflow-hidden rounded-2xl bg-slate-50 p-6 md:p-16 flex flex-col items-center text-center shadow-inner">
           <div className="absolute top-0 right-0 w-1/3 h-full pointer-events-none opacity-[0.04]" style={{backgroundImage: 'radial-gradient(circle at 60% 40%, #b80049 0%, transparent 70%)'}}></div>
           <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs mb-3 md:mb-6">CONNECT WITH US</span>
@@ -150,7 +150,7 @@ function ContactForm() {
       </section>
 
       {/* 📬 Communication Grid */}
-      <section className="px-3 md:px-8 max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-12 mb-12 md:mb-24">
+      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-12 mb-12 md:mb-24">
         {/* Info Column */}
         <div className="lg:col-span-5 flex flex-col gap-5 md:gap-8">
           <div className="flex flex-col gap-4 md:gap-8">
@@ -278,7 +278,7 @@ function ContactForm() {
       </section>
 
       {/* 🗺️ Map Section */}
-      {/* <section className="mb-16 md:mb-24 px-4 md:px-8 max-w-screen-2xl mx-auto">
+      {/* <section className="mb-16 md:mb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="relative w-full h-[350px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl group border-4 md:border-8 border-white">
           <div className="absolute top-6 left-6 md:top-12 md:left-12 z-20 bg-white/95 md:backdrop-blur-xl p-6 md:p-8 rounded-2xl shadow-2xl border border-white/50 max-w-[calc(100%-3rem)] md:max-w-sm">
             <span className="text-primary font-black text-[9px] md:text-[10px] tracking-[0.3em] uppercase mb-1 md:mb-2 block leading-none">FLAGSHIP OFFICE</span>
@@ -297,7 +297,7 @@ function ContactForm() {
       </section> */}
 
       {/* 🔗 FAQ Banner */}
-      <section className="max-w-screen-2xl mx-auto px-4 md:px-8 mb-20 md:mb-32">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 md:mb-32">
         <div className="bg-slate-900 rounded-2xl p-10 md:p-20 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 text-center md:text-left relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-80 md:w-[30rem] h-80 md:h-[30rem] bg-primary/20 rounded-full blur-[10rem] opacity-40 group-hover:opacity-60 transition-all"></div>
           <div className="relative z-10 space-y-2 md:space-y-4">

@@ -2,7 +2,7 @@ import LeadForm from '@/components/forms/LeadForm';
 
 export default function AgreementPage() {
   return (
-    <main className="max-w-7xl mx-auto px-6 lg:px-8 py-14">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
       <section className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-10 items-start">
         <div className="bg-gradient-to-br from-slate-50 via-white to-slate-100 border border-slate-100 rounded-2xl p-8 md:p-12">
           <p className="text-[11px] font-black tracking-[0.22em] uppercase text-primary mb-4">Rent Agreement Service</p>

@@ -34,7 +34,7 @@ export default function ProfileStats({ user }) {
               <p className={`text-[6px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-widest mb-0.5 sm:mb-1 ${stat.gradient ? 'text-white/70' : 'text-slate-400'}`}>
                 {stat.label}
               </p>
-              <h4 className={`text-lg sm:text-2xl md:text-3xl lg:text-4xl font-heading font-black mb-1 sm:mb-2 md:mb-4 ${stat.text}`}>
+              <h4 className={`text-lg sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-1 sm:mb-2 md:mb-4 ${stat.text}`}>
                 {stat.value}
               </h4>
             </div>

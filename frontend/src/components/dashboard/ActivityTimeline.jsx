@@ -45,7 +45,7 @@ export default function ActivityTimeline() {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
       <div className="p-4 sm:p-5 border-b border-slate-50 flex justify-between items-center">
-        <h2 className="text-sm sm:text-base font-heading font-black text-slate-900">Account Overview</h2>
+        <h2 className="text-sm sm:text-base font-heading font-bold text-slate-900">Account Overview</h2>
         <Link href="/account/enquiries" className="text-primary text-[9px] sm:text-[10px] font-black uppercase tracking-widest hover:translate-x-1 transition-transform flex items-center gap-1">
           View Enquiries
           <span className="material-symbols-outlined text-xs sm:text-sm">arrow_forward</span>

@@ -21,7 +21,7 @@ export default function PropertyBuilderProfile({ builder }) {
           )}
         </div>
         <div>
-          <h4 className="font-heading font-black text-lg text-slate-800">{builder.name}</h4>
+          <h4 className="font-heading font-bold text-lg text-slate-800">{builder.name}</h4>
           <p className="text-[11px] sm:text-xs text-slate-400 font-bold">Est. 1990 • {builder.projects} Projects Delivered</p>
         </div>
       </div>
@@ -31,7 +31,7 @@ export default function PropertyBuilderProfile({ builder }) {
       </p>
       
       <div className="flex flex-wrap gap-2">
-        <span className="bg-tertiary text-primary px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
+        <span className="bg-tertiary text-white px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           Trusted Builder
         </span>

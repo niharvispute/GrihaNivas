@@ -42,11 +42,11 @@ export default function SavedPropertyCard({ property, onUnsave }) {
       <div className="flex-1 p-4 sm:p-5 lg:p-6 flex flex-col justify-between">
         <div>
           <div className="mb-2 sm:mb-4">
-            <h3 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-heading font-black text-slate-900 leading-tight tracking-tight group-hover:text-primary transition-colors line-clamp-2">
+            <h3 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-heading font-bold text-slate-900 leading-tight tracking-tight group-hover:text-primary transition-colors line-clamp-2">
               {property.title}
             </h3>
             <div className="flex flex-row items-baseline gap-1.5 mt-1 sm:mt-2">
-              <span className="text-sm sm:text-lg md:text-xl lg:text-2xl font-heading font-black text-primary tracking-tighter">₹{property.price}</span>
+              <span className="text-sm sm:text-lg md:text-xl lg:text-2xl font-heading font-bold text-primary tracking-tighter">₹{property.price}</span>
               {property.priceSuffix && (
                 <span className="text-[8px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">
                   {property.priceSuffix}
@@ -79,12 +79,12 @@ export default function SavedPropertyCard({ property, onUnsave }) {
 
         {/* Action Buttons */}
         <div className="flex gap-2 sm:gap-3 mt-3 sm:mt-4 lg:mt-6 pt-3 sm:pt-4 border-t border-slate-50">
-          <Link href={detailHref} className="flex-1 text-center border-2 border-slate-100 text-slate-600 font-heading font-black uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs py-2 sm:py-2.5 lg:py-3.5 rounded-full hover:bg-slate-50 hover:border-slate-200 transition-all active:scale-[0.98]">
+          <Link href={detailHref} className="flex-1 text-center border-2 border-slate-100 text-slate-600 font-heading font-bold uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs py-2 sm:py-2.5 lg:py-3.5 rounded-full hover:bg-slate-50 hover:border-slate-200 transition-all active:scale-[0.98]">
             Details
           </Link>
           <Link
             href={`${detailHref}#lead-form`}
-            className="flex-1 bg-primary text-white font-heading font-black uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs py-2 sm:py-2.5 lg:py-3.5 rounded-full shadow-lg hover:scale-105 transition-all active:scale-[0.98] text-center"
+            className="flex-1 bg-primary text-white font-heading font-bold uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs py-2 sm:py-2.5 lg:py-3.5 rounded-full shadow-lg hover:scale-105 transition-all active:scale-[0.98] text-center"
           >
             Enquire
           </Link>

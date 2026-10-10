@@ -36,7 +36,7 @@ export default function Footer() {
 
   return (
     <footer className="w-full border-t border-slate-200 bg-slate-50 font-sans text-sm leading-relaxed">
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-12 px-8 py-16 max-w-screen-2xl mx-auto text-slate-600">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-12 px-4 sm:px-6 lg:px-8 py-16 max-w-7xl mx-auto text-slate-600">
         {/* Column 1: Company */}
         <div className="col-span-2 md:col-span-1">
           <div className="text-xl font-bold text-slate-900 mb-4">GrihaNivas</div>
@@ -128,7 +128,7 @@ export default function Footer() {
       </div> */}
 
       {/* Bottom Bar */}
-      <div className="border-t border-slate-200 py-6 px-8 max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="border-t border-slate-200 py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="text-slate-600 text-xs">© {currentYear} GrihaNivas. All rights reserved.</div>
         <div className="text-slate-600 text-xs">Powered by Shree Gurudev Properties</div>
         <div className="flex gap-6 text-xs font-bold text-slate-500">

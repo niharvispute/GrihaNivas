@@ -85,7 +85,7 @@ export default function AdminDashboardPage() {
       icon: "assignment_turned_in",
       color: "text-emerald-600",
       bg: "bg-emerald-50",
-      href: "/admin/leads",
+      href: "/admin/leads?status=closed",
     },
   ];
 

@@ -37,7 +37,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story */}
-      <section className="py-14 px-8 max-w-7xl mx-auto overflow-hidden">
+      <section className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
             <h2 className="text-3xl font-black text-slate-900 mb-6 tracking-tight leading-none">A Legacy of Excellence</h2>
@@ -59,7 +59,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-14 bg-slate-50 px-8">
+      <section className="py-14 bg-slate-50 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group">
             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-5 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
@@ -79,7 +79,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why Grihanivas */}
-      <section className="py-14 px-8 max-w-7xl mx-auto">
+      <section className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <h2 className="text-center text-3xl font-black text-slate-900 mb-12 tracking-tighter">Why Grihanivas?</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {features.map((f, i) => (
@@ -98,7 +98,7 @@ export default function AboutPage() {
       <section className="py-14 bg-primary relative overflow-hidden">
         <div className="absolute top-0 right-0 w-72 h-72 bg-white/5 rounded-full -mr-36 -mt-36 blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-24 -mb-24 blur-3xl"></div>
-        <div className="max-w-7xl mx-auto px-8 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center relative z-10 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center relative z-10 text-white">
           {metrics.map((m, i) => (
             <div key={i}>
               <div className="text-4xl md:text-6xl font-black mb-2 tracking-tighter">{m.value}</div>
@@ -110,7 +110,7 @@ export default function AboutPage() {
 
       {/* Partners */}
       <section className="py-12 border-y border-slate-100 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-slate-400 font-bold uppercase tracking-[0.4em] text-[10px] mb-10">STRATEGIC DEVELOPERS</p>
           <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-1000">
             {partners.map((p, i) => (
@@ -121,7 +121,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-8">
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto bg-slate-950 rounded-2xl p-10 md:p-20 text-center relative overflow-hidden shadow-2xl group">
           <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-primary/20 rounded-full blur-[8rem] -mr-60 -mt-60 group-hover:opacity-40 transition-opacity"></div>
           <div className="relative z-10">

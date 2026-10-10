@@ -130,7 +130,7 @@ export default function PropertyLeadForm({ property }) {
 
   return (
     <section id="lead-form" className="scroll-mt-28 sm:scroll-mt-32 bg-slate-50 p-5 sm:p-8 rounded-2xl border border-slate-100 shadow-sm">
-      <h3 className="text-xl font-heading font-black mb-1 text-slate-900">Inquire for Details</h3>
+      <h3 className="text-xl font-heading font-bold mb-1 text-slate-900">Inquire for Details</h3>
       <p className="text-sm text-slate-500 mb-6 font-bold">Our consultants will contact you within 2 hours.</p>
 
       <form className="space-y-4" onSubmit={handleSubmit}>

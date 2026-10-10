@@ -1,6 +1,6 @@
 export default function PropertyDetailLoading() {
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 lg:px-8 animate-pulse">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-pulse">
       {/* Gallery skeleton */}
       <div className="w-full h-[480px] bg-slate-100 rounded-2xl mb-12" />
 

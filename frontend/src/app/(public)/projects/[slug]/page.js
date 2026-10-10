@@ -10,6 +10,7 @@ import PropertyAmenities from '@/components/property/details/PropertyAmenities';
 import LeadForm from '@/components/forms/LeadForm';
 import { getProjectBySlug } from '@/services/projectService';
 import { mapProjectToDetailVM } from '@/lib/mappers/projectMapper';
+import { SITE_CONTACT } from '@/lib/siteContact';
 
 function getVideoEmbed(url) {
   if (!url) return null;
@@ -116,7 +117,7 @@ export default async function ProjectDetailPage({ params }) {
                 </a>
               )}
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-black tracking-tight text-slate-900 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-tight text-slate-900 leading-tight">
               {project.name}
             </h1>
             {project.builder?.name && (
@@ -132,7 +133,7 @@ export default async function ProjectDetailPage({ params }) {
           </div>
           <div className="hidden sm:block text-right">
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1 leading-none">Price Range</p>
-            <p className="text-3xl lg:text-4xl font-heading font-black text-slate-900 tracking-tighter">{priceRangeLabel}</p>
+            <p className="text-3xl lg:text-4xl font-heading font-bold text-slate-900 tracking-tighter">{priceRangeLabel}</p>
           </div>
         </div>
 
@@ -153,7 +154,7 @@ export default async function ProjectDetailPage({ params }) {
           {/* About */}
           {(project.description || project.shortDescription) && (
             <section>
-              <h2 className="text-2xl font-heading font-black mb-4 sm:mb-6 text-slate-900">About the Project</h2>
+              <h2 className="text-2xl font-heading font-bold mb-4 sm:mb-6 text-slate-900">About the Project</h2>
               <p className="text-slate-500 leading-relaxed font-bold whitespace-pre-line">
                 {project.description || project.shortDescription}
               </p>
@@ -163,7 +164,7 @@ export default async function ProjectDetailPage({ params }) {
           {/* Video */}
           {videoEmbed && (
             <section>
-              <h2 className="text-2xl font-heading font-black mb-4 sm:mb-6 text-slate-900">Project Video</h2>
+              <h2 className="text-2xl font-heading font-bold mb-4 sm:mb-6 text-slate-900">Project Video</h2>
               <div className="relative w-full rounded-2xl overflow-hidden border border-slate-100 shadow-lg" style={{ aspectRatio: '16/9' }}>
                 {videoEmbed.type === 'iframe' ? (
                   <iframe
@@ -210,7 +211,7 @@ export default async function ProjectDetailPage({ params }) {
           {/* Configurations */}
           {project.configurations.length > 0 && (
             <section>
-              <h2 className="text-2xl font-heading font-black mb-6 sm:mb-8 text-slate-900">Configurations &amp; Pricing</h2>
+              <h2 className="text-2xl font-heading font-bold mb-6 sm:mb-8 text-slate-900">Configurations &amp; Pricing</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {project.configurations.map((config) => {
                   const thumb = config.gallery?.[0] || config.floorPlans?.[0] || project.image;
@@ -286,7 +287,7 @@ export default async function ProjectDetailPage({ params }) {
           {/* Master plan */}
           {project.masterPlanUrl && (
             <section>
-              <h2 className="text-2xl font-heading font-black mb-6 sm:mb-8 text-slate-900">Master Plan</h2>
+              <h2 className="text-2xl font-heading font-bold mb-6 sm:mb-8 text-slate-900">Master Plan</h2>
               <div className="relative rounded-2xl overflow-hidden border border-slate-100 min-h-72 sm:min-h-96">
                 <CloudinaryImage src={project.masterPlanUrl} alt="Master Plan" fill sizes="(max-width: 1024px) 100vw, 66vw" className="object-contain bg-slate-50" />
               </div>
@@ -297,9 +298,9 @@ export default async function ProjectDetailPage({ params }) {
         {/* Sidebar */}
         <div className="lg:col-span-4 space-y-6 sm:space-y-8">
           <LeadForm title={`Enquire About ${project.name}`} leadType="project" projectId={project.id} />
-          {project.whatsappCtaEnabled && project.contactPhone && (
+          {project.whatsappCtaEnabled && (
             <a
-              href={`https://wa.me/${project.contactPhone.replace(/\D/g, '').replace(/^0+/, '')}?text=${encodeURIComponent(`Hi, I'm interested in ${project.name}. Please share more details.`)}`}
+              href={`https://wa.me/${SITE_CONTACT.whatsappNumber}?text=${encodeURIComponent(`Hi, I'm interested in ${project.name}. Please share more details.`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-3 w-full py-4 bg-[#25D366] hover:bg-[#1ebe5d] text-white rounded-2xl font-black text-sm transition-colors shadow-md shadow-[#25D366]/20"

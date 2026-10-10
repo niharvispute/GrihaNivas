@@ -40,7 +40,7 @@ export default function ProfileHero({ user, onUpdate }) {
         </div>
         <div className="text-center md:text-left flex-1 min-w-0">
           <div className="flex flex-col md:flex-row md:items-center gap-1.5 sm:gap-3 mb-1.5 sm:mb-2">
-            <h2 className="text-lg sm:text-2xl md:text-3xl font-heading font-black text-slate-900 tracking-tight truncate">{name}</h2>
+            <h2 className="text-lg sm:text-2xl md:text-3xl font-heading font-bold text-slate-900 tracking-tight truncate">{name}</h2>
             {isVerified && (
               <span className="bg-emerald-50 text-emerald-600 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[7px] sm:text-[9px] font-black uppercase tracking-widest w-fit mx-auto md:mx-0 flex items-center gap-1 border border-emerald-100 flex-none">
                 <span className="material-symbols-outlined text-[10px] sm:text-xs">verified</span>

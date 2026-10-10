@@ -14,11 +14,11 @@ export default function ConciergePromo() {
         <span className="bg-primary/20 text-primary-fixed-dim text-[9px] font-black uppercase tracking-[0.2em] px-4 py-1 rounded-full w-fit mb-4 backdrop-blur-md border border-primary/20">
           Priority Support
         </span>
-        <h3 className="text-3xl md:text-4xl font-heading font-black text-white mb-2 leading-tight">Need immediate <br/>assistance?</h3>
+        <h3 className="text-3xl md:text-4xl font-heading font-bold text-white mb-2 leading-tight">Need immediate <br/>assistance?</h3>
         <p className="text-slate-300 max-w-sm text-sm font-bold mb-8 leading-relaxed">
           Connect with our premium residential concierge for priority enquiry handling and expert guidance.
         </p>
-        <button className="flex items-center gap-3 bg-white text-slate-900 px-8 py-3.5 rounded-full font-heading font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95 shadow-lg group/btn">
+        <button className="flex items-center gap-3 bg-white text-slate-900 px-8 py-3.5 rounded-full font-heading font-bold text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all active:scale-95 shadow-lg group/btn">
           Speak to Agent
           <span className="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
         </button>

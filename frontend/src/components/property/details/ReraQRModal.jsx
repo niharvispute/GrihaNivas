@@ -40,7 +40,7 @@ export default function ReraQRModal({ isOpen, onClose, reraId, reraUrl, property
               <span className="material-symbols-outlined text-white/80">verified</span>
               <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.22em] sm:tracking-[0.3em] opacity-80">Official Verification</p>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-heading font-black tracking-tight ">RERA Certified</h2>
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold tracking-tight ">RERA Certified</h2>
           </div>
 
           {/* Body */}

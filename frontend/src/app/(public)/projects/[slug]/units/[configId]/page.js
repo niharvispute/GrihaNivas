@@ -126,7 +126,7 @@ export default async function ProjectUnitPage({ params }) {
                 </span>
               )}
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-black tracking-tight text-slate-900 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-tight text-slate-900 leading-tight">
               {config.title || config.bhkType}
             </h1>
             <p className="text-slate-500 font-bold text-sm md:text-base">
@@ -143,7 +143,7 @@ export default async function ProjectUnitPage({ params }) {
           </div>
           <div className="hidden sm:block text-right">
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1 leading-none">Price</p>
-            <p className="text-3xl lg:text-4xl font-heading font-black text-slate-900 tracking-tighter">{priceLabel}</p>
+            <p className="text-3xl lg:text-4xl font-heading font-bold text-slate-900 tracking-tighter">{priceLabel}</p>
           </div>
         </div>
 
@@ -177,7 +177,7 @@ export default async function ProjectUnitPage({ params }) {
           {/* About the project */}
           {(project.description || project.shortDescription) && (
             <section>
-              <h2 className="text-2xl font-heading font-black mb-4 sm:mb-6 text-slate-900">About the Project</h2>
+              <h2 className="text-2xl font-heading font-bold mb-4 sm:mb-6 text-slate-900">About the Project</h2>
               <p className="text-slate-500 leading-relaxed font-bold whitespace-pre-line">
                 {project.description || project.shortDescription}
               </p>
@@ -187,10 +187,10 @@ export default async function ProjectUnitPage({ params }) {
           {/* Amenities — inherited from project */}
           {project.amenities.length > 0 && (
             <section>
-              <h2 className="text-2xl font-heading font-black mb-6 sm:mb-8 text-slate-900">Amenities</h2>
+              <h2 className="text-2xl font-heading font-bold mb-6 sm:mb-8 text-slate-900">Amenities</h2>
               <div className="flex flex-wrap gap-2">
                 {project.amenities.map((amenity, idx) => (
-                  <span key={idx} className="bg-tertiary text-primary px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5">
+                  <span key={idx} className="bg-tertiary text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5">
                     <span className="material-symbols-outlined text-[14px]">
                       {amenity?.icon || 'done'}
                     </span>

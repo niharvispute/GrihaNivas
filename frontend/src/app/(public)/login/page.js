@@ -305,7 +305,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-[calc(100vh-10rem)] max-w-5xl mx-auto px-6 lg:px-8 py-14">
+    <main className="min-h-[calc(100vh-10rem)] max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
         <div className="bg-gradient-to-br from-slate-50 via-white to-slate-100 border border-slate-100 rounded-2xl p-8 md:p-10">
           <p className="text-[11px] font-black tracking-[0.22em] uppercase text-primary mb-4">Secure Access</p>

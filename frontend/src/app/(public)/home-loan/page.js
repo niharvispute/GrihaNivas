@@ -13,7 +13,7 @@ export default function HomeLoanPage() {
     <div className="bg-white min-h-screen font-sans">
       <main className="pt-0">
         {/* 1. Hero Section */}
-        <section className="px-6 md:px-8 pt-6 pb-8 md:pt-16 md:pb-24 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-24">
+        <section className="px-4 sm:px-6 lg:px-8 pt-6 pb-8 md:pt-16 md:pb-24 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-24">
           <div className="md:w-2/5 space-y-6 md:space-y-8 text-center md:text-left">
             <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">Mortgage Solutions</span>
             <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-tight text-slate-900">
@@ -32,7 +32,7 @@ export default function HomeLoanPage() {
               </Link>
               <Link 
                 href="/contact?message=I would like to request a callback regarding a home loan application. Please contact me with more information."
-                className="flex items-center gap-2 md:gap-3 px-6 md:px-8 py-4 md:py-5 text-slate-900 font-black text-base md:text-lg hover:bg-slate-50 rounded-full transition-all leading-none"
+                className="flex items-center gap-2 md:gap-3 px-4 sm:px-6 lg:px-8 py-4 md:py-5 text-slate-900 font-black text-base md:text-lg hover:bg-slate-50 rounded-full transition-all leading-none"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="md:w-6 md:h-6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 Request Callback
@@ -70,7 +70,7 @@ export default function HomeLoanPage() {
         <BankPartners />
 
         {/* 3. Benefits Grid */}
-        <section className="py-12 md:py-24 px-6 md:px-8 max-w-7xl mx-auto">
+        <section className="py-12 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {/* Featured primary card */}
             <div className="col-span-2 md:col-span-1 md:row-span-2 group p-6 md:p-10 rounded-2xl bg-primary text-white flex flex-col justify-between min-h-[180px] md:min-h-0">
@@ -101,7 +101,7 @@ export default function HomeLoanPage() {
           </div>
         </section>
 
-        <section className="py-8 md:py-16 px-6 md:px-8 max-w-7xl mx-auto">
+        <section className="py-8 md:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="text-center mb-12 md:mb-20 space-y-2 md:space-y-4">
             <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">The Workflow</span>
             <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900">Simple 4-Step Journey</h2>
@@ -129,7 +129,7 @@ export default function HomeLoanPage() {
         {/* 4. Main Application Form */}
         <section id="apply-form" className="py-16 md:py-32 bg-slate-50 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-10 md:h-20 bg-gradient-to-b from-white to-transparent"></div>
-          <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
             <div className="space-y-6 md:space-y-10 text-center lg:text-left">
               <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">Start Application</span>
               <h2 className="text-3xl md:text-6xl font-black tracking-tighter leading-tight text-slate-900">
@@ -159,7 +159,7 @@ export default function HomeLoanPage() {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-16 md:py-32 max-w-4xl mx-auto px-6 md:px-8">
+        <section className="py-16 md:py-32 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 md:mb-20 space-y-2 md:space-y-4">
             <span className="text-primary font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">Knowledge Base</span>
             <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900">Expert Insights</h2>
@@ -181,7 +181,7 @@ export default function HomeLoanPage() {
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="text-primary md:w-5 md:h-5"><path d="m6 9 6 6 6-6"/></svg>
                   </div>
                 </summary>
-                <div className="px-6 md:px-8 pb-6 md:pb-8 text-slate-500 font-bold leading-relaxed text-sm md:text-lg border-t border-slate-100 pt-4 md:pt-6">
+                <div className="px-4 sm:px-6 lg:px-8 pb-6 md:pb-8 text-slate-500 font-bold leading-relaxed text-sm md:text-lg border-t border-slate-100 pt-4 md:pt-6">
                   {faq.a}
                 </div>
               </details>

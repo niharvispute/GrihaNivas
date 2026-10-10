@@ -31,7 +31,7 @@ export default function PropertyStickyInfo({ property }) {
     <div className="sticky top-32 bg-white p-8 rounded-2xl shadow-[0_32px_64px_-15px_rgba(0,0,0,0.06)] border border-slate-100">
       <div className="flex items-center justify-between gap-4 mb-2">
         <div className="flex items-baseline gap-2">
-          <span className="text-4xl font-heading font-black text-primary">
+          <span className="text-4xl font-heading font-bold text-primary">
             {isRent
               ? (hasNumericRent ? `₹${rentPerMonth}` : 'Rent on Request')
               : (hasNumericPrice ? `₹${property.price}` : 'Price on Request')}
@@ -110,7 +110,7 @@ export default function PropertyStickyInfo({ property }) {
           </button>
         )}
         <Link href="#lead-form" className="block w-full">
-          <button className="w-full border-2 border-primary text-primary py-4 rounded-full font-black text-lg hover:bg-tertiary transition-all">
+          <button className="w-full border-2 border-primary text-primary py-4 rounded-full font-black text-lg hover:bg-tertiary hover:border-tertiary hover:text-white transition-all">
             Contact Expert
           </button>
         </Link>

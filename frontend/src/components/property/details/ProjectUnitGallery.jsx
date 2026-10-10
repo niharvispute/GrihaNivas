@@ -76,7 +76,7 @@ export default function ProjectUnitGallery({ images, alt }) {
                   <div
                     className="absolute inset-0 bg-slate-950/40 backdrop-blur-[1px] flex flex-col items-center justify-center text-white text-center px-4"
                   >
-                    <span className="text-2xl sm:text-3xl font-heading font-black tracking-tighter">
+                    <span className="text-2xl sm:text-3xl font-heading font-bold tracking-tighter">
                       +{safeImages.length - 3}
                     </span>
                     <span className="mt-1 text-[9px] font-black uppercase tracking-[0.2em] opacity-85">
