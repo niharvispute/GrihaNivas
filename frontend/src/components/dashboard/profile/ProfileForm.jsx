@@ -41,7 +41,7 @@ export default function ProfileForm({ user, onUpdate }) {
   return (
     <section className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
       <div className="px-4 sm:px-6 md:px-8 py-3.5 sm:py-5 border-b border-slate-50">
-        <h3 className="text-sm sm:text-base md:text-lg font-heading font-black text-slate-900">Personal Information</h3>
+        <h3 className="text-sm sm:text-base md:text-lg font-heading font-bold text-slate-900">Personal Information</h3>
       </div>
       <div className="p-4 sm:p-6 md:p-8">
         <form className="space-y-4 sm:space-y-6 md:space-y-8" onSubmit={handleSubmit}>
@@ -113,7 +113,7 @@ export default function ProfileForm({ user, onUpdate }) {
 
           <div className="pt-2 sm:pt-4 flex justify-center sm:justify-end">
             <button
-              className="w-full sm:w-auto px-6 sm:px-12 py-2.5 sm:py-3.5 bg-primary text-white font-heading font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-full shadow-lg hover:scale-105 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="w-full sm:w-auto px-6 sm:px-12 py-2.5 sm:py-3.5 bg-primary text-white font-heading font-bold uppercase tracking-widest text-[10px] sm:text-xs rounded-full shadow-lg hover:scale-105 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
               type="submit"
               disabled={saving}
             >

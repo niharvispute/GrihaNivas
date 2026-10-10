@@ -89,8 +89,8 @@ export default function RentAgreementPage() {
     />
     <div className="w-full">
       {/* 🏙️ Hero Section */}
-      <section className="relative px-8 pt-6 pb-20 lg:pt-16 lg:pb-32 overflow-hidden bg-slate-50/50">
-        <div className="max-w-screen-2xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+      <section className="relative px-4 sm:px-6 lg:px-8 pt-6 pb-20 lg:pt-16 lg:pb-32 overflow-hidden bg-slate-50/50">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
           <div className="z-10">
             <span className="inline-block px-5 py-2 mb-8 text-[10px] font-black tracking-[0.3em] uppercase text-primary bg-primary/10 rounded-full">
               PREMIUM LEGAL SERVICE
@@ -155,7 +155,7 @@ export default function RentAgreementPage() {
       </section>
 
       {/* 📄 Legal Narrative */}
-      <section className="px-8 py-32 bg-white">
+      <section className="px-4 sm:px-6 lg:px-8 py-32 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-10 tracking-tighter">Professional Real Estate Compliance</h2>
           <p className="text-xl leading-relaxed text-slate-500 font-bold">
@@ -165,8 +165,8 @@ export default function RentAgreementPage() {
       </section>
 
       {/* 🔄 Process steps */}
-      <section className="px-8 py-32 bg-slate-50" id="process-flow">
-        <div className="max-w-screen-2xl mx-auto">
+      <section className="px-4 sm:px-6 lg:px-8 py-32 bg-slate-50" id="process-flow">
+        <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-10 text-center md:text-left">
             <div className="max-w-2xl">
               <h2 className="text-5xl font-black text-slate-900 mb-6 tracking-tighter">Streamlined Registration</h2>
@@ -194,8 +194,8 @@ export default function RentAgreementPage() {
       </section>
 
       {/* 💎 Benefits Grid */}
-      <section className="px-8 py-32 bg-white">
-        <div className="max-w-screen-2xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <section className="px-4 sm:px-6 lg:px-8 py-32 bg-white">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {benefits.map((benefit, i) => (
             <div key={i} className="p-10 bg-slate-50 rounded-2xl hover:bg-primary hover:text-white transition-all duration-500 group">
               <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-8 group-hover:bg-white transition-all">
@@ -209,7 +209,7 @@ export default function RentAgreementPage() {
       </section>
 
       {/* 💰 Pricing & Form */}
-      <section className="px-8 py-32 relative overflow-hidden" id="registration-form">
+      <section className="px-4 sm:px-6 lg:px-8 py-32 relative overflow-hidden" id="registration-form">
         <div className="max-w-screen-xl mx-auto grid lg:grid-cols-2 gap-24 items-start">
           <div>
             <h2 className="text-5xl font-black text-slate-900 mb-8 tracking-tighter">Ready to register your agreement?</h2>
@@ -245,7 +245,7 @@ export default function RentAgreementPage() {
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Full Name *</label>
                   <input
-                    className={`w-full px-8 py-5 rounded-2xl bg-slate-50 placeholder:text-slate-300 font-bold transition-all border focus:ring-2 ${formErrors.name ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:ring-primary/20'}`}
+                    className={`w-full px-4 sm:px-6 lg:px-8 py-5 rounded-2xl bg-slate-50 placeholder:text-slate-300 font-bold transition-all border focus:ring-2 ${formErrors.name ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:ring-primary/20'}`}
                     placeholder="Anjali Deshmukh"
                     type="text"
                     value={form.name}
@@ -256,7 +256,7 @@ export default function RentAgreementPage() {
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Phone Number *</label>
                   <input
-                    className={`w-full px-8 py-5 rounded-2xl bg-slate-50 placeholder:text-slate-300 font-bold transition-all border focus:ring-2 ${formErrors.phone ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:ring-primary/20'}`}
+                    className={`w-full px-4 sm:px-6 lg:px-8 py-5 rounded-2xl bg-slate-50 placeholder:text-slate-300 font-bold transition-all border focus:ring-2 ${formErrors.phone ? 'border-red-400 focus:ring-red-100' : 'border-transparent focus:ring-primary/20'}`}
                     placeholder="+91 98XXX XXXXX"
                     type="tel"
                     maxLength={15}
@@ -269,7 +269,7 @@ export default function RentAgreementPage() {
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Email Address</label>
                 <input
-                  className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-transparent border focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all"
+                  className="w-full px-4 sm:px-6 lg:px-8 py-5 rounded-2xl bg-slate-50 border-transparent border focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all"
                   placeholder="anjali@example.com"
                   type="email"
                   value={form.email}
@@ -280,7 +280,7 @@ export default function RentAgreementPage() {
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Property Location</label>
                   <input
-                    className="w-full px-8 py-5 rounded-2xl bg-slate-50 border-transparent border focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all"
+                    className="w-full px-4 sm:px-6 lg:px-8 py-5 rounded-2xl bg-slate-50 border-transparent border focus:ring-2 focus:ring-primary/20 placeholder:text-slate-300 font-bold transition-all"
                     placeholder="E.g. Worli, Andheri"
                     type="text"
                     value={form.location}
@@ -335,7 +335,7 @@ export default function RentAgreementPage() {
      
 
       {/* ❓ FAQ Section */}
-      <section className="px-8 py-32 bg-white pb-48">
+      <section className="px-4 sm:px-6 lg:px-8 py-32 bg-white pb-48">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-5xl font-black text-slate-900 text-center mb-24 tracking-tighter">Frequently Asked Questions</h2>
           <div className="space-y-6">

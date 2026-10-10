@@ -70,7 +70,7 @@ export default async function BuilderDetailPage({ params }) {
         
         {/* FAQ & Lead Form Section */}
         <section className="py-14 sm:py-16 lg:py-24 bg-zinc-900 text-white overflow-hidden relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className={`flex flex-col lg:flex-row gap-10 lg:gap-16 ${(!builder.faqs || builder.faqs.length === 0) ? 'justify-center' : ''}`}>
               <BuilderFAQ builder={builder} />
               <div className={(!builder.faqs || builder.faqs.length === 0) ? 'w-full max-w-2xl' : 'w-full lg:w-1/2'}>

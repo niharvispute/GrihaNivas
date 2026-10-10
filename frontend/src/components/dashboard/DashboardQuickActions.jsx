@@ -49,7 +49,7 @@ export default function DashboardQuickActions({ hasListings = false, latestListi
 
   return (
     <div className="space-y-3">
-      <h2 className="text-sm sm:text-base font-heading font-black text-slate-900 mb-3 sm:mb-4">Quick Actions</h2>
+      <h2 className="text-sm sm:text-base font-heading font-bold text-slate-900 mb-3 sm:mb-4">Quick Actions</h2>
       {actions.map((action, idx) => (
         <Link
           key={idx}

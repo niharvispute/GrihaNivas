@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { listLeads, updateLeadStatus, getLeadById, deleteLead, addLeadNote, exportLeads } from '@/services/leadService';
 import ExportButton from '@/components/admin/ExportButton';
 
@@ -29,13 +30,14 @@ function hasValue(value) {
   return true;
 }
 
-export default function LeadCRMPage() {
+function LeadCRMPage() {
+  const searchParams = useSearchParams();
   const [leads, setLeads] = useState([]);
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [leadType, setLeadType] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState(searchParams.get('status') || '');
   const [page, setPage] = useState(1);
   const [updatingId, setUpdatingId] = useState(null);
   const [openActionFor, setOpenActionFor] = useState(null);
@@ -472,5 +474,13 @@ function Info({ label, value, full = false }) {
       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">{label}</p>
       <p className="text-sm font-bold text-slate-800 wrap-break-word">{String(value)}</p>
     </div>
+  );
+}
+
+export default function LeadCRMPageWrapper() {
+  return (
+    <Suspense fallback={null}>
+      <LeadCRMPage />
+    </Suspense>
   );
 }

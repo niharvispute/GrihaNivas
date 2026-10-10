@@ -32,7 +32,7 @@ export default function ComparePage() {
 
   return (
     <div className="bg-white min-h-screen">
-      <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Header Section */}
         <div className="flex items-center gap-4 md:gap-6 mb-8 md:mb-16">
           <Link 

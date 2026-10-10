@@ -9,7 +9,7 @@ export default function EnquiryHeader() {
           <span className="text-slate-300">/</span>
           <span className="text-primary">My Enquiries</span>
         </nav>
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-black text-slate-900 tracking-tight">My Enquiries</h2>
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-slate-900 tracking-tight">My Enquiries</h2>
       </div>
     </div>
   );

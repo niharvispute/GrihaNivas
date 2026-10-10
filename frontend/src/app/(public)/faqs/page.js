@@ -50,7 +50,7 @@ const FAQS = [
 
 export default function FaqsPage() {
   return (
-    <main className="max-w-5xl mx-auto px-6 lg:px-8 py-14">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
       <header className="mb-12">
         <p className="text-[11px] font-black tracking-[0.22em] uppercase text-primary mb-4">Support</p>
         <h1 className="text-5xl md:text-6xl font-black tracking-tighter text-slate-900 mb-5">Frequently Asked Questions</h1>

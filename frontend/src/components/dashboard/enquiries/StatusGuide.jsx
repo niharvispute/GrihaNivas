@@ -33,7 +33,7 @@ export default function StatusGuide() {
           <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform ${step.theme}`}>
             <span className="material-symbols-outlined text-2xl">{step.icon}</span>
           </div>
-          <h4 className="font-heading font-black text-slate-900 mb-2">{step.title}</h4>
+          <h4 className="font-heading font-bold text-slate-900 mb-2">{step.title}</h4>
           <p className="text-[11px] font-bold text-slate-400 leading-relaxed uppercase tracking-wider">{step.desc}</p>
         </div>
       ))}

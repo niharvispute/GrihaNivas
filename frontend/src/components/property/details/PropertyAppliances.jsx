@@ -3,7 +3,7 @@ export default function PropertyAppliances({ appliances }) {
 
   return (
     <section>
-      <h2 className="text-2xl font-heading font-black mb-6 sm:mb-8 text-slate-900">Appliances Included</h2>
+      <h2 className="text-2xl font-heading font-bold mb-6 sm:mb-8 text-slate-900">Appliances Included</h2>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 md:gap-4">
         {appliances.map((item, idx) => (
           <div

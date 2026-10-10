@@ -149,7 +149,7 @@ export default async function PropertyDetailPage({ params }) {
       <section className="mb-8 sm:mb-16 lg:mb-20 space-y-5 sm:space-y-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div className="max-w-4xl space-y-3">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-black tracking-tight text-slate-900 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-tight text-slate-900 leading-tight">
               {property.title}
             </h1>
             <p className="text-slate-500 flex items-center gap-2 font-bold text-sm md:text-base">
@@ -164,7 +164,7 @@ export default async function PropertyDetailPage({ params }) {
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1 leading-none">
               {property?.category === 'rent' ? 'Monthly Rent' : 'Expected Price'}
             </p>
-            <p className="text-4xl lg:text-5xl font-heading font-black text-slate-900 tracking-tighter">
+            <p className="text-4xl lg:text-5xl font-heading font-bold text-slate-900 tracking-tighter">
               {property.price ? `₹${property.price}` : 'POA'}
               {property?.category === 'rent' && <span className="text-lg ml-1 font-bold text-slate-400">/mo</span>}
             </p>
@@ -187,7 +187,7 @@ export default async function PropertyDetailPage({ params }) {
           
           {/* Neighborhood Placeholder */}
           <section>
-            <h2 className="text-2xl font-heading font-black mb-6 sm:mb-8 text-slate-900">Neighborhood & Location</h2>
+            <h2 className="text-2xl font-heading font-bold mb-6 sm:mb-8 text-slate-900">Neighborhood & Location</h2>
             <div className="rounded-2xl overflow-hidden shadow-lg h-72 sm:h-96 relative mb-8 border border-slate-100">
               {mapEmbedUrl ? (
                 <iframe

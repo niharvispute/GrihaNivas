@@ -1,4 +1,4 @@
-import { Inter, Poppins } from "next/font/google";
+import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import Providers from "@/providers/Providers";
 import AuthModal from "@/components/auth/AuthModal";
@@ -8,10 +8,10 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const poppins = Poppins({
-  variable: "--font-playfair",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.grihanivas.in';
@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${poppins.variable} h-full antialiased`}
+      className={`${inter.variable} ${montserrat.variable} h-full antialiased`}
     >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />

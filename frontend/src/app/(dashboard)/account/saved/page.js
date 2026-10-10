@@ -41,7 +41,7 @@ export default function SavedPropertiesPage() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-slate-100 pb-6 sm:pb-8 md:pb-10">
         <div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-black text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-slate-900 tracking-tight">
             Saved <span className="text-primary ">Collection</span>
           </h1>
           <p className="text-slate-400 mt-2 font-bold uppercase tracking-[0.2em] text-[8px] sm:text-[10px]">
@@ -65,9 +65,9 @@ export default function SavedPropertiesPage() {
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
               <span className="material-symbols-outlined text-3xl sm:text-4xl text-slate-300">favorite</span>
             </div>
-            <h3 className="font-heading font-black text-slate-900 text-lg sm:text-xl md:text-2xl mb-2">No saved properties yet</h3>
+            <h3 className="font-heading font-bold text-slate-900 text-lg sm:text-xl md:text-2xl mb-2">No saved properties yet</h3>
             <p className="text-slate-400 font-bold mb-6 sm:mb-8 text-sm sm:text-base">Start exploring and save the ones you love.</p>
-            <Link href="/buy" className="bg-primary text-white px-6 sm:px-10 py-3 sm:py-4 rounded-full font-heading font-black uppercase tracking-widest text-[10px] sm:text-xs shadow-xl hover:bg-primary/90 transition-all inline-block">
+            <Link href="/buy" className="bg-primary text-white px-6 sm:px-10 py-3 sm:py-4 rounded-full font-heading font-bold uppercase tracking-widest text-[10px] sm:text-xs shadow-xl hover:bg-primary/90 transition-all inline-block">
               Browse Listings
             </Link>
           </div>

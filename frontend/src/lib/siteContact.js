@@ -5,6 +5,7 @@ export const SITE_CONTACT = {
   addressOneLine: 'Heera Panna Shopping Complex, Powai Hiranandani Garden, Mumbai – 400076',
   phoneDisplay: '+91 91379 50050',
   phoneHref: 'tel:+919137950050',
+  whatsappNumber: '919137950050',
   email: 'contact@grihanivas.in',
   rera: 'A51700000043',
   hours: [

@@ -4,7 +4,7 @@ export default function BlogDetailLoading() {
       {/* Hero skeleton */}
       <div className="w-full h-[420px] bg-slate-100" />
 
-      <div className="max-w-7xl mx-auto px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="h-4 bg-slate-100 rounded-full w-48 mb-12" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
           <div className="lg:col-span-8 space-y-6">

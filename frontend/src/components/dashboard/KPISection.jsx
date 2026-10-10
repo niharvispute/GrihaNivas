@@ -36,7 +36,7 @@ export default function KPISection({ savedCount = 0, compareCount = 0 }) {
           </div>
           <div>
             <p className="text-[8px] sm:text-xs font-bold text-slate-400 mb-0.5">{kpi.title}</p>
-            <h3 className="text-lg sm:text-2xl font-heading font-black text-slate-900">{kpi.value}</h3>
+            <h3 className="text-lg sm:text-2xl font-heading font-bold text-slate-900">{kpi.value}</h3>
           </div>
         </div>
       ))}

@@ -90,7 +90,7 @@ export default async function BlogsPage({ searchParams }) {
 
   return (
     <div className="w-full h-full pt-8 sm:pt-10 lg:pt-12 pb-16 sm:pb-20 lg:pb-24">
-      <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="sr-only">Mumbai Real Estate Blogs</h1>
         {/* 🔍 Category & Search Console */}
         <section className="mb-10 sm:mb-14 lg:mb-16 flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8 lg:gap-10">

@@ -9,21 +9,21 @@
 
   /* Typography */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-playfair), serif;
+  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
 
   /* Aliases used across components */
-  --font-headline: var(--font-playfair), serif;
+  --font-headline: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
   --font-brand: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-label: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   --text-display: 2.25rem;
   --text-display--line-height: 1.15;
-  --text-display--font-weight: 700;
+  --text-display--font-weight: 600;
 
   --text-h1: 1.75rem;
   --text-h1--line-height: 1.25;
-  --text-h1--font-weight: 700;
+  --text-h1--font-weight: 600;
 
   --text-h2: 1.5rem;
   --text-h2--line-height: 1.35;
@@ -97,14 +97,14 @@ body {
   .type-large-title {
     font-family: var(--font-heading);
     font-size: clamp(1.5rem, 3.5vw, var(--text-large-title));
-    font-weight: 700;
+    font-weight: 600;
     line-height: var(--text-large-title--line-height);
   }
 
   .type-large-title-32 {
     font-family: var(--font-heading);
     font-size: clamp(1.25rem, 2.5vw, var(--text-large-title-32));
-    font-weight: 700;
+    font-weight: 600;
     line-height: var(--text-large-title-32--line-height);
     letter-spacing: -0.02em;
   }
